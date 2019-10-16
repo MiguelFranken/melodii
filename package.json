@@ -2,13 +2,20 @@
   "name": "osc-example",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc": "tsc",
+    "start": "tsc && node ./build/index.js",
+    "start:refresh": "ts-node-dev --respawn --transpileOnly ./index.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "osc": "^2.3.1"
+    "@types/node": "^12.11.1",
+    "osc": "^2.3.1",
+    "typescript": "^3.6.4"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.0.0-pre.43"
   }
 }
