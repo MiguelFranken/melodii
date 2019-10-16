@@ -1,10 +1,9 @@
 {
-  "name": "osc-example",
-  "version": "1.0.0",
+  "name": "media-computing-project",
+  "version": "0.0.1",
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "tsc": "tsc",
     "start": "tsc && node ./build/index.js",
     "start:refresh": "ts-node-dev --respawn --transpileOnly ./index.ts"
   },
