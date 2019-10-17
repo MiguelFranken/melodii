@@ -18,7 +18,7 @@
 /out/
 
 # TypeScript
-build/
+target/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -55,7 +55,7 @@ coverage
 .lock-wscript
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
+target/Release
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
