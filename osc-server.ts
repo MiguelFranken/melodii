@@ -1,4 +1,4 @@
-import { OSCArgs, OSCMessage, OSCRawMessage } from "./osc-message";
+import { OSCInputMessage, OSCMessage, OSCRawMessage } from "./osc-message";
 const _osc = require("osc");
 
 //region Type Definitions
@@ -12,19 +12,20 @@ declare namespace OSC {
 //endregion
 
 export class OSCServer {
-  private udp: OSC.UdpSocket;
-  private readonly outputIp: string;
-  private readonly outputPort: number;
+  private udp: OSC.UdpSocket; // socket communication between us and music instruments
+  private readonly outputIp: string; // sonic pi ip
+  private readonly outputPort: number; // sonic pi port
 
   constructor(ip: string, port: number, outputIp: string, outputPort: number) {
     // prepares udp socket for message input from music instruments
     this.udp = new _osc.UDPPort({
       localAddress: ip,
       localPort: port,
-      remotePort: 4559,
-      remoteAddress: "192.168.0.241",
+      remotePort: outputPort,
+      remoteAddress: outputIp,
       metadata: true
     });
+    console.log(`Starting server on ip '${ip}' and port '${port}'..`);
 
     // save address to sonic pi
     this.outputIp = outputIp;
@@ -34,13 +35,13 @@ export class OSCServer {
   // connects to the udp socket
   public connect() {
     this.udp.open();
-    console.log("Connected successfully!");
+    console.log("Started server successfully!");
   }
 
   // allows you to add handlers that get executed when a osc message arrives from the instruments
-  public addMessageListener(handler: ((oscMsg: OSCMessage) => void)) {
+  public addMessageListener(handler: ((oscMsg: OSCInputMessage) => void)) {
     const func = (oscRawMsg: OSCRawMessage, timeTag: any, info: any) => {
-      const _msg = new OSCMessage(oscRawMsg.address, oscRawMsg.args, info);
+      const _msg = new OSCInputMessage(oscRawMsg.address, oscRawMsg.args, info);
       handler(_msg);
     };
     this.udp.on("message", func);
@@ -48,19 +49,12 @@ export class OSCServer {
   }
 
   // allows you to send osc messages to sonic pi
-  public send() {
-    this.udp.on("ready", _ => {
-      console.log("Send message to Sonic Pi");
+  public sendMessage(msg: OSCMessage) {
+    const rawMsg: OSCRawMessage = {
+      address: msg.getAddress(),
+      args: msg.getArgs()
+    };
 
-      const note: OSCArgs = {
-        type: "i",
-        value: 60
-      };
-
-      this.udp.send({
-        address: "/play/piano",
-        args: [ note ]
-      }, this.outputIp, this.outputPort);
-    });
+    this.udp.send(rawMsg, this.outputIp, this.outputPort);
   }
 }

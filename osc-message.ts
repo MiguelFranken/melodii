@@ -39,14 +39,11 @@ export class OSCMessage {
    * See http://opensoundcontrol.org/spec-1_0 and http://opensoundcontrol.org/spec-1_0-examples#OSCaddress
    */
   private readonly address: string;
-
   private readonly args: OSCArgs[];
-  private readonly info: OSCInfo;
 
-  constructor(address: string, args: OSCArgs[], info: OSCInfo) {
+  constructor(address: string, args: OSCArgs[]) {
     this.address = address;
     this.args = args;
-    this.info = info;
   }
 
   public getArgs(): OSCArgs[] {
@@ -61,8 +58,8 @@ export class OSCMessage {
     }
   }
 
-  public getInfo(): OSCInfo {
-    return this.info;
+  public getAddress() {
+    return this.address;
   }
 
   public getTypeString(): string {
@@ -79,5 +76,18 @@ export class OSCMessage {
     } else {
       return "unknown";
     }
+  }
+}
+
+export class OSCInputMessage extends OSCMessage {
+  private readonly info: OSCInfo;
+
+  constructor(address: string, args: OSCArgs[], info: OSCInfo) {
+    super(address, args);
+    this.info = info;
+  }
+
+  public getInfo(): OSCInfo {
+    return this.info;
   }
 }
