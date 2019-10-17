@@ -27,9 +27,9 @@ const remoteInfoLogger = (oscMsg: OSCMessage) => {
 //endregion
 
 //region Starting Server
-const ocsServer = new OSCServer();
-ocsServer.setup("0.0.0.0", 57121);
+const ocsServer = new OSCServer("0.0.0.0", 57121, "192.168.0.241", 4559);
 ocsServer.addMessageListener(messageLogger);
 ocsServer.addMessageListener(remoteInfoLogger);
 ocsServer.connect();
+ocsServer.send();
 //endregion
