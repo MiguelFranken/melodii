@@ -8,8 +8,8 @@ stages:
   - test
 
 install_dependencies:
-  stage: install_dependencies
   image: trion/ng-cli
+  stage: install_dependencies
   before_script:
     - cd 02.Frontend
   cache:
@@ -21,6 +21,8 @@ install_dependencies:
   only:
     changes:
       - package-lock.json
+  tags:
+    - docker
 
 build:frontend:
   image: trion/ng-cli
