@@ -31,6 +31,8 @@ test:lint:frontend:
   stage: test
   script:
     - ng lint
+  tags:
+    - docker
 
 test:frontend:karma:
   image: trion/ng-cli-karma
@@ -45,11 +47,15 @@ test:frontend:karma:
   artifacts:
     paths:
       - 02.Frontend/coverage/
+  tags:
+    - docker
 
 test:frontend:e2e:
   stage: test
-  image: trion/ng-cli-e2e:${CLI_VERSION}
+  image: trion/ng-cli-e2e
   allow_failure: false
   script:
     - cd 02.Frontend
     - ng e2e
+  tags:
+    - docker
