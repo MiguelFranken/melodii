@@ -3,15 +3,34 @@ services:
   - docker:18.09.7-dind
 
 stages:
+  - install_dependencies
   - build
   - test
+
+install_dependencies:
+  stage: install_dependencies
+  before_script:
+    - cd 02.Frontend
+  cache:
+    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    paths:
+      - 02.Frontend/node_modules/
+  script:
+    - npm ci
+  only:
+    changes:
+      - package-lock.json
 
 build:frontend:
   image: trion/ng-cli
   stage: build
   before_script:
     - cd 02.Frontend
-    - npm ci
+  cache:
+    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    paths:
+      - 02.Frontend/node_modules/
+    policy: pull
   script:
     - ng build --prod
   artifacts:
