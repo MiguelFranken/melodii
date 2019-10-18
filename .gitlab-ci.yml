@@ -1,0 +1,55 @@
+image: docker:latest
+services:
+  - docker:18.09.7-dind
+
+stages:
+  - build
+  - test
+
+build:frontend:
+  image: trion/ng-cli
+  stage: build
+  before_script:
+    - cd 02.Frontend
+    - npm ci
+  script:
+    - ng build --prod
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - 02.Frontend/dist/
+  tags:
+    - docker
+
+test:lint:frontend:
+  image: trion/ng-cli
+  allow_failure: true
+  before_script:
+    - cd 02.Frontend
+    - npm ci
+
+  stage: test
+  script:
+    - ng lint
+
+test:frontend:karma:
+  image: trion/ng-cli-karma
+  stage: test
+  allow_failure: false
+  before_script:
+    - cd 02.Frontend
+    - npm ci
+  script:
+    - ng test --code-coverage --progress false --watch false
+  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
+  artifacts:
+    paths:
+      - 02.Frontend/coverage/
+
+test:frontend:e2e:
+  stage: test
+  image: trion/ng-cli-e2e:${CLI_VERSION}
+  allow_failure: false
+  script:
+    - cd 02.Frontend
+    - ng e2e
