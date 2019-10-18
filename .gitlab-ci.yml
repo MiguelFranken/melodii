@@ -3,37 +3,15 @@ services:
   - docker:18.09.7-dind
 
 stages:
-  - install_dependencies
   - build
   - test
-
-before:install_dependencies:
-  image: trion/ng-cli
-  stage: install_dependencies
-  before_script:
-    - cd 02.Frontend
-  cache:
-    key: "packages"
-    paths:
-      - 02.Frontend/node_modules/
-  script:
-    - npm ci
-  only:
-    changes:
-      - package-lock.json
-  tags:
-    - docker
 
 build:frontend:
   image: trion/ng-cli
   stage: build
   before_script:
     - cd 02.Frontend
-  cache:
-    key: "packages"
-    paths:
-      - 02.Frontend/node_modules/
-    policy: pull
+    - npm ci
   script:
     - ng build --prod
   artifacts:
@@ -48,7 +26,7 @@ test:lint:frontend:
   allow_failure: true
   before_script:
     - cd 02.Frontend
-
+    - npm ci
   stage: test
   script:
     - ng lint
@@ -61,6 +39,7 @@ test:frontend:karma:
   allow_failure: false
   before_script:
     - cd 02.Frontend
+    - npm ci
   script:
     - ng test --code-coverage --progress false --watch false
   coverage: '/Lines \W+: (\d+\.\d+)%.*/'
@@ -76,7 +55,7 @@ test:frontend:e2e:
   allow_failure: false
   script:
     - cd 02.Frontend
-    - npm run pree2e
+    - npm ci
     - ng e2e
   tags:
     - docker
