@@ -8,8 +8,8 @@ stages:
   - test
 
 install_dependencies:
-  image: trion/ng-cli
   stage: install_dependencies
+  image: trion/ng-cli
   before_script:
     - cd 02.Frontend
   cache:
