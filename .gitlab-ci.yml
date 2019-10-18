@@ -7,13 +7,13 @@ stages:
   - build
   - test
 
-install_dependencies:
+before:install_dependencies:
   image: trion/ng-cli
   stage: install_dependencies
   before_script:
     - cd 02.Frontend
   cache:
-    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    key: "packages"
     paths:
       - 02.Frontend/node_modules/
   script:
@@ -30,7 +30,7 @@ build:frontend:
   before_script:
     - cd 02.Frontend
   cache:
-    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    key: "packages"
     paths:
       - 02.Frontend/node_modules/
     policy: pull
