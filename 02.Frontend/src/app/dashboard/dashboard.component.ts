@@ -4,7 +4,7 @@ import { Event } from '../shared/socket/event';
 import { SocketService } from '../shared/socket/socket.service';
 
 @Component({
-  selector: 'app-chat',
+  selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
