@@ -1,0 +1,26 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "no-var-requires": false,
+    "no-namespace": false,
+    "max-line-length": {
+      "options": [100]
+    },
+    "member-ordering": false,
+    "no-consecutive-blank-lines": false,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "quotemark": [false],
+    "variable-name": [true, "allow-leading-underscore"],
+    "completed-docs": false,
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-type",
+      "check-module"
+    ]
+  }
+}

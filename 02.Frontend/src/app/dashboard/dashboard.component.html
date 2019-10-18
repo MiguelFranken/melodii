@@ -1,0 +1,9 @@
+<div class="card">
+  <h1>Slider</h1>
+  <mat-progress-bar mode="determinate" [value]="sliderValue"></mat-progress-bar>
+</div>
+
+<div class="card">
+  <h1>Messages</h1>
+  <p *ngFor="let message of messages; let index = index">Message {{index}}: {{message}}</p>
+</div>
