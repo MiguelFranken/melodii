@@ -10,6 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
+    browser.waitForAngularEnabled(false);
     expect(page.getTitleText()).toEqual('OSC Dashboard');
   });
 

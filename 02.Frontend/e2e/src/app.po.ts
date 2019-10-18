@@ -6,6 +6,6 @@ export class AppPage {
   }
 
   getTitleText() {
-    return element(by.id('title')).getText() as Promise<string>;
+    return element(by.id('toolbar-title')).getText() as Promise<string>;
   }
 }

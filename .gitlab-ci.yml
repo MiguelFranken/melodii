@@ -53,9 +53,13 @@ test:frontend:e2e:
   stage: test
   image: trion/ng-cli-e2e
   allow_failure: false
-  script:
+  before_script:
+    - cd 01.Backend
+    - npm ci
+    - npm run start
     - cd 02.Frontend
     - npm ci
-    - ng e2e
+  script:
+    - npm run e2e
   tags:
     - docker
