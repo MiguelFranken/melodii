@@ -45,7 +45,6 @@ test:lint:frontend:
   allow_failure: true
   before_script:
     - cd 02.Frontend
-    - npm ci
 
   stage: test
   script:
@@ -59,7 +58,6 @@ test:frontend:karma:
   allow_failure: false
   before_script:
     - cd 02.Frontend
-    - npm ci
   script:
     - ng test --code-coverage --progress false --watch false
   coverage: '/Lines \W+: (\d+\.\d+)%.*/'
