@@ -18,7 +18,24 @@ build:frontend:
   artifacts:
     expire_in: 1 day
     paths:
+      - 02.Frontend/node_modules/
       - 02.Frontend/dist/
+  tags:
+    - docker
+
+build:backend:
+  image: node:lts-alpine
+  allow_failure: true
+  stage: build
+  before_script:
+    - cd 01.Backend
+    - npm ci
+  script:
+    - tsc
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - 01.Backend/node_modules/
   tags:
     - docker
 
@@ -27,7 +44,7 @@ lint:frontend:
   allow_failure: true
   before_script:
     - cd 02.Frontend
-    - npm ci
+#    - npm ci
   stage: lint
   script:
     - ng lint
@@ -40,7 +57,7 @@ test:frontend:karma:
   allow_failure: false
   before_script:
     - cd 02.Frontend
-    - npm ci
+#    - npm ci
   script:
     - ng test --code-coverage --progress false --watch false
   coverage: '/Lines \W+: (\d+\.\d+)%.*/'
