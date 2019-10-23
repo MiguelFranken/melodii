@@ -8,6 +8,7 @@ import { Event } from './socket/socket-events';
 import "reflect-metadata";
 import { SliderController } from './controllers/slider';
 import { addControllers } from './decorators';
+import { CONTROLLERS } from './controllers';
 
 //region OSC-Server for communication with music instruments
 //region Event Handlers
@@ -67,7 +68,7 @@ ocsServer.addMessageListener(emitToWebsocket);
 ocsServer.connect();
 //endregion
 
-addControllers(ocsServer.getIO(), [SliderController]);
+addControllers(ocsServer.getIO(), CONTROLLERS);
 
 
 //endregion
