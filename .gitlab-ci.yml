@@ -49,17 +49,17 @@ test:frontend:karma:
   tags:
     - docker
 
-test:frontend:e2e:
-  stage: test
-  image: trion/ng-cli-e2e
-  allow_failure: false
-  before_script:
-    - cd 01.Backend
-    - npm ci
-    - npm run start
-    - cd 02.Frontend
-    - npm ci
-  script:
-    - npm run e2e
-  tags:
-    - docker
+#test:frontend:e2e:
+#  stage: test
+#  image: trion/ng-cli-e2e
+#  allow_failure: false
+#  before_script:
+#    - cd 01.Backend
+#    - npm ci
+#    - npm run start
+#    - cd 02.Frontend
+#    - npm ci
+#  script:
+#    - npm run e2e
+#  tags:
+#    - docker
