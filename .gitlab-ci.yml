@@ -23,21 +23,21 @@ build:frontend:
   tags:
     - docker
 
-build:backend:
-  image: node:lts-alpine
-  allow_failure: true
-  stage: build
-  before_script:
-    - cd 01.Backend
-    - npm ci
-  script:
-    - tsc
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - 01.Backend/node_modules/
-  tags:
-    - docker
+#build:backend:
+#  image: node:lts-alpine
+#  allow_failure: true
+#  stage: build
+#  before_script:
+#    - cd 01.Backend
+#    - npm ci
+#  script:
+#    - tsc
+#  artifacts:
+#    expire_in: 1 day
+#    paths:
+#      - 01.Backend/node_modules/
+#  tags:
+#    - docker
 
 lint:frontend:
   image: trion/ng-cli
@@ -48,6 +48,18 @@ lint:frontend:
   stage: lint
   script:
     - ng lint
+  tags:
+    - docker
+
+lint:backend:
+  image: node:lts-alpine
+  allow_failure: true
+  before_script:
+    - cd 02.Frontend
+    - npm install
+  stage: lint
+  script:
+    - npm run lint
   tags:
     - docker
 

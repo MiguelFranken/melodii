@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node build/index.js",
     "start:refresh": "ts-node-dev --respawn --transpileOnly src/index.ts",
-    "lint": "tslint \"./**/*.ts\""
+    "lint": "tslint -- src/**/*.ts"
   },
   "author": "",
   "license": "ISC",
