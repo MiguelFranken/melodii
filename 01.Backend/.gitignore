@@ -19,6 +19,8 @@
 
 # TypeScript
 target/
+dist/
+build/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

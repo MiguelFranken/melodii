@@ -4,9 +4,10 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "tsc && node build/index.js",
+    "build": "tsc src/*.ts --outDir dist/",
+    "start": "npm run build && node dist/index.js",
     "start:refresh": "ts-node-dev --respawn --transpileOnly src/index.ts",
-    "lint": "tslint -- src/**/*.ts"
+    "lint": "tslint -- src/*.ts"
   },
   "author": "",
   "license": "ISC",
