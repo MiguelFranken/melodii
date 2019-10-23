@@ -24,12 +24,11 @@ build:frontend:
     - docker
 
 build:backend:
-  image: node:lts-alpine
-  allow_failure: true
+  image: python3.8-nodejs12-alpine
   stage: build
   before_script:
     - cd 01.Backend
-    - npm install
+    - npm ci
   script:
     - npm run build
   artifacts:
@@ -52,11 +51,10 @@ lint:frontend:
     - docker
 
 lint:backend:
-  image: node:lts-alpine
+  image: python3.8-nodejs12-alpine
   allow_failure: true
   before_script:
     - cd 01.Backend
-    - npm install
   stage: lint
   script:
     - npm run lint
