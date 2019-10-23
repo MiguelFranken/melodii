@@ -2,6 +2,15 @@ image: docker:latest
 services:
   - docker:18.09.7-dind
 
+cache:
+  untracked: true
+  key: "$CI_BUILD_REF_NAME"
+  paths:
+    - 01.Backend/node_modules/
+    - 01.Backend/dist/
+    - 02.Frontend/node_modules/
+    - 02.Frontend/dist/
+
 stages:
   - build
   - lint
@@ -15,11 +24,6 @@ build:frontend:
     - npm ci
   script:
     - ng build --prod
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - 02.Frontend/node_modules/
-      - 02.Frontend/dist/
   tags:
     - docker
 
@@ -31,11 +35,6 @@ build:backend:
     - npm ci
   script:
     - npm run build
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - 01.Backend/node_modules/
-      - 01.Backend/dist/
   tags:
     - docker
 
