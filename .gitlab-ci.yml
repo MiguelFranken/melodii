@@ -24,7 +24,7 @@ build:frontend:
     - docker
 
 build:backend:
-  image: python3.8-nodejs12-alpine
+  image: nikolaik/python-nodejs:latest
   stage: build
   before_script:
     - cd 01.Backend
@@ -51,7 +51,7 @@ lint:frontend:
     - docker
 
 lint:backend:
-  image: python3.8-nodejs12-alpine
+  image: nikolaik/python-nodejs:latest
   allow_failure: true
   before_script:
     - cd 01.Backend
