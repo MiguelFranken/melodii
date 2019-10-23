@@ -1,6 +1,6 @@
-import { IControllerMetadataArgs } from '../args/IControllerMetadataArgs';
 import { ActionMetadata } from './ActionMetadata';
-import { getFromContainer } from '../../container';
+import { IControllerMetadataArgs } from './args/IControllerMetadataArgs';
+import { getFromContainer } from '../container';
 
 export class ControllerMetadata {
 

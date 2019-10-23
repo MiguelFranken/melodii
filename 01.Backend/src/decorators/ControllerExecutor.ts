@@ -1,10 +1,9 @@
 import { MetadataBuilder } from './metadata-builder/MetadataBuilder';
-import * as pathToRegexp from "path-to-regexp";
-import { ControllerMetadata } from './metadata/types/ControllerMetadata';
 import * as OSC from 'osc';
-import { ActionMetadata } from './metadata/types/ActionMetadata';
 import { IOSCRawMessage, OSCMessage } from '../osc/osc-message';
 import { OSCInputMessage } from '../osc/osc-input-message';
+import { ActionMetadata } from './metadata/ActionMetadata';
+import { ControllerMetadata } from './metadata/ControllerMetadata';
 
 export class ControllerExecutor {
 
@@ -30,35 +29,63 @@ export class ControllerExecutor {
     console.log("Controllers with namespace: " + controllersWithNamespaces.length);
     console.log("Controllers without namespace: " + controllersWithoutNamespaces.length);
 
+    const handler = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
+      console.log('Handle Without Namespace');
+      const _msg = new OSCInputMessage(oscRawMsg.address, oscRawMsg.args, info);
+      this.handleConnection(controllersWithoutNamespaces, _msg);
+    };
+
     // register controllers without namespaces
-    this.io.on("message", (socket: any) => {
-      console.log('RECEIVED SOMETHING WITHOUT NAMESPACE');
-      this.handleConnection(controllersWithoutNamespaces, socket);
-    });
+    this.io.on("message", handler);
 
     // register controllers with namespaces
     controllersWithNamespaces.forEach((controller: any) => {
-      let namespace: string | RegExp = controller.namespace;
-      if (!(namespace instanceof RegExp)) {
-        namespace = pathToRegexp(namespace);
+      const _namespace: string | RegExp = controller.namespace;
+      let namespace: string;
+      if (_namespace instanceof RegExp) {
+        // namespace = pathToRegexp(_namespace);
+        namespace = '';
+      } else {
+        namespace = controller.namespace;
       }
       // TODO: filter events mit falschem namespace heraus
       // this.io.of(namespace).on("connection", (socket: any) => {
       console.log("Attached controller to io event 'message'");
 
-      const func = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
+      // tslint:disable-next-line:no-shadowed-variable
+      const handler = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
+        console.log('Handle With Namespace');
+
+        // parse oc address urls
+        const addressUrl = oscRawMsg.address.split('/');
+        addressUrl.shift();
+        const namespaceUrl = namespace.split('/');
+        namespaceUrl.shift();
+
+        if (namespaceUrl.length > addressUrl.length) {
+          console.log('doesnt start with namespace ' + namespace + '!');
+          return;
+        } else {
+          for (let i = 0; i < namespaceUrl.length; i++) {
+            if (namespaceUrl[i] !== addressUrl[i]) {
+              console.log('DOESNT start with namespace ' + namespace + '!');
+              return;
+            }
+          }
+        }
+
         const _msg = new OSCInputMessage(oscRawMsg.address, oscRawMsg.args, info);
         this.handleConnection([controller], _msg);
       };
 
-      this.io.on("message", func);
+      this.io.on("message", handler);
     });
 
     return this;
   }
 
-  private handleAction(action: ActionMetadata): Promise<any> {
-    return Promise.resolve(action.executeAction()); // TODO: Promise so unnötig
+  private handleAction(action: ActionMetadata, oscMessage: OSCMessage): Promise<any> {
+    return Promise.resolve(action.executeAction(oscMessage)); // TODO: Promise unnötig hier
   }
 
   private handleConnection(controllers: ControllerMetadata[], oscMessage: OSCMessage) {
@@ -68,7 +95,7 @@ export class ControllerExecutor {
       controller.actions.forEach((action) => {
         console.log('Handle action');
 
-        this.handleAction(action)
+        this.handleAction(action, oscMessage)
           .then(() => {
             console.log("Handle Action successful");
           })

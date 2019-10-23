@@ -1,7 +1,8 @@
-import { ControllerMetadata } from '../metadata/types/ControllerMetadata';
 import { defaultMetadataArgsStorage } from '../index';
 import { IControllerMetadataArgs } from '../metadata/args/IControllerMetadataArgs';
-import { ActionMetadata } from '../metadata/types/ActionMetadata';
+import { ParamMetadata } from '../metadata/ParamMetadata';
+import { ControllerMetadata } from '../metadata/ControllerMetadata';
+import { ActionMetadata } from '../metadata/ActionMetadata';
 
 export class MetadataBuilder {
 
@@ -30,10 +31,16 @@ export class MetadataBuilder {
       .findActionsWithTarget(controller.target)
       .map((actionArgs: any) => {
         const action = new ActionMetadata(controller, actionArgs);
-        // action.params = this.createParams(action);
+        action.params = this.createParams(action);
         // action.results = this.createResults(action);
         return action;
       });
+  }
+
+  private createParams(action: ActionMetadata): ParamMetadata[] {
+    return defaultMetadataArgsStorage()
+      .findParamsWithTargetAndMethod(action.target, action.method)
+      .map((paramArgs) => new ParamMetadata(action, paramArgs));
   }
   //endregion
 

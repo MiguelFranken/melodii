@@ -46,7 +46,7 @@ let userContainerOptions: IUseContainerOptions;
 /**
  * Gets the IOC container
  */
-export function getFromContainer<T>(someClass: { new (...args: any[]): T }|Function): T {
+export function getFromContainer<T>(someClass: (new(...args: any[]) => T) | Function): T {
   if (userContainer) {
     try {
       const instance = userContainer.get(someClass);

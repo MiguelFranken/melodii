@@ -1,16 +1,13 @@
-import { Controller, OnMessage } from '../decorators';
+import { Controller, Message, OnMessage } from '../decorators';
+import { OSCMessage } from '../osc/osc-message';
 
-@Controller()
+@Controller("/clean_switch_1")
 export class SliderController {
 
   @OnMessage()
-  public receivedMessage() {
+  public receivedMessage(@Message() message: OSCMessage) {
     console.log('IT WORKED!');
-  }
-
-  @OnMessage()
-  public receivedMessage2() {
-    console.log('IT WORKED AGAIN!');
+    console.log(message);
   }
 
 }

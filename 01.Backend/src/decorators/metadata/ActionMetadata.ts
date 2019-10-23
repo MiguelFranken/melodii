@@ -1,5 +1,7 @@
 import { ControllerMetadata } from './ControllerMetadata';
-import { IActionMetadataArgs } from '../args/ActionMetadataArgs';
+import { ParamMetadata } from './ParamMetadata';
+import { IActionMetadataArgs } from './args/ActionMetadataArgs';
+import { OSCMessage } from '../../osc/osc-message';
 
 export class ActionMetadata {
 
@@ -9,6 +11,11 @@ export class ActionMetadata {
    * Message name served by this action.
    */
   public name: string;
+
+  /**
+   * Action's parameters.
+   */
+  public params: ParamMetadata[] = [];
 
   /**
    * Class on which's method this action is attached.
@@ -28,9 +35,10 @@ export class ActionMetadata {
     this.method = args.method;
   }
 
-  public executeAction(/*params: any[]*/) {
-    // TODO: params noch hinzunehmen
-    return this.controllerMetadata.instance[this.method].apply(this.controllerMetadata.instance);
+  public executeAction(oscMessage: OSCMessage) {
+    // todo: wenn es mehrere params geben soll, dann müssen diese geordnet werden vorher
+    return this.controllerMetadata
+      .instance[this.method].apply(this.controllerMetadata.instance, [oscMessage]);
   }
 
 }

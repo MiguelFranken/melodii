@@ -1,6 +1,8 @@
 import { IControllerMetadataArgs } from './metadata/args/IControllerMetadataArgs';
 import { defaultMetadataArgsStorage } from './index';
 import { IActionMetadataArgs } from './metadata/args/ActionMetadataArgs';
+import { IParamMetadataArgs } from './metadata/args/ParamMetadataArgs';
+import { ParamTypes } from './metadata/types/ParamTypes';
 
 /**
  * Registers a class to be a osc controller that can listen to osc messages and respond to them.
@@ -29,5 +31,22 @@ export function OnMessage(name?: string): Function {
       method: methodName,
     };
     defaultMetadataArgsStorage().actions.push(metadata);
+  };
+}
+
+/**
+ * Injects received osc message
+ */
+export function Message() {
+  return (object: Object, methodName: string, index: number) => {
+    const format = (Reflect as any).getMetadata("design:paramtypes", object, methodName)[index];
+    const metadata: IParamMetadataArgs = {
+      target: object.constructor,
+      method: methodName,
+      index: index,
+      type: ParamTypes.OSC_MESSAGE,
+      reflectedType: format,
+    };
+    defaultMetadataArgsStorage().params.push(metadata);
   };
 }
