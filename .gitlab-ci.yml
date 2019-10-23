@@ -18,7 +18,7 @@ stages:
   - test
 
 install_packages:
-  image: node
+  image: nikolaik/python-nodejs:latest
   stage: install_packages
   script:
     - cd 01.Backend
