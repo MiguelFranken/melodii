@@ -4,7 +4,7 @@ services:
 
 cache:
   untracked: true
-  key: "$CI_BUILD_REF_NAME"
+  key: ${CI_COMMIT_REF_SLUG}
   paths:
     - 01.Backend/node_modules/
     - 01.Backend/dist/
@@ -16,16 +16,16 @@ stages:
   - lint
   - test
 
-build:frontend:
-  image: trion/ng-cli
-  stage: build
-  before_script:
-    - cd 02.Frontend
-    - npm ci
-  script:
-    - ng build --prod
-  tags:
-    - docker
+#build:frontend:
+#  image: trion/ng-cli
+#  stage: build
+#  before_script:
+#    - cd 02.Frontend
+#    - npm ci
+#  script:
+#    - ng build --prod
+#  tags:
+#    - docker
 
 build:backend:
   image: nikolaik/python-nodejs:latest
@@ -38,16 +38,16 @@ build:backend:
   tags:
     - docker
 
-lint:frontend:
-  image: trion/ng-cli
-  allow_failure: true
-  before_script:
-    - cd 02.Frontend
-  stage: lint
-  script:
-    - ng lint
-  tags:
-    - docker
+#lint:frontend:
+#  image: trion/ng-cli
+#  allow_failure: true
+#  before_script:
+#    - cd 02.Frontend
+#  stage: lint
+#  script:
+#    - ng lint
+#  tags:
+#    - docker
 
 lint:backend:
   image: nikolaik/python-nodejs:latest
@@ -60,20 +60,20 @@ lint:backend:
   tags:
     - docker
 
-test:frontend:karma:
-  image: trion/ng-cli-karma
-  stage: test
-  allow_failure: false
-  before_script:
-    - cd 02.Frontend
-  script:
-    - ng test --code-coverage --progress false --watch false
-  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
-  artifacts:
-    paths:
-      - 02.Frontend/coverage/
-  tags:
-    - docker
+#test:frontend:karma:
+#  image: trion/ng-cli-karma
+#  stage: test
+#  allow_failure: false
+#  before_script:
+#    - cd 02.Frontend
+#  script:
+#    - ng test --code-coverage --progress false --watch false
+#  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
+#  artifacts:
+#    paths:
+#      - 02.Frontend/coverage/
+#  tags:
+#    - docker
 
 #test:frontend:e2e:
 #  stage: test
