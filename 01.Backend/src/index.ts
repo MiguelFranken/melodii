@@ -5,6 +5,9 @@ import { get, isPresent, Optional } from './util';
 import { Logger } from '@overnightjs/logger';
 import { SocketServer } from './socket/socket-server';
 import { Event } from './socket/socket-events';
+import "reflect-metadata";
+import { SliderController } from './controllers/slider';
+import { addControllers } from './decorators';
 
 //region OSC-Server for communication with music instruments
 //region Event Handlers
@@ -63,6 +66,10 @@ ocsServer.addMessageListener(playSoundForEachMessage);
 ocsServer.addMessageListener(emitToWebsocket);
 ocsServer.connect();
 //endregion
+
+addControllers(ocsServer.getIO(), [SliderController]);
+
+
 //endregion
 
 //region Socket-Server for bi-directional communication with frontend

@@ -49,4 +49,8 @@ export class OSCServer {
 
     this.udp.send(rawMsg, this.outputIp, this.outputPort);
   }
+
+  public getIO(): OSC.UDPPort {
+    return this.udp;
+  }
 }
