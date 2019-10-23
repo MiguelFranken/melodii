@@ -4,6 +4,7 @@ services:
 
 stages:
   - build
+  - lint
   - test
 
 build:frontend:
@@ -21,13 +22,13 @@ build:frontend:
   tags:
     - docker
 
-test:lint:frontend:
+lint:frontend:
   image: trion/ng-cli
   allow_failure: true
   before_script:
     - cd 02.Frontend
     - npm ci
-  stage: test
+  stage: lint
   script:
     - ng lint
   tags:
