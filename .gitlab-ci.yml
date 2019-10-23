@@ -23,7 +23,7 @@ install_packages:
   script:
     - cd 01.Backend
     - npm ci
-    - cd 02.Frontend
+    - cd ../02.Frontend
     - npm ci
   tags:
     - docker
