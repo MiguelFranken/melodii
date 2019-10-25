@@ -8,16 +8,16 @@ export function addControllers(io: OSC.UDPPort, controllers: Function[] | string
   createExecutor(io, controllers, webserver);
 }
 
-
 /**
  * Gets the metadata arguments storage.
  */
 export function defaultMetadataArgsStorage(): MetadataArgsStorage {
-  if (!(global as any).socketControllersMetadataArgsStorage) {
-    (global as any).socketControllersMetadataArgsStorage = new MetadataArgsStorage();
+  // create metadata args storage if not already created
+  if (!(global as any).metadataArgsStorage) {
+    (global as any).metadataArgsStorage = new MetadataArgsStorage();
   }
 
-  return (global as any).socketControllersMetadataArgsStorage;
+  return (global as any).metadataArgsStorage;
 }
 
 /**
