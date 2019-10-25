@@ -6,9 +6,16 @@ import { Logger } from '@overnightjs/logger';
 import { SocketServer } from './socket/socket-server';
 import { Event } from './socket/socket-events';
 import "reflect-metadata";
-import { SliderController } from './controllers/slider';
 import { addControllers } from './decorators';
 import { CONTROLLERS } from './controllers';
+
+//region Socket-Server for bi-directional communication with frontend
+/**
+ * Initializes and starts the websocket server
+ */
+const webserver: SocketServer = new SocketServer();
+const app = webserver.getApp();
+//endregion
 
 //region OSC-Server for communication with music instruments
 //region Event Handlers
@@ -48,35 +55,13 @@ const playSoundForEachMessage = () => {
   ocsServer.sendMessage(msg);
 };
 
-// redirects each osc message to the frontend
-const emitToWebsocket = (oscMsg: OSCInputMessage) => {
-  if (oscMsg.getType() === 'slider') {
-    webserver.emit(Event.SLIDER_UPDATE, Math.round(oscMsg.getArgs()[0].value * 100));
-  } else {
-    webserver.emit(Event.PLAYED_NOTE, oscMsg.getArgs()[0].value);
-    Logger.Info('Not supported yet!');
-  }
-};
-//endregion
-
 //region Starting OSC Server
 const ocsServer = new OSCServer("0.0.0.0", 57121, "192.168.0.241", 4559);
 ocsServer.addMessageListener(messageLogger);
 ocsServer.addMessageListener(remoteInfoLogger);
 ocsServer.addMessageListener(playSoundForEachMessage);
-ocsServer.addMessageListener(emitToWebsocket);
 ocsServer.connect();
 //endregion
 
-addControllers(ocsServer.getIO(), CONTROLLERS);
-
-
-//endregion
-
-//region Socket-Server for bi-directional communication with frontend
-/**
- * Initializes and starts the websocket server
- */
-const webserver = new SocketServer();
-const app = webserver.getApp();
+addControllers(ocsServer.getIO(), CONTROLLERS, webserver);
 //endregion

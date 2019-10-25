@@ -8,7 +8,7 @@ export class ActionMetadata {
   public controllerMetadata: ControllerMetadata;
 
   /**
-   * Message name served by this action.
+   * Message address served by this action.
    */
   public name: string;
 
@@ -27,7 +27,6 @@ export class ActionMetadata {
    */
   public method: string;
 
-
   constructor(controllerMetadata: ControllerMetadata, args: IActionMetadataArgs) {
     this.controllerMetadata = controllerMetadata;
     this.name = args.name ? args.name : '';
@@ -35,10 +34,9 @@ export class ActionMetadata {
     this.method = args.method;
   }
 
-  public executeAction(oscMessage: OSCMessage) {
-    // todo: wenn es mehrere params geben soll, dann müssen diese geordnet werden vorher
+  public executeAction(params: any[]) {
     return this.controllerMetadata
-      .instance[this.method].apply(this.controllerMetadata.instance, [oscMessage]);
+      .instance[this.method].apply(this.controllerMetadata.instance, params);
   }
 
 }

@@ -4,12 +4,14 @@ import { IOSCRawMessage, OSCMessage } from '../osc/osc-message';
 import { OSCInputMessage } from '../osc/osc-input-message';
 import { ActionMetadata } from './metadata/ActionMetadata';
 import { ControllerMetadata } from './metadata/ControllerMetadata';
+import { SocketServer } from "../socket/socket-server";
+import { ParamTypes } from "./metadata/types/ParamTypes";
 
 export class ControllerExecutor {
 
   private metadataBuilder: MetadataBuilder;
 
-  constructor(private io: OSC.UDPPort) {
+  constructor(private io: OSC.UDPPort, private webserver: SocketServer) {
     this.metadataBuilder = new MetadataBuilder();
   }
 
@@ -29,14 +31,14 @@ export class ControllerExecutor {
     console.log("Controllers with namespace: " + controllersWithNamespaces.length);
     console.log("Controllers without namespace: " + controllersWithoutNamespaces.length);
 
+    //region register controllers without namespaces
     const handler = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
       console.log('Handle Without Namespace');
       const _msg = new OSCInputMessage(oscRawMsg.address, oscRawMsg.args, info);
       this.handleConnection(controllersWithoutNamespaces, _msg);
     };
-
-    // register controllers without namespaces
     this.io.on("message", handler);
+    //endregion
 
     // register controllers with namespaces
     controllersWithNamespaces.forEach((controller: any) => {
@@ -85,7 +87,28 @@ export class ControllerExecutor {
   }
 
   private handleAction(action: ActionMetadata, oscMessage: OSCMessage): Promise<any> {
-    return Promise.resolve(action.executeAction(oscMessage)); // TODO: Promise unnötig hier
+
+    // compute parameters
+    const paramsPromises = action.params
+      .sort((param1, param2) => param1.index - param2.index) // nach index sortieren
+      .map(param => {
+        switch (param.type) {
+          case ParamTypes.OSC_MESSAGE:
+            return oscMessage;
+          case ParamTypes.WEB_SOCKET:
+            return this.webserver;
+        }
+      });
+
+    // after all parameters are computed
+    const paramsPromise = Promise.all(paramsPromises).catch(error => {
+      console.log("Error during computation params of the controller: ", error);
+      throw error;
+    });
+
+    return paramsPromise.then(params => {
+      return action.executeAction(params);
+    });
   }
 
   private handleConnection(controllers: ControllerMetadata[], oscMessage: OSCMessage) {

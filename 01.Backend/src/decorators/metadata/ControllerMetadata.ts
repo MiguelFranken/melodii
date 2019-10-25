@@ -4,8 +4,19 @@ import { getFromContainer } from '../container';
 
 export class ControllerMetadata {
 
+  /**
+   * Indicates object which is used by this controller.
+   */
   public target: Function;
+
+  /**
+   * Base route for all actions registered in this controller.
+   */
   public namespace: string | RegExp;
+
+  /**
+   * Controller actions.
+   */
   public actions: ActionMetadata[] = [];
 
   constructor(args: IControllerMetadataArgs) {
