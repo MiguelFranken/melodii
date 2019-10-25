@@ -1,34 +1,15 @@
 /**
- * Container options.
+ * Container to be used by this for inversion of control (IoC).
+ * See https://www.tutorialsteacher.com/ioc for some helpful information about IoC
  */
-export interface IUseContainerOptions {
-
-  /**
-   * If set to true, then default container will be used
-   * in the case if given container haven't returned anything.
-   */
-  fallback?: boolean;
-
-  /**
-   * If set to true, then default container will be used
-   * in the case if given container thrown an exception.
-   */
-  fallbackOnErrors?: boolean;
-
-}
-
-/**
- * Container to be used by this library for inversion control.
- * If container was not implicitly set then by default
- * container simply creates a new instance of the given class.
- */
-const defaultContainer: { get<T>(someClass: (new (...args: any[]) => T) | Function): T }
+const container: { get<T>(someClass: (new (...args: any[]) => T) | Function): T }
   = new (class {
   private instances: Array<{ type: Function, object: any }> = [];
 
   public get<T>(someClass: new (...args: any[]) => T): T {
-    // tslint:disable-next-line:no-shadowed-variable
     let instance = this.instances.find((instance: any) => instance.type === someClass);
+
+    // create new instance
     if (!instance) {
       instance = { type: someClass, object: new someClass() };
       this.instances.push(instance);
@@ -38,31 +19,13 @@ const defaultContainer: { get<T>(someClass: (new (...args: any[]) => T) | Functi
   }
 })();
 
-// tslint:disable-next-line:prefer-const
-let userContainer: { get<T>(someClass: (new (...args: any[]) => T) | Function): T };
-// tslint:disable-next-line:prefer-const
-let userContainerOptions: IUseContainerOptions;
-
 /**
  * Gets the IOC container
+ *
+ * Returns the instance of class T from the container.
+ * If there was no instance of T in the container, an instance of T is created,
+ * stored in the container to the remaining instances of other classes, and then returned.
  */
 export function getFromContainer<T>(someClass: (new(...args: any[]) => T) | Function): T {
-  if (userContainer) {
-    try {
-      const instance = userContainer.get(someClass);
-      if (instance) {
-        return instance;
-      }
-
-      if (!userContainerOptions || !userContainerOptions.fallback) {
-        return instance;
-      }
-
-    } catch (error) {
-      if (!userContainerOptions || !userContainerOptions.fallbackOnErrors) {
-        throw error;
-      }
-    }
-  }
-  return defaultContainer.get<T>(someClass);
+  return container.get<T>(someClass);
 }

@@ -23,17 +23,12 @@ export class ControllerExecutor {
    * Registers controllers.
    */
   private registerControllers(classes?: Function[]): this {
-    console.log('Registering controllers..');
     const controllers = this.metadataBuilder.buildControllerMetadata(classes);
     const controllersWithoutNamespaces = controllers.filter((ctrl) => !ctrl.namespace);
     const controllersWithNamespaces = controllers.filter((ctrl) => !!ctrl.namespace);
 
-    console.log("Controllers with namespace: " + controllersWithNamespaces.length);
-    console.log("Controllers without namespace: " + controllersWithoutNamespaces.length);
-
     //region register controllers without namespaces
     const handler = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
-      console.log('Handle Without Namespace');
       const _msg = new OSCInputMessage(oscRawMsg.address, oscRawMsg.args, info);
       this.handleConnection(controllersWithoutNamespaces, _msg);
     };
@@ -50,27 +45,20 @@ export class ControllerExecutor {
       } else {
         namespace = controller.namespace;
       }
-      // TODO: filter events mit falschem namespace heraus
-      // this.io.of(namespace).on("connection", (socket: any) => {
-      console.log("Attached controller to io event 'message'");
 
       // tslint:disable-next-line:no-shadowed-variable
       const handler = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
-        console.log('Handle With Namespace');
-
-        // parse oc address urls
+        // parse osc address urls
         const addressUrl = oscRawMsg.address.split('/');
         addressUrl.shift();
         const namespaceUrl = namespace.split('/');
         namespaceUrl.shift();
 
         if (namespaceUrl.length > addressUrl.length) {
-          console.log('doesnt start with namespace ' + namespace + '!');
           return;
         } else {
           for (let i = 0; i < namespaceUrl.length; i++) {
             if (namespaceUrl[i] !== addressUrl[i]) {
-              console.log('DOESNT start with namespace ' + namespace + '!');
               return;
             }
           }

@@ -14,7 +14,6 @@ export function Controller(namespace?: string | RegExp) {
       namespace: namespace,
       target: object,
     };
-    console.log('Visited @Controller decorator');
     defaultMetadataArgsStorage().controllers.push(metadata);
   };
 }
@@ -24,7 +23,6 @@ export function Controller(namespace?: string | RegExp) {
  */
 export function OnMessage(name?: string): Function {
   return (object: Object, methodName: string) => {
-    console.log('Visited @OnMessage decorator');
     const metadata: IActionMetadataArgs = {
       name: name,
       target: object.constructor,
