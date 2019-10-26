@@ -1,4 +1,5 @@
-import { IOSCArgs, IOSCInfo, OSCMessage } from './osc-message';
+import { OSCMessage } from './osc-message';
+import { IOSCArgs, IOSCInfo } from "./osc-types";
 
 export class OSCInputMessage extends OSCMessage {
   private readonly info: IOSCInfo;

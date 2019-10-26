@@ -1,29 +1,4 @@
-import { Optional } from "../util";
-import { Logger } from '@overnightjs/logger';
-
-//region Type Definitions
-export interface IOSCRawMessage {
-  address: string; // URL-style address path
-  args: IOSCArgs[]; // Raw or type-annotated OSC arguments
-}
-
-export type OSCTypeTag = "i" | "f" | "s" | "b"; // int32, float32, OSC-string, OSC-blob
-
-// see http://opensoundcontrol.org/spec-1_0
-export interface IOSCArgs {
-  type: OSCTypeTag; // OSC Type Tag String
-  value: number; // todo: not only number!
-}
-
-export interface IOSCInfo {
-  address: string; // ip address of music instrument
-  family: string; // e.g. IPv4
-  port: number;
-  size: number; // size of the message
-}
-
-export type Control = "switch" | "slider" | "unknown";
-//endregion
+import { IOSCArgs } from "./osc-types";
 
 export class OSCMessage {
   /**
@@ -52,34 +27,8 @@ export class OSCMessage {
     return this.args;
   }
 
-  public getFirstArg(): Optional<IOSCArgs> {
-    if (this.args.length > 0) {
-      return this.args[0];
-    } else {
-      return null;
-    }
-  }
-
   public getAddress() {
     return this.address;
   }
 
-  public getTypeString(): string {
-    if (this.address === '/clean_switch_1') {
-      return "Switch";
-    } else {
-      return this.address;
-    }
-  }
-
-  public getType(): Control {
-    if (this.address === '/clean_switch_1') {
-      return "switch";
-    } else if (this.address === '/clean_slider_1') {
-      return "slider";
-    } else {
-      Logger.Err(`Control not found for address ${this.address}`);
-      return "unknown";
-    }
-  }
 }

@@ -1,11 +1,12 @@
 import { MetadataBuilder } from './metadata-builder/metadata-builder';
 import * as OSC from 'osc';
-import { IOSCRawMessage, OSCMessage } from '../osc/osc-message';
+import { IOSCRawMessage } from '../osc/osc-message';
 import { OSCInputMessage } from '../osc/osc-input-message';
 import { ActionMetadata } from './metadata/action-metadata';
 import { ControllerMetadata } from './metadata/controller-metadata';
 import { SocketServer } from "../socket/socket-server";
 import { ParamTypes } from "./metadata/types/param-types";
+import { Logger } from "@overnightjs/logger";
 
 export class ControllerExecutor {
 
@@ -48,15 +49,19 @@ export class ControllerExecutor {
 
       // tslint:disable-next-line:no-shadowed-variable
       const handler = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
-        // parse osc address urls
+        // parse osc address urls (e.g. "/sub1/sub2" -> ["", "sub1", "sub2"])
         const addressUrl = oscRawMsg.address.split('/');
-        addressUrl.shift();
         const namespaceUrl = namespace.split('/');
+
+        // delete first array element
+        addressUrl.shift();
         namespaceUrl.shift();
 
+        // namespace must always be shorter than the received osc address
         if (namespaceUrl.length > addressUrl.length) {
           return;
         } else {
+          // check each substring
           for (let i = 0; i < namespaceUrl.length; i++) {
             if (namespaceUrl[i] !== addressUrl[i]) {
               return;
@@ -74,8 +79,7 @@ export class ControllerExecutor {
     return this;
   }
 
-  private handleAction(action: ActionMetadata, oscMessage: OSCMessage): Promise<any> {
-
+  private handleAction(action: ActionMetadata, oscMessage: OSCInputMessage): Promise<any> {
     // compute parameters
     const paramsPromises = action.params
       .sort((param1, param2) => param1.index - param2.index) // nach index sortieren
@@ -88,7 +92,7 @@ export class ControllerExecutor {
 
     // after all parameters are computed
     const paramsPromise = Promise.all(paramsPromises).catch(error => {
-      console.log("Error during computation params of the controller: ", error);
+      Logger.Err("Error during computation params of the controller: ", error);
       throw error;
     });
 
@@ -97,18 +101,12 @@ export class ControllerExecutor {
     });
   }
 
-  private handleConnection(controllers: ControllerMetadata[], oscMessage: OSCMessage) {
-    console.log(`Must Handle ${controllers.length} Connection(s)`);
-
+  private handleConnection(controllers: ControllerMetadata[], oscMessage: OSCInputMessage) {
     controllers.forEach((controller: ControllerMetadata) => {
       controller.actions.forEach((action) => {
-        console.log('Handle action');
-
         this.handleAction(action, oscMessage)
-          .then(() => {
-            console.log("Handle Action successful");
-          })
-          .catch((error: any) => console.log(error));
+          .then(() => {/* maybe add something here */})
+          .catch((error: any) => Logger.Err(error));
       });
     });
   }

@@ -1,7 +1,8 @@
-import { OSCMessage, IOSCRawMessage } from "./osc-message";
+import { OSCMessage } from "./osc-message";
 import { OSCInputMessage } from "./osc-input-message";
 import { Logger } from '@overnightjs/logger';
 import * as OSC from 'osc';
+import { IOSCRawMessage } from "./osc-types";
 
 export class OSCServer {
   private udp: OSC.UDPPort; // socket communication between us and music instruments
