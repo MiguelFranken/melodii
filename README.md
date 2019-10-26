@@ -9,6 +9,8 @@
     
 ## Backend
 ### Run
+<details>
+<summary><strong>See details</strong></summary>
 #### Sonic Pi
 - Start Sonic Pi and copy `01.Backend/sonic-pi.rb` from the project directory into the sonic pi coding environment.
 - Activate _"Empfange entfernte OSC-Nachrichten"_ in the sonic pi menu (see `Prefs > I/O`).
@@ -23,8 +25,11 @@
 - Get your local IP address or the IP address on which this server runs on (e.g. `192.168.0.241`)
 - Start your app and connect to this IP with port `57121`
 - When you press buttons on the Controller App you should now hear piano sounds from sonic pi!
+</details>
 
 ### Creating controllers
+<details>
+<summary><strong>See details</strong></summary>
 Put your OSC controllers into `01.Backend/src/controllers`. See `01.Backend/src/controllers/slider.ts` for an example.
 
 ```typescript
@@ -63,6 +68,7 @@ You can get access to the received OSC message by using the `@Message()` decorat
 By injecting the socket server, you get access to the websocket connection with the frontend. 
 This allows you to emit events to Angular. The example reads the message argument
 of the received OSC message, normalizes the value and sends a SLIDER_UPDATE event to the frontend.
+</details>
 
 ## Frontend
 ### Run
