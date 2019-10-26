@@ -25,26 +25,9 @@
 - When you press buttons on the Controller App you should now hear piano sounds from sonic pi!
 
 ### Creating controllers
-Put your OSC controllers into `01.Backend/src/controllers`.
+Put your OSC controllers into `01.Backend/src/controllers`. See `01.Backend/src/controllers/slider.ts` for an example.
 
-#### Dependency Injection
-When your controller depends on an another class, you can inject the dependency via [Dependency Injection](https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/)
-You can use Dependency Injection, for example, to get access to the websockets within a controller.
-You can also inject other classes. Inject your dependencies by adding them to the class as a constructor parameter. 
-The injection mechanism automatically creates an singleton instance of this class and then makes this available in the controller as a class attribute.
-
-#### Decorators
-##### `controller`
-You must decorate each controller with the `@Controller()` decorator. It takes the namespace as an argument.
-If you do not specify a namespace, all OSC messages will be routed to this controller.
-Additionally, you must register this controller in `01.Backend/src/controllers/index.ts`.
-
-`@OnMessage('/play')` allows you to decorate methods that should get executed when a message has the specified OSC address url after the namespace.
-If you do not specify a url in the decorator, each OSC messages routed to the controller will trigger the execution of the decorated method.
-
-You can get access to the received OSC message by using the `@Message()` decorator. It takes no arguments!
-
-```
+```typescript
 @Controller("/clean_slider_1")
 export class SliderController {
 
@@ -59,6 +42,27 @@ export class SliderController {
 
 }
 ```
+
+#### Dependency Injection
+When your controller depends on an another class, you can inject the dependency via [Dependency Injection](https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/)
+You can use Dependency Injection, for example, to get access to the websockets within a controller.
+You can also inject other classes. Inject your dependencies by adding them to the class as a constructor parameter. 
+The injection mechanism automatically creates an singleton instance of this class and then makes this available in the controller as a class attribute.
+
+#### Decorators
+You must decorate each controller with the `@Controller()` decorator. It takes the namespace as an argument.
+If you do not specify a namespace, all OSC messages will be routed to this controller.
+Additionally, you must register this controller in `01.Backend/src/controllers/index.ts`.
+
+`@OnMessage('/play')` allows you to decorate methods that should get executed when a message has the specified OSC address url after the namespace.
+If you do not specify a url in the decorator, each OSC messages routed to the controller will trigger the execution of the decorated method.
+
+You can get access to the received OSC message by using the `@Message()` decorator. It takes no arguments!
+
+#### Socket server
+By injecting the socket server, you get access to the websocket connection with the frontend. 
+This allows you to emit events to Angular. The example reads the message argument
+of the received OSC message, normalizes the value and sends a SLIDER_UPDATE event to the frontend.
 
 ## Frontend
 ### Run
