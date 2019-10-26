@@ -83,8 +83,6 @@ export class ControllerExecutor {
         switch (param.type) {
           case ParamTypes.OSC_MESSAGE:
             return oscMessage;
-          case ParamTypes.WEB_SOCKET:
-            return this.webserver;
         }
       });
 

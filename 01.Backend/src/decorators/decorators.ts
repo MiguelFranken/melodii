@@ -48,20 +48,3 @@ export function Message() {
     defaultMetadataArgsStorage().params.push(metadata);
   };
 }
-
-/**
- * Injects the websocket
- */
-export function Web() {
-  return (object: Object, methodName: string, index: number) => {
-    const format = (Reflect as any).getMetadata("design:paramtypes", object, methodName)[index];
-    const metadata: IParamMetadataArgs = {
-      target: object.constructor,
-      method: methodName,
-      index: index,
-      type: ParamTypes.WEB_SOCKET,
-      reflectedType: format,
-    };
-    defaultMetadataArgsStorage().params.push(metadata);
-  };
-}

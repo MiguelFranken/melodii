@@ -8,5 +8,4 @@ export type ParamType = "osc-message" | "web-socket";
  */
 export class ParamTypes {
   public static OSC_MESSAGE: ParamType = "osc-message";
-  public static WEB_SOCKET: ParamType = "web-socket";
 }
