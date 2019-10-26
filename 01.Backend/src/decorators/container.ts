@@ -1,23 +1,5 @@
 import { SocketServer } from "../socket/socket-server";
-
-class Registry {
-
-  protected _registryMap = new Map<Function, any>();
-
-  public get(key: Function): any | null {
-    return this._registryMap.get(key);
-  }
-
-  public set(key: Function, value: any): any {
-    this._registryMap.set(key, value);
-    return value;
-  }
-
-  public has(key: Function): boolean {
-    return this._registryMap.has(key);
-  }
-
-}
+import { Registry } from "./registry";
 
 /**
  * Container for inversion of control (IoC).
@@ -36,6 +18,13 @@ export class Container {
     this.dependenciesRegistry.set(SocketServer, socketServer);
   }
 
+  /**
+   * Returns the (singleton) instance of the specified controller class.
+   * If this class could not be resolved, then a new instance is created,
+   * stored in the registry and returned.
+   *
+   * @param someControllerClass Controller class in directory 01.Backend/src/controllers
+   */
   private resolve<T>(someControllerClass: new (...args: any[]) => T): T {
     // find or create new instances for dependencies of the controller
     const ctorParams: any[] = Reflect.getMetadata("design:paramtypes", someControllerClass) || [];
