@@ -1,8 +1,8 @@
-import { IControllerMetadataArgs } from './metadata/args/IControllerMetadataArgs';
+import { IControllerMetadataArgs } from './metadata/args/controller-metadata-args';
 import { defaultMetadataArgsStorage } from './index';
-import { IActionMetadataArgs } from './metadata/args/ActionMetadataArgs';
-import { IParamMetadataArgs } from './metadata/args/ParamMetadataArgs';
-import { ParamTypes } from './metadata/types/ParamTypes';
+import { IActionMetadataArgs } from './metadata/args/action-metadata-args';
+import { IParamMetadataArgs } from './metadata/args/param-metadata-args';
+import { ParamTypes } from './metadata/types/param-types';
 
 /**
  * Registers a class to be a osc controller that can listen to osc messages and respond to them.

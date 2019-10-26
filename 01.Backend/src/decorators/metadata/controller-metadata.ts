@@ -1,5 +1,5 @@
-import { ActionMetadata } from './ActionMetadata';
-import { IControllerMetadataArgs } from './args/IControllerMetadataArgs';
+import { ActionMetadata } from './action-metadata';
+import { IControllerMetadataArgs } from './args/controller-metadata-args';
 import { container } from "../../index";
 
 export class ControllerMetadata {

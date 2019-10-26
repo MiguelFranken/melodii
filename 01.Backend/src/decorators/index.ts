@@ -1,7 +1,7 @@
-import { MetadataArgsStorage } from './metadata-builder/MetadataArgsStorage';
-import { importClassesFromDirectories } from './util/DirectoryExportedClassesLoader';
+import { MetadataArgsStorage } from './metadata-builder/metadata-args-storage';
+import { importClassesFromDirectories } from './util/directory-exported-classes-loader';
 import * as OSC from 'osc';
-import { ControllerExecutor } from './ControllerExecutor';
+import { ControllerExecutor } from './controller-executor';
 import { SocketServer } from "../socket/socket-server";
 
 export function addControllers(io: OSC.UDPPort, controllers: Function[] | string[], webserver: SocketServer) {

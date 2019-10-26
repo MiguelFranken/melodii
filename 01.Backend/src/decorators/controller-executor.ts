@@ -1,11 +1,11 @@
-import { MetadataBuilder } from './metadata-builder/MetadataBuilder';
+import { MetadataBuilder } from './metadata-builder/metadata-builder';
 import * as OSC from 'osc';
 import { IOSCRawMessage, OSCMessage } from '../osc/osc-message';
 import { OSCInputMessage } from '../osc/osc-input-message';
-import { ActionMetadata } from './metadata/ActionMetadata';
-import { ControllerMetadata } from './metadata/ControllerMetadata';
+import { ActionMetadata } from './metadata/action-metadata';
+import { ControllerMetadata } from './metadata/controller-metadata';
 import { SocketServer } from "../socket/socket-server";
-import { ParamTypes } from "./metadata/types/ParamTypes";
+import { ParamTypes } from "./metadata/types/param-types";
 
 export class ControllerExecutor {
 

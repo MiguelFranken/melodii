@@ -1,4 +1,4 @@
-import { ParamTypes } from "../types/ParamTypes";
+import { ParamTypes } from "../types/param-types";
 
 /**
  * Controller metadata used to storage information about registered parameters.

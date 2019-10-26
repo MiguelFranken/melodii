@@ -1,6 +1,6 @@
-import { ActionMetadata } from "./ActionMetadata";
-import { IParamMetadataArgs } from './args/ParamMetadataArgs';
-import { ParamTypes } from "./types/ParamTypes";
+import { ActionMetadata } from "./action-metadata";
+import { IParamMetadataArgs } from './args/param-metadata-args';
+import { ParamTypes } from "./types/param-types";
 
 export class ParamMetadata {
 

@@ -1,6 +1,6 @@
-import { IControllerMetadataArgs } from '../metadata/args/IControllerMetadataArgs';
-import { IActionMetadataArgs } from '../metadata/args/ActionMetadataArgs';
-import { IParamMetadataArgs } from '../metadata/args/ParamMetadataArgs';
+import { IControllerMetadataArgs } from '../metadata/args/controller-metadata-args';
+import { IActionMetadataArgs } from '../metadata/args/action-metadata-args';
+import { IParamMetadataArgs } from '../metadata/args/param-metadata-args';
 
 /**
  * Storage all metadatas read from decorators.
