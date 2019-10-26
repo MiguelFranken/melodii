@@ -11,6 +11,7 @@
 ### Run
 <details>
 <summary><strong>See details</strong></summary>
+
 #### Sonic Pi
 - Start Sonic Pi and copy `01.Backend/sonic-pi.rb` from the project directory into the sonic pi coding environment.
 - Activate _"Empfange entfernte OSC-Nachrichten"_ in the sonic pi menu (see `Prefs > I/O`).
@@ -30,6 +31,7 @@
 ### Creating controllers
 <details>
 <summary><strong>See details</strong></summary>
+
 Put your OSC controllers into `01.Backend/src/controllers`. See `01.Backend/src/controllers/slider.ts` for an example.
 
 ```typescript
