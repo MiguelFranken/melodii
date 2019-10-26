@@ -45,8 +45,4 @@ export class SocketServer {
       });
     });
   }
-
-  public getApp(): express.Application {
-    return this.app;
-  }
 }

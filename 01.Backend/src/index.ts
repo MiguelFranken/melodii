@@ -12,7 +12,6 @@ import { IOSCArgs } from "./osc/osc-types";
  * Initializes and starts the websocket server
  */
 const webserver: SocketServer = new SocketServer();
-const app = webserver.getApp();
 //endregion
 
 //region OSC-Server for communication with music instruments
