@@ -1,13 +1,13 @@
 import { ActionMetadata } from './ActionMetadata';
 import { IControllerMetadataArgs } from './args/IControllerMetadataArgs';
-import { getFromContainer } from '../container';
+import { container } from "../../index";
 
 export class ControllerMetadata {
 
   /**
    * Indicates object which is used by this controller.
    */
-  public target: Function;
+  public target: any;
 
   /**
    * Base route for all actions registered in this controller.
@@ -26,7 +26,7 @@ export class ControllerMetadata {
 
   //region Accessors
   get instance(): any {
-    return getFromContainer(this.target);
+    return container.get(this.target);
   }
   //endregion
 
