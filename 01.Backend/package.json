@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "build": "tsc src/*.ts --outDir dist/",
+    "build": "tsc --outDir dist/ --p tsconfig.json",
     "start": "npm run build && node dist/index.js",
     "start:refresh": "ts-node-dev --respawn --transpileOnly src/index.ts",
     "lint": "tslint -- src/*.ts"

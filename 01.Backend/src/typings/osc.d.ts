@@ -6,9 +6,9 @@ declare module 'osc' {
     public on(
       s: string,
       func: (
-        (oscRawMsg: import("../osc/osc-message").IOSCRawMessage,
+        (oscRawMsg: import("../osc/osc-types").IOSCRawMessage,
          timeTag: any, info: any) => void)): void;
-    public send(msg: import("../osc/osc-message").IOSCRawMessage, ip: string, port: number): void;
+    public send(msg: import("../osc/osc-types").IOSCRawMessage, ip: string, port: number): void;
   }
 
 }

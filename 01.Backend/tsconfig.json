@@ -9,7 +9,7 @@
     "target": "es6",
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
-    "importHelpers": true,
+    "importHelpers": true
 //    "allowSyntheticDefaultImports": true
   },
   "include": [

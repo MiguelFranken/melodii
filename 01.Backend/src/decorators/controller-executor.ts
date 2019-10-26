@@ -1,12 +1,12 @@
 import { MetadataBuilder } from './metadata-builder/metadata-builder';
 import * as OSC from 'osc';
-import { IOSCRawMessage } from '../osc/osc-message';
 import { OSCInputMessage } from '../osc/osc-input-message';
 import { ActionMetadata } from './metadata/action-metadata';
 import { ControllerMetadata } from './metadata/controller-metadata';
 import { SocketServer } from "../socket/socket-server";
 import { ParamTypes } from "./metadata/types/param-types";
 import { Logger } from "@overnightjs/logger";
+import { IOSCRawMessage } from "../osc/osc-types";
 
 export class ControllerExecutor {
 
