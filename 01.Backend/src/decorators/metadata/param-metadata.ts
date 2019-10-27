@@ -10,7 +10,7 @@ export class ParamMetadata {
   public actionMetadata: ActionMetadata;
 
   /**
-   * Parameter target.
+   * Parameter target, i.e. some controller class.
    */
   public target: Function;
 
@@ -25,7 +25,7 @@ export class ParamMetadata {
   public index: number;
 
   /**
-   * Parameter type.
+   * Parameter type derived directly from the decorator.
    */
   public type: ParamTypes;
 

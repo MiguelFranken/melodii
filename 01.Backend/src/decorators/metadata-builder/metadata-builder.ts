@@ -16,8 +16,7 @@ export class MetadataBuilder {
   private createControllers(classes?: Function[]): ControllerMetadata[] {
     const storage = defaultMetadataArgsStorage();
 
-    const controllers = !classes ? storage.controllers :
-      storage.findControllerMetadatasForClasses(classes);
+    const controllers = !classes ? storage.controllers : storage.findControllerMetadataForControllers(classes);
 
     return controllers.map((controllerArgs: IControllerMetadataArgs) => {
       const controller = new ControllerMetadata(controllerArgs);
@@ -28,7 +27,7 @@ export class MetadataBuilder {
 
   private createActions(controller: ControllerMetadata): ActionMetadata[] {
     return defaultMetadataArgsStorage()
-      .findActionsWithTarget(controller.target)
+      .findActionsForController(controller.target)
       .map((actionArgs: any) => {
         const action = new ActionMetadata(controller, actionArgs);
         action.params = this.createParams(action);
@@ -39,7 +38,7 @@ export class MetadataBuilder {
 
   private createParams(action: ActionMetadata): ParamMetadata[] {
     return defaultMetadataArgsStorage()
-      .findParamsWithTargetAndMethod(action.target, action.method)
+      .findParamsForControllerAndMethod(action.target, action.method)
       .map((paramArgs) => new ParamMetadata(action, paramArgs));
   }
   //endregion

@@ -3,7 +3,7 @@ import { IActionMetadataArgs } from '../metadata/args/action-metadata-args';
 import { IParamMetadataArgs } from '../metadata/args/param-metadata-args';
 
 /**
- * Storage all metadatas read from decorators.
+ * Stores all metadata read from the decorators
  */
 export class MetadataArgsStorage {
 
@@ -11,20 +11,32 @@ export class MetadataArgsStorage {
     public actions: IActionMetadataArgs[] = [];
     public params: IParamMetadataArgs[] = [];
 
-    public findControllerMetadatasForClasses(classes: Function[]): IControllerMetadataArgs[] {
+    /**
+     * Returns all stored controller metadata for the specified controller classes
+     * @param controllerClasses Array of controller classes
+     */
+    public findControllerMetadataForControllers(controllerClasses: Function[]): IControllerMetadataArgs[] {
         return this.controllers.filter((ctrl) => {
-            return classes.filter((cls) => ctrl.target === cls).length > 0;
+            return controllerClasses.filter((cls) => ctrl.target === cls).length > 0;
         });
     }
 
-    public findActionsWithTarget(target: Function): IActionMetadataArgs[] {
-        return this.actions.filter((action) => action.target === target);
+    /**
+     * Returns the action metadata for some specified controller class
+     * @param controllerClass
+     */
+    public findActionsForController(controllerClass: Function): IActionMetadataArgs[] {
+        return this.actions.filter((action) => action.target === controllerClass);
     }
 
-    public findParamsWithTargetAndMethod(
-      target: Function, methodName: string): IParamMetadataArgs[] {
+    /**
+     * Returns the param metadata for some specified (action) method within a controller class
+     * @param controllerClass Some controller class
+     * @param methodName Some method in the specified controller class
+     */
+    public findParamsForControllerAndMethod(controllerClass: Function, methodName: string): IParamMetadataArgs[] {
         return this.params.filter((param) => {
-            return param.target === target && param.method === methodName;
+            return param.target === controllerClass && param.method === methodName;
         });
     }
 

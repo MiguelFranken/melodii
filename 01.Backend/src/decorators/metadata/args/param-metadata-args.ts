@@ -6,7 +6,7 @@ import { ParamTypes } from "../types/param-types";
 export interface IParamMetadataArgs {
 
     /**
-     * Parameter target.
+     * Parameter target, i.e. a controller class
      */
     target: any;
 
@@ -22,6 +22,7 @@ export interface IParamMetadataArgs {
 
     /**
      * Parameter type.
+     * This is derived from the decorator
      */
     type: ParamTypes;
 
