@@ -3,6 +3,7 @@ import { importClassesFromDirectories } from './util/directory-exported-classes-
 import * as OSC from 'osc';
 import { ControllerExecutor } from './controller-executor';
 import { SocketServer } from "../socket/socket-server";
+import { Container } from "./container";
 
 export function addControllers(io: OSC.UDPPort, controllers: Function[] | string[], webserver: SocketServer) {
   createExecutor(io, controllers, webserver);
@@ -23,7 +24,7 @@ export function defaultMetadataArgsStorage(): MetadataArgsStorage {
 /**
  * @param io
  * @param controllers List of directories from where to "require" all the controllers
- * @param webserver
+ * @param webserver Socket server for bi-directional communication with the Angular frontend
  */
 export function createExecutor(io: OSC.UDPPort, controllers: Function[] | string[], webserver: SocketServer) {
   const executor = new ControllerExecutor(io, webserver);

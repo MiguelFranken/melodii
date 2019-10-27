@@ -1,4 +1,3 @@
-import { SocketServer } from "../socket/socket-server";
 import { Registry } from "./registry";
 
 /**
@@ -12,11 +11,6 @@ export class Container {
 
   // registry of all controller´s dependencies
   private dependenciesRegistry: Registry = new Registry();
-
-  constructor(private socketServer: SocketServer) {
-    // add socket server instance to registry
-    this.dependenciesRegistry.set(SocketServer, socketServer);
-  }
 
   /**
    * Returns the (singleton) instance of the specified controller class.
@@ -46,11 +40,26 @@ export class Container {
   }
 
   /**
-   * Gets the IOC container
-   *
-   * Returns the instance of class T from the container.
+   * Adds an already existing instance to the dependency registry
+   * You should only use this method rarely. The container can create instances
+   * of dependencies by itself when resolving, but sometimes it's necessary to
+   * initialize some dependency class beforehand with some parameters..
+   * @param key Some class
+   * @param value Instance of this class
+   */
+  public addSingletonDependency(key: Function, value: any) {
+    this.dependenciesRegistry.set(key, value);
+  }
+
+  /**
+   * Returns the instance of class 'someClass' with Type T from the container.
    * If there was no instance of T in the container, an instance of T is created,
    * stored in the container to the remaining instances of other classes, and then returned.
+   *
+   * Information about factories in TypeScript using generics:
+   * When creating factories in TypeScript using generics, it is necessary to refer to
+   * class types by their constructor functions. So instad of using 'someClass: T',
+   * use 'someClass: (new(...args: any[]) => T)' or 'someClass: {new(...args: any[]): T}'.
    */
   public get<T>(someClass: (new(...args: any[]) => T)): T {
     return this.resolve<T>(someClass);
