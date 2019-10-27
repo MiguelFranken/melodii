@@ -32,7 +32,7 @@
 <details>
 <summary><strong>See details</strong></summary>
 
-Put your OSC controllers into `01.Backend/src/controllers`. See `01.Backend/src/controllers/slider.ts` for an example.
+Put your OSC controllers into `01.Backend/src/osc/controllers`. See `01.Backend/src/osc/controllers/slider.ts` for an example.
 
 ```typescript
 @Controller("/clean_slider_1")
@@ -59,10 +59,12 @@ The injection mechanism automatically creates an singleton instance of this clas
 #### Decorators
 You must decorate each controller with the `@Controller()` decorator. It takes the namespace as an argument.
 If you do not specify a namespace, all OSC messages will be routed to this controller.
-Additionally, you must register this controller in `01.Backend/src/controllers/index.ts`.
+Additionally, you must register this controller in `01.Backend/src/osc/controllers/index.ts`.
 
 `@OnMessage('/play')` allows you to decorate methods that should get executed when a message has the specified OSC address url after the namespace.
 If you do not specify a url in the decorator, each OSC messages routed to the controller will trigger the execution of the decorated method.
+
+Current status: You can specify an address in the `@OnMessage()` decorator, but it will be ignored. Some routing mechanism for this decorator is still needed! 
 
 You can get access to the received OSC message by using the `@Message()` decorator. It takes no arguments!
 

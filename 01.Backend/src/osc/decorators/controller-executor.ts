@@ -1,18 +1,17 @@
 import { MetadataBuilder } from './metadata-builder/metadata-builder';
 import * as OSC from 'osc';
-import { OSCInputMessage } from '../osc/osc-input-message';
+import { OSCInputMessage } from '../osc-input-message';
 import { ActionMetadata } from './metadata/action-metadata';
 import { ControllerMetadata } from './metadata/controller-metadata';
-import { SocketServer } from "../socket/socket-server";
 import { ParamTypes } from "./metadata/types/param-types";
 import { Logger } from "@overnightjs/logger";
-import { IOSCRawMessage } from "../osc/osc-types";
+import { IOSCRawMessage } from "../osc-types";
 
 export class ControllerExecutor {
 
   private metadataBuilder: MetadataBuilder;
 
-  constructor(private io: OSC.UDPPort, private webserver: SocketServer) {
+  constructor(private io: OSC.UDPPort) {
     this.metadataBuilder = new MetadataBuilder();
   }
 

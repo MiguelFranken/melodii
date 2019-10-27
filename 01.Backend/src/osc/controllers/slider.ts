@@ -1,8 +1,8 @@
 import { Controller, Message, OnMessage } from '../decorators';
-import { SocketServer } from "../socket/socket-server";
-import { Event } from "../socket/socket-events";
+import { SocketServer } from "../../socket/socket-server";
+import { Event } from "../../socket/socket-events";
 import { Foo } from "./foo";
-import { OSCInputMessage } from "../osc/osc-input-message";
+import { OSCInputMessage } from "../osc-input-message";
 
 @Controller("/clean_slider_1")
 export class SliderController {

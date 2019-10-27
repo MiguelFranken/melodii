@@ -1,6 +1,6 @@
 import { Controller, Message, OnMessage } from '../decorators';
 import { Logger } from "@overnightjs/logger";
-import { OSCInputMessage } from "../osc/osc-input-message";
+import { OSCInputMessage } from "../osc-input-message";
 
 @Controller()
 export class LoggerController {

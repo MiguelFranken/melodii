@@ -3,8 +3,8 @@ import { OSCServer } from './osc/osc-server';
 import { Logger } from '@overnightjs/logger';
 import { SocketServer } from './socket/socket-server';
 import "reflect-metadata";
-import { Container } from './decorators';
-import { CONTROLLERS } from './controllers';
+import { Container } from './osc/decorators';
+import { CONTROLLERS } from './osc/controllers';
 import { IOSCArgs } from "./osc/osc-types";
 
 //region Socket-Server for bi-directional communication with frontend
@@ -32,7 +32,7 @@ const playSoundForEachMessage = () => {
 //region Starting OSC Server
 const ocsServer = new OSCServer("0.0.0.0", 57121, "192.168.0.241", 4559);
 ocsServer.addControllers(CONTROLLERS, webserver);
-ocsServer.addMessageListener(playSoundForEachMessage); // TODO MF: delete this
+// ocsServer.addMessageListener(playSoundForEachMessage); // TODO MF: delete this
 ocsServer.connect();
 //endregion
 //endregion

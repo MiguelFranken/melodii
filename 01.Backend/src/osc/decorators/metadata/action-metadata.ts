@@ -1,7 +1,7 @@
 import { ControllerMetadata } from './controller-metadata';
 import { ParamMetadata } from './param-metadata';
 import { IActionMetadataArgs } from './args/action-metadata-args';
-import { OSCMessage } from '../../osc/osc-message';
+import { OSCMessage } from '../../osc-message';
 
 export class ActionMetadata {
 

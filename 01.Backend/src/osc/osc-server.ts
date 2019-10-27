@@ -5,7 +5,7 @@ import * as OSC from 'osc';
 import { IOSCRawMessage } from "./osc-types";
 import deprecated from "deprecated-decorator";
 import { SocketServer } from "../socket/socket-server";
-import { addControllers } from "../decorators";
+import { addControllers } from "./decorators";
 
 export class OSCServer {
   private readonly udp: OSC.UDPPort; // socket communication between us and music instruments
