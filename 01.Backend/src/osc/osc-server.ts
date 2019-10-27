@@ -6,6 +6,8 @@ import { IOSCRawMessage } from "./osc-types";
 import deprecated from "deprecated-decorator";
 import { SocketServer } from "../socket/socket-server";
 import { addControllers } from "./decorators";
+import { Music } from "../music/music";
+import { Observable } from "rxjs";
 
 export class OSCServer {
   private readonly udp: OSC.UDPPort; // socket communication between us and music instruments
@@ -43,6 +45,16 @@ export class OSCServer {
     };
     this.udp.on("message", func);
     Logger.Info('Added message listener');
+  }
+
+  public addMusicObservable(observable: Observable<OSCMessage>) {
+    observable.subscribe((msg: OSCMessage) => {
+      if (msg.getAddress() == "") {
+        return;
+      }
+      console.log("RECEIVED OSCMessage in OSC Server");
+      this.sendMessage(msg);
+    });
   }
 
   public addControllers(controllers: Function[] | string[], socketServer: SocketServer) {

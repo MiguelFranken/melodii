@@ -1,11 +1,9 @@
-import { OSCMessage } from './osc/osc-message';
 import { OSCServer } from './osc/osc-server';
-import { Logger } from '@overnightjs/logger';
 import { SocketServer } from './socket/socket-server';
 import "reflect-metadata";
 import { Container } from './osc/decorators';
 import { CONTROLLERS } from './osc/controllers';
-import { IOSCArgs } from "./osc/osc-types";
+import { Music } from "./music/music";
 
 //region Socket-Server for bi-directional communication with frontend
 /**
@@ -16,23 +14,14 @@ const webserver: SocketServer = new SocketServer();
 
 //region OSC-Server for communication with music instruments
 export const container = new Container();
+const music = new Music();
 container.addSingletonDependency(SocketServer, webserver);
-
-// plays a sound for each received message
-const playSoundForEachMessage = () => {
-  Logger.Info("Play sound");
-  const note: IOSCArgs = {
-    type: "i",
-    value: 50,
-  };
-  const msg = new OSCMessage("/play/piano", [ note ]);
-  ocsServer.sendMessage(msg);
-};
+container.addSingletonDependency(Music, music);
 
 //region Starting OSC Server
 const ocsServer = new OSCServer("0.0.0.0", 57121, "192.168.0.241", 4559);
+ocsServer.addMusicObservable(music.getMusicObservable());
 ocsServer.addControllers(CONTROLLERS, webserver);
-// ocsServer.addMessageListener(playSoundForEachMessage); // TODO MF: delete this
 ocsServer.connect();
 //endregion
 //endregion
