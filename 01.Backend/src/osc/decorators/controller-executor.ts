@@ -16,6 +16,9 @@ export class ControllerExecutor {
   }
 
   public execute(controllerClasses?: Function[]) {
+    if (controllerClasses) {
+      console.log(controllerClasses.length);
+    }
     this.registerControllers(controllerClasses);
   }
 
@@ -26,6 +29,9 @@ export class ControllerExecutor {
     const controllers = this.metadataBuilder.buildControllerMetadata(classes);
     const controllersWithoutNamespaces = controllers.filter((ctrl) => !ctrl.namespace);
     const controllersWithNamespaces = controllers.filter((ctrl) => !!ctrl.namespace);
+
+    console.log("Controller with namespaces: " + controllersWithNamespaces.length);
+    console.log("Controller without namespaces: " + controllersWithoutNamespaces.length);
 
     //region register controllers without namespaces
     const handler = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
@@ -39,7 +45,7 @@ export class ControllerExecutor {
     controllersWithNamespaces.forEach((controller: any) => {
       const _namespace: string | RegExp = controller.namespace;
       let namespace: string;
-      if (_namespace instanceof RegExp) {
+      if (_namespace instanceof RegExp) { // TODO MF: implement the RegExp feature
         // namespace = pathToRegexp(_namespace);
         namespace = '';
       } else {
@@ -47,7 +53,7 @@ export class ControllerExecutor {
       }
 
       // tslint:disable-next-line:no-shadowed-variable
-      const handler = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
+      const handlerWithNamespace = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
         // parse osc address urls (e.g. "/sub1/sub2" -> ["", "sub1", "sub2"])
         const addressUrl = oscRawMsg.address.split('/');
         const namespaceUrl = namespace.split('/');
@@ -72,7 +78,7 @@ export class ControllerExecutor {
         this.handleConnection([controller], _msg);
       };
 
-      this.io.on("message", handler);
+      this.io.on("message", handlerWithNamespace);
     });
 
     return this;
@@ -83,6 +89,7 @@ export class ControllerExecutor {
     const paramsPromises = action.params
       .sort((param1, param2) => param1.index - param2.index) // nach index sortieren
       .map(param => {
+        // TODO MF: add more param types here in the future if necessary
         switch (param.type) {
           case ParamTypes.OSC_MESSAGE:
             return oscMessage;
@@ -103,9 +110,12 @@ export class ControllerExecutor {
   private handleConnection(controllers: ControllerMetadata[], oscMessage: OSCInputMessage) {
     controllers.forEach((controller: ControllerMetadata) => {
       controller.actions.forEach((action) => {
-        this.handleAction(action, oscMessage)
-          .then(() => {/* maybe add something here */})
-          .catch((error: any) => Logger.Err(error));
+        const addressWithoutNamespace = oscMessage.getAddress().replace(controller.namespace, '');
+        if (action.name === "" || action.name === addressWithoutNamespace) {
+          this.handleAction(action, oscMessage)
+            .then(() => {/* maybe add something here */})
+            .catch((error: any) => Logger.Err(error));
+        }
       });
     });
   }

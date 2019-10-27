@@ -64,8 +64,6 @@ Additionally, you must register this controller in `01.Backend/src/osc/controlle
 `@OnMessage('/play')` allows you to decorate methods that should get executed when a message has the specified OSC address url after the namespace.
 If you do not specify a url in the decorator, each OSC messages routed to the controller will trigger the execution of the decorated method.
 
-Current status: You can specify an address in the `@OnMessage()` decorator, but it will be ignored. Some routing mechanism for this decorator is still needed! 
-
 You can get access to the received OSC message by using the `@Message()` decorator. It takes no arguments!
 
 #### Socket server

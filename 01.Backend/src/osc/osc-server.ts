@@ -1,12 +1,9 @@
 import { OSCMessage } from "./osc-message";
-import { OSCInputMessage } from "./osc-input-message";
 import { Logger } from '@overnightjs/logger';
 import * as OSC from 'osc';
 import { IOSCRawMessage } from "./osc-types";
-import deprecated from "deprecated-decorator";
 import { SocketServer } from "../socket/socket-server";
 import { addControllers } from "./decorators";
-import { Music } from "../music/music";
 import { Observable } from "rxjs";
 
 export class OSCServer {
@@ -36,33 +33,29 @@ export class OSCServer {
     Logger.Info('Started server successfully!');
   }
 
-  // allows you to add handlers that get executed when a osc message arrives from the instruments
-  @deprecated()
-  public addMessageListener(handler: ((oscMsg: OSCInputMessage) => void)) {
-    const func = (oscRawMsg: IOSCRawMessage, timeTag: any, info: any) => {
-      const _msg = new OSCInputMessage(oscRawMsg.address, oscRawMsg.args, info);
-      handler(_msg);
-    };
-    this.udp.on("message", func);
-    Logger.Info('Added message listener');
-  }
-
-  public addMusicObservable(observable: Observable<OSCMessage>) {
+  /**
+   * Handles musical events sent by the music class
+   * @param observable Receives OSCMessages that should get redirected to sonic pi
+   */
+  public handleMusicEvents(observable: Observable<OSCMessage>) {
     observable.subscribe((msg: OSCMessage) => {
+      // ignore initial empty osc message
       if (msg.getAddress() == "") {
         return;
       }
-      console.log("RECEIVED OSCMessage in OSC Server");
-      this.sendMessage(msg);
+
+      // redirect every message to sonic pi
+      this.sendMessageToSonicPi(msg);
     });
   }
 
+  // adds controllers that receive the routed osc messages
   public addControllers(controllers: Function[] | string[], socketServer: SocketServer) {
     addControllers(this.udp, controllers, socketServer);
   }
 
   // allows you to send osc messages to sonic pi
-  public sendMessage(msg: OSCMessage) {
+  public sendMessageToSonicPi(msg: OSCMessage) {
     const rawMsg: IOSCRawMessage = {
       address: msg.getAddress(),
       args: msg.getArgs(),

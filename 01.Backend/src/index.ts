@@ -19,8 +19,8 @@ container.addSingletonDependency(SocketServer, webserver);
 container.addSingletonDependency(Music, music);
 
 //region Starting OSC Server
-const ocsServer = new OSCServer("0.0.0.0", 57121, "192.168.0.241", 4559);
-ocsServer.addMusicObservable(music.getMusicObservable());
+const ocsServer = new OSCServer("0.0.0.0", 57121, "192.168.0.59", 4559);
+ocsServer.handleMusicEvents(music.getMusicObservable());
 ocsServer.addControllers(CONTROLLERS, webserver);
 ocsServer.connect();
 //endregion

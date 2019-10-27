@@ -34,10 +34,12 @@ export class Music implements IMusic {
    * Plays a single note
    * @param note
    */
-  public playNote(note?: string): void {
+  public playNote(note: string): void {
+    let noteValue = Note.midi(note) as number;
+
     const noteArg: IOSCArgs = {
       type: "i",
-      value: 50,
+      value: noteValue,
     };
     const msg = new OSCMessage("/play/piano", [ noteArg ]);
     this.emit(msg);
