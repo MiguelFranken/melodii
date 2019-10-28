@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SocketService } from './shared/socket/socket.service';
+import { EchoComponent } from "./dashboard/echo/echo.component";
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -14,7 +15,8 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-        DashboardComponent
+        DashboardComponent,
+        EchoComponent
       ],
       providers: [
         SocketService
