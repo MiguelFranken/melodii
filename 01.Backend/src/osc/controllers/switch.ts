@@ -12,7 +12,7 @@ export class SwitchController {
 
   @OnMessage('/clean_switch_1', '/clean_switch_2')
   playNoteForSwitch1(@Message() message: OSCInputMessage) {
-    this.socketServer.emit(Event.PLAYED_NOTE, "Switch Echo Effect");
+    this.socketServer.emit(Event.ECHO_EFFECT_SWITCH);
     this.music.switchEchoEffect();
   }
 
