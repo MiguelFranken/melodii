@@ -11,15 +11,9 @@ export class SwitchController {
   }
 
   @OnMessage('/clean_switch_1')
-  notifyFrontendForSwitch1(@Message() message: OSCInputMessage) {
-    console.log("Notify frontend..");
-    this.socketServer.emit(Event.PLAYED_NOTE, "Switch 1 used");
-  }
-
-  @OnMessage('/clean_switch_1')
   playNoteForSwitch1(@Message() message: OSCInputMessage) {
-    console.log("Playing note fot switch 1..");
-    this.music.playNote("C4");
+    this.socketServer.emit(Event.PLAYED_NOTE, "Switch Echo Effect");
+    this.music.switchEchoEffect();
   }
 
   @OnMessage('/clean_switch_2')
