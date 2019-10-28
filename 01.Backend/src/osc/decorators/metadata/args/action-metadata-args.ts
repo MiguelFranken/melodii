@@ -6,7 +6,7 @@ export interface IActionMetadataArgs {
   /**
    * Message's address after the namespace to listen to
    */
-  name?: string;
+  name?: Set<string>;
 
   /**
    * Controller class on which's method this action is attached

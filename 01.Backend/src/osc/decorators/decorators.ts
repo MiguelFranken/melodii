@@ -21,10 +21,14 @@ export function Controller(namespace?: string | RegExp) {
 /**
  * Registers controller's action to be executed when socket receives message with given name.
  */
-export function OnMessage(name?: string): Function {
+export function OnMessage(...names: string[]): Function {
+  let namesArg: Set<string> | undefined;
+  if (names.length !== 0) {
+    namesArg = new Set<string>(names);
+  }
   return (object: Object, methodName: string) => {
     const metadata: IActionMetadataArgs = {
-      name: name,
+      name: namesArg,
       target: object.constructor,
       method: methodName,
     };

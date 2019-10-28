@@ -10,7 +10,7 @@ export class ActionMetadata {
   /**
    * Message address served by this action.
    */
-  public name: string;
+  public names: Set<string>;
 
   /**
    * Action's parameters.
@@ -29,7 +29,7 @@ export class ActionMetadata {
 
   constructor(controllerMetadata: ControllerMetadata, args: IActionMetadataArgs) {
     this.controllerMetadata = controllerMetadata;
-    this.name = args.name ? args.name : '';
+    this.names = args.name ? args.name : new Set();
     this.target = args.target;
     this.method = args.method;
   }

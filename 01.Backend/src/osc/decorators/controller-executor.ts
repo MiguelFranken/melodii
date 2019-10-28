@@ -111,7 +111,7 @@ export class ControllerExecutor {
     controllers.forEach((controller: ControllerMetadata) => {
       controller.actions.forEach((action) => {
         const addressWithoutNamespace = oscMessage.getAddress().replace(controller.namespace, '');
-        if (action.name === "" || action.name === addressWithoutNamespace) {
+        if (action.names.size === 0 || action.names.has(addressWithoutNamespace)) {
           this.handleAction(action, oscMessage)
             .then(() => {/* maybe add something here */})
             .catch((error: any) => Logger.Err(error));
