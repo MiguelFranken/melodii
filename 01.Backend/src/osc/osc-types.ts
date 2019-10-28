@@ -8,7 +8,10 @@ export type OSCTypeTag = "i" | "f" | "s" | "b"; // int32, float32, OSC-string, O
 // see http://opensoundcontrol.org/spec-1_0
 export interface IOSCArgs {
   type: OSCTypeTag; // OSC Type Tag String
-  value: number; // todo: not only number!
+
+  // todo: Not only number or strings! maybe any since we already define the type with the OSCTypeTag.
+  //       But maybe we also need some convenience methods because now it is necessary to cast the value before using it
+  value: number | string;
 }
 
 export interface IOSCInfo {

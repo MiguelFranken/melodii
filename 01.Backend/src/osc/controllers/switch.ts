@@ -18,22 +18,22 @@ export class SwitchController {
 
   @OnMessage('/clean_switch_3')
   playNoteForSwitch3(@Message() message: OSCInputMessage) {
-    this.music.playNote("E4");
+    this.music.playChord("C4");
   }
 
   @OnMessage('/clean_switch_4')
   playNoteForSwitch4(@Message() message: OSCInputMessage) {
-    this.music.playNote("F4");
+    this.music.playChord("D4");
   }
 
   @OnMessage('/clean_switch_5')
   playNoteForSwitch5(@Message() message: OSCInputMessage) {
-    this.music.playNote("G4");
+    this.music.playChord("E4");
   }
 
   @OnMessage('/clean_switch_6')
   playNoteForSwitch6(@Message() message: OSCInputMessage) {
-    this.music.playNote("A4");
+    this.music.playChord("F4");
   }
 
 }

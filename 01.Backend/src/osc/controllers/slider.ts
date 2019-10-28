@@ -13,7 +13,7 @@ export class SliderController {
   @OnMessage()
   public receivedMessage(@Message() message: OSCInputMessage) {
     this.foo.test();
-    this.socketServer.emit(Event.SLIDER_UPDATE, Math.round(message.getArgs()[0].value * 100));
+    this.socketServer.emit(Event.SLIDER_UPDATE, Math.round(message.getArgs()[0].value as number * 100));
   }
 
 }
