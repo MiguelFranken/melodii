@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Action } from '../shared/socket/action';
 import { Event } from '../shared/socket/event';
 import { SocketService } from '../shared/socket/socket.service';
+import { IOSCMessage } from '../shared/osc/osc-message';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,29 +26,35 @@ export class DashboardComponent implements OnInit {
     this.socketService.onEvent(Event.CONNECT)
       .subscribe(() => {
         // Todo: Snackbar
-        console.log('connected');
+        console.log('Established websocket connection to OSC-Server');
       });
 
     this.socketService.onEvent(Event.DISCONNECT)
       .subscribe(() => {
         // Todo: Snackbar
-        console.log('disconnected');
+        console.log('Disconnected websocket connection to OSC-Server');
       });
 
-    this.socketService.onEvent(Event.PLAYED_NOTE)
-      .subscribe((data: string) => {
-        this.messages.push(data);
+    this.socketService.onEvent(Event.OSC_MESSAGE)
+      .subscribe((msg: IOSCMessage) => {
+        this.messages.push(JSON.stringify(msg));
       });
 
-    this.socketService.onEvent(Event.SLIDER_UPDATE)
-      .subscribe((value: number) => {
-        this.sliderValue = value;
+    this.socketService.onAddress('/clean_switch_1')
+      .subscribe(() => {
+        this.messages.push('SWITCH ONE SWITCHED!');
       });
+
+    // this.socketService.onEvent(Event.SLIDER_UPDATE)
+    //   .subscribe((value: number) => {
+    //     this.sliderValue = value;
+    //   });
   }
 
+  // send actions back to osc server
+  // TODO MF: Handler on osc server side necessary
   public send(action: Action, data: any): void {
-
-    // todo
+    // TODO
     switch (action) {
       case Action.JOINED:
         break;

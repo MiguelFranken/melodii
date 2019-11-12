@@ -2,7 +2,7 @@
 .DS_Store
 target/
 .idea/
-01.Backend/backend.iml
+01.OSCServer/backend.iml
 parent.iml
 .settings
 02.Frontend/package-lock.json

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SocketService } from "../../shared/socket/socket.service";
-import { Event } from "../../shared/socket/event";
+import { SocketService } from '../../shared/socket/socket.service';
+import { Event } from '../../shared/socket/event';
 
 @Component({
   selector: 'app-echo',
@@ -14,10 +14,10 @@ export class EchoComponent implements OnInit {
   constructor(private socketService: SocketService) { }
 
   ngOnInit() {
-    this.socketService.onEvent(Event.ECHO_EFFECT_SWITCH)
-      .subscribe(() => {
-        this.isActive = !this.isActive;
-      });
+    // this.socketService.onEvent(Event.ECHO_EFFECT_SWITCH)
+    //   .subscribe(() => {
+    //     this.isActive = !this.isActive;
+    //   });
   }
 
 }
