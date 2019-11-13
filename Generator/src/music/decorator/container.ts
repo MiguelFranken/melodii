@@ -17,7 +17,7 @@ export class Container {
    * If this class could not be resolved, then a new instance is created,
    * stored in the registry and returned.
    *
-   * @param someControllerClass Controller class in directory 01.Backend/src/controllers
+   * @param someControllerClass Controller class in directory Backend/src/controllers
    */
   private resolve<T>(someControllerClass: new (...args: any[]) => T): T {
     // find or create new instances for dependencies of the controller
@@ -61,7 +61,7 @@ export class Container {
    * class types by their constructor functions. So instead of using 'someClass: T',
    * use 'someClass: (new(...args: any[]) => T)' or 'someClass: {new(...args: any[]): T}'.
    */
-  public get<T>(someClass: (new(...args: any[]) => T)): T {
+  public get<T>(someClass: (new (...args: any[]) => T)): T {
     return this.resolve<T>(someClass);
   }
 
