@@ -1,4 +1,4 @@
-<img src="./logo.png" alt="Logo">
+<img src="./logo.png" alt="Logo" height="100px">
 
 # Mixer for Media Computing Project
 
