@@ -22,11 +22,11 @@ install_packages:
   image: nikolaik/python-nodejs:latest
   stage: install_packages
   script:
-    - cd 03.Generator
-    - npm ci
-    - cd ../01.OSCServer
+    - cd 01.OSCServer
     - npm ci
     - cd ../02.Frontend
+    - npm ci
+    - cd ../03.Generator
     - npm ci
   tags:
     - docker
@@ -40,7 +40,7 @@ build:tone-generator:
   artifacts:
     expire_in: 1 day
     paths:
-      - dist/
+      - 03.Generator/dist/
   tags:
     - docker
 
@@ -163,7 +163,7 @@ package:osc-tone-generator:
   stage: package
   script:
     - cd 03.Generator
-    - docker build -t miguelfranken/osc-tone-generator .
+    - docker build -t $DOCKER_USERNAME/osc-tone-generator .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/osc-tone-generator
   tags:
