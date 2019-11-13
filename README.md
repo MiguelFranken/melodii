@@ -5,34 +5,32 @@
 - [Sonic Pi](https://sonic-pi.net/)
 - OSC Controller App (to send osc messages for testing)
     - [iOS](https://apps.apple.com/us/app/clean-osc/id1235192209)
-    - [Android](https://play.google.com/store/apps/details?id=com.ffsmultimedia.osccontroller&hl=en) (not tested yet)
+    - [Android](https://play.google.com/store/apps/details?id=com.ffsmultimedia.osccontroller&hl=en)
     
 ## Backend
 ### Run
 <details>
 <summary><strong>See details</strong></summary>
 
-#### Sonic Pi
-- Start Sonic Pi and copy `01.Backend/sonic-pi.rb` from the project directory into the sonic pi coding environment.
-- Activate _"Empfange entfernte OSC-Nachrichten"_ in the sonic pi menu (see `Prefs > I/O`).
-- Press on `Run`!
-- Copy IP and port of sonic pi into `01.Backend/index.ts` (to specify `outputIp` and `outputPort`).
-  
-#### Starting the OSC-Server & Socket-Server
-- `cd 01.Backend`
+#### Starting the OSC-Server
+- `cd 01.OSCServer`
 - `npm run start:refresh` or `npm run start` to disable recompiling when detecting source code changes
 
-#### Controller app for testing
-- Get your local IP address or the IP address on which this server runs on (e.g. `192.168.0.241`)
-- Start your app and connect to this IP with port `57121`
-- When you press buttons on the Controller App you should now hear piano sounds from sonic pi!
+#### Starting the tone generator
+- `cd 03.Generator`
+- `npm run start:dev`
+- Open a web browser to the provided address (tone generator works only in a browser)
+
+#### OSC controller app for testing
+- Start your osc app and connect to the central osc server. IP and port `57121` are logged when starting the server.
 </details>
 
-### Creating controllers
+### Creating controllers for the tone generator
 <details>
 <summary><strong>See details</strong></summary>
 
-Put your OSC controllers into `01.Backend/src/osc/controllers`. See `01.Backend/src/osc/controllers/slider.ts` for an example.
+Put your OSC controllers into `03.Generator/src/music/controllers`. See `03.Generator/src/music/controllers/logger.ts` for an example.
+You must register controllers in `03.Generator/src/music/controllers/index.ts`.
 
 ```typescript
 @Controller("/clean_slider_1")
@@ -59,17 +57,12 @@ The injection mechanism automatically creates an singleton instance of this clas
 #### Decorators
 You must decorate each controller with the `@Controller()` decorator. It takes the namespace as an argument.
 If you do not specify a namespace, all OSC messages will be routed to this controller.
-Additionally, you must register this controller in `01.Backend/src/osc/controllers/index.ts`.
+Additionally, you must register this controller in `03.Generator/src/music/controllers/index.ts`.
 
 `@OnMessage('/play')` allows you to decorate methods that should get executed when a message has the specified OSC address url after the namespace.
 If you do not specify a url in the decorator, each OSC messages routed to the controller will trigger the execution of the decorated method.
 
 You can get access to the received OSC message by using the `@Message()` decorator. It takes no arguments!
-
-#### Socket server
-By injecting the socket server, you get access to the websocket connection with the frontend. 
-This allows you to emit events to Angular. The example reads the message argument
-of the received OSC message, normalizes the value and sends a SLIDER_UPDATE event to the frontend.
 </details>
 
 ## Frontend
