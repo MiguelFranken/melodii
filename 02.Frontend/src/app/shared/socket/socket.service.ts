@@ -6,7 +6,7 @@ import { Action } from './action';
 import { environment } from '../../../environments/environment';
 import { IOSCMessage } from '../osc/osc-message';
 
-const SERVER_URL = environment.production ? 'http://167.172.162.189:8080' : 'localhost:8080';
+const SERVER_URL = environment.production ? 'http://mcp-osc.miguel-franken.com:8080' : 'localhost:8080';
 
 @Injectable()
 export class SocketService {
