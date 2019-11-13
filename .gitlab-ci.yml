@@ -6,9 +6,9 @@ cache:
   untracked: true
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-    - 01.OSCServer/node_modules/
-    - 02.Frontend/node_modules/
-    - 03.Generator/node_modules/
+    - OSCServer/node_modules/
+    - Frontend/node_modules/
+    - Generator/node_modules/
 
 stages:
   - install_packages
@@ -22,11 +22,11 @@ install_packages:
   image: nikolaik/python-nodejs:latest
   stage: install_packages
   script:
-    - cd 01.OSCServer
+    - cd OSCServer
     - npm ci
-    - cd ../02.Frontend
+    - cd ../Frontend
     - npm ci
-    - cd ../03.Generator
+    - cd ../Generator
     - npm ci
   tags:
     - docker
@@ -35,12 +35,12 @@ build:tone-generator:
   image: nikolaik/python-nodejs:latest
   stage: build
   script:
-    - cd 03.Generator
+    - cd Generator
     - npm run build
   artifacts:
     expire_in: 1 day
     paths:
-      - 03.Generator/dist/
+      - Generator/dist/
   tags:
     - docker
 
@@ -48,13 +48,13 @@ build:frontend:
   image: trion/ng-cli
   stage: build
   before_script:
-    - cd 02.Frontend
+    - cd Frontend
   script:
     - ng build --prod
   artifacts:
     expire_in: 1 day
     paths:
-      - 02.Frontend/dist/
+      - Frontend/dist/
   tags:
     - docker
 
@@ -62,13 +62,13 @@ build:osc-server:
   image: nikolaik/python-nodejs:latest
   stage: build
   before_script:
-    - cd 01.OSCServer
+    - cd OSCServer
   script:
     - npm run build
   artifacts:
     expire_in: 1 day
     paths:
-      - 01.OSCServer/dist/
+      - OSCServer/dist/
   tags:
     - docker
 
@@ -76,7 +76,7 @@ lint:frontend:
   image: trion/ng-cli
   allow_failure: true
   before_script:
-    - cd 02.Frontend
+    - cd Frontend
   stage: lint
   script:
     - ng lint
@@ -87,7 +87,7 @@ lint:tone-generator:
   image: nikolaik/python-nodejs:latest
   allow_failure: true # todo: set this to false asap ci works
   before_script:
-    - cd 03.Generator
+    - cd Generator
   stage: lint
   script:
     - npm run lint
@@ -98,7 +98,7 @@ lint:osc-server:
   image: nikolaik/python-nodejs:latest
   allow_failure: true
   before_script:
-    - cd 01.OSCServer
+    - cd OSCServer
   stage: lint
   script:
     - npm run lint
@@ -110,13 +110,13 @@ test:frontend:karma:
   stage: test
   allow_failure: true # todo: set to false
   before_script:
-    - cd 02.Frontend
+    - cd Frontend
   script:
     - ng test --code-coverage --progress false --watch false
   coverage: '/Lines \W+: (\d+\.\d+)%.*/'
   artifacts:
     paths:
-      - 02.Frontend/coverage/
+      - Frontend/coverage/
   tags:
     - docker
 
@@ -125,10 +125,10 @@ test:frontend:karma:
 #  image: trion/ng-cli-e2e
 #  allow_failure: false
 #  before_script:
-#    - cd 01.OSCServer
+#    - cd OSCServer
 #    - npm ci
 #    - npm run start
-#    - cd 02.Frontend
+#    - cd Frontend
 #    - npm ci
 #  script:
 #    - npm run e2e
@@ -138,7 +138,7 @@ test:frontend:karma:
 package:frontend:
   stage: package
   script:
-    - cd 02.Frontend
+    - cd Frontend
     - docker build -t miguelfranken/osc-frontend .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/osc-frontend
@@ -150,7 +150,7 @@ package:frontend:
 package:osc-server:
   stage: package
   script:
-    - cd 01.OSCServer
+    - cd OSCServer
     - docker build -t miguelfranken/osc-server .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/osc-server
@@ -162,7 +162,7 @@ package:osc-server:
 package:osc-tone-generator:
   stage: package
   script:
-    - cd 03.Generator
+    - cd Generator
     - docker build -t $DOCKER_USERNAME/osc-tone-generator .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/osc-tone-generator
