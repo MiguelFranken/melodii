@@ -23,7 +23,7 @@ export class Music implements IMusic {
     ChordQuality.MAJOR,
     ChordQuality.MAJOR,
     ChordQuality.MINOR,
-    ChordQuality.DIMINISHED
+    ChordQuality.DIMINISHED,
   ];
 
   private synth = new Tone.Synth().toMaster();
