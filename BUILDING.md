@@ -1,33 +1,31 @@
 # How to build the project?
-## Requirements
+The project is composed of three parts. The tone generator and server form the backend, and there is a monitor frontend.
+
+The tone generator is the heart of the project, where all sounds are generated. The server is needed, because the tone generator cannot listen as a server to HTTP requests or websocket messages.
+
+The monitor frontend shows information about the system, like the received messages, and can be used for debugging.
+
+## Installation requirements
 - [Node](https://nodejs.org/en/) (12.13.0 or the latest LTS version of Node)
-- [Sonic Pi](https://sonic-pi.net/)
 - OSC Controller App (to send osc messages for testing)
     - [iOS](https://apps.apple.com/us/app/clean-osc/id1235192209)
     - [Android](https://play.google.com/store/apps/details?id=com.ffsmultimedia.osccontroller&hl=en)
     
-## Backend
-### Run
-<details>
-<summary><strong>See details</strong></summary>
-
-#### Starting the OSC-Server
+# Backend
+## Run
+### Starting the OSC-Server
 - `cd 01.OSCServer`
 - `npm run start:refresh` or `npm run start` to disable recompiling when detecting source code changes
 
-#### Starting the tone generator
+### Starting the tone generator
 - `cd 03.Generator`
 - `npm run start:dev`
 - Open a web browser to the provided address (tone generator works only in a browser)
 
-#### OSC controller app for testing
+### OSC controller app for testing
 - Start your osc app and connect to the central osc server. IP and port `57121` are logged when starting the server.
-</details>
 
-### Creating controllers for the tone generator
-<details>
-<summary><strong>See details</strong></summary>
-
+## Creating controllers for the tone generator
 Put your OSC controllers into `03.Generator/src/music/controllers`. See `03.Generator/src/music/controllers/logger.ts` for an example.
 You must register controllers in `03.Generator/src/music/controllers/index.ts`.
 
@@ -47,13 +45,13 @@ export class SliderController {
 }
 ```
 
-#### Dependency Injection
+### Dependency Injection
 When your controller depends on an another class, you can inject the dependency via [Dependency Injection](https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/)
 You can use Dependency Injection, for example, to get access to the websockets within a controller.
 You can also inject other classes. Inject your dependencies by adding them to the class as a constructor parameter. 
 The injection mechanism automatically creates an singleton instance of this class and then makes this available in the controller as a class attribute.
 
-#### Decorators
+### Decorators
 You must decorate each controller with the `@Controller()` decorator. It takes the namespace as an argument.
 If you do not specify a namespace, all OSC messages will be routed to this controller.
 Additionally, you must register this controller in `03.Generator/src/music/controllers/index.ts`.
@@ -62,10 +60,9 @@ Additionally, you must register this controller in `03.Generator/src/music/contr
 If you do not specify a url in the decorator, each OSC messages routed to the controller will trigger the execution of the decorated method.
 
 You can get access to the received OSC message by using the `@Message()` decorator. It takes no arguments!
-</details>
 
-## Frontend
-### Run
+# Frontend
+## Run
 - `cd 02.Frontend` (in new terminal window)
 - `npn run start`
 - Open your browser and navigate to `http.//localhost:4200`
