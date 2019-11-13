@@ -1,1 +1,25 @@
-<p>prototype works!</p>
+<div fxLayout="column" fxLayoutGap="20px">
+  <div fxLayout fxLayoutGap="10px">
+    <button mat-flat-button color="accent" (click)="start()"><mat-icon>play_arrow</mat-icon> Play</button>
+<!--    <button mat-flat-button color="accent"><mat-icon>pause</mat-icon> Pause</button>-->
+    <button mat-flat-button color="accent" (click)="stop()"><mat-icon>stop</mat-icon> Stop</button>
+  </div>
+
+  <div fxLayout="column" fxLayoutGap="10px">
+    <div class="row" fxLayout *ngFor="let buttons of matrix; let row = index" fxLayoutGap="10px">
+      <a
+              class="card"
+              [class.played]="button.isPlayed && !button.isActive"
+              [class.playedAndActive]="button.isPlayed && button.isActive"
+              [class.active]="button.isActive"
+              fxFlex *ngFor="let button of buttons; let column = index"
+              fxLayout
+              fxLayoutAlign="center center"
+              (click)="switch(row, column)"
+      >
+        {{button.id}}
+      </a>
+    </div>
+  </div>
+</div>
+

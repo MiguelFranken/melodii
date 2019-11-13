@@ -1,0 +1,23 @@
+.card {
+  height: 120px;
+  background-color: rgba(0,0,0,.1);
+  border-radius: 6px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: rgba(0,0,0,.15);
+}
+
+.active {
+  background-color: rgba(0,0,0,.3) !important;
+}
+
+.played {
+  background-color: rgba(0,80,0,.3) !important;
+}
+
+.playedAndActive {
+  background-color: rgba(0,80,0,.55) !important;
+}
