@@ -1,7 +1,6 @@
 # How to build the project?
 ## Requirements
 - [Node](https://nodejs.org/en/) (12.13.0 or the latest LTS version of Node)
-- [Sonic Pi](https://sonic-pi.net/)
 - OSC Controller App (to send osc messages for testing)
     - [iOS](https://apps.apple.com/us/app/clean-osc/id1235192209)
     - [Android](https://play.google.com/store/apps/details?id=com.ffsmultimedia.osccontroller&hl=en)
