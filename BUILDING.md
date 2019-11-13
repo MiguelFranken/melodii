@@ -1,5 +1,11 @@
 # How to build the project?
-## Requirements
+The project is composed of three parts. The tone generator and server form the backend, and there is a monitor frontend.
+
+The tone generator is the heart of the project, where all sounds are generated. The server is needed, because the tone generator cannot listen as a server to HTTP requests or websocket messages.
+
+The monitor frontend shows information about the system, like the received messages, and can be used for debugging.
+
+## Installation requirements
 - [Node](https://nodejs.org/en/) (12.13.0 or the latest LTS version of Node)
 - OSC Controller App (to send osc messages for testing)
     - [iOS](https://apps.apple.com/us/app/clean-osc/id1235192209)
