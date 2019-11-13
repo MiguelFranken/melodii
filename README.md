@@ -1,6 +1,6 @@
-# Mixer for Media Computing Project
+<img src="./logo.png" alt="Logo">
 
-<img src="./logo.png" alt="Logo" max-height="100">
+# Mixer for Media Computing Project
 
 - [Specification](SPECIFICATION.md)
 - [How to test without building the project?](TESTING.md)
