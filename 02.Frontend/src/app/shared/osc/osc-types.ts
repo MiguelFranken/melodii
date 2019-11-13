@@ -1,4 +1,4 @@
-export type OSCTypeTag = "i" | "f" | "s" | "b"; // int32, float32, OSC-string, OSC-blob
+export type OSCTypeTag = 'i' | 'f' | 's' | 'b'; // int32, float32, OSC-string, OSC-blob
 
 // see http://opensoundcontrol.org/spec-1_0
 export interface IOSCArgs {
