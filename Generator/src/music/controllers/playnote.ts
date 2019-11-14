@@ -5,7 +5,7 @@ import { Music } from '../music';
 @Controller('/play_note')
 export class PlayNoteController {
 
-  constructor(private music: Music){}
+  constructor(private music: Music) { }
 
   @OnMessage()
   public receivedMessage(@Message() message: IOSCMessage) {
