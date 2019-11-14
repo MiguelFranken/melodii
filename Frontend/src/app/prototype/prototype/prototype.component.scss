@@ -105,3 +105,7 @@
 .minHeightRow {
   min-height: 150px;
 }
+
+::ng-deep .mat-menu-item-submenu-trigger::after {
+  border-color: transparent transparent transparent rgba(255,255,255,0.8) !important;
+}

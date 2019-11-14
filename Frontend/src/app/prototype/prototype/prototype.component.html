@@ -91,8 +91,8 @@
     <button mat-menu-item>Test</button>
 
     <mat-menu #velocity="matMenu">
-      <button mat-menu-item (click)="increaseVelocity($event, button)">Increase Velocity</button>
-      <button mat-menu-item (click)="decreaseVelocity($event, button)">Decrease Velocity</button>
+      <button mat-menu-item (click)="increaseVelocity($event, button)"><mat-icon>keyboard_arrow_up</mat-icon> Increase</button>
+      <button mat-menu-item (click)="decreaseVelocity($event, button)"><mat-icon>keyboard_arrow_down</mat-icon> Decrease</button>
     </mat-menu>
   </ng-template>
 </mat-menu>
