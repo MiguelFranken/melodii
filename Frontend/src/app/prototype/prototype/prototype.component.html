@@ -54,11 +54,16 @@
               [class.playedAndActive]="button.isPlayed && button.isActive"
               [class.active]="button.isActive"
               fxFlex *ngFor="let button of row.buttons; let column = index"
-              fxLayout
-              fxLayoutAlign="center center"
-              (click)="switch(rowIndex, column)"
+              fxLayout="column"
+              fxLayoutAlign="end stretch"
+              (click)="switch($event, rowIndex, column)"
               (contextmenu)="onContextMenu($event, button)"
+              style="position: relative;"
       >
+        <div class="velocity-slider" *ngIf="button.isActive" fxLayout>
+          <mat-slider fxFlex style="height: 10px" (click)="clickedSlider()"></mat-slider>
+        </div>
+
       </a>
     </div>
   </div>

@@ -239,8 +239,12 @@ export class PrototypeComponent implements OnInit {
     this.subject.next(this.msPerBeat);
   }
 
-  public switch(row: number, column: number) {
-    this.matrix[row].buttons[column].isActive = !this.matrix[row].buttons[column].isActive;
+  public switch(event, row: number, column: number) {
+    if (event.srcElement.nodeName.toLowerCase() == 'mat-slider' || this.clicked) {
+      this.clicked = false;
+    } else {
+      this.matrix[row].buttons[column].isActive = !this.matrix[row].buttons[column].isActive;
+    }
   }
 
   @ViewChild(MatMenuTrigger, {static: false})
@@ -269,6 +273,12 @@ export class PrototypeComponent implements OnInit {
     event.stopPropagation();
     button.velocity -= 10;
     console.log(button.velocity);
+  }
+
+  private clicked: boolean = false;
+
+  public clickedSlider() {
+    this.clicked = true;
   }
 
 }

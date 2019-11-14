@@ -67,17 +67,17 @@
   background-color: rgba(0,80,0,.55) !important;
 }
 
-::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
+::ng-deep .bpm-card .mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
   height: 6px;
   border-radius: 10px
 }
 
-::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-track-background,
-::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+::ng-deep .bpm-card .mat-slider.mat-slider-horizontal .mat-slider-track-background,
+::ng-deep .bpm-card .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
   height: 100%;
 }
 
-::ng-deep .mat-accent .mat-slider-thumb {
+::ng-deep .bpm-card .mat-accent .mat-slider-thumb {
   height: 30px;
   width: 30px;
   background-color: gray;
@@ -86,11 +86,11 @@
   transform: none;
 }
 
-::ng-deep .mat-slider-horizontal {
+::ng-deep .bpm-card .mat-slider-horizontal {
   height: 50px;
 }
 
-::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+::ng-deep .bpm-card .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
   background-color: rgba(255,255,255,0.8) !important;
 }
 
@@ -108,4 +108,46 @@
 
 ::ng-deep .mat-menu-item-submenu-trigger::after {
   border-color: transparent transparent transparent rgba(255,255,255,0.8) !important;
+}
+
+.velocity-slider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+::ng-deep .velocity-slider .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  background-color: rgba(0,0,0,0.15) !important;
+}
+
+::ng-deep .velocity-slider .mat-accent .mat-slider-thumb {
+  visibility: hidden;
+}
+
+::ng-deep .velocity-slider .mat-slider.mat-slider-horizontal .mat-slider-track-background,
+::ng-deep .velocity-slider .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  height: 100%;
+}
+
+::ng-deep .velocity-slider .mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
+  height: 10px !important;
+  border-radius: 0 !important;
+}
+
+::ng-deep .velocity-slider .mat-slider {
+  padding: 0 !important;
+}
+
+::ng-deep .mat-slider-track-background {
+  transform: none !important;
+  background-color: rgba(0,0,0,0.2) !important;
+}
+
+::ng-deep .velocity-slider .mat-slider-horizontal .mat-slider-wrapper {
+  left: 0px !important;
+  right: 0px !important;
+  bottom: 8px !important;
+  top: unset;
 }
