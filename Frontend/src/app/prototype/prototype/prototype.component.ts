@@ -122,6 +122,14 @@ export class PrototypeComponent implements OnInit {
     }
   }
 
+  public clearMatrix() {
+    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+      for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
+        this.matrix[i].buttons[y].isActive = false;
+      }
+    }
+  }
+
   private createMatrixDrums() {
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
       let rowArray: RowButton[] = [];
