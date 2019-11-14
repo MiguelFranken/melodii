@@ -10,7 +10,7 @@
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="12.44"><mat-icon class="action-icon">play_arrow</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="stop()" fxFlex="12.44"><mat-icon class="action-icon">stop</mat-icon></button>
       <div class="bpm-card" fxFlex fxLayout fxLayoutAlign="start center" fxLayoutGap="25px">
-        <span>{{bpm}}bpm</span>
+        <span fxFlex="3.5">{{bpm}}bpm</span>
         <mat-slider
                 class="example-margin"
                 max="180"
@@ -28,7 +28,12 @@
 
   <div class="menu" fxLayout fxFlex="5">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <div class="bpm-card" fxLayout fxLayoutAlign="center center" fxFlex="12.44">Drums</div>
+      <div class="text-card" fxLayout fxLayoutAlign="center center" fxFlex>Drums</div>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex>Clear</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex>Load Preset</button>
+      <div class="text-card" fxLayout fxLayoutAlign="center center" fxFlex>Bar 1</div>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
     </div>

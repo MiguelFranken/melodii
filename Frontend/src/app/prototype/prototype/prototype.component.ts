@@ -79,7 +79,6 @@ export class PrototypeComponent implements OnInit {
 
   changeBpm(event) {
     this.bpm = event.value;
-    this.subject.next(this.msPerBeat);
   }
 
   ngOnInit() {
@@ -117,7 +116,7 @@ export class PrototypeComponent implements OnInit {
   }
 
   public updateMatrix() {
-    // this.subject.next(this.msPerBeat);
+    this.subject.next(this.msPerBeat);
   }
 
   public start() {
