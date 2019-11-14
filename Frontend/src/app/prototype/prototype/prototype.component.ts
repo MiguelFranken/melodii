@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { interval, Subject, Subscription } from "rxjs";
 import { SocketService } from "../../shared/socket/socket.service";
 import { Action } from "../../shared/socket/action";
 import { IOSCMessage } from "../../shared/osc/osc-message";
 import { switchMap } from "rxjs/operators";
+import { MatMenuTrigger } from "@angular/material/menu";
 
 const NOTES_PENTATONIC_C = [
   "C",
@@ -37,6 +38,7 @@ export class RowButton {
   public isPlayed: boolean = false;
   public isActive: boolean = false;
   public id: string;
+  public velocity = 100; // Percent
 
   public oscMessage: IOSCMessage;
 
@@ -239,6 +241,34 @@ export class PrototypeComponent implements OnInit {
 
   public switch(row: number, column: number) {
     this.matrix[row].buttons[column].isActive = !this.matrix[row].buttons[column].isActive;
+  }
+
+  @ViewChild(MatMenuTrigger, {static: false})
+  contextMenu: MatMenuTrigger;
+
+  contextMenuPosition = { x: '0px', y: '0px' };
+
+  onContextMenu(event: MouseEvent, button: RowButton) {
+    event.preventDefault();
+
+    if (button.isActive) {
+      this.contextMenuPosition.x = event.clientX + 'px';
+      this.contextMenuPosition.y = event.clientY + 'px';
+      this.contextMenu.menuData = { 'button': button };
+      this.contextMenu.openMenu();
+    }
+  }
+
+  public increaseVelocity(event: MouseEvent, button: RowButton) {
+    event.stopPropagation();
+    button.velocity += 10;
+    console.log(button.velocity);
+  }
+
+  public decreaseVelocity(event: MouseEvent, button: RowButton) {
+    event.stopPropagation();
+    button.velocity -= 10;
+    console.log(button.velocity);
   }
 
 }

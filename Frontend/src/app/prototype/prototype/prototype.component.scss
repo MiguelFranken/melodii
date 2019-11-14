@@ -1,5 +1,8 @@
+* {
+  color: rgba(255,255,255,0.8) !important;
+}
+
 .card {
-  //height: 120px;
   background-color: rgba(0,0,0,.1);
   padding: 10px;
   cursor: pointer;
@@ -7,6 +10,7 @@
 
 .menu {
   color: white;
+  min-height: 55px;
 }
 
 .action-button {
@@ -76,15 +80,10 @@
 ::ng-deep .mat-accent .mat-slider-thumb {
   height: 30px;
   width: 30px;
-  background-color: white;
-  border: solid 2px gray;
+  background-color: gray;
   bottom: -16px;
   right: -14px;
   transform: none;
-}
-
-::ng-deep .mat-slider-min-value:not(.mat-slider-thumb-label-showing) .mat-slider-thumb {
-  background-color: white;
 }
 
 ::ng-deep .mat-slider-horizontal {
@@ -92,7 +91,15 @@
 }
 
 ::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
-  background-color: white;
+  background-color: rgba(255,255,255,0.8) !important;
+}
+
+::ng-deep .mat-menu-content {
+  background-color: rgba(0,0,0,0.5) !important;
+}
+
+::ng-deep .mat-menu-item {
+  color: rgba(255,255,255,0.8) !important;
 }
 
 .minHeightRow {
