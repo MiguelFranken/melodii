@@ -73,6 +73,8 @@ export class PrototypeComponent implements OnInit {
 
   private playSubscription: Subscription;
 
+  public showRowNames: boolean = true;
+
   public matrix = [];
 
   constructor(private socketService: SocketService) { }
@@ -85,6 +87,10 @@ export class PrototypeComponent implements OnInit {
     this._interval = this.subject.pipe(switchMap((period: number) => interval(period)));
     this.socketService.initSocket();
     this.createMatrix();
+  }
+
+  public switchShowRowNames() {
+    this.showRowNames = !this.showRowNames;
   }
 
   private createMatrix() {
