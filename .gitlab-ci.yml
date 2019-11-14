@@ -72,53 +72,53 @@ build:osc-server:
   tags:
     - docker
 
-lint:frontend:
-  image: trion/ng-cli
-  allow_failure: true
-  before_script:
-    - cd Frontend
-  stage: lint
-  script:
-    - ng lint
-  tags:
-    - docker
+#lint:frontend:
+#  image: trion/ng-cli
+#  allow_failure: true
+#  before_script:
+#    - cd 02.Frontend
+#  stage: lint
+#  script:
+#    - ng lint
+#  tags:
+#    - docker
 
-lint:tone-generator:
-  image: nikolaik/python-nodejs:latest
-  allow_failure: true # todo: set this to false asap ci works
-  before_script:
-    - cd Generator
-  stage: lint
-  script:
-    - npm run lint
-  tags:
-    - docker
+#lint:tone-generator:
+#  image: nikolaik/python-nodejs:latest
+#  allow_failure: true # todo: set this to false asap ci works
+#  before_script:
+#    - cd 03.Generator
+#  stage: lint
+#  script:
+#    - npm run lint
+#  tags:
+#    - docker
+#
+#lint:osc-server:
+#  image: nikolaik/python-nodejs:latest
+#  allow_failure: true
+#  before_script:
+#    - cd 01.OSCServer
+#  stage: lint
+#  script:
+#    - npm run lint
+#  tags:
+#    - docker
 
-lint:osc-server:
-  image: nikolaik/python-nodejs:latest
-  allow_failure: true
-  before_script:
-    - cd OSCServer
-  stage: lint
-  script:
-    - npm run lint
-  tags:
-    - docker
-
-test:frontend:karma:
-  image: trion/ng-cli-karma
-  stage: test
-  allow_failure: true # todo: set to false
-  before_script:
-    - cd Frontend
-  script:
-    - ng test --code-coverage --progress false --watch false
-  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
-  artifacts:
-    paths:
-      - Frontend/coverage/
-  tags:
-    - docker
+#test:frontend:karma:
+#  image: trion/ng-cli-karma
+#  stage: test
+#  allow_failure: true # todo: set to false
+#  before_script:
+#    - cd 02.Frontend
+#  script:
+#    - ng test --code-coverage --progress false --watch false
+#  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
+#  artifacts:
+#    paths:
+#      - 02.Frontend/coverage/
+#  tags:
+#    - docker
 
 #test:frontend:e2e:
 #  stage: test
@@ -144,8 +144,8 @@ package:frontend:
     - docker push $DOCKER_USERNAME/osc-frontend
   tags:
     - docker
-  only:
-    - master
+#  only:
+#    - master
 
 package:osc-server:
   stage: package
@@ -156,8 +156,8 @@ package:osc-server:
     - docker push $DOCKER_USERNAME/osc-server
   tags:
     - docker
-  only:
-    - master
+#  only:
+#    - master
 
 package:osc-tone-generator:
   stage: package
@@ -168,8 +168,8 @@ package:osc-tone-generator:
     - docker push $DOCKER_USERNAME/osc-tone-generator
   tags:
     - docker
-  only:
-    - master
+#  only:
+#    - master
 
 deploy:frontend:
   image: node:12.13
@@ -184,8 +184,8 @@ deploy:frontend:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - ssh root@$SERVER_IP './deploy-frontend.sh'
-  only:
-    - master
+#  only:
+#    - master
 
 deploy:osc-tone-generator:
   image: node:12.13
@@ -200,8 +200,8 @@ deploy:osc-tone-generator:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - ssh root@$TONE_GENERATOR_SERVER_IP './deploy.sh'
-  only:
-    - master
+#  only:
+#    - master
 
 deploy:osc-server:
   image: node:12.13
@@ -216,5 +216,5 @@ deploy:osc-server:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - ssh root@$SERVER_IP './deploy-server.sh'
-  only:
-    - master
+#  only:
+#    - master
