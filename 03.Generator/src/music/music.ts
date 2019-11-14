@@ -47,8 +47,8 @@ export class Music implements IMusic {
    * @param note "C4", "D2", "A2", ...
    */
   public playNote(note: string): void {
-    console.log(`Play sound ${note}.`);
-    this.synth.triggerAttackRelease(note, "8n");
+    console.log(`Play sound C4. (Sent note ${note}.)`);
+    this.synth.triggerAttackRelease("C4", "8n");
   }
 
   /**
