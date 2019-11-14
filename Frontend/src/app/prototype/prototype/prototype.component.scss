@@ -1,9 +1,32 @@
 .card {
-  height: 120px;
+  //height: 120px;
   background-color: rgba(0,0,0,.1);
-  border-radius: 6px;
   padding: 10px;
   cursor: pointer;
+}
+
+.menu {
+  color: white;
+}
+
+.action-button {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #4d4d4d;
+  border-radius: 0;
+}
+
+.action-icon {
+  transform: scale(2);
+}
+
+.action-button:hover {
+  background-color: rgba(77, 77, 77, 0.9);
+}
+
+.bpm-card {
+  padding: 0 20px;
+  background-color: #4d4d4d;
 }
 
 .card:hover {
@@ -20,4 +43,36 @@
 
 .playedAndActive {
   background-color: rgba(0,80,0,.55) !important;
+}
+
+::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
+  height: 6px;
+  border-radius: 10px
+}
+
+::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-track-background,
+::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  height: 100%;
+}
+
+::ng-deep .mat-accent .mat-slider-thumb {
+  height: 30px;
+  width: 30px;
+  background-color: white;
+  border: solid 2px gray;
+  bottom: -16px;
+  right: -14px;
+  transform: none;
+}
+
+::ng-deep .mat-slider-min-value:not(.mat-slider-thumb-label-showing) .mat-slider-thumb {
+  background-color: white;
+}
+
+::ng-deep .mat-slider-horizontal {
+  height: 50px;
+}
+
+::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  background-color: white;
 }

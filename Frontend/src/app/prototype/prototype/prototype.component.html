@@ -1,12 +1,31 @@
-<div fxLayout="column" fxLayoutGap="20px">
-  <div fxLayout fxLayoutGap="10px">
+<div fxLayout="column" style="height: 96vh; padding: 2px" fxLayoutGap="2px">
+ <!-- <div fxLayout fxLayoutGap="10px">
     <button mat-flat-button color="accent" (click)="start()"><mat-icon>play_arrow</mat-icon> Play</button>
-<!--    <button mat-flat-button color="accent"><mat-icon>pause</mat-icon> Pause</button>-->
+&lt;!&ndash;    <button mat-flat-button color="accent"><mat-icon>pause</mat-icon> Pause</button>&ndash;&gt;
     <button mat-flat-button color="accent" (click)="stop()"><mat-icon>stop</mat-icon> Stop</button>
+  </div>-->
+
+  <div class="menu" fxLayout fxFlex="10">
+    <div fxFill fxLayout fxLayoutGap="2px">
+      <button mat-button class="action-button" fxFlex fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="12.41"><mat-icon class="action-icon">play_arrow</mat-icon></button>
+      <button mat-button class="action-button" fxFlex fxLayout fxLayoutAlign="center center" (click)="stop()" fxFlex="12.41"><mat-icon class="action-icon">stop</mat-icon></button>
+      <div class="bpm-card" fxFlex fxLayout fxLayoutAlign="start center" fxLayoutGap="25px">
+        <span>{{bpm}}bpm</span>
+        <mat-slider
+                class="example-margin"
+                max="180"
+                min="50"
+                step="1"
+                fxFlex
+                (input)="changeBpm($event)"
+        >
+        </mat-slider>
+      </div>
+    </div>
   </div>
 
-  <div fxLayout="column" fxLayoutGap="10px">
-    <div class="row" fxLayout *ngFor="let buttons of matrix; let row = index" fxLayoutGap="10px">
+  <div fxLayout="column" fxLayoutGap="2px" fxFlex>
+    <div fxLayout *ngFor="let buttons of matrix; let row = index" fxLayoutGap="2px" fxFlex>
       <a
               class="card"
               [class.played]="button.isPlayed && !button.isActive"

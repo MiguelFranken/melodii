@@ -41,7 +41,7 @@ export class RowButton {
 }
 
 const NUMBER_OF_COLUMNS: number = 8;
-const NUMBER_OF_ROWS: number = 4;
+const NUMBER_OF_ROWS: number = 6;
 
 @Component({
   selector: 'app-prototype',
@@ -50,6 +50,19 @@ const NUMBER_OF_ROWS: number = 4;
 })
 export class PrototypeComponent implements OnInit {
 
+  private _bpm: number = 50;
+
+  public set bpm(bpm: number) {
+    this._bpm = bpm;
+    this.msPerBeat = 1000 * 0.5 * (60 / bpm);
+  }
+
+  public get bpm(): number {
+    return this._bpm
+  }
+
+  private msPerBeat: number = 2000; // TODO MF: different default
+
   public temp: number = 0;
 
   private playSubscription: Subscription;
@@ -57,6 +70,10 @@ export class PrototypeComponent implements OnInit {
   public matrix = [];
 
   constructor(private socketService: SocketService) { }
+
+  changeBpm(event) {
+    this.bpm = event.value;
+  }
 
   ngOnInit() {
     this.socketService.initSocket();
@@ -101,7 +118,7 @@ export class PrototypeComponent implements OnInit {
       }
     }
 
-    this.playSubscription = interval(1000).subscribe(_ => {
+    this.playSubscription = interval(this.msPerBeat).subscribe(_ => {
       const newTemp = (this.temp + 1) % NUMBER_OF_COLUMNS;
 
       for (let rows of this.matrix) {
