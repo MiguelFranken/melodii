@@ -36,7 +36,7 @@
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="nextMatrix()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="clearMatrix()">Clear</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex>Load Preset</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex>Save as Preset</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchVelocity()">{{showVelocity ? 'Hide' : 'Show'}} Velocity</button>
       <div class="text-card" fxLayout fxLayoutAlign="center center" fxFlex>Bar 1</div>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
@@ -52,16 +52,16 @@
               class="card"
               [class.played]="button.isPlayed && !button.isActive"
               [class.playedAndActive]="button.isPlayed && button.isActive"
-              [class.active]="button.isActive"
               fxFlex *ngFor="let button of row.buttons; let column = index"
               fxLayout="column"
               fxLayoutAlign="end stretch"
               (click)="switch($event, rowIndex, column)"
               (contextmenu)="onContextMenu($event, button)"
               style="position: relative;"
+              [ngStyle]="{'background-color': button.isActive ? 'rgba(0,0,0,' + ((0.3-0.15)/100*(button.velocity-100)+0.3) +')' : 'rgba(0,0,0,.1)'}"
       >
-        <div class="velocity-slider" *ngIf="button.isActive" fxLayout>
-          <mat-slider fxFlex style="height: 10px" (click)="clickedSlider()"></mat-slider>
+        <div class="velocity-slider" *ngIf="button.isActive && showVelocity" fxLayout>
+          <mat-slider fxFlex style="height: 10px" (click)="clickedSlider()" (input)="setVelocity($event, button)" [value]="button.velocity"></mat-slider>
         </div>
 
       </a>

@@ -79,6 +79,19 @@ export class PrototypeComponent implements OnInit {
   private matrixCollectionIndex = 0;
   public matrix: Matrix = [];
 
+  public showVelocity: boolean = false;
+
+  public switchVelocity() {
+    this.showVelocity = !this.showVelocity;
+  }
+
+  publix;
+
+  setVelocity(event, button: RowButton) {
+    console.log(event);
+    button.velocity = event.value;
+  }
+
   public switchRow(rowIndex: number) {
     this.matrix[rowIndex].isExpanded = !this.matrix[rowIndex].isExpanded;
   }

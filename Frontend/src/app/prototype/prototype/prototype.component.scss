@@ -3,7 +3,6 @@
 }
 
 .card {
-  background-color: rgba(0,0,0,.1);
   padding: 10px;
   cursor: pointer;
 }
@@ -53,10 +52,6 @@
 
 .card:hover {
   background-color: rgba(0,0,0,.15);
-}
-
-.active {
-  background-color: rgba(0,0,0,.3) !important;
 }
 
 .played {
