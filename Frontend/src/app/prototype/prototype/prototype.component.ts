@@ -61,6 +61,10 @@ const NUMBER_OF_ROWS: number = 6;
 })
 export class PrototypeComponent implements OnInit {
 
+  public switchRow(rowIndex: number) {
+    this.matrix[rowIndex].isExpanded = !this.matrix[rowIndex].isExpanded;
+  }
+
   private _bpm: number = DEFAULT_BPM;
 
   public set bpm(bpm: number) {

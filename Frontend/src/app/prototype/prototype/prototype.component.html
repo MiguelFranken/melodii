@@ -28,7 +28,9 @@
 
   <div class="menu" fxLayout fxFlex="5">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchShowRowNames()"><mat-icon><ng-container *ngIf="showRowNames;then showRowNamesTemplate else hideRowNamesTemplate"></ng-container></mat-icon> Drums</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchShowRowNames()">
+        <mat-icon><ng-container *ngIf="showRowNames;then showRowNamesTemplate else hideRowNamesTemplate"></ng-container></mat-icon> Drums
+      </button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex>Clear</button>
@@ -41,11 +43,10 @@
   </div>
 
   <div fxLayout="column" fxLayoutGap="2px" fxFlex>
-    <div fxLayout *ngFor="let row of matrix; let rowIndex = index" fxLayoutGap="2px" fxFlex>
-      <div class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" *ngIf="showRowNames">
-        <mat-icon>music_note</mat-icon>
+    <div fxLayout *ngFor="let row of matrix; let rowIndex = index" fxLayoutGap="2px" [fxFlex]="row.isExpanded ? '' : 6">
+      <button (click)="switchRow(rowIndex)" mat-button class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="showRowNames">
         <span>{{row.name}}</span>
-      </div>
+      </button>
       <a
               class="card"
               [class.played]="button.isPlayed && !button.isActive"
