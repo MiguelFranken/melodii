@@ -13,6 +13,16 @@ const NOTES_PENTATONIC_C = [
   "G"
 ];
 
+const NOTES_MAJOR_C = [
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "A",
+  "B"
+];
+
 const DEFAULT_BPM = 80;
 
 export class Row {
@@ -52,7 +62,7 @@ export class RowButton {
 }
 
 const NUMBER_OF_COLUMNS: number = 8;
-const NUMBER_OF_ROWS: number = 6;
+const NUMBER_OF_ROWS: number = 30;
 
 @Component({
   selector: 'app-prototype',
@@ -98,25 +108,51 @@ export class PrototypeComponent implements OnInit {
   ngOnInit() {
     this._interval = this.subject.pipe(switchMap((period: number) => interval(period)));
     this.socketService.initSocket();
-    this.createMatrix();
+    // this.createMatrixDrums();
+    this.createMatrixPiano();
   }
 
-  public switchShowRowNames() {
-    this.showRowNames = !this.showRowNames;
+  // public switchShowRowNames() {
+  //   this.showRowNames = !this.showRowNames;
+  // }
+
+  public switchAllExpanded() {
+    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+      this.matrix[i].isExpanded = !this.matrix[i].isExpanded;
+    }
   }
 
-  private createMatrix() {
+  private createMatrixDrums() {
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
       let rowArray: RowButton[] = [];
 
       for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-        const randomNote = NOTES_PENTATONIC_C[Math.floor(Math.random() * NOTES_PENTATONIC_C.length)];
+        const randomNote = NOTES_MAJOR_C[Math.floor(Math.random() * NOTES_PENTATONIC_C.length)];
         const note = randomNote + (i+1);
         const button = new RowButton(note);
         rowArray.push(button);
       }
 
       const row: Row = new Row(rowArray);
+
+      this.matrix.push(row);
+    }
+  }
+
+  private createMatrixPiano() {
+    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+      let rowArray: RowButton[] = [];
+
+      const randomNote = NOTES_MAJOR_C[i % 7];
+      const note = randomNote + (Math.floor(i / 7));
+
+      for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
+        const button = new RowButton(note);
+        rowArray.push(button);
+      }
+
+      const row: Row = new Row(rowArray);
+      row.name = note;
 
       this.matrix.push(row);
     }
