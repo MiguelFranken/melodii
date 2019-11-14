@@ -15,6 +15,14 @@ const NOTES_PENTATONIC_C = [
 
 const DEFAULT_BPM = 80;
 
+export class Row {
+  public isExpanded = true;
+  public name: string = "row name";
+
+  constructor(public buttons: RowButton[]) {
+  }
+}
+
 export class RowButton {
   public isPlayed: boolean = false;
   public isActive: boolean = false;
@@ -75,7 +83,7 @@ export class PrototypeComponent implements OnInit {
 
   public showRowNames: boolean = true;
 
-  public matrix = [];
+  public matrix: Row[] = [];
 
   constructor(private socketService: SocketService) { }
 
@@ -95,14 +103,16 @@ export class PrototypeComponent implements OnInit {
 
   private createMatrix() {
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-      let row: RowButton[] = [];
+      let rowArray: RowButton[] = [];
 
       for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
         const randomNote = NOTES_PENTATONIC_C[Math.floor(Math.random() * NOTES_PENTATONIC_C.length)];
         const note = randomNote + (i+1);
         const button = new RowButton(note);
-        row.push(button);
+        rowArray.push(button);
       }
+
+      const row: Row = new Row(rowArray);
 
       this.matrix.push(row);
     }
@@ -113,7 +123,7 @@ export class PrototypeComponent implements OnInit {
       this.playSubscription.unsubscribe();
 
       for (let rows of this.matrix) {
-        const oldButton: RowButton = rows[this.temp];
+        const oldButton: RowButton = rows.buttons[this.temp];
         oldButton.isPlayed = false;
       }
 
@@ -127,7 +137,7 @@ export class PrototypeComponent implements OnInit {
 
   public start() {
     for (let rows of this.matrix) {
-      const oldButton: RowButton = rows[0];
+      const oldButton: RowButton = rows.buttons[0];
       oldButton.isPlayed = true;
 
       if (oldButton.isActive) {
@@ -139,10 +149,10 @@ export class PrototypeComponent implements OnInit {
       const newTemp = (this.temp + 1) % NUMBER_OF_COLUMNS;
 
       for (let rows of this.matrix) {
-        const oldButton: RowButton = rows[this.temp];
+        const oldButton: RowButton = rows.buttons[this.temp];
         oldButton.isPlayed = false;
 
-        const newButton: RowButton = rows[(this.temp+1) % NUMBER_OF_COLUMNS];
+        const newButton: RowButton = rows.buttons[(this.temp+1) % NUMBER_OF_COLUMNS];
         newButton.isPlayed = true;
 
         if (newButton.isActive) {
@@ -156,7 +166,7 @@ export class PrototypeComponent implements OnInit {
   }
 
   public switch(row: number, column: number) {
-    this.matrix[row][column].isActive = !this.matrix[row][column].isActive;
+    this.matrix[row].buttons[column].isActive = !this.matrix[row].buttons[column].isActive;
   }
 
 }

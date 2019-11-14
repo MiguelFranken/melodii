@@ -41,22 +41,21 @@
   </div>
 
   <div fxLayout="column" fxLayoutGap="2px" fxFlex>
-    <div fxLayout *ngFor="let buttons of matrix; let row = index" fxLayoutGap="2px" fxFlex>
+    <div fxLayout *ngFor="let row of matrix; let rowIndex = index" fxLayoutGap="2px" fxFlex>
       <div class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" *ngIf="showRowNames">
         <mat-icon>music_note</mat-icon>
-        <span>Snare</span>
+        <span>{{row.name}}</span>
       </div>
       <a
               class="card"
               [class.played]="button.isPlayed && !button.isActive"
               [class.playedAndActive]="button.isPlayed && button.isActive"
               [class.active]="button.isActive"
-              fxFlex *ngFor="let button of buttons; let column = index"
+              fxFlex *ngFor="let button of row.buttons; let column = index"
               fxLayout
               fxLayoutAlign="center center"
-              (click)="switch(row, column)"
+              (click)="switch(rowIndex, column)"
       >
-        {{button.id}}
       </a>
     </div>
   </div>
