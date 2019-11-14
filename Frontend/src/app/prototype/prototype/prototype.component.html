@@ -16,8 +16,10 @@
                 max="180"
                 min="50"
                 step="1"
+                [value]="bpm"
                 fxFlex
                 (input)="changeBpm($event)"
+                (change)="updateMatrix()"
         >
         </mat-slider>
       </div>

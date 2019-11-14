@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { interval, Subscription } from "rxjs";
+import { interval, Subject, Subscription } from "rxjs";
 import { SocketService } from "../../shared/socket/socket.service";
 import { Action } from "../../shared/socket/action";
 import { IOSCMessage } from "../../shared/osc/osc-message";
+import { switchMap } from "rxjs/operators";
 
 const NOTES_PENTATONIC_C = [
   "C",
@@ -50,7 +51,7 @@ const NUMBER_OF_ROWS: number = 6;
 })
 export class PrototypeComponent implements OnInit {
 
-  private _bpm: number = 50;
+  private _bpm: number = 80;
 
   public set bpm(bpm: number) {
     this._bpm = bpm;
@@ -60,6 +61,9 @@ export class PrototypeComponent implements OnInit {
   public get bpm(): number {
     return this._bpm
   }
+
+  private subject = new Subject();
+  private _interval;
 
   private msPerBeat: number = 2000; // TODO MF: different default
 
@@ -73,9 +77,11 @@ export class PrototypeComponent implements OnInit {
 
   changeBpm(event) {
     this.bpm = event.value;
+    this.subject.next(this.msPerBeat);
   }
 
   ngOnInit() {
+    this._interval = this.subject.pipe(switchMap((period: number) => interval(period)));
     this.socketService.initSocket();
     this.createMatrix();
   }
@@ -108,6 +114,10 @@ export class PrototypeComponent implements OnInit {
     }
   }
 
+  public updateMatrix() {
+    // this.subject.next(this.msPerBeat);
+  }
+
   public start() {
     for (let rows of this.matrix) {
       const oldButton: RowButton = rows[0];
@@ -118,7 +128,7 @@ export class PrototypeComponent implements OnInit {
       }
     }
 
-    this.playSubscription = interval(this.msPerBeat).subscribe(_ => {
+    this.playSubscription = this._interval.subscribe(_ => {
       const newTemp = (this.temp + 1) % NUMBER_OF_COLUMNS;
 
       for (let rows of this.matrix) {
@@ -133,7 +143,9 @@ export class PrototypeComponent implements OnInit {
         }
       }
       this.temp = newTemp;
-    })
+    });
+
+    this.subject.next(this.msPerBeat);
   }
 
   public switch(row: number, column: number) {
