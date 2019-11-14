@@ -4,24 +4,39 @@ import { SocketService } from "../../shared/socket/socket.service";
 import { Action } from "../../shared/socket/action";
 import { IOSCMessage } from "../../shared/osc/osc-message";
 
+const NOTES_PENTATONIC_C = [
+  "C",
+  "D",
+  "E",
+  "A",
+  "G"
+];
+
 export class RowButton {
   public isPlayed: boolean = false;
   public isActive: boolean = false;
+  public id: string;
 
-  public oscMessage: IOSCMessage = {
-    address: "/play_note",
-    args: [
-      { type: "s", value: "C4" }
-    ],
-    info: {
+  public oscMessage: IOSCMessage;
+
+  constructor(note: string) {
+    this.id = note;
+    this.setOSCMessage(note);
+  }
+
+  private setOSCMessage(note) {
+    this.oscMessage = {
       address: "/play_note",
-      family: "IPv4",
-      port: 80,
-      size: 1,
+        args: [
+      { type: "s", value: note }
+    ],
+      info: {
+      address: "/play_note",
+        family: "IPv4",
+        port: 80,
+        size: 1,
     }
-  };
-
-  constructor(public id: string) {
+    }
   }
 }
 
@@ -53,7 +68,9 @@ export class PrototypeComponent implements OnInit {
       let row: RowButton[] = [];
 
       for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-        const button = new RowButton("id" + i + y);
+        const randomNote = NOTES_PENTATONIC_C[Math.floor(Math.random() * NOTES_PENTATONIC_C.length)];
+        const note = randomNote + (i+1);
+        const button = new RowButton(note);
         row.push(button);
       }
 
