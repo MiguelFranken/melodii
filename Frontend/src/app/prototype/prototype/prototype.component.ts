@@ -61,6 +61,8 @@ export class RowButton {
   }
 }
 
+type Matrix = Row[];
+
 const NUMBER_OF_COLUMNS: number = 8;
 const NUMBER_OF_ROWS: number = 30;
 
@@ -70,6 +72,10 @@ const NUMBER_OF_ROWS: number = 30;
   styleUrls: ['./prototype.component.scss']
 })
 export class PrototypeComponent implements OnInit {
+
+  private matrixCollection: Matrix[] = [];
+  private matrixCollectionIndex = 0;
+  public matrix: Matrix = [];
 
   public switchRow(rowIndex: number) {
     this.matrix[rowIndex].isExpanded = !this.matrix[rowIndex].isExpanded;
@@ -97,8 +103,6 @@ export class PrototypeComponent implements OnInit {
 
   public showRowNames: boolean = true;
 
-  public matrix: Row[] = [];
-
   constructor(private socketService: SocketService) { }
 
   changeBpm(event) {
@@ -108,8 +112,24 @@ export class PrototypeComponent implements OnInit {
   ngOnInit() {
     this._interval = this.subject.pipe(switchMap((period: number) => interval(period)));
     this.socketService.initSocket();
-    // this.createMatrixDrums();
+    this.createMatrixDrums();
     this.createMatrixPiano();
+
+    this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+  }
+
+  public nextMatrix() {
+    this.matrixCollectionIndex = (this.matrixCollectionIndex + 1) % this.matrixCollection.length;
+    this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+  }
+
+  public previousMatrix() {
+    if (this.matrixCollectionIndex == 0) {
+      this.matrixCollectionIndex = this.matrixCollection.length - 1;
+    } else {
+      this.matrixCollectionIndex = (this.matrixCollectionIndex -1) % this.matrixCollection.length;
+    }
+    this.matrix = this.matrixCollection[this.matrixCollectionIndex];
   }
 
   // public switchShowRowNames() {
@@ -131,6 +151,7 @@ export class PrototypeComponent implements OnInit {
   }
 
   private createMatrixDrums() {
+    let matrix: Matrix = [];
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
       let rowArray: RowButton[] = [];
 
@@ -143,11 +164,13 @@ export class PrototypeComponent implements OnInit {
 
       const row: Row = new Row(rowArray);
 
-      this.matrix.push(row);
+      matrix.push(row);
     }
+    this.matrixCollection.push(matrix);
   }
 
   private createMatrixPiano() {
+    let matrix: Matrix = [];
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
       let rowArray: RowButton[] = [];
 
@@ -162,8 +185,9 @@ export class PrototypeComponent implements OnInit {
       const row: Row = new Row(rowArray);
       row.name = note;
 
-      this.matrix.push(row);
+      matrix.push(row);
     }
+    this.matrixCollection.push(matrix);
   }
 
   public stop() {
