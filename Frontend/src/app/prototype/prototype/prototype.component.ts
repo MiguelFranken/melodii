@@ -13,6 +13,8 @@ const NOTES_PENTATONIC_C = [
   "G"
 ];
 
+const DEFAULT_BPM = 80;
+
 export class RowButton {
   public isPlayed: boolean = false;
   public isActive: boolean = false;
@@ -51,7 +53,7 @@ const NUMBER_OF_ROWS: number = 6;
 })
 export class PrototypeComponent implements OnInit {
 
-  private _bpm: number = 80;
+  private _bpm: number = DEFAULT_BPM;
 
   public set bpm(bpm: number) {
     this._bpm = bpm;
@@ -65,7 +67,7 @@ export class PrototypeComponent implements OnInit {
   private subject = new Subject();
   private _interval;
 
-  private msPerBeat: number = 2000; // TODO MF: different default
+  private msPerBeat: number = 1000 * 0.5 * (60 / DEFAULT_BPM); // TODO MF: different default
 
   public temp: number = 0;
 
