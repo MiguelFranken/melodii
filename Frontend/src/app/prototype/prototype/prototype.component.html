@@ -99,9 +99,11 @@
     <button mat-menu-item>Test</button>
     <button mat-menu-item>Test</button>
 
-    <mat-menu #velocity="matMenu">
-      <button mat-menu-item (click)="increaseVelocity($event, button)"><mat-icon>keyboard_arrow_up</mat-icon> Increase</button>
-      <button mat-menu-item (click)="decreaseVelocity($event, button)"><mat-icon>keyboard_arrow_down</mat-icon> Decrease</button>
+    <mat-menu #velocity="matMenu" overlapTrigger="false">
+      <ng-template matMenuContent>
+        <button mat-menu-item (click)="increaseVelocity($event, button)"><mat-icon>keyboard_arrow_up</mat-icon> Increase</button>
+        <button mat-menu-item (click)="decreaseVelocity($event, button)"><mat-icon>keyboard_arrow_down</mat-icon> Decrease</button>
+        </ng-template>
     </mat-menu>
   </ng-template>
 </mat-menu>
