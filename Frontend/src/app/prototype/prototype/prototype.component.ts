@@ -29,6 +29,7 @@ const DEFAULT_BPM = 80;
 
 export class Row {
   public isExpanded = true;
+  public isFolded: boolean = false;
   public name: string = "row name";
 
   constructor(public buttons: RowButton[]) {
@@ -93,8 +94,8 @@ export class PrototypeComponent implements OnInit {
     button.velocity = event.value;
   }
 
-  public switchRow(rowIndex: number) {
-    this.matrix[rowIndex].isExpanded = !this.matrix[rowIndex].isExpanded;
+  public switchRow(row: Row) {
+    row.isExpanded = !row.isExpanded;
   }
 
   private _bpm: number = DEFAULT_BPM;
@@ -172,6 +173,33 @@ export class PrototypeComponent implements OnInit {
   public switchAllExpanded() {
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
       this.matrix[i].isExpanded = !this.matrix[i].isExpanded;
+    }
+  }
+
+  getNonFoldedRows() {
+    return this.matrix.filter((row: Row) => {
+      return !row.isFolded;
+    });
+  }
+
+  private isInFoldMode = false;
+
+  switchFold() {
+    if (this.isInFoldMode) {
+      for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+        this.matrix[i].isFolded = false;
+      }
+      this.isInFoldMode = false;
+    } else {
+      for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+        this.matrix[i].isFolded = true;
+        for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
+          if (this.matrix[i].buttons[y].isActive) {
+            this.matrix[i].isFolded = false;
+          }
+        }
+      }
+      this.isInFoldMode = true;
     }
   }
 
@@ -270,11 +298,11 @@ export class PrototypeComponent implements OnInit {
     this.subject.next(this.msPerBeat);
   }
 
-  public switch(event, row: number, column: number) {
+  public switch(event, rowButton: RowButton) {
     if (event.srcElement.nodeName.toLowerCase() == 'mat-slider' || this.clicked) {
       this.clicked = false;
     } else {
-      this.matrix[row].buttons[column].isActive = !this.matrix[row].buttons[column].isActive;
+      rowButton.isActive = !rowButton.isActive;
     }
   }
 

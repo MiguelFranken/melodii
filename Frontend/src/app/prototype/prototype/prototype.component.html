@@ -40,8 +40,15 @@
   </div>
 
   <div fxLayout="column" fxLayoutGap="2px" fxFlex style="overflow: auto">
-    <div fxLayout *ngFor="let row of matrix; let rowIndex = index" fxLayoutGap="2px" [class.minHeightRow]="row.isExpanded" [class.minHeightRowNotExpanded]="!row.isExpanded" fxFlex>
-      <button (click)="switchRow(rowIndex)" mat-button class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="showRowNames">
+    <div
+            fxLayout
+            *ngFor="let row of getNonFoldedRows()"
+            fxLayoutGap="2px"
+            [class.minHeightRow]="row.isExpanded"
+            [class.minHeightRowNotExpanded]="!row.isExpanded"
+            fxFlex
+    >
+      <button (click)="switchRow(row)" mat-button class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="showRowNames">
         <span>{{row.name}}</span>
       </button>
       <a
@@ -51,7 +58,7 @@
               fxFlex *ngFor="let button of row.buttons; let column = index"
               fxLayout="column"
               fxLayoutAlign="end stretch"
-              (click)="switch($event, rowIndex, column)"
+              (click)="switch($event, button)"
               (contextmenu)="onContextMenu($event, button)"
               style="position: relative;"
               [ngStyle]="{'background-color': button.isActive ? 'rgba(0,0,0,' + ((0.3-0.15)/100*(button.velocity-100)+0.3) +')' : 'rgba(0,0,0,.1)'}"
@@ -65,7 +72,7 @@
 
   <div class="menu" fxLayout fxFlex="5">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex *ngIf="showRowNames">Fold</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex *ngIf="showRowNames" (click)="switchFold()">Fold</button>
       <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex>1</div>
       <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex>2</div>
       <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex>3</div>
