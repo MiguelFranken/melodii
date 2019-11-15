@@ -275,10 +275,13 @@ export class PrototypeComponent implements OnInit {
 
   onLongPress(event, button) {
     event.preventDefault();
-    this.contextMenuPosition.x = event.pageX + 'px';
-    this.contextMenuPosition.y = event.pageY + 'px';
-    this.contextMenu.menuData = { 'button': button };
-    this.contextMenu.openMenu();
+
+    if (button.isActive) {
+      this.contextMenuPosition.x = event.pageX + 'px';
+      this.contextMenuPosition.y = event.pageY + 'px';
+      this.contextMenu.menuData = {'button': button};
+      this.contextMenu.openMenu();
+    }
   }
 
   onContextMenu(event: MouseEvent, button: RowButton) {
