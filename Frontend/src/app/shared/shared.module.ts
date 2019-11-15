@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from "./layout/layout.module";
 import { LongPress } from "./directives/longpress";
+import { ToppyModule } from 'toppy';
 
 let modules = [
   MaterialModule,
@@ -17,7 +18,8 @@ let modules = [
   imports: [
     CommonModule,
     FlexLayoutModule,
-    modules
+    modules,
+    ToppyModule
   ],
   exports: [
     modules,

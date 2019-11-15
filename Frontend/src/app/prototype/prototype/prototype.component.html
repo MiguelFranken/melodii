@@ -24,8 +24,7 @@
 
   <div class="menu" fxLayout fxFlex="5">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchAllExpanded()">
-<!--        <mat-icon><ng-container *ngIf="showRowNames;then showRowNamesTemplate else hideRowNamesTemplate"></ng-container></mat-icon>-->
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="open()" #el>
         {{matrix.name}}
       </button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="previousMatrix()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
@@ -88,6 +87,7 @@
 
 </div>
 
+<!--region Context Menu-->
 <div style="visibility: hidden; position: fixed"
      [style.left]="contextMenuPosition.x"
      [style.top]="contextMenuPosition.y"
@@ -107,8 +107,31 @@
     </mat-menu>
   </ng-template>
 </mat-menu>
+<!--endregion-->
 
+<!--region Overlay Templates-->
+<ng-template #tpl let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchMatrix(matrix, index); toppy.close()"
+              *ngFor="let matrix of matrixCollection; let index = index">{{matrix.name}}
+      </button>
+    </div>
+    <div fxLayout>
+      <button mat-button class="overlay-button" fxFlex (click)="switchAllExpanded()">
+        <ng-container *ngIf="isInExpandedMode;then shrinkIconTemplate else expandIconTemplate"></ng-container>
+        {{isInExpandedMode ? 'Shrink' : 'Expand'}} all rows
+      </button>
 
-<ng-template #showRowNamesTemplate>keyboard_arrow_down</ng-template>
-<ng-template #hideRowNamesTemplate>keyboard_arrow_up</ng-template>
-
+      <!--region Arrow Templates-->
+      <ng-template #shrinkIconTemplate><mat-icon>unfold_less</mat-icon></ng-template>
+      <ng-template #expandIconTemplate><mat-icon>unfold_more</mat-icon></ng-template>
+      <!--endregion-->
+    </div>
+  </div>
+</ng-template>
+<!--endregion-->

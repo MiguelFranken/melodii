@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { interval, Observable, Subject, Subscription } from "rxjs";
 import { SocketService } from "../../shared/socket/socket.service";
 import { Action } from "../../shared/socket/action";
@@ -8,6 +8,8 @@ import { NavigationService } from "../../shared/layout/navigation/navigation.ser
 import { Matrix } from "./matrix";
 import { Row } from "./row";
 import { RowButton } from "./row-button";
+import { OutsidePlacement, RelativePosition, Toppy } from "toppy";
+import { ToppyConfig } from "toppy/lib/models";
 
 const NOTES_PENTATONIC_C = [
   "C",
@@ -82,15 +84,48 @@ export class PrototypeComponent implements OnInit {
 
   public isClosedNavigation: Observable<boolean>;
 
+  @ViewChild('el', {static: true, read: ElementRef })
+  el: ElementRef;
+
+  @ViewChild('tpl', {static: true})
+  tpl: TemplateRef<any>;
+
+  private overlay;
+
   constructor(
     private socketService: SocketService,
-    private navigationService: NavigationService) { }
+    private navigationService: NavigationService,
+    private _toppy: Toppy) { }
 
   changeBpm(event) {
     this.bpm = event.value;
   }
 
+  private initOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.el.nativeElement
+    });
+
+    this.overlay = this._toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.tpl, { name: 'Johny' })
+      .create();
+  }
+
+  open() {
+    this.overlay.open();
+  }
+
+  close() {
+    this.overlay.close();
+  }
+
   ngOnInit() {
+    this.initOverlay();
     this.isClosedNavigation = this.navigationService.getIsClosedObservable();
     this.isClosedNavigation.subscribe(value => {
       if (value) {
@@ -106,6 +141,11 @@ export class PrototypeComponent implements OnInit {
     this.createMatrixPiano();
 
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+  }
+
+  public switchMatrix(matrix: Matrix, index: number) {
+    this.matrix = matrix;
+    this.matrixCollectionIndex = index;
   }
 
   public switchNavigation() {
@@ -130,9 +170,12 @@ export class PrototypeComponent implements OnInit {
   //   this.showRowNames = !this.showRowNames;
   // }
 
+  public isInExpandedMode = true;
+
   public switchAllExpanded() {
+    this.isInExpandedMode = !this.isInExpandedMode;
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-      this.matrix.rows[i].isExpanded = !this.matrix.rows[i].isExpanded;
+      this.matrix.rows[i].isExpanded = this.isInExpandedMode;
     }
   }
 
