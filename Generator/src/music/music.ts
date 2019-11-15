@@ -1,6 +1,7 @@
 import { Scale } from "tonal";
 import { note } from "@tonaljs/tonal";
 import * as Tone from "tone";
+import { SampleLib } from './samplelib';
 
 export enum ChordQuality {
   MAJOR = "",
@@ -26,12 +27,25 @@ export class Music implements IMusic {
     ChordQuality.DIMINISHED,
   ];
 
-  private synth = new Tone.Synth().toMaster();
+  private instruments :{[k:string]: any} = {};
+  private sampleLib = new SampleLib();
   private readonly scale: string[];
   private isEchoActivated = false;
 
-  constructor() {
-    this.scale = Scale.notes("C major");
+
+  constructor() {    
+    this.scale = Scale.notes("C major");    
+    this.instruments.synth = new Tone.Synth().toMaster();
+    this.instruments.drum_kick = this.sampleLib.getKickSampler(
+      () => console.log("drum kick bufferd") // just for debug purpose
+    ).toMaster();
+    this.instruments.drum_snare = this.sampleLib.getSnareSampler(
+      () => console.log("drum snare bufferd") // just for debug purpose
+    ).toMaster();
+    this.instruments.piano = this.sampleLib.getPianoSampler(
+      () => console.log("piano bufferd") // just for debug purpose
+    ).toMaster();
+    this.instruments.hihat = this.sampleLib.getHiHatSynth().toMaster();
   }
 
   /**
@@ -47,8 +61,31 @@ export class Music implements IMusic {
    * @param note "C4", "D2", "A2", ...
    */
   public playNote(note: string): void {
-    console.log(`Play sound ${note}.`);
-    this.synth.triggerAttackRelease(note, "8n");
+    console.log(`Play sound ${note}.`);    
+    this.instruments.synth.triggerAttackRelease(note, "8n");
+  }
+
+  
+  /**
+   * Plays a single note on piano sampler
+   * @param note "C4", "D2", "A2", ...
+   */
+  public pianoPlayNote(note: string): void {
+    console.log(`Play sound ${note}.`);    
+    this.instruments.piano.triggerAttackRelease(note, "8n");
+  }
+
+  /**
+   * plays the drums
+   * @param instrument which part of the drums should be played
+   */
+  public playDrums(instrument:string): void {
+    switch(instrument) {
+      case 'kick': this.instruments.drum_kick.triggerAttack("C2"); break;
+      case 'snare': this.instruments.drum_snare.triggerAttack("C2"); break;
+      case 'hihat': this.instruments.hihat.triggerAttackRelease("8n"); break;
+    }
+    
   }
 
   /**
