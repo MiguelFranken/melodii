@@ -6,7 +6,7 @@ cache:
   untracked: true
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-    - OSCServer/node_modules/
+    - Server/node_modules/
     - Frontend/node_modules/
     - Generator/node_modules/
 
@@ -22,7 +22,7 @@ install_packages:
   image: nikolaik/python-nodejs:latest
   stage: install_packages
   script:
-    - cd OSCServer
+    - cd Server
     - npm ci
     - cd ../Frontend
     - npm ci
@@ -62,13 +62,13 @@ build:osc-server:
   image: nikolaik/python-nodejs:latest
   stage: build
   before_script:
-    - cd OSCServer
+    - cd Server
   script:
     - npm run build
   artifacts:
     expire_in: 1 day
     paths:
-      - OSCServer/dist/
+      - Server/dist/
   tags:
     - docker
 
@@ -98,7 +98,7 @@ lint:osc-server:
   image: nikolaik/python-nodejs:latest
   allow_failure: true
   before_script:
-    - cd OSCServer
+    - cd Server
   stage: lint
   script:
     - npm run lint
@@ -125,7 +125,7 @@ test:frontend:karma:
 #  image: trion/ng-cli-e2e
 #  allow_failure: false
 #  before_script:
-#    - cd OSCServer
+#    - cd Server
 #    - npm ci
 #    - npm run start
 #    - cd Frontend
@@ -150,7 +150,7 @@ package:frontend:
 package:osc-server:
   stage: package
   script:
-    - cd OSCServer
+    - cd Server
     - docker build -t miguelfranken/osc-server .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/osc-server
