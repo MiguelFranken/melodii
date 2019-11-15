@@ -1,6 +1,8 @@
 import * as OSC from 'osc';
 import {logger} from './tools';
 
+//just a comment
+
 export default class Client {
   private udpClient: any;
   private port: number;
@@ -68,8 +70,8 @@ export default class Client {
       "D3", "A4", "G4", "A4",
       "D3", "A4", "G4", "A4",
     ];
-    for (let i = 0; i < 3; i++) {
-      let arg1 = { type: "s", value: arrNotes[i] }
+    for (let i = 0; i < 4*4; i++) {
+      let arg1 = { type: "s", value: arrNotes2[i] }
       this.send("/play_note", [arg1]);
       await this.sleep(300);
     }

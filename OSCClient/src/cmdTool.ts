@@ -1,15 +1,16 @@
 import inquirer from 'inquirer';
 import Client from './client';
-import {logger} from './tools';
+import { logger } from './tools';
 import ConfigHandler from './configHandler';
 
 export default class CmdTool {
-    private EXIT:string = 'exit';
+    private EXIT: string = 'exit';
     private CHANGEADDRESS: string = 'change address';
     private CHANGEPORT: string = 'change port';
     private CHANGEPATH: string = 'change osc path';
     private CHANGEARGS: string = 'change osc args';
     private SEND: string = 'send (again)';
+    private PLAYAMELIE: string = 'play Amelie Song';
     private settings = {
         port: 57121,
         address: '127.0.0.1',
@@ -36,6 +37,7 @@ export default class CmdTool {
                 this.SEND,
                 this.CHANGEPATH, this.CHANGEARGS,
                 this.CHANGEADDRESS, this.CHANGEPORT,
+                this.PLAYAMELIE,
                 this.EXIT
             ]
         },
@@ -50,10 +52,10 @@ export default class CmdTool {
             message: 'Enter port of the OSC Server:'
         }
     ];
-    private configHandler:any;
-    private ft:boolean = true;
+    private configHandler: any;
+    private ft: boolean = true;
 
-    constructor() { 
+    constructor() {
         this.configHandler = new ConfigHandler();
         if (this.configHandler.existsFile()) {
             this.settings = this.configHandler.loadData();
@@ -85,12 +87,24 @@ export default class CmdTool {
         return false;
     }
 
+    private createCli() {
+        logger('no client defined', { debug: true })
+        this.cli = new Client(
+            this.settings.address, this.settings.port
+        );
+    }
+
+    private closeCli() {
+        this.cli.close();
+        this.cli = undefined;
+    }
+
     public init() {
         if (this.ft) {
             this.changePath(true);
         } else {
             this.menu();
-        }        
+        }
     }
 
     private changePath(ft: boolean = false) {
@@ -103,7 +117,7 @@ export default class CmdTool {
                     return this.changePath(ft);
                 }
                 this.settings.path = oscpath;
-                (ft) ? this.changeArgs():this.menu();
+                (ft) ? this.changeArgs() : this.menu();
             });
     }
 
@@ -135,6 +149,9 @@ export default class CmdTool {
                     return this.changeAddress();
                 }
                 this.settings.address = address;
+                if (this.cli) {
+                    this.closeCli();
+                }
                 this.menu();
             });
     }
@@ -154,8 +171,7 @@ export default class CmdTool {
                 }
                 this.settings.port = parsed;
                 if (this.cli) {
-                    this.cli.close();
-                    this.cli = undefined;
+                    this.closeCli();
                 }
                 this.menu();
             });
@@ -164,8 +180,7 @@ export default class CmdTool {
     private send() {
         let { address, port, path, args } = this.settings;
         if (!this.cli) {
-            logger('no client defined',{debug:true})
-            this.cli = new Client(address, port);
+            this.createCli();
         }
 
         let deli = this.cli.send(path, args)
@@ -175,6 +190,14 @@ export default class CmdTool {
         }
         logger('OSC msg send.')
         return this.menu();
+    }
+
+    private playAmelie() {
+        if (!this.cli) {
+            this.createCli();
+        }
+        this.cli.playAmelie()
+        this.menu();
     }
 
     public menu() {
@@ -189,6 +212,7 @@ export default class CmdTool {
                     case this.CHANGEPATH: return this.changePath();
                     case this.CHANGEARGS: return this.changeArgs();
                     case this.SEND: return this.send();
+                    case this.PLAYAMELIE: return this.playAmelie();
                     default: return this.menu();
                 }
             });
@@ -197,8 +221,8 @@ export default class CmdTool {
     private exitConsole() {
         this.configHandler.storeData(this.settings,
             () => {
-                logger('exited oscclient successfully', {debug:true}); 
-                process.exit();                    
+                logger('exited oscclient successfully', { debug: true });
+                process.exit();
             });
     }
 }
