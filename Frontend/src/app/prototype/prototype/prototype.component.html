@@ -7,9 +7,9 @@
 
   <div class="menu" fxLayout fxFlex="10">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="11.03"><mat-icon class="action-icon">play_arrow</mat-icon></button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="stop()" fxFlex="11.03"><mat-icon class="action-icon">stop</mat-icon></button>
-      <div class="bpm-card" fxFlex fxLayout fxLayoutAlign="start center" fxLayoutGap="25px">
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="calc(20% - 2px)"><mat-icon class="action-icon">play_arrow</mat-icon></button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="stop()" fxFlex="calc(20% - 2px)"><mat-icon class="action-icon">stop</mat-icon></button>
+      <div class="bpm-card" fxFlex="calc(50% - 2px)" fxLayout fxLayoutAlign="start center" fxLayoutGap="75px">
         <span fxFlex="5">{{bpm}}bpm</span>
         <mat-slider
                 class="example-margin"
@@ -23,6 +23,7 @@
         >
         </mat-slider>
       </div>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="calc(10% - 2px)"><mat-icon class="action-icon">play_arrow</mat-icon></button>
     </div>
   </div>
 
@@ -36,6 +37,7 @@
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="nextMatrix()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="clearMatrix()">Clear</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex>Load Preset</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex>Save as Preset</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchVelocity()">{{showVelocity ? 'Hide' : 'Show'}} Velocity</button>
       <div class="text-card" fxLayout fxLayoutAlign="center center" fxFlex>Bar 1</div>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
@@ -44,7 +46,7 @@
   </div>
 
   <div fxLayout="column" fxLayoutGap="2px" fxFlex style="overflow: auto">
-    <div fxLayout *ngFor="let row of matrix; let rowIndex = index" fxLayoutGap="2px" [class.minHeightRow]="row.isExpanded" [fxFlex]="row.isExpanded ? '' : 4">
+    <div fxLayout *ngFor="let row of matrix; let rowIndex = index" fxLayoutGap="2px" [class.minHeightRow]="row.isExpanded" [class.minHeightRowNotExpanded]="!row.isExpanded" fxFlex>
       <button (click)="switchRow(rowIndex)" mat-button class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="showRowNames">
         <span>{{row.name}}</span>
       </button>
@@ -61,10 +63,12 @@
               [ngStyle]="{'background-color': button.isActive ? 'rgba(0,0,0,' + ((0.3-0.15)/100*(button.velocity-100)+0.3) +')' : 'rgba(0,0,0,.1)'}"
       >
         <div class="velocity-slider" *ngIf="button.isActive && showVelocity" fxLayout>
-          <mat-slider fxFlex style="height: 10px" (click)="clickedSlider()" (input)="setVelocity($event, button)" [value]="button.velocity"></mat-slider>
+          <mat-slider fxFlex style="height: 25px" (click)="clickedSlider()" (input)="setVelocity($event, button)" [value]="button.velocity"></mat-slider>
         </div>
-
       </a>
+      <button mat-button class="action-button" fxFlex fxLayout="column" fxLayoutAlign="center center">
+        <span>Clear</span>
+      </button>
     </div>
   </div>
 
@@ -79,6 +83,7 @@
       <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex>6</div>
       <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex>7</div>
       <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex>8</div>
+      <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex>Actions</div>
     </div>
   </div>
 

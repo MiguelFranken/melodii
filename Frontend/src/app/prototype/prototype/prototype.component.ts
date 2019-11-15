@@ -167,7 +167,7 @@ export class PrototypeComponent implements OnInit {
 
   private createMatrixDrums() {
     let matrix: Matrix = [];
-    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+    for (let i = 0; i < 6; i++) {
       let rowArray: RowButton[] = [];
 
       for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {

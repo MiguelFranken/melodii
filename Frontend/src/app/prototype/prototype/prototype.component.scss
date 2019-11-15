@@ -5,6 +5,7 @@
 .card {
   padding: 10px;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .menu {
@@ -64,7 +65,7 @@
 
 ::ng-deep .bpm-card .mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
   height: 6px;
-  border-radius: 10px
+  border-radius: 2px
 }
 
 ::ng-deep .bpm-card .mat-slider.mat-slider-horizontal .mat-slider-track-background,
@@ -101,13 +102,17 @@
   min-height: 150px;
 }
 
+.minHeightRowNotExpanded {
+  min-height: 80px;
+}
+
 ::ng-deep .mat-menu-item-submenu-trigger::after {
   border-color: transparent transparent transparent rgba(255,255,255,0.8) !important;
 }
 
 .velocity-slider {
   position: absolute;
-  bottom: 0;
+  bottom: 15px;
   left: 0;
   min-width: 100%;
   max-width: 100%;
@@ -127,12 +132,16 @@
 }
 
 ::ng-deep .velocity-slider .mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
-  height: 10px !important;
+  height: 25px !important;
   border-radius: 0 !important;
 }
 
 ::ng-deep .velocity-slider .mat-slider {
   padding: 0 !important;
+}
+
+::ng-deep .bpm-card .mat-slider-track-fill {
+  border-radius: 10px;
 }
 
 ::ng-deep .mat-slider-track-background {
@@ -141,8 +150,8 @@
 }
 
 ::ng-deep .velocity-slider .mat-slider-horizontal .mat-slider-wrapper {
-  left: 0px !important;
-  right: 0px !important;
+  left: 0 !important;
+  right: 0 !important;
   bottom: 8px !important;
   top: unset;
 }
