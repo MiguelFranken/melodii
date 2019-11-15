@@ -8,6 +8,7 @@ export default class Client {
   private port: number;
   private address: string;
   private portReady: boolean = false;
+  private drumLoop = false;
 
   constructor(address: string, port: number) {
     this.port = port;
@@ -34,7 +35,6 @@ export default class Client {
   }
 
   public async send(path: string, args: Array<Object>) {
-    logger('path: ' + path, {debug:true});
     let counter = 0;
     while (!this.portReady) {
       
@@ -72,9 +72,33 @@ export default class Client {
     ];
     for (let i = 0; i < 4*4; i++) {
       let arg1 = { type: "s", value: arrNotes2[i] }
-      this.send("/play_note", [arg1]);
+      this.send("/piano/play_note", [arg1]);
       await this.sleep(300);
     }
+  }
+
+  public startDrumLoop() {
+    this.drumLoop = true;
+    this.playDrumBeat();
+  }
+
+  public stopDrumLoop() {
+    this.drumLoop = false;
+  }
+
+  private async playDrumBeat() {
+    while (this.drumLoop) {
+      this.send('/drums/kick', [{type:'s', value: 'C2'}]);
+      await this.sleep(700);
+      this.send('/drums/snare', [{type:'s', value: 'C2'}]);
+      await this.sleep(700);
+      this.send('/drums/kick', [{type:'s', value: 'C2'}]);
+      await this.sleep(350);
+      this.send('/drums/kick', [{type:'s', value: 'C2'}]);
+      await this.sleep(350);
+      this.send('/drums/snare', [{type:'s', value: 'C2'}]);
+      await this.sleep(700);
+    } 
   }
 
   public async checkPianoSynthVsNormalSynth(): Promise<any> {
