@@ -6,8 +6,6 @@ class SocketEvents {
   public static message = "message";
 }
 
-type Port = number;
-
 export class SocketServer {
   private readonly io: socketIo.Server;
 
@@ -29,7 +27,7 @@ export class SocketServer {
   }
 
   public emit(data?: any) {
-    Logger.Info(`Emitting event ${event} on port ${this.port}.\nData is: ${data}`);
+    Logger.Info(`Emitting message on port ${this.port}.\nData is: ${JSON.stringify(data)}`);
     this.io.emit(SocketEvents.message, data);
   }
 }
