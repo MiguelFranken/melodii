@@ -1,9 +1,4 @@
 <div fxLayout="column" style="padding: 2px" fxLayoutGap="2px" [ngStyle]="{'height': height}">
- <!-- <div fxLayout fxLayoutGap="10px">
-    <button mat-flat-button color="accent" (click)="start()"><mat-icon>play_arrow</mat-icon> Play</button>
-&lt;!&ndash;    <button mat-flat-button color="accent"><mat-icon>pause</mat-icon> Pause</button>&ndash;&gt;
-    <button mat-flat-button color="accent" (click)="stop()"><mat-icon>stop</mat-icon> Stop</button>
-  </div>-->
 
   <div class="menu" fxLayout fxFlex="10">
     <div fxFill fxLayout fxLayoutGap="2px">
@@ -70,7 +65,7 @@
 
   <div class="menu" fxLayout fxFlex="5">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex *ngIf="showRowNames">Bar 1 <mat-icon>keyboard_arrow_right</mat-icon></div>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex *ngIf="showRowNames">Fold</button>
       <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex>1</div>
       <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex>2</div>
       <div class="beat-card" fxLayout fxLayoutAlign="center center" fxFlex>3</div>
