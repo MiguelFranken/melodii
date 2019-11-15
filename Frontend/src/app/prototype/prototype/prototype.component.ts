@@ -38,7 +38,7 @@ const NUMBER_OF_ROWS: number = 30;
 })
 export class PrototypeComponent implements OnInit {
 
-  private height: string = "100%";
+  public height: string = "100%";
 
   private matrixCollection: Matrix[] = [];
   private matrixCollectionIndex = 0;
