@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { interval, Observable, of, Subject, Subscription } from "rxjs";
+import { interval, Observable, Subject, Subscription } from "rxjs";
 import { SocketService } from "../../shared/socket/socket.service";
 import { Action } from "../../shared/socket/action";
-import { IOSCMessage } from "../../shared/osc/osc-message";
 import { switchMap } from "rxjs/operators";
 import { MatMenuTrigger } from "@angular/material/menu";
 import { NavigationService } from "../../shared/layout/navigation/navigation.service";
+import { Matrix } from "./matrix";
+import { Row } from "./row";
+import { RowButton } from "./row-button";
 
 const NOTES_PENTATONIC_C = [
   "C",
@@ -14,7 +16,6 @@ const NOTES_PENTATONIC_C = [
   "A",
   "G"
 ];
-
 const NOTES_MAJOR_C = [
   "C",
   "D",
@@ -26,49 +27,6 @@ const NOTES_MAJOR_C = [
 ];
 
 const DEFAULT_BPM = 80;
-
-export class Matrix {
-  public name: string = "testName";
-  public rows: Row[] = [];
-}
-
-export class Row {
-  public isExpanded = true;
-  public isFolded: boolean = false;
-  public name: string = "row name";
-
-  constructor(public buttons: RowButton[]) {
-  }
-}
-
-export class RowButton {
-  public isPlayed: boolean = false;
-  public isActive: boolean = false;
-  public id: string;
-  public velocity = 100; // Percent
-
-  public oscMessage: IOSCMessage;
-
-  constructor(note: string) {
-    this.id = note;
-    this.setOSCMessage(note);
-  }
-
-  private setOSCMessage(note) {
-    this.oscMessage = {
-      address: "/play_note",
-        args: [
-      { type: "s", value: note }
-    ],
-      info: {
-      address: "/play_note",
-        family: "IPv4",
-        port: 80,
-        size: 1,
-    }
-    }
-  }
-}
 
 const NUMBER_OF_COLUMNS: number = 8;
 const NUMBER_OF_ROWS: number = 30;
@@ -93,7 +51,6 @@ export class PrototypeComponent implements OnInit {
   }
 
   setVelocity(event, button: RowButton) {
-    console.log(event);
     button.velocity = event.value;
   }
 
@@ -113,7 +70,7 @@ export class PrototypeComponent implements OnInit {
   }
 
   private subject = new Subject();
-  private _interval;
+  private interval;
 
   private msPerBeat: number = 1000 * 0.5 * (60 / DEFAULT_BPM); // TODO MF: different default
 
@@ -143,7 +100,7 @@ export class PrototypeComponent implements OnInit {
       }
     });
 
-    this._interval = this.subject.pipe(switchMap((period: number) => interval(period)));
+    this.interval = this.subject.pipe(switchMap((period: number) => interval(period)));
     this.socketService.initSocket();
     this.createMatrixDrums();
     this.createMatrixPiano();
@@ -283,7 +240,7 @@ export class PrototypeComponent implements OnInit {
       }
     }
 
-    this.playSubscription = this._interval.subscribe(_ => {
+    this.playSubscription = this.interval.subscribe(_ => {
       const newTemp = (this.temp + 1) % NUMBER_OF_COLUMNS;
 
       for (let rows of this.matrix.rows) {
