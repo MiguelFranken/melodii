@@ -59,7 +59,9 @@
               fxLayout="column"
               fxLayoutAlign="end stretch"
               (click)="switch($event, button)"
+              long-press
               (contextmenu)="onContextMenu($event, button)"
+              (onLongPress)="onLongPress($event, button)"
               style="position: relative;"
               [ngStyle]="{'background-color': button.isActive ? 'rgba(0,0,0,' + ((0.3-0.15)/100*(button.velocity-100)+0.3) +')' : 'rgba(0,0,0,.1)'}"
       >
