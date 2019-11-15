@@ -6,14 +6,15 @@ class SocketEvents {
   public static message = "message";
 }
 
+type Port = number;
+
 export class SocketServer {
   private readonly io: socketIo.Server;
 
   constructor(
-    public readonly port: number,
+    public readonly port: Port,
   ) {
     this.io = socketIo(this.port);
-    Logger.Info(`Socket server listening on port ${this.port}.`)
     this.io.on(SocketEvents.connect, (socket: SocketIO.Socket) => {
       Logger.Info(`New connection from ${socket.conn.remoteAddress}.`)
     })

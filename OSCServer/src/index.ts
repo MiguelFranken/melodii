@@ -1,8 +1,10 @@
-import { SocketServer } from './socket/socket-server';
+import { SocketServer } from './socket-server';
+import { Logger } from '@overnightjs/logger';
 
-
-const clientSocket = new SocketServer(8000);
-const tonegeneratorSocket = new SocketServer(8080);
+const clientSocket = new SocketServer(8080);
+Logger.Info(`Client socket server listening on port ${clientSocket.port}.`)
+const tonegeneratorSocket = new SocketServer(8000);
+Logger.Info(`Tone generator socket server listening on port ${clientSocket.port}.`)
 
 clientSocket.onMessage(message => {
     tonegeneratorSocket.emit(message);
