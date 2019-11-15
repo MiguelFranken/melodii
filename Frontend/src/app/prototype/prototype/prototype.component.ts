@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { interval, Observable, Subject, Subscription } from "rxjs";
+import { interval, Observable, of, Subject, Subscription } from "rxjs";
 import { SocketService } from "../../shared/socket/socket.service";
 import { Action } from "../../shared/socket/action";
 import { IOSCMessage } from "../../shared/osc/osc-message";
@@ -76,6 +76,8 @@ const NUMBER_OF_ROWS: number = 30;
 })
 export class PrototypeComponent implements OnInit {
 
+  private height: string = "100%";
+
   private matrixCollection: Matrix[] = [];
   private matrixCollectionIndex = 0;
   public matrix: Matrix = [];
@@ -129,6 +131,13 @@ export class PrototypeComponent implements OnInit {
 
   ngOnInit() {
     this.isClosedNavigation = this.navigationService.getIsClosedObservable();
+    this.isClosedNavigation.subscribe(value => {
+      if (value) {
+        this.height = "100%";
+      } else {
+        this.height = "99.99%"; // safari height fix
+      }
+    });
 
     this._interval = this.subject.pipe(switchMap((period: number) => interval(period)));
     this.socketService.initSocket();
