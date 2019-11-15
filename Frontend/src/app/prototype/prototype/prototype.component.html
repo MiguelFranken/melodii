@@ -1,4 +1,4 @@
-<div fxLayout="column" style="height: 94vh; padding: 2px" fxLayoutGap="2px">
+<div fxLayout="column" style="padding: 2px" fxLayoutGap="2px" [ngStyle]="{'height': (isClosedNavigation | async) ? '100vh' : '94vh'}">
  <!-- <div fxLayout fxLayoutGap="10px">
     <button mat-flat-button color="accent" (click)="start()"><mat-icon>play_arrow</mat-icon> Play</button>
 &lt;!&ndash;    <button mat-flat-button color="accent"><mat-icon>pause</mat-icon> Pause</button>&ndash;&gt;
@@ -23,7 +23,7 @@
         >
         </mat-slider>
       </div>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="calc(10% - 2px)"><mat-icon class="action-icon">play_arrow</mat-icon></button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchNavigation()" fxFlex="calc(10% - 2px)"><mat-icon class="action-icon">menu</mat-icon></button>
     </div>
   </div>
 

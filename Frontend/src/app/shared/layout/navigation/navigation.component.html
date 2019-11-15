@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" fxLayout fxLayoutAlign="space-between center" style="height: 6vh; background: gray">
+<mat-toolbar color="primary" fxLayout fxLayoutAlign="space-between center" style="height: 6vh; background: gray" *ngIf="!(isClosed | async)">
   <a fxLayout fxLayoutAlign="start center" fxLayoutGap="10px" routerLink="" class="main-nav-link">
     <img height="30px" alt="logo" src="assets/logo.png">
   </a>

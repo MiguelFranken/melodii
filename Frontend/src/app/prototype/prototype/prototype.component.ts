@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { interval, Subject, Subscription } from "rxjs";
+import { interval, Observable, Subject, Subscription } from "rxjs";
 import { SocketService } from "../../shared/socket/socket.service";
 import { Action } from "../../shared/socket/action";
 import { IOSCMessage } from "../../shared/osc/osc-message";
 import { switchMap } from "rxjs/operators";
 import { MatMenuTrigger } from "@angular/material/menu";
+import { NavigationService } from "../../shared/layout/navigation/navigation.service";
 
 const NOTES_PENTATONIC_C = [
   "C",
@@ -85,8 +86,6 @@ export class PrototypeComponent implements OnInit {
     this.showVelocity = !this.showVelocity;
   }
 
-  publix;
-
   setVelocity(event, button: RowButton) {
     console.log(event);
     button.velocity = event.value;
@@ -118,19 +117,29 @@ export class PrototypeComponent implements OnInit {
 
   public showRowNames: boolean = true;
 
-  constructor(private socketService: SocketService) { }
+  private isClosedNavigation: Observable<boolean>;
+
+  constructor(
+    private socketService: SocketService,
+    private navigationService: NavigationService) { }
 
   changeBpm(event) {
     this.bpm = event.value;
   }
 
   ngOnInit() {
+    this.isClosedNavigation = this.navigationService.getIsClosedObservable();
+
     this._interval = this.subject.pipe(switchMap((period: number) => interval(period)));
     this.socketService.initSocket();
     this.createMatrixDrums();
     this.createMatrixPiano();
 
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+  }
+
+  public switchNavigation() {
+    this.navigationService.switchNavigation();
   }
 
   public nextMatrix() {

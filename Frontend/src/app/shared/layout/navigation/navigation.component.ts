@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationService } from "./navigation.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-navigation',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
+  public isClosed: Observable<boolean>;
+
+  constructor(private navigationService: NavigationService) { }
 
   ngOnInit() {
+    this.isClosed = this.navigationService.getIsClosedObservable();
   }
 
 }
