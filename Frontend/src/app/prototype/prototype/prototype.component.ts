@@ -117,7 +117,7 @@ export class PrototypeComponent implements OnInit {
 
   public showRowNames: boolean = true;
 
-  private isClosedNavigation: Observable<boolean>;
+  public isClosedNavigation: Observable<boolean>;
 
   constructor(
     private socketService: SocketService,
