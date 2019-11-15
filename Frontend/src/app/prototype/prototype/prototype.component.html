@@ -26,7 +26,7 @@
     <div fxFill fxLayout fxLayoutGap="2px">
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchAllExpanded()">
 <!--        <mat-icon><ng-container *ngIf="showRowNames;then showRowNamesTemplate else hideRowNamesTemplate"></ng-container></mat-icon>-->
-        Drums
+        {{matrix.name}}
       </button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="previousMatrix()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="nextMatrix()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>

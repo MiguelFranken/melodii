@@ -27,6 +27,11 @@ const NOTES_MAJOR_C = [
 
 const DEFAULT_BPM = 80;
 
+export class Matrix {
+  public name: string = "testName";
+  public rows: Row[] = [];
+}
+
 export class Row {
   public isExpanded = true;
   public isFolded: boolean = false;
@@ -65,8 +70,6 @@ export class RowButton {
   }
 }
 
-type Matrix = Row[];
-
 const NUMBER_OF_COLUMNS: number = 8;
 const NUMBER_OF_ROWS: number = 30;
 
@@ -81,7 +84,7 @@ export class PrototypeComponent implements OnInit {
 
   private matrixCollection: Matrix[] = [];
   private matrixCollectionIndex = 0;
-  public matrix: Matrix = [];
+  public matrix: Matrix;
 
   public showVelocity: boolean = false;
 
@@ -172,12 +175,12 @@ export class PrototypeComponent implements OnInit {
 
   public switchAllExpanded() {
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-      this.matrix[i].isExpanded = !this.matrix[i].isExpanded;
+      this.matrix.rows[i].isExpanded = !this.matrix.rows[i].isExpanded;
     }
   }
 
   getNonFoldedRows() {
-    return this.matrix.filter((row: Row) => {
+    return this.matrix.rows.filter((row: Row) => {
       return !row.isFolded;
     });
   }
@@ -187,15 +190,15 @@ export class PrototypeComponent implements OnInit {
   switchFold() {
     if (this.isInFoldMode) {
       for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-        this.matrix[i].isFolded = false;
+        this.matrix.rows[i].isFolded = false;
       }
       this.isInFoldMode = false;
     } else {
       for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-        this.matrix[i].isFolded = true;
+        this.matrix.rows[i].isFolded = true;
         for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-          if (this.matrix[i].buttons[y].isActive) {
-            this.matrix[i].isFolded = false;
+          if (this.matrix.rows[i].buttons[y].isActive) {
+            this.matrix.rows[i].isFolded = false;
           }
         }
       }
@@ -206,13 +209,13 @@ export class PrototypeComponent implements OnInit {
   public clearMatrix() {
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
       for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-        this.matrix[i].buttons[y].isActive = false;
+        this.matrix.rows[i].buttons[y].isActive = false;
       }
     }
   }
 
   private createMatrixDrums() {
-    let matrix: Matrix = [];
+    let matrix: Matrix = new Matrix();
     for (let i = 0; i < 6; i++) {
       let rowArray: RowButton[] = [];
 
@@ -225,13 +228,14 @@ export class PrototypeComponent implements OnInit {
 
       const row: Row = new Row(rowArray);
 
-      matrix.push(row);
+      matrix.rows.push(row);
     }
+    matrix.name = "Drums";
     this.matrixCollection.push(matrix);
   }
 
   private createMatrixPiano() {
-    let matrix: Matrix = [];
+    let matrix: Matrix = new Matrix();
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
       let rowArray: RowButton[] = [];
 
@@ -246,8 +250,9 @@ export class PrototypeComponent implements OnInit {
       const row: Row = new Row(rowArray);
       row.name = note;
 
-      matrix.push(row);
+      matrix.rows.push(row);
     }
+    matrix.name = "Synth";
     this.matrixCollection.push(matrix);
   }
 
@@ -255,7 +260,7 @@ export class PrototypeComponent implements OnInit {
     if (this.playSubscription) {
       this.playSubscription.unsubscribe();
 
-      for (let rows of this.matrix) {
+      for (let rows of this.matrix.rows) {
         const oldButton: RowButton = rows.buttons[this.temp];
         oldButton.isPlayed = false;
       }
@@ -269,7 +274,7 @@ export class PrototypeComponent implements OnInit {
   }
 
   public start() {
-    for (let rows of this.matrix) {
+    for (let rows of this.matrix.rows) {
       const oldButton: RowButton = rows.buttons[0];
       oldButton.isPlayed = true;
 
@@ -281,7 +286,7 @@ export class PrototypeComponent implements OnInit {
     this.playSubscription = this._interval.subscribe(_ => {
       const newTemp = (this.temp + 1) % NUMBER_OF_COLUMNS;
 
-      for (let rows of this.matrix) {
+      for (let rows of this.matrix.rows) {
         const oldButton: RowButton = rows.buttons[this.temp];
         oldButton.isPlayed = false;
 
