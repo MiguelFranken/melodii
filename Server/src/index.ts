@@ -1,3 +1,5 @@
+import * as express from 'express';
+import * as path from 'path';
 import * as ip from 'ip';
 import { SocketServer } from './socket-server';
 import { Logger } from '@overnightjs/logger';
@@ -19,3 +21,8 @@ Logger.Info(`UDP server listening for OSC messages at ${myIp}:${udpServer.port}`
 udpServer.onMessage(message => {
     tonegeneratorSocket.emit(message);
 });
+
+const webserver = express();
+webserver.use('/', express.static(path.join(__dirname, 'public')));
+const webserverPort = 80;
+webserver.listen(webserverPort, () => console.log(`Example app listening on port ${webserverPort}!`));
