@@ -13,7 +13,7 @@ export class OSCServer {
     this.udp = new OSC.UDPPort({
       localAddress: ip,
       localPort: port,
-      metadata:true,
+      metadata: true,
     });
     Logger.Info(`Starting OSC server on ip '${ip}' and port '${port}'..`);
   }
