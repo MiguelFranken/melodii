@@ -7,7 +7,8 @@
   },
   "scripts": {
     "build": "tsc --p tsconfig.json",
-    "start": "npm run build && node dist/index.js"
+    "start": "npm run build && node dist/index.js",
+    "lint": "tslint -- src/*.ts"
   },
   "dependencies": {
     "@overnightjs/logger": "^1.1.9",
