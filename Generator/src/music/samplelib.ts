@@ -4,7 +4,7 @@ import * as Tone from "tone";
  * creates samplers based on wav/mp3/oog files
  */
 export class SampleLib {
-  public baseUrl: string = 'samples/'; 
+  public baseUrl: string = 'samples/';
 
   public pianoNotes: object = {
     'A0': 'A0.mp3',
@@ -94,10 +94,10 @@ export class SampleLib {
     'G#6': 'Gs6.mp3'
   }
 
-  constructor() {    
+  constructor() {
   }
 
-  public getKickSampler(onload:any = () => {}) {
+  public getKickSampler(onload: any = () => { }) {
     let path = 'drums/jazz_kick.wav';
     let sampler = new Tone.Sampler(
       { C2: path },
@@ -107,7 +107,7 @@ export class SampleLib {
     return sampler;
   }
 
-  public getSnareSampler(onload:any = () => {}) {
+  public getSnareSampler(onload: any = () => { }) {
     let path = 'drums/jazz_snare.wav';
     let sampler = new Tone.Sampler(
       { C2: path },
@@ -117,17 +117,17 @@ export class SampleLib {
     return sampler;
   }
 
-  public getPianoSampler(onload:any = () => {}) {
+  public getPianoSampler(onload: any = () => { }) {
     let sampler = new Tone.Sampler(
       this.pianoNotes,
       {
-        attack : 0 ,
-        release : 1.5 ,
-        onload : onload,
-        baseUrl : this.baseUrl + 'piano/',
-        curve : 'sinus'
+        attack: 0,
+        release: 1.5,
+        onload: onload,
+        baseUrl: this.baseUrl + 'piano/',
+        curve: 'sinus'
       }
-        
+
     );
     sampler.volume.value = -15;
     return sampler;
@@ -146,7 +146,22 @@ export class SampleLib {
       }
     });
     synth.volume.value = -20;
-    return synth;    
+    return synth;
+  }
+
+  public getLongNoteSynth() {
+    let synth = new Tone.Synth({
+      oscillator: {
+        type: 'square'
+      },
+      envelope: {
+        attack: 0.005,
+        decay: 0.001,
+        sustain: 0.99,
+        release: 0.001
+      }
+    });
+    return synth;
   }
 
 }

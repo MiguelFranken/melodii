@@ -12,4 +12,14 @@ export class PlayNoteController {
     this.music.playNote(message.args[0].value.toString());
   }
 
+  @OnMessage('/start')
+  public receivedMessageStart(@Message() message: IOSCMessage) {
+    this.music.startLongNote(message.args[0].value.toString());
+  }
+
+  @OnMessage('/stop')
+  public receivedMessageStop(@Message() message: IOSCMessage) {
+    this.music.stopLongNote();
+  }
+
 }

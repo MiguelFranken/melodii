@@ -31,6 +31,7 @@ export class Music implements IMusic {
   private sampleLib = new SampleLib();
   private readonly scale: string[];
   private isEchoActivated = false;
+  
 
 
   constructor() {    
@@ -46,6 +47,7 @@ export class Music implements IMusic {
       () => console.log("piano bufferd") // just for debug purpose
     ).toMaster();
     this.instruments.hihat = this.sampleLib.getHiHatSynth().toMaster();
+    this.instruments.longNote = this.sampleLib.getLongNoteSynth().toMaster();
   }
 
   /**
@@ -79,13 +81,28 @@ export class Music implements IMusic {
    * plays the drums
    * @param instrument which part of the drums should be played
    */
-  public playDrums(instrument:string): void {
+  public playDrums(instrument: string): void {
     switch(instrument) {
       case 'kick': this.instruments.drum_kick.triggerAttack("C2"); break;
       case 'snare': this.instruments.drum_snare.triggerAttack("C2"); break;
       case 'hihat': this.instruments.hihat.triggerAttackRelease("8n"); break;
-    }
-    
+    }    
+  }
+
+  /**
+   * Starts the attack of a single note
+   * @param note "C4", "D2", "A2", ...
+   */
+  public startLongNote(note: string) {
+    this.instruments.longNote.triggerAttack(note);
+  }
+
+  /**
+   * Releases the holded single note
+   * @param note "C4", "D2", "A2", ...
+   */
+  public stopLongNote() {
+    this.instruments.longNote.triggerRelease();
   }
 
   /**
