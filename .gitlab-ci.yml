@@ -9,6 +9,7 @@ cache:
     - OSCServer/node_modules/
     - Frontend/node_modules/
     - Generator/node_modules/
+    - OSCClient/node_modules/
 
 stages:
   - install_packages
@@ -27,6 +28,8 @@ install_packages:
     - cd ../Frontend
     - npm ci
     - cd ../Generator
+    - npm ci
+    - cd ../OSCClient
     - npm ci
   tags:
     - docker
@@ -72,6 +75,20 @@ build:osc-server:
   tags:
     - docker
 
+build:osc-client:
+  image: nikolaik/python-nodejs:latest
+  stage: build
+  before_script:
+    - cd OSCClient
+  script:
+    - npm run build
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - OSCClient/dist/
+  tags:
+    - docker
+
 lint:frontend:
   image: trion/ng-cli
   allow_failure: true
@@ -99,6 +116,17 @@ lint:osc-server:
   allow_failure: true
   before_script:
     - cd OSCServer
+  stage: lint
+  script:
+    - npm run lint
+  tags:
+    - docker
+
+lint:osc-client:
+  image: nikolaik/python-nodejs:latest
+  allow_failure: true
+  before_script:
+    - cd OSCClient
   stage: lint
   script:
     - npm run lint
