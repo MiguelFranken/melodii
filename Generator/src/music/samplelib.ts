@@ -97,33 +97,33 @@ export class SampleLib {
   constructor() {
   }
 
-  public getKickSampler(onload: any = () => { }) {
+  public getKickSampler(onLoad: () => void = () => {}) {
     let path = 'drums/jazz_kick.wav';
     let sampler = new Tone.Sampler(
       { C2: path },
-      onload,
+      onLoad,
       this.baseUrl
     );
     return sampler;
   }
 
-  public getSnareSampler(onload: any = () => { }) {
+  public getSnareSampler(onLoad: () => void = () => {}) {
     let path = 'drums/jazz_snare.wav';
     let sampler = new Tone.Sampler(
       { C2: path },
-      onload,
+      onLoad,
       this.baseUrl
     );
     return sampler;
   }
 
-  public getPianoSampler(onload: any = () => { }) {
+  public getPianoSampler(onLoad: () => void = () => {}) {
     let sampler = new Tone.Sampler(
       this.pianoNotes,
       {
         attack: 0,
         release: 1.5,
-        onload: onload,
+        onload: onLoad,
         baseUrl: this.baseUrl + 'piano/',
         curve: 'sinus'
       }
