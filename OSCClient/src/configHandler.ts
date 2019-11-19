@@ -2,11 +2,11 @@ import fs from 'fs';
 import { logger } from './tools';
 
 export default class ConfigHandler {
-    private fileName: string = 'occonfig.json'
+    private fileName: string = 'occonfig.json';
     private path: string = __dirname + '/' + this.fileName;
 
     constructor() {
-
+        logger("constructor", {debug: true});
     }
 
     public existsFile() {
@@ -14,17 +14,19 @@ export default class ConfigHandler {
     }
 
     public loadData(): object {
-        let obj = fs.readFileSync(this.path, 'utf8');
-        let jsonobj = JSON.parse(obj);
+        const obj = fs.readFileSync(this.path, 'utf8');
+        const jsonobj = JSON.parse(obj);
         return jsonobj;
     }
 
-    public storeData(obj: object, callback:any):void {
-        logger('store file', {debug:true});
-        let json = JSON.stringify(obj, undefined, 2);
+    public storeData(obj: object, callback: any): void {
+        logger('store file', {debug: true});
+        const json = JSON.stringify(obj, undefined, 2);
         fs.writeFile(this.path, json, 'utf8', (err) => {
-            if (err) console.log(err);
+            if (err) {
+                console.log(err);
+            }
             callback();
-        });        
+        });
     }
 }
