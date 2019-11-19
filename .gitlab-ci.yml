@@ -120,16 +120,16 @@ stages:
 #  tags:
 #    - docker
 
-package:master:
-  stage: package
-  script:
-    - docker build -t $DOCKER_USERNAME/mcp-master .
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker push $DOCKER_USERNAME/mcp-master
-  tags:
-    - docker
-#  only:
-#    - master
+#package:master:
+#  stage: package
+#  script:
+#    - docker build -t $DOCKER_USERNAME/mcp-master .
+#    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+#    - docker push $DOCKER_USERNAME/mcp-master
+#  tags:
+#    - docker
+##  only:
+##    - master
 
 deploy:master:
   image: node:12.13
@@ -147,16 +147,16 @@ deploy:master:
 #  only:
 #    - master
 
-package:dev:
-  stage: package
-  script:
-    - docker build -t $DOCKER_USERNAME/mcp-dev .
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker push $DOCKER_USERNAME/mcp-dev
-  tags:
-    - docker
-#  only:
-#    - dev
+#package:dev:
+#  stage: package
+#  script:
+#    - docker build -t $DOCKER_USERNAME/mcp-dev .
+#    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+#    - docker push $DOCKER_USERNAME/mcp-dev
+#  tags:
+#    - docker
+##  only:
+##    - dev
 
 deploy:dev:
   image: node:12.13
