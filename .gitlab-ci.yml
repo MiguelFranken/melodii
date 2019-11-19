@@ -2,11 +2,9 @@ image: docker:latest
 services:
   - docker:18.09.7-dind
 
-
 variables:
   USERNAME: $DOCKER_USERNAME
   PASSWORD: $DOCKER_PASSWORD
-
 
 cache:
   untracked: true
@@ -129,7 +127,7 @@ stages:
 package:master:
   stage: package
   script:
-    - docker build -t $DOCKER_USERNAME/mcp-master .
+    - docker build --build-arg frontend-build-command="build:master" -t $DOCKER_USERNAME/mcp-master .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/mcp-master
   tags:
@@ -156,7 +154,7 @@ deploy:master:
 package:dev:
   stage: package
   script:
-    - docker build -t $DOCKER_USERNAME/mcp-dev .
+    - docker build --build-arg frontend-build-command="build:dev" -t $DOCKER_USERNAME/mcp-dev .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/mcp-dev
   tags:
