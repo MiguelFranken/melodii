@@ -1,4 +1,4 @@
-ARG branch
+ARG branch=local
 
 FROM node:12.13 as generator
 ARG branch

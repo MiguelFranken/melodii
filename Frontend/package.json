@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build:master": "ng build --configuration=master --base-href \"/monitor/\"",
     "build:dev": "ng build --configuration=dev --base-href \"/monitor/\"",
+    "build:local": "ng build --base-href \"/monitor/\"",
     "test": "ng test",
     "lint": "ng lint",
     "pree2e": "webdriver-manager update",

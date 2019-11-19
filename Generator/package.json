@@ -9,7 +9,7 @@
   "scripts": {
     "build:master": "npm run build:express && npm run build:tonejs:master",
     "build:dev": "npm run build:express && npm run build:tonejs:dev",
-    "build": "npm run build:express && npm run build:tonejs",
+    "build:local": "npm run build:express && npm run build:tonejs",
     "build:express": "tsc --p tsconfig.json",
     "build:tonejs:master": "webpack --env.master --config ./webpack.config.js && cp -r ./src/static/* ./dist/static",
     "build:tonejs:dev": "webpack --env.dev --config ./webpack.config.js && cp -r ./src/static/* ./dist/static",
