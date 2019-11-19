@@ -8,7 +8,8 @@ RUN npm ci && npm run build
 FROM node:12.13 as frontend
 WORKDIR /app
 COPY Frontend/ .
-RUN npm ci && npm run $frontend-build-command
+RUN npm ci
+RUN npm run ${frontend-build-command}
 
 FROM node:12.13 as server
 WORKDIR /app
