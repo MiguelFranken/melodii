@@ -12,6 +12,6 @@ else
   docker pull $USERNAME/mcp-$BRANCH
   docker stop mcp
   docker rm mcp
-  docker run -d -p 80:80 --name mcp miguelfranken/mcp-$BRANCH
+  docker run -d -p 8080:8080 -p 8000:8000 -p 80:80 -p 57121:57121/udp --name mcp $USERNAME/mcp-$BRANCH
   echo "Done"
 fi

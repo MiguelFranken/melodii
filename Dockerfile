@@ -23,8 +23,6 @@ RUN npm run build
 COPY --from=generator /app/dist/static /app/dist/public
 COPY --from=frontend /app/dist/osc-frontend /app/dist/public/monitor
 
-# Assuming image is called `mcp`, launch with:
-# docker run -p 8080:8080 -p 8000:8000 -p 80:80 -p 57121:57121/udp miguelfranken/mcp
 EXPOSE 8080
 EXPOSE 8000
 EXPOSE 80
