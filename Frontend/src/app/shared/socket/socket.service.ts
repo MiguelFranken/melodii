@@ -6,15 +6,13 @@ import { Action } from './action';
 import { environment } from '../../../environments/environment';
 import { IOSCMessage } from '../osc/osc-message';
 
-const SERVER_URL = environment.production ? 'http://mcp-osc.miguel-franken.com:8080' : 'localhost:8080';
-
 @Injectable()
 export class SocketService {
   private socket;
 
   public initSocket(): void {
-    console.log(`Establishing websocket connection to OSC-Server (${SERVER_URL})`);
-    this.socket = socketIo(SERVER_URL);
+    console.log(`Establishing websocket connection to OSC-Server (${environment.SERVER_URL})`);
+    this.socket = socketIo(environment.SERVER_URL);
   }
 
   public send(action: Action, message: any) {

@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --base-href \"/monitor/\"",
+    "build:master": "ng build --configuration=master --base-href \"/monitor/\"",
+    "build:dev": "ng build --configuration=dev --base-href \"/monitor/\"",
     "test": "ng test",
     "lint": "ng lint",
     "pree2e": "webdriver-manager update",
