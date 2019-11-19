@@ -5,12 +5,19 @@ import { SocketServer } from './socket-server';
 import { Logger } from '@overnightjs/logger';
 import { UdpServer } from './udp-server';
 
+/**
+ * TODO
+ */
 const clientSocket = new SocketServer(8080);
 Logger.Info(`Client socket server listening on port ${clientSocket.port}.`);
+
+/**
+ * TODO
+ */
 const tonegeneratorSocket = new SocketServer(8000);
 Logger.Info(`Tone generator socket server listening on port ${clientSocket.port}.`);
 
-// TODO: OSC Nachrichten müssen auch an das Frontend geleitet werden
+// redirect messages from frontend to tone generator
 clientSocket.onMessage(message => {
     tonegeneratorSocket.emit(message);
 });
@@ -20,12 +27,14 @@ const udpServer = new UdpServer(57121);
 const myIp = ip.address();
 Logger.Info(`UDP server listening for OSC messages at ${myIp}:${udpServer.port}`);
 
+// redirects osc messages from the instruments to the frontend and the tone generator
 udpServer.onMessage(message => {
     tonegeneratorSocket.emit(message);
+    clientSocket.emit(message);
 });
 
 // TODO: Eigene Komponente hierfür
-const webserver = express();
+/*const webserver = express();
 webserver.use('/', express.static(path.join(__dirname, 'public')));
 const webserverPort = 80;
-webserver.listen(webserverPort, () => console.log(`Example app listening on port ${webserverPort}!`));
+webserver.listen(webserverPort, () => console.log(`Example app listening on port ${webserverPort}!`));*/
