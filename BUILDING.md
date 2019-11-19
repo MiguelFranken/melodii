@@ -14,11 +14,11 @@ The monitor frontend shows information about the system, like the received messa
 # Backend
 ## Run
 ### Starting the OSC-Server
-- `cd 01.OSCServer`
+- `cd OSCServer`
 - `npm run start:refresh` or `npm run start` to disable recompiling when detecting source code changes
 
 ### Starting the tone generator
-- `cd 03.Generator`
+- `cd Generator`
 - `npm run start:dev`
 - Open a web browser to the provided address (tone generator works only in a browser)
 
@@ -26,8 +26,8 @@ The monitor frontend shows information about the system, like the received messa
 - Start your osc app and connect to the central osc server. IP and port `57121` are logged when starting the server.
 
 ## Creating controllers for the tone generator
-Put your OSC controllers into `03.Generator/src/music/controllers`. See `03.Generator/src/music/controllers/logger.ts` for an example.
-You must register controllers in `03.Generator/src/music/controllers/index.ts`.
+Put your OSC controllers into `Generator/src/music/controllers`. See `Generator/src/music/controllers/logger.ts` for an example.
+You must register controllers in `Generator/src/music/controllers/index.ts`.
 
 ```typescript
 @Controller("/clean_slider_1")
@@ -54,7 +54,7 @@ The injection mechanism automatically creates an singleton instance of this clas
 ### Decorators
 You must decorate each controller with the `@Controller()` decorator. It takes the namespace as an argument.
 If you do not specify a namespace, all OSC messages will be routed to this controller.
-Additionally, you must register this controller in `03.Generator/src/music/controllers/index.ts`.
+Additionally, you must register this controller in `Generator/src/music/controllers/index.ts`.
 
 `@OnMessage('/play')` allows you to decorate methods that should get executed when a message has the specified OSC address url after the namespace.
 If you do not specify a url in the decorator, each OSC messages routed to the controller will trigger the execution of the decorated method.
@@ -63,6 +63,6 @@ You can get access to the received OSC message by using the `@Message()` decorat
 
 # Frontend
 ## Run
-- `cd 02.Frontend` (in new terminal window)
+- `cd Frontend` (in new terminal window)
 - `npn run start`
 - Open your browser and navigate to `http.//localhost:4200`
