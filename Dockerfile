@@ -4,7 +4,7 @@ FROM node:12.13 as generator
 ARG branch
 WORKDIR /app
 COPY Generator/ .
-RUN npm ci && npm run build
+RUN npm ci && npm run build:$branch
 
 FROM node:12.13 as frontend
 ARG branch
