@@ -14,7 +14,7 @@ const button = document.getElementById("play");
 const music = new Music();
 if (button != null) {
     console.log("Found button.");
-    button.addEventListener("click", () => music.playNote("C4"));
+    button.addEventListener("click", () => music.playNote("C4", "8n", 1));
 } else {
     console.log("Did not find button.");
 }

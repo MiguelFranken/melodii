@@ -11,8 +11,12 @@ export enum ChordQuality {
 
 // TODO MF: better name
 export interface IMusic {
-  playNote(note: string): void;
+  playNote(note: string, velocity: string, volume: number): void;
   switchEchoEffect(): void;
+  pianoPlayNote(note: string): void;
+  playDrums(instrument: string): void;
+  startLongNote(note: string, volume:number): void;
+  stopLongNote(): void;
 }
 
 export class Music implements IMusic {
@@ -62,11 +66,12 @@ export class Music implements IMusic {
    * Plays a single note
    * @param note "C4", "D2", "A2", ...
    */
-  public playNote(note: string): void {
-    console.log(`Play sound ${note}.`);    
-    this.instruments.synth.triggerAttackRelease(note, "8n");
+  public playNote(note: string, velocity: string, volume: number): void {
+    console.log(`Play sound ${note}.`); 
+    const {synth} = this.instruments;   
+    synth.volume.value = volume;
+    synth.triggerAttackRelease(note, velocity);
   }
-
   
   /**
    * Plays a single note on piano sampler
@@ -93,15 +98,17 @@ export class Music implements IMusic {
    * Starts the attack of a single note
    * @param note "C4", "D2", "A2", ...
    */
-  public startLongNote(note: string) {
-    this.instruments.longNote.triggerAttack(note);
+  public startLongNote(note: string, volume:number): void {
+    const {longNote} = this.instruments;
+    longNote.volume.value = volume;
+    longNote.triggerAttack(note);
   }
 
   /**
    * Releases the holded single note
    * @param note "C4", "D2", "A2", ...
    */
-  public stopLongNote() {
+  public stopLongNote(): void {
     this.instruments.longNote.triggerRelease();
   }
 
