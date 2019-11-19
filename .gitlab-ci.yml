@@ -127,7 +127,7 @@ stages:
 package:master:
   stage: package
   script:
-    - docker build --build-arg frontend-build-command="master" -t $DOCKER_USERNAME/mcp-master .
+    - docker build --build-arg branch="master" -t $DOCKER_USERNAME/mcp-master .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/mcp-master
   tags:
@@ -154,7 +154,7 @@ deploy:master:
 package:dev:
   stage: package
   script:
-    - docker build --build-arg frontend-build-command="dev" -t $DOCKER_USERNAME/mcp-dev .
+    - docker build --build-arg branch="dev" -t $DOCKER_USERNAME/mcp-dev .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/mcp-dev
   tags:
