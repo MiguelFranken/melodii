@@ -123,9 +123,9 @@ stages:
 package:master:
   stage: package
   script:
-    - docker build -t miguelfranken/osc-frontend-master .
+    - docker build -t $DOCKER_USERNAME/mcp-master .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker push $DOCKER_USERNAME/osc-frontend-master
+    - docker push $DOCKER_USERNAME/mcp-master
   tags:
     - docker
 #  only:
@@ -150,9 +150,9 @@ deploy:master:
 package:dev:
   stage: package
   script:
-    - docker build -t miguelfranken/osc-frontend-dev .
+    - docker build -t $DOCKER_USERNAME/mcp-dev .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker push $DOCKER_USERNAME/osc-frontend-dev
+    - docker push $DOCKER_USERNAME/mcp-dev
   tags:
     - docker
 #  only:
