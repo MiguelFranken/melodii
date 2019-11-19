@@ -142,6 +142,7 @@ deploy:master:
     - chmod 700 ~/.ssh
     - ssh-keyscan $SERVER_MASTER_IP >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
+    - echo "$DOCKER_PASSWORD"
   script:
     - ssh root@$SERVER_MASTER_IP './deploy.sh "$DOCKER_USERNAME" "$DOCKER_PASSWORD" ""master"'
 #  only:
