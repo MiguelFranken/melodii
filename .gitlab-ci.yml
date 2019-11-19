@@ -168,7 +168,7 @@ package:master:server:
   script:
     - docker build -t $DOCKER_USERNAME/mcp-server-master .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker push $DOCKER_USERNAME/mcp-master
+    - docker push $DOCKER_USERNAME/mcp-server-master
   tags:
     - docker
 #  only:
@@ -206,7 +206,7 @@ package:dev:server:
   script:
     - docker build -t $DOCKER_USERNAME/mcp-server-dev .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker push $DOCKER_USERNAME/mcp-dev
+    - docker push $DOCKER_USERNAME/mcp-server-dev
   tags:
     - docker
 #  only:
