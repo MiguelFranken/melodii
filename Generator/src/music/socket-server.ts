@@ -4,7 +4,7 @@ import { addControllers } from "./decorator";
 
 export class SocketServer {
 
-  private socket: SocketIOClient.Socket;
+  private readonly socket: SocketIOClient.Socket;
 
   constructor(path: string) {
     this.socket = io(path);
