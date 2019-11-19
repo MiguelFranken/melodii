@@ -1,0 +1,192 @@
+* {
+  color: rgba(255,255,255,0.8) !important;
+}
+
+.card {
+  padding: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.menu {
+  color: white;
+  min-height: 55px;
+}
+
+.action-button {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #4d4d4d;
+  border-radius: 0;
+}
+
+.action-icon {
+  transform: scale(2);
+}
+
+.action-button:hover {
+  background-color: rgba(77, 77, 77, 0.9);
+}
+
+.bpm-card {
+  padding: 0 65px;
+  background-color: #4d4d4d;
+}
+
+.text-card {
+  padding: 10px;
+  background-color: #4d4d4d;
+}
+
+.beat-card {
+  padding: 10px;
+  background-color: rgba(77, 77, 77, 0.6);
+}
+
+.row-card {
+  padding: 10px;
+  background-color: rgba(77, 77, 77, 0.6);
+  color: white;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.card:hover {
+  background-color: rgba(0,0,0,.15);
+}
+
+.played {
+  background-color: rgba(0,80,0,.3) !important;
+}
+
+.playedAndActive {
+  background-color: rgba(0,80,0,.55) !important;
+}
+
+::ng-deep .bpm-card .mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
+  height: 6px;
+  border-radius: 2px
+}
+
+::ng-deep .bpm-card .mat-slider.mat-slider-horizontal .mat-slider-track-background,
+::ng-deep .bpm-card .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  height: 100%;
+}
+
+::ng-deep .bpm-card .mat-accent .mat-slider-thumb {
+  height: 30px;
+  width: 30px;
+  background-color: gray;
+  bottom: -16px;
+  right: -14px;
+  transform: none;
+}
+
+::ng-deep .bpm-card .mat-slider-horizontal {
+  height: 50px;
+}
+
+::ng-deep .bpm-card .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  background-color: rgba(255,255,255,0.8) !important;
+}
+
+::ng-deep .mat-menu-content {
+  background-color: rgba(0,0,0,0.5) !important;
+}
+
+::ng-deep .mat-menu-item {
+  color: rgba(255,255,255,0.8) !important;
+}
+
+.minHeightRow {
+  min-height: 150px;
+}
+
+.minHeightRowNotExpanded {
+  min-height: 55px;
+}
+
+::ng-deep .mat-menu-item-submenu-trigger::after {
+  border-color: transparent transparent transparent rgba(255,255,255,0.8) !important;
+}
+
+.velocity-slider {
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+::ng-deep .velocity-slider .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  background-color: rgba(0,0,0,0.15) !important;
+}
+
+::ng-deep .velocity-slider .mat-accent .mat-slider-thumb {
+  visibility: hidden;
+}
+
+::ng-deep .velocity-slider .mat-slider.mat-slider-horizontal .mat-slider-track-background,
+::ng-deep .velocity-slider .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  height: 100%;
+}
+
+::ng-deep .velocity-slider .mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
+  height: 25px !important;
+  border-radius: 0 !important;
+}
+
+::ng-deep .velocity-slider .mat-slider {
+  padding: 0 !important;
+}
+
+::ng-deep .bpm-card .mat-slider-track-fill {
+  border-radius: 10px;
+}
+
+::ng-deep .mat-slider-track-background {
+  transform: none !important;
+  background-color: rgba(0,0,0,0.2) !important;
+}
+
+::ng-deep .velocity-slider .mat-slider-horizontal .mat-slider-wrapper {
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 8px !important;
+  top: unset;
+}
+
+.overlay {
+  margin-top: 12px;
+  background-color: #3c3c3c;
+  padding: 2px;
+  position: relative;
+  min-width: 20vw;
+
+  .overlay-button {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #6c6c6c;
+    border-radius: 0;
+  }
+}
+
+
+.overlay:after, .overlay:before {
+  bottom: 99%;
+  left: 10%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.overlay:after {
+  border-color: rgba(141, 115, 213, 0);
+  border-bottom-color: #3c3c3c;
+  border-width: 10px;
+  margin-left: -10px;
+}
+

@@ -1,3 +1,4 @@
+// this must be held in sync with frontend
 export enum Action {
   JOINED,
   LEFT,

@@ -54,7 +54,7 @@ The injection mechanism automatically creates an singleton instance of this clas
 ### Decorators
 You must decorate each controller with the `@Controller()` decorator. It takes the namespace as an argument.
 If you do not specify a namespace, all OSC messages will be routed to this controller.
-Additionally, you must register this controller in `03.Generator/src/music/controllers/index.ts`.
+Additionally, you must register this controller in `Generator/src/music/controllers/index.ts`.
 
 `@OnMessage('/play')` allows you to decorate methods that should get executed when a message has the specified OSC address url after the namespace.
 If you do not specify a url in the decorator, each OSC messages routed to the controller will trigger the execution of the decorated method.
