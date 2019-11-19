@@ -9,9 +9,11 @@ export enum ChordQuality {
   DIMINISHED = "dim", // TODO MF: testen ob diminished mit sonic pi so klappt
 }
 
+
+
 // TODO MF: better name
 export interface IMusic {
-  playNote(note: string, velocity: string, volume: number): void;
+  playNote(note: string, velocity: number, volume: number): void;
   switchEchoEffect(): void;
   pianoPlayNote(note: string): void;
   playDrums(instrument: string): void;
@@ -36,8 +38,6 @@ export class Music implements IMusic {
   private readonly scale: string[];
   private isEchoActivated = false;
   
-
-
   constructor() {    
     this.scale = Scale.notes("C major");    
     this.instruments.synth = new Tone.Synth().toMaster();
@@ -66,7 +66,7 @@ export class Music implements IMusic {
    * Plays a single note
    * @param note "C4", "D2", "A2", ...
    */
-  public playNote(note: string, velocity: string, volume: number): void {
+  public playNote(note: string, velocity: number, volume: number): void {
     console.log(`Play sound ${note}.`); 
     const {synth} = this.instruments;   
     synth.volume.value = volume;
