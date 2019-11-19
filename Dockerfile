@@ -11,7 +11,7 @@ ARG branch
 WORKDIR /app
 COPY Frontend/ .
 RUN npm ci
-RUN npm run build-$branch
+RUN npm run build:$branch
 
 FROM node:12.13 as server
 WORKDIR /app
