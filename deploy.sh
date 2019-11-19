@@ -10,8 +10,12 @@ else
   BRANCH=$3
   docker login -u="$USERNAME" -p="$PASSWORD"
   docker pull $USERNAME/mcp-$BRANCH
+  docker pull $USERNAME/mcp-server-$BRANCH
   docker stop mcp
+  docker stop mcp-server
   docker rm mcp
-  docker run -d -p 8080:8080 -p 8000:8000 -p 80:80 -p 57121:57121/udp --name mcp $USERNAME/mcp-$BRANCH
+  docker rm mcp-server
+  docker run -d -p 80:80 --name mcp $USERNAME/mcp-$BRANCH
+  docker run -d -p 8080:8080 -p 8000:8000 -p 57121:57121/udp --name mcp-server $USERNAME/mcp-server-$BRANCH
   echo "Done"
 fi
