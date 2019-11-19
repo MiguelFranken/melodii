@@ -2,6 +2,12 @@ image: docker:latest
 services:
   - docker:18.09.7-dind
 
+
+variables:
+  USERNAME: $DOCKER_USERNAME
+  PASSWORD: $DOCKER_PASSWORD
+
+
 cache:
   untracked: true
   key: ${CI_COMMIT_REF_SLUG}
@@ -143,7 +149,7 @@ deploy:master:
     - ssh-keyscan $SERVER_MASTER_IP >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh root@$SERVER_MASTER_IP './deploy.sh "$DOCKER_USERNAME" "$DOCKER_PASSWORD" "master"'
+    - ssh root@$SERVER_MASTER_IP './deploy.sh "$USERNAME" "$PASSWORD" "master"'
 #  only:
 #    - master
 
@@ -170,6 +176,6 @@ deploy:dev:
     - ssh-keyscan $SERVER_DEV_IP >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh root@$SERVER_DEV_IP './deploy.sh "$DOCKER_USERNAME" "$DOCKER_PASSWORD" "dev"'
+    - ssh root@$SERVER_DEV_IP './deploy.sh "$USERNAME" "$PASSWORD" "dev"'
 #  only:
 #    - dev
