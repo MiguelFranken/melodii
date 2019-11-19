@@ -3,6 +3,8 @@ import * as express from 'express';
 import * as socketIo from 'socket.io';
 import { Logger } from '@overnightjs/logger';
 import { Event } from './socket-events';
+import { Action } from "./socket-actions";
+import { IOSCMessage } from "../osc/osc-message";
 
 /**
  * Socket server for bi-directional communication with the Angular frontend.
@@ -54,6 +56,10 @@ export class SocketServer {
       Logger.Info(`Connected client on port ${this.port}.`);
 
       // Listen for actions from frontend
+      socket.on(Action.SEND_OSC_MESSAGE, (msg: IOSCMessage) => {
+        Logger.Info(`Received OSC message from Frontend`);
+        this.emit(Event.OSC_MESSAGE, msg);
+      });
     });
   }
 }

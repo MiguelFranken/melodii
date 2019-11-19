@@ -1,7 +1,7 @@
-<mat-toolbar color="primary">
-  <span id="toolbar-title">OSC Dashboard</span>
-</mat-toolbar>
+<div fxLayout="column" style="height: 100%" class="mat-typography">
+  <app-navigation></app-navigation>
 
-<main style="padding: 20px;">
-  <app-dashboard></app-dashboard>
-</main>
+  <main fxFlex>
+    <router-outlet></router-outlet>
+  </main>
+</div>
