@@ -22,7 +22,8 @@ module.exports = env => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        PRODUCTION: JSON.stringify(!!env.production),
+        MASTER: JSON.stringify(!!env.master),
+        DEV: JSON.stringify(!!env.dev),
       })
     ]
   }
