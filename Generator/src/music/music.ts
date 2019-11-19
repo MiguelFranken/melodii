@@ -67,7 +67,7 @@ export class Music implements IMusic {
    * @param note "C4", "D2", "A2", ...
    */
   public playNote(note: string, velocity: number, volume: number): void {
-    console.log(`Play sound ${note}.`); 
+    console.log(`Play sound ${note}, ${velocity}, ${volume}.`); 
     const {synth} = this.instruments;   
     synth.volume.value = volume;
     synth.triggerAttackRelease(note, velocity);

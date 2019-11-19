@@ -12,7 +12,7 @@ export class PlayNoteController {
     const {args} = message;
     const note = args[0].value.toString();
     // velocity should be in normalrange ([0,1])
-    let velocity: number = 1;
+    let velocity: number = 0.1;
     if (args.length > 1     && args[1].type == "f" && 
         args[1].value >= 0  && args[1].value <= 1) {
       velocity = parseFloat(args[1].value.toString());      
