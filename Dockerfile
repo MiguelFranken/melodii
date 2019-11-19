@@ -13,18 +13,10 @@ COPY Frontend/ .
 RUN npm ci
 RUN npm run build:$branch
 
-FROM node:12.13 as server
-WORKDIR /app
-COPY Server/package.json Server/package-lock.json ./
-RUN npm ci
-COPY Server/ .
-RUN npm run build
+FROM nginx:1.13.12-alpine
+COPY --from=generator /app/dist/static /usr/share/nginx/html
+COPY --from=frontend /app/dist/osc-frontend /usr/share/nginx/html/monitor
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+CMD nginx -g 'daemon off;'
 
-COPY --from=generator /app/dist/static /app/dist/public
-COPY --from=frontend /app/dist/osc-frontend /app/dist/public/monitor
-
-EXPOSE 8080
-EXPOSE 8000
 EXPOSE 80
-EXPOSE 57121/udp
-CMD [ "node", "dist/index.js" ]
