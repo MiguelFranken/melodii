@@ -57,7 +57,7 @@ build:frontend:
   before_script:
     - cd Frontend
   script:
-    - ng build --prod
+    - npm run build:local # TODO: Bessere Lösung notwendig
   artifacts:
     expire_in: 1 day
     paths:
