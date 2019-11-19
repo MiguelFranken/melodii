@@ -15,7 +15,7 @@ Logger.Info(`Client socket server listening on port ${clientSocket.port}.`);
  * TODO
  */
 const tonegeneratorSocket = new SocketServer(8000);
-Logger.Info(`Tone generator socket server listening on port ${clientSocket.port}.`);
+Logger.Info(`Tone generator socket server listening on port ${tonegeneratorSocket.port}.`);
 
 // redirect messages from frontend to tone generator
 clientSocket.onMessage(message => {
@@ -32,9 +32,3 @@ udpServer.onMessage(message => {
     tonegeneratorSocket.emit(message);
     clientSocket.emit(message);
 });
-
-// TODO: Eigene Komponente hierfür
-/*const webserver = express();
-webserver.use('/', express.static(path.join(__dirname, 'public')));
-const webserverPort = 80;
-webserver.listen(webserverPort, () => console.log(`Example app listening on port ${webserverPort}!`));*/
