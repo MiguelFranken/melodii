@@ -1,4 +1,4 @@
-ARG frontend-build-command
+ARG branch
 
 FROM node:12.13 as generator
 WORKDIR /app
@@ -9,7 +9,7 @@ FROM node:12.13 as frontend
 WORKDIR /app
 COPY Frontend/ .
 RUN npm ci
-RUN npm run ${frontend-build-command}
+RUN npm run build-$branch
 
 FROM node:12.13 as server
 WORKDIR /app
