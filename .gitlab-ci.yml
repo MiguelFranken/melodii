@@ -43,7 +43,7 @@ build:tone-generator:
   stage: build
   script:
     - cd Generator
-    - npm run build
+    - npm run build:dev # todo: better solution
   artifacts:
     expire_in: 1 day
     paths:
