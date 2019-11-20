@@ -8,6 +8,7 @@ import { Music } from './music';
 
 export const container = new Container();
 const socket = new SocketServer(path);
+console.log(`path is: '${path}'`);
 socket.addControllers(CONTROLLERS);
 
 const button = document.getElementById("play");
