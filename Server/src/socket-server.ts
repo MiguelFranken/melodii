@@ -14,20 +14,20 @@ export class SocketServer {
   ) {
     this.io = socketIo(this.port);
     this.io.on(SocketEvents.CONNECT, (socket: socketIo.Socket) => {
-      Logger.Info(`New connection from ${socket.conn.remoteAddress}.`)
+      Logger.Info(`[Socket on port ${this.port}] New connection from ${socket.conn.remoteAddress}.`)
     })
   }
 
-  public onConnection(callback: (socket: socketIo.Socket) => void) {
-    this.io.on(SocketEvents.CONNECT, callback);
-  }
-
   public onMessage(callback: (message: any) => void) {
-    this.io.on(SocketEvents.MESSAGE, callback);
+    const fn = (message: any) => {
+      Logger.Info(`[Socket on port ${this.port}] Received message: ${message}`);
+      callback(message);
+    };
+    this.io.on(SocketEvents.MESSAGE, fn);
   }
 
   public emit(data?: any) {
-    Logger.Info(`Emitting message on port ${this.port}: ${JSON.stringify(data)}`);
+    Logger.Info(`[Socket on port ${this.port}] Emitting message: ${JSON.stringify(data)}`);
     this.io.emit(SocketEvents.MESSAGE, data);
   }
 }
