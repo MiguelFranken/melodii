@@ -1,3 +1,3 @@
 export enum Action {
-  SEND_OSC_MESSAGE = "message"
+  REDIRECT_OSC_MESSAGE = "redirect-osc-message"
 }

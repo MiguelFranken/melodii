@@ -279,7 +279,7 @@ export class PrototypeComponent implements OnInit {
       oldButton.isPlayed = true;
 
       if (oldButton.isActive) {
-        this.socketService.send(Action.SEND_OSC_MESSAGE, oldButton.oscMessage);
+        this.socketService.send(Action.REDIRECT_OSC_MESSAGE, oldButton.oscMessage);
       }
     }
 
@@ -294,7 +294,7 @@ export class PrototypeComponent implements OnInit {
         newButton.isPlayed = true;
 
         if (newButton.isActive) {
-          this.socketService.send(Action.SEND_OSC_MESSAGE, newButton.oscMessage);
+          this.socketService.send(Action.REDIRECT_OSC_MESSAGE, newButton.oscMessage);
         }
       }
       this.temp = newTemp;

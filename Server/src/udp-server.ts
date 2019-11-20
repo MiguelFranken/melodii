@@ -27,7 +27,7 @@ export class UdpServer {
         args: oscRawMsg.args,
         info: info,
       };
-      Logger.Info(`[UDP server] Received message: ${msg}`);
+      Logger.Info(`[UDP server] Received message: ${JSON.stringify(msg)}`);
       callback(msg);
     });
   }

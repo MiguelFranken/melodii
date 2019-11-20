@@ -11,6 +11,9 @@ export class SocketServer {
     this.socket.on(Event.CONNECT, () => {
       console.log(`Established websocket connection to OSC-Server (${path})`);
     });
+    this.socket.on(Event.DISCONNECT, () => {
+      console.log(`Disconnected websocket connection to OSC-Server (${path})`);
+    });
   }
 
   // adds controllers that receive the routed osc messages
