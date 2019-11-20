@@ -28,11 +28,6 @@ export class DashboardComponent implements OnInit {
         this.messages.push(JSON.stringify(msg));
       });
 
-    this.socketService.onAddress('/clean_switch_1')
-      .subscribe(() => {
-        this.messages.push('SWITCH ONE SWITCHED!');
-      });
-
     // this.socketService.onEvent(Event.SLIDER_UPDATE)
     //   .subscribe((value: number) => {
     //     this.sliderValue = value;
@@ -42,15 +37,14 @@ export class DashboardComponent implements OnInit {
   // send actions back to osc server
   // TODO MF: Handler on osc server side necessary
   public send(action: Action, data: any): void {
-    // TODO
-    switch (action) {
-      case Action.JOINED:
-        break;
-      case Action.LEFT:
-        break;
-      case Action.RENAME:
-        break;
-    }
+    // switch (action) {
+    //   case Action.JOINED:
+    //     break;
+    //   case Action.LEFT:
+    //     break;
+    //   case Action.RENAME:
+    //     break;
+    // }
 
     this.socketService.send(action, data);
   }

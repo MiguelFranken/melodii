@@ -1,6 +1,7 @@
 import * as OSC from 'osc';
 import { IOSCRawMessage } from "./osc/osc-types";
 import { IOSCMessage } from "./osc/osc-message";
+import { Logger } from "@overnightjs/logger";
 
 enum UdpEvent {
   MESSAGE = "message"
@@ -26,6 +27,7 @@ export class UdpServer {
         args: oscRawMsg.args,
         info: info,
       };
+      Logger.Info(`[UDP server] Received message: ${msg}`);
       callback(msg);
     });
   }
