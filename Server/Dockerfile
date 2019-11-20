@@ -1,5 +1,4 @@
 FROM node:12.13
-WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
 COPY . .

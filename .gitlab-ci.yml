@@ -166,6 +166,7 @@ package:master:web:
 package:master:server:
   stage: package
   script:
+    - cd Server
     - docker build -t $DOCKER_USERNAME/mcp-server-master .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/mcp-server-master
@@ -204,6 +205,7 @@ package:dev:web:
 package:dev:server:
   stage: package
   script:
+    - cd Server
     - docker build -t $DOCKER_USERNAME/mcp-server-dev .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/mcp-server-dev
