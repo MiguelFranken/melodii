@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Box</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <button id="c4">C4</button>
+    <button id="d4">D4</button>
+    <button id="e4">E4</button>
+    <button id="f4">F4</button>
+    <button id="g4">G4</button>
+    <button id="a4">A4</button>
+    <button id="b4">B4</button>
+    <button id="c5">C5</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+    <script>
+        const socket = io("http://localhost:8080");
+
+        socket.on('connect', () => console.log("Connected to socket."));
+        socket.on('event', () => console.log("Received event."));
+        socket.on('disconnect', () => console.log("Socket disconnected."));
+
+        function trigger(note) {
+            console.log(`Trigger ${note}.`);
+            socket.emit(3, {
+                address: "/box/trigger",
+                args: [
+                    { type: "s", value: note },
+                    { type: "i", value: 1 }
+                ],
+                info: {},
+            });
+        }
+
+        function release(note) {
+            console.log(`Release ${note}.`);
+            socket.emit(3, {
+                address: "/box/release",
+                args: [
+                    { type: "s", value: note }
+                ],
+                info: {}
+            });
+        }
+
+        const button_ids = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"]
+        for (id of button_ids) {
+            let my_id = id;
+            console.log(id);
+            const el = document.getElementById(id.toLowerCase());
+            el.addEventListener("mousedown", () => {
+                trigger(my_id);
+            })
+            el.addEventListener("mouseup", () => {
+                release(my_id);
+            })
+        }
+    </script>
+</body>
+
+</html>
