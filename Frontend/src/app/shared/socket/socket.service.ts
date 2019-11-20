@@ -13,6 +13,17 @@ export class SocketService {
   public initSocket(): void {
     console.log(`Establishing websocket connection to OSC-Server (${environment.SERVER_URL})`);
     this.socket = socketIo(environment.SERVER_URL);
+    this.onEvent(Event.CONNECT)
+      .subscribe(() => {
+        // Todo: Snackbar
+        console.log('Established websocket connection to OSC-Server');
+      });
+
+    this.onEvent(Event.DISCONNECT)
+      .subscribe(() => {
+        // Todo: Snackbar
+        console.log('Disconnected websocket connection to OSC-Server');
+      });
   }
 
   public send(action: Action, message: any) {

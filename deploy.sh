@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ "$#" -ne 3 ]
 then
-    echo "Please set the following arguments: 1. docker username 2. docker password 3. name of the git branch"
+  echo "Please set the following arguments: 1. docker username 2. docker password 3. name of the git branch"
 	exit 1
 else
   echo "Deploying..."
