@@ -25,7 +25,7 @@
     "express": "^4.17.1",
     "socket.io-client": "^2.3.0",
     "tonal": "^2.2.2",
-    "tone": "^13.8.25",
+    "tone": "typescript",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
