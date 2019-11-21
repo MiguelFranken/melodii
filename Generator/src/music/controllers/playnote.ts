@@ -18,14 +18,7 @@ export class PlayNoteController {
         args[1].value >= 0  && args[1].value <= 1) {
       velocity = parseFloat(args[1].value.toString());      
     }
-    // volume is measured in dB 
-    let volume: number = 0;
-    if (args.length > 2 && args[2].type == "i") {
-      volume = parseInt(args[2].value.toString());
-      if (isNaN(volume)) {
-        volume = 0;
-      }
-    } 
+     
     this.synth.triggerRelease(note, velocity);
   }
 
@@ -46,8 +39,8 @@ export class PlayNoteController {
 
   @OnMessage('/stop')
   public receivedMessageStop(@Message() message: IOSCMessage) {
-    let velocity = 
-    this.synth.release();
+    let note = message.args[0].value.toString();
+    this.synth.release(note);
   }
 
 }
