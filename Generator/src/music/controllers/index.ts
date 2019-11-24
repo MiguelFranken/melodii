@@ -5,11 +5,13 @@ import { PlayNoteController } from "./playnote";
 import { DrumsController } from './drums';
 import { PianoController } from './piano';
 import { BoxController } from './box';
+import { ArcController } from './arc';
 
 export const CONTROLLERS = [
   LoggerController,
   PlayNoteController,
   DrumsController,
   PianoController,
-  BoxController
+  BoxController,
+  ArcController
 ];

@@ -1,9 +1,6 @@
 import * as Tone from "tone";
 import { Polyphonizer } from '../polyphonizer';
-
-type Note = string;
-type Velocity = number;
-type Cents = number;
+import { Note, Velocity, Cents } from '../types';
 
 export class Box {
     private readonly voices = new Polyphonizer(() => new Tone.Synth().toMaster());

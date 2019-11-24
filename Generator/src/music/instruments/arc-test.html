@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Arc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div id="c4">C4</div>
+    <div id="d4">D4</div>
+    <div id="e4">E4</div>
+    <div id="f4">F4</div>
+    <div id="g4">G4</div>
+    <div id="a4">A4</div>
+    <div id="b4">B4</div>
+    <div id="c5">C5</div>
+
+    <style>
+        body {
+            display: grid;
+            grid-gap: 0.5em;
+            grid-template-columns: repeat(auto-fill, 10em);
+        }
+
+        div {
+            width: 10em;
+            height: 10em;
+            background: linear-gradient(hsl(0, 60%, 60%), hsl(0, 0%, 75%) 50%);
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+    <script>
+        const socket = io("http://localhost:8080");
+
+        socket.on('connect', () => console.log("Connected to socket."));
+        socket.on('event', () => console.log("Received event."));
+        socket.on('disconnect', () => console.log("Socket disconnected."));
+
+        const OSC_MESSAGE = 3;
+
+        function set(note, strength) {
+            console.log(`Set ${note} to ${strength}.`);
+            socket.emit(OSC_MESSAGE, {
+                address: "/arc/set",
+                args: [
+                    { type: "s", value: note },
+                    { type: "i", value: strength }
+                ],
+                info: {},
+            });
+        }
+
+        const button_ids = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"]
+        for (id of button_ids) {
+            let my_id = id;
+            const el = document.getElementById(id.toLowerCase());
+            el.addEventListener("mousemove", (event) => {
+                const velocity = relativeHeight(event);
+                set(my_id, velocity);
+            });
+            el.addEventListener("mouseleave", () => {
+                set(my_id, 0)
+            });
+        }
+
+        function relativeHeight(event) {
+            const topZero = Math.min(1, Math.max(0, event.offsetY / event.target.offsetHeight));
+            const bottomZero = 1 - topZero;
+            return bottomZero;
+        }
+    </script>
+</body>
+
+</html>
