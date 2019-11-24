@@ -71,7 +71,7 @@
         }
 
         function relativeHeight(event) {
-            const topZero = min(1, max(0, event.offsetY / event.target.offsetHeight));
+            const topZero = Math.min(1, Math.max(0, event.offsetY / event.target.offsetHeight));
             const bottomZero = 1 - topZero;
             return bottomZero;
         }
