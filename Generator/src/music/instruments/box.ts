@@ -1,18 +1,23 @@
 import * as Tone from "tone";
+import { Polyphonizer } from '../polyphonizer';
 
 type Note = string;
 type Velocity = number;
 
 export class Box {
-    private readonly synth = new Tone.PolySynth(64, Tone.Synth).toMaster();
+    private readonly voices = new Polyphonizer(() => new Tone.Synth().toMaster());
 
     public trigger(note: Note, velocity: Velocity) {
         console.log(`Trigger with note ${note} and velocity ${velocity}.`)
-        this.synth.triggerAttack(note, undefined, velocity);
+        const voice = this.voices.getVoice(note);
+        console.log(voice)
+        voice.triggerAttack(note, undefined, velocity);
     }
 
     public release(note: Note) {
         console.log(`Release with note ${note}.`)
-        this.synth.triggerRelease(note);
+        const voice = this.voices.getVoice(note);
+        console.log(voice)
+        voice.triggerRelease();
     }
 }
