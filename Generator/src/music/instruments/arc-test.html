@@ -8,36 +8,58 @@
 </head>
 
 <body>
-    <div id="c4">C4</div>
-    <div id="d4">D4</div>
-    <div id="e4">E4</div>
-    <div id="f4">F4</div>
-    <div id="g4">G4</div>
-    <div id="a4">A4</div>
-    <div id="b4">B4</div>
-    <div id="c5">C5</div>
+    <input id="ip" type="text" value="http://192.168.0.101:8080" />
+    <span id="indicator">Not connected.</span>
+    <br>
+
+    <div class="keyboard">
+        <div id="c4" class="key">C4</div>
+        <div id="d4" class="key">D4</div>
+        <div id="e4" class="key">E4</div>
+        <div id="f4" class="key">F4</div>
+        <div id="g4" class="key">G4</div>
+        <div id="a4" class="key">A4</div>
+        <div id="b4" class="key">B4</div>
+        <div id="c5" class="key">C5</div>
+    </div>
 
     <style>
         body {
+            overflow: hidden;
+        }
+
+        .keyboard {
             display: grid;
             grid-gap: 0.5em;
             grid-template-columns: repeat(auto-fill, 10em);
         }
 
-        div {
+        .key {
             width: 10em;
             height: 10em;
             background: linear-gradient(hsl(0, 60%, 60%), hsl(0, 0%, 75%) 50%);
+            user-select: none;
         }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
     <script>
-        const socket = io("http://localhost:8080");
-
-        socket.on('connect', () => console.log("Connected to socket."));
-        socket.on('event', () => console.log("Received event."));
-        socket.on('disconnect', () => console.log("Socket disconnected."));
+        const ipInput = document.getElementById("ip");
+        const indicator = document.getElementById("indicator");
+        ipInput.addEventListener("input", function () {
+            initSocket(this.value);
+        });
+        initSocket(ipInput.value);
+        function initSocket(ip) {
+            indicator.innerText = "Connecting...";
+            socket = io(ip);
+            socket.on('connect', () => indicator.innerText = "Connected.");
+            socket.on('event', () => console.log("Received event."));
+            socket.on('disconnect', () => indicator.innerText = "Disconnected.");
+            socket.on('error', () => indicator.innerText = "An error occurred.");
+            socket.on('connect_error', () => indicator.innerText = "An error occurred while connecting.");
+            socket.on('connect_timeout', () => indicator.innerText = "The connection timed out.");
+        }
 
         const OSC_MESSAGE = 3;
 
@@ -58,16 +80,33 @@
             let my_id = id;
             const el = document.getElementById(id.toLowerCase());
             el.addEventListener("mousemove", (event) => {
-                const velocity = relativeHeight(event);
+                const height = relativeHeight(event.offsetY, event.target.offsetHeight);
+                start(height);
+            });
+            el.addEventListener("touchmove", (event) => {
+                const t = event.changedTouches[0];
+                const offsetY = t.clientY - t.target.offsetTop;
+                const height = relativeHeight(offsetY, t.target.offsetHeight);
+                start(height);
+            })
+            function start(height) {
+                const velocity = height;
                 set(my_id, velocity);
-            });
+            }
+
             el.addEventListener("mouseleave", () => {
-                set(my_id, 0)
+                stop();
             });
+            el.addEventListener("touchend", () => {
+                stop();
+            })
+            function stop() {
+                set(my_id, 0)
+            }
         }
 
-        function relativeHeight(event) {
-            const topZero = Math.min(1, Math.max(0, event.offsetY / event.target.offsetHeight));
+        function relativeHeight(offsetY, targetOffsetHeight) {
+            const topZero = Math.min(1, Math.max(0, offsetY / targetOffsetHeight));
             const bottomZero = 1 - topZero;
             return bottomZero;
         }
