@@ -33,9 +33,11 @@
         socket.on('event', () => console.log("Received event."));
         socket.on('disconnect', () => console.log("Socket disconnected."));
 
+        const OSC_MESSAGE = 3;
+
         function trigger(note, velocity) {
             console.log(`Trigger ${note}.`);
-            socket.emit(3, {
+            socket.emit(OSC_MESSAGE, {
                 address: "/box/trigger",
                 args: [
                     { type: "s", value: note },
@@ -45,9 +47,21 @@
             });
         }
 
+        function detune(note, cents) {
+            console.log(`Detune ${note}.`);
+            socket.emit(OSC_MESSAGE, {
+                address: "/box/detune",
+                args: [
+                    { type: "s", value: note },
+                    { type: "i", value: cents }
+                ],
+                info: {}
+            });
+        }
+
         function release(note) {
             console.log(`Release ${note}.`);
-            socket.emit(3, {
+            socket.emit(OSC_MESSAGE, {
                 address: "/box/release",
                 args: [
                     { type: "s", value: note }
@@ -57,17 +71,27 @@
         }
 
         const button_ids = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"]
+        let x_start = null;
         for (id of button_ids) {
             let my_id = id;
-            console.log(id);
             const el = document.getElementById(id.toLowerCase());
             el.addEventListener("mousedown", (event) => {
                 const velocity = relativeHeight(event);
+                x_start = event.clientX;
                 trigger(my_id, velocity);
-            })
+            });
+            el.addEventListener("mousemove", (event) => {
+                console.log("Mousemove")
+                if (x_start) {
+                    const x_diff = event.clientX - x_start;
+                    const cents = x_diff * 10;
+                    detune(my_id, cents);
+                }
+            });
             el.addEventListener("mouseup", () => {
+                x_start = null;
                 release(my_id);
-            })
+            });
         }
 
         function relativeHeight(event) {

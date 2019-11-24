@@ -15,6 +15,15 @@ export class BoxController {
         this.box.trigger(note, velocity);
     }
 
+    @OnMessage(`/detune`)
+    public detune(@Message() message: IOSCMessage) {
+        const { args } = message;
+        const note = args[0].value.toString();
+        const cents: any = args[1].value;
+
+        this.box.detune(note, cents);
+    }
+
     @OnMessage('/release')
     public release(@Message() message: IOSCMessage) {
         const { args } = message;
