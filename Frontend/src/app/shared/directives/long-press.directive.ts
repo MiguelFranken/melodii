@@ -13,7 +13,7 @@ export class LongPressDirective {
   pressing: boolean;
   _longPressing: boolean;
   timeout: any;
-  interval: number;
+  interval: any;
   pageX: number;
   pageY: number;
 
@@ -26,12 +26,8 @@ export class LongPressDirective {
   @HostBinding('class.press')
   get press() { return this.pressing; }
 
-  // @HostBinding('class.longpress')
-  // get longPress() { return this._longPressing; }
-
   @HostListener('touchstart', ['$event'])
   onMouseDown(event) {
-    // console.log("PRESS");
     this.pageX = event.pageX;
     this.pageY = event.pageY;
     this.pressing = true;

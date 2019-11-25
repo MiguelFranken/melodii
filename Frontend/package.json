@@ -2,16 +2,13 @@
   "name": "osc-frontend",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
     "start": "ng serve",
     "start:iPad": "ng serve --host 0.0.0.0 --port 4200 --disable-host-check",
     "build:master": "ng build --configuration=master --base-href \"/monitor/\"",
     "build:dev": "ng build --configuration=dev --base-href \"/monitor/\"",
     "build:local": "ng build --base-href \"/monitor/\"",
     "test": "ng test",
-    "lint": "ng lint",
-    "pree2e": "webdriver-manager update",
-    "e2e": "ng e2e"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
