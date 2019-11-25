@@ -172,7 +172,7 @@ export class PrototypeComponent implements OnInit {
   }
 
   public previousMatrix() {
-    if (this.matrixCollectionIndex == 0) {
+    if (this.matrixCollectionIndex === 0) {
       this.matrixCollectionIndex = this.matrixCollection.length - 1;
     } else {
       this.matrixCollectionIndex = (this.matrixCollectionIndex - 1) % this.matrixCollection.length;
@@ -363,7 +363,7 @@ export class PrototypeComponent implements OnInit {
   }
 
   public switch(event, rowButton: RowButton) {
-    if (event.srcElement.nodeName.toLowerCase() == 'mat-slider' || this.clicked) {
+    if (event.srcElement.nodeName.toLowerCase() === 'mat-slider' || this.clicked) {
       this.clicked = false;
     } else {
       rowButton.isActive = !rowButton.isActive;

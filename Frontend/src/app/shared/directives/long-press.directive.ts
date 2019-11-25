@@ -7,27 +7,27 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[long-press]'
+  selector: '[longPress]'
 })
-export class LongPress {
+export class LongPressDirective {
   pressing: boolean;
-  longPressing: boolean;
+  _longPressing: boolean;
   timeout: any;
   interval: number;
   pageX: number;
   pageY: number;
 
   @Output()
-  onLongPress = new EventEmitter();
+  longPress = new EventEmitter();
 
   @Output()
-  onLongPressing = new EventEmitter();
+  longPressing = new EventEmitter();
 
   @HostBinding('class.press')
   get press() { return this.pressing; }
 
-  @HostBinding('class.longpress')
-  get longPress() { return this.longPressing; }
+  // @HostBinding('class.longpress')
+  // get longPress() { return this._longPressing; }
 
   @HostListener('touchstart', ['$event'])
   onMouseDown(event) {
@@ -35,31 +35,29 @@ export class LongPress {
     this.pageX = event.pageX;
     this.pageY = event.pageY;
     this.pressing = true;
-    this.longPressing = false;
+    this._longPressing = false;
     this.timeout = setTimeout(() => {
-      this.longPressing = true;
-      this.onLongPress.emit(event);
+      this._longPressing = true;
+      this.longPress.emit(event);
       this.interval = setInterval(() => {
-        this.onLongPressing.emit(event);
+        this.longPressing.emit(event);
       }, 50);
     }, 500);
   }
 
   @HostListener('touchmove', ['$event'])
-  onMove(event) {
-    // console.log("MOVE");
+  onMove(_) {
     clearTimeout(this.timeout);
     clearInterval(this.interval);
-    this.longPressing = false;
+    this._longPressing = false;
     this.pressing = false;
   }
 
   @HostListener('touchend')
   endPress() {
-    // console.log("END");
     clearTimeout(this.timeout);
     clearInterval(this.interval);
-    this.longPressing = false;
+    this._longPressing = false;
     this.pressing = false;
   }
 }
