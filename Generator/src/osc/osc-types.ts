@@ -4,8 +4,10 @@ export type OSCTypeTag = "i" | "f" | "s" | "b"; // int32, float32, OSC-string, O
 export interface IOSCArgs {
   type: OSCTypeTag; // OSC Type Tag String
 
-  // todo: Not only number or strings! maybe any since we already define the type with the OSCTypeTag.
-  //       But maybe we also need some convenience methods because now it is necessary to cast the value before using it
+  // TODO: Not only number or strings!
+  //       Maybe any since we already define the type with the OSCTypeTag.
+  //       But maybe we also need some convenience methods because now it
+  //       is necessary to cast the value before using it
   value: number | string;
 }
 

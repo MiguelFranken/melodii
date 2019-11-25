@@ -78,7 +78,7 @@ export class ControllerExecutor {
     // compute parameters
     const paramsPromises = action.params
       .sort((param1, param2) => param1.index - param2.index) // nach index sortieren
-      .map(param => {
+      .map((param) => {
         // TODO MF: add more param types here in the future if necessary
         switch (param.type) {
           case ParamTypes.OSC_MESSAGE:
@@ -87,12 +87,12 @@ export class ControllerExecutor {
       });
 
     // after all parameters are computed
-    const paramsPromise = Promise.all(paramsPromises).catch(error => {
+    const paramsPromise = Promise.all(paramsPromises).catch((error) => {
       console.error("Error during computation params of the controller: ", error);
       throw error;
     });
 
-    return paramsPromise.then(params => {
+    return paramsPromise.then((params) => {
       return action.executeAction(params);
     });
   }

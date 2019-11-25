@@ -9,21 +9,9 @@ export enum ChordQuality {
   DIMINISHED = "dim", // TODO MF: testen ob diminished mit sonic pi so klappt
 }
 
+export class Music {
 
-
-// TODO MF: better name
-export interface IMusic {
-  playNote(note: string, velocity: number, volume: number): void;
-  switchEchoEffect(): void;
-  pianoPlayNote(note: string): void;
-  playDrums(instrument: string): void;
-  startLongNote(note: string, volume: number): void;
-  stopLongNote(): void;
-}
-
-export class Music implements IMusic {
-
-  private static MajorChordQualities: ChordQuality[] = [
+  private static MAJOR_CHORD_QUALITIES: ChordQuality[] = [
     ChordQuality.MAJOR,
     ChordQuality.MINOR,
     ChordQuality.MINOR,
@@ -127,7 +115,7 @@ export class Music implements IMusic {
     //          aber auch andere Metadata wie der Name des Modes (Major, Minor, ...). Diese Information ist
     //          hier notwendig um die richtige ChordQuality zu bestimmen!
     const index: number = inScale.indexOf(note(forNote).letter as string);
-    return Music.MajorChordQualities[index] as ChordQuality;
+    return Music.MAJOR_CHORD_QUALITIES[index] as ChordQuality;
   }
 
 }
