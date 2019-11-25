@@ -332,7 +332,12 @@ export class PrototypeComponent implements OnInit {
     this.subject.next(this.msPerBeat);
   }
 
+  /**
+   * Starts the matrix
+   */
   public start() {
+    this.stop();
+
     for (const rows of this.matrix.rows) {
       const oldButton: RowButton = rows.buttons[0];
       oldButton.isPlayed = true;
