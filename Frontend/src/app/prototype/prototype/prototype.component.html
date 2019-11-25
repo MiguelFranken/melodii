@@ -24,7 +24,7 @@
 
   <div class="menu" fxLayout fxFlex="5">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="open()" #el>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="openInstrumentSelectionMenu()" #el>
         {{matrix.name}}
       </button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="previousMatrix()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
@@ -47,7 +47,7 @@
             [class.minHeightRowNotExpanded]="!row.isExpanded"
             fxFlex
     >
-      <button (click)="switchRow(row)" mat-button class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="showRowNames">
+      <button (click)="switchRowExpansionMode(row)" mat-button class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="showRowNames">
         <span>{{row.name}}</span>
       </button>
       <a
@@ -57,7 +57,7 @@
               fxFlex *ngFor="let button of row.buttons; let column = index"
               fxLayout="column"
               fxLayoutAlign="end stretch"
-              (click)="switch($event, button)"
+              (click)="switchRowButtonActivationStatus($event, button)"
               longPress
               (contextmenu)="onContextMenu($event, button)"
               (longPress)="onLongPress($event, button)"
@@ -65,7 +65,7 @@
               [ngStyle]="{'background-color': button.isActive ? 'rgba(0,0,0,' + ((0.3-0.15)/100*(button.velocity-100)+0.3) +')' : 'rgba(0,0,0,.1)'}"
       >
         <div class="velocity-slider" *ngIf="button.isActive && showVelocity" fxLayout>
-          <mat-slider fxFlex style="height: 25px" (click)="clickedSlider()" (input)="setVelocity($event, button)" [value]="button.velocity"></mat-slider>
+          <mat-slider fxFlex style="height: 25px" (click)="onTapOnVelocitySlider()" (input)="setVelocity($event, button)" [value]="button.velocity"></mat-slider>
         </div>
       </a>
     </div>

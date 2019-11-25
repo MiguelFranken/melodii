@@ -39,15 +39,6 @@ const NUMBER_OF_ROWS = 30;
 })
 export class PrototypeComponent implements OnInit {
 
-  public set bpm(bpm: number) {
-    this._bpm = bpm;
-    this.msPerBeat = 1000 * 0.5 * (60 / bpm);
-  }
-
-  public get bpm(): number {
-    return this._bpm;
-  }
-
   constructor(
     private socketService: SocketService,
     private navigationService: NavigationService,
@@ -76,19 +67,19 @@ export class PrototypeComponent implements OnInit {
 
   public isClosedNavigation: Observable<boolean>;
 
-  @ViewChild('el', {static: true, read: ElementRef })
+  @ViewChild('el', { static: true, read: ElementRef })
   el: ElementRef;
 
-  @ViewChild('tpl', {static: true})
+  @ViewChild('tpl', { static: true })
   tpl: TemplateRef<any>;
 
-  private overlay;
-
-  // public switchShowRowNames() {
-  //   this.showRowNames = !this.showRowNames;
-  // }
-
   public isInExpandedMode = true;
+
+  /**
+   * Overlay used to select the current instrument,
+   * i.e. selection of on of the available matrices
+   */
+  private instrumentSelectionOverlay;
 
   private isInFoldMode = false;
 
@@ -99,6 +90,7 @@ export class PrototypeComponent implements OnInit {
 
   private clicked = false;
 
+  //region Velocity
   public switchVelocity() {
     this.showVelocity = !this.showVelocity;
   }
@@ -107,21 +99,63 @@ export class PrototypeComponent implements OnInit {
     button.velocity = event.value;
   }
 
-  public switchRow(row: Row) {
+  public increaseVelocity(event: MouseEvent, button: RowButton) {
+    event.stopPropagation();
+    button.velocity += 10;
+    console.log(button.velocity);
+  }
+
+  public decreaseVelocity(event: MouseEvent, button: RowButton) {
+    event.stopPropagation();
+    button.velocity -= 10;
+    console.log(button.velocity);
+  }
+
+  public onTapOnVelocitySlider() {
+    this.clicked = true;
+  }
+  //endregion
+
+  //region Row Expansion
+  public switchRowExpansionMode(row: Row) {
     row.isExpanded = !row.isExpanded;
   }
 
+  public switchAllExpanded() {
+    this.isInExpandedMode = !this.isInExpandedMode;
+    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+      this.matrix.rows[i].isExpanded = this.isInExpandedMode;
+    }
+  }
+  //endregion
+
+  //region BPM
   changeBpm(event) {
     this.bpm = event.value;
   }
 
-  private initOverlay() {
+  public set bpm(bpm: number) {
+    this._bpm = bpm;
+    this.msPerBeat = 1000 * 0.5 * (60 / bpm);
+  }
+
+  public get bpm(): number {
+    return this._bpm;
+  }
+
+  public updateMatrix() {
+    this.subject.next(this.msPerBeat);
+  }
+  //endregion
+
+  //region Instrument Selection Menu
+  private initInstrumentSelectionMenu() {
     const position = new RelativePosition({
       placement: OutsidePlacement.BOTTOM_LEFT,
       src: this.el.nativeElement
     });
 
-    this.overlay = this._toppy
+    this.instrumentSelectionOverlay = this._toppy
       .position(position)
       .config({
         closeOnDocClick: true
@@ -130,16 +164,18 @@ export class PrototypeComponent implements OnInit {
       .create();
   }
 
-  open() {
-    this.overlay.open();
+  public openInstrumentSelectionMenu() {
+    this.instrumentSelectionOverlay.open();
   }
 
-  close() {
-    this.overlay.close();
+  public switchMatrix(matrix: Matrix, index: number) {
+    this.matrix = matrix;
+    this.matrixCollectionIndex = index;
   }
+  //endregion
 
   ngOnInit() {
-    this.initOverlay();
+    this.initInstrumentSelectionMenu();
     this.isClosedNavigation = this.navigationService.getIsClosedObservable();
     this.isClosedNavigation.subscribe(value => {
       if (value) {
@@ -151,26 +187,36 @@ export class PrototypeComponent implements OnInit {
 
     this.interval = this.subject.pipe(switchMap((period: number) => interval(period)));
     this.socketService.initSocket();
+
+    // create matrices
     this.createMatrixDrums();
     this.createMatrixPiano();
 
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
   }
 
-  public switchMatrix(matrix: Matrix, index: number) {
-    this.matrix = matrix;
-    this.matrixCollectionIndex = index;
+  /**
+   * Removes all entries of the currently displayed matrix
+   */
+  public clearMatrix() {
+    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+      for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
+        this.matrix.rows[i].buttons[y].isActive = false;
+      }
+    }
   }
 
-  public switchNavigation() {
-    this.navigationService.switchNavigation();
-  }
-
+  /**
+   * Selects the next available matrix from the matrix collection as the current matrix.
+   */
   public nextMatrix() {
     this.matrixCollectionIndex = (this.matrixCollectionIndex + 1) % this.matrixCollection.length;
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
   }
 
+  /**
+   * Selects the previous available matrix from the matrix collection as the current matrix.
+   */
   public previousMatrix() {
     if (this.matrixCollectionIndex === 0) {
       this.matrixCollectionIndex = this.matrixCollection.length - 1;
@@ -180,13 +226,7 @@ export class PrototypeComponent implements OnInit {
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
   }
 
-  public switchAllExpanded() {
-    this.isInExpandedMode = !this.isInExpandedMode;
-    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-      this.matrix.rows[i].isExpanded = this.isInExpandedMode;
-    }
-  }
-
+  //region Folding
   getNonFoldedRows() {
     return this.matrix.rows.filter((row: Row) => {
       return !row.isFolded;
@@ -211,15 +251,10 @@ export class PrototypeComponent implements OnInit {
       this.isInFoldMode = true;
     }
   }
+  //endregion
 
-  public clearMatrix() {
-    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-      for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-        this.matrix.rows[i].buttons[y].isActive = false;
-      }
-    }
-  }
-
+  //region Matrix Creation
+  //region Drum Matrix
   private createKickRow(): Row {
     const rowArray: RowButton[] = [];
 
@@ -292,6 +327,7 @@ export class PrototypeComponent implements OnInit {
     matrix.name = 'Drums';
     this.matrixCollection.push(matrix);
   }
+  //endregion
 
   private createMatrixPiano() {
     const matrix: Matrix = new Matrix();
@@ -314,7 +350,11 @@ export class PrototypeComponent implements OnInit {
     matrix.name = 'Synth';
     this.matrixCollection.push(matrix);
   }
+  //endregion
 
+  /**
+   * Stops to play the notes on the matrix
+   */
   public stop() {
     if (this.playSubscription) {
       this.playSubscription.unsubscribe();
@@ -328,12 +368,9 @@ export class PrototypeComponent implements OnInit {
     }
   }
 
-  public updateMatrix() {
-    this.subject.next(this.msPerBeat);
-  }
-
   /**
-   * Starts the matrix
+   * Starts to play the notes on the matrix from the beginning.
+   * If the matrix is already played at this moment, it is stopped and starts again bon,
    */
   public start() {
     this.stop();
@@ -367,7 +404,11 @@ export class PrototypeComponent implements OnInit {
     this.subject.next(this.msPerBeat);
   }
 
-  public switch(event, rowButton: RowButton) {
+  /**
+   * Activates or deactivates a button of the matrix. If the button is active,then a message is generated
+   * from the button at the right time, which leads to the output of a sound in the music generator.
+   */
+  public switchRowButtonActivationStatus(event, rowButton: RowButton) {
     if (event.srcElement.nodeName.toLowerCase() === 'mat-slider' || this.clicked) {
       this.clicked = false;
     } else {
@@ -397,20 +438,11 @@ export class PrototypeComponent implements OnInit {
     }
   }
 
-  public increaseVelocity(event: MouseEvent, button: RowButton) {
-    event.stopPropagation();
-    button.velocity += 10;
-    console.log(button.velocity);
-  }
-
-  public decreaseVelocity(event: MouseEvent, button: RowButton) {
-    event.stopPropagation();
-    button.velocity -= 10;
-    console.log(button.velocity);
-  }
-
-  public clickedSlider() {
-    this.clicked = true;
+  /**
+   * Hides the main navigation so that there is more space for the matrix
+   */
+  public switchNavigation() {
+    this.navigationService.switchNavigation();
   }
 
 }

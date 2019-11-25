@@ -16,6 +16,7 @@
     ],
     "radix": false,
     "no-shadowed-variable": false,
+    "comment-format": false,
     "component-selector": [
       true,
       "element",
