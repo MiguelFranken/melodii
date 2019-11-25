@@ -4,6 +4,7 @@ import { Logger } from '@overnightjs/logger';
 import { UdpServer } from './udp-server';
 import { Event } from "./socket/socket-events";
 import { Action } from "./socket/socket-actions";
+import { IOSCMessage } from './osc/osc-message';
 
 /**
  * TODO
@@ -28,7 +29,7 @@ const myIp = ip.address();
 Logger.Info(`UDP server listening for OSC messages at ${myIp}:${udpServer.port}`);
 
 // redirects osc messages from the instruments to the frontend and the tone generator
-udpServer.onMessage(message => {
+udpServer.onMessage((message: IOSCMessage) => {
   tonegeneratorSocket.emit(Event.OSC_MESSAGE, message);
   clientSocket.emit(Event.OSC_MESSAGE, message);
 });
