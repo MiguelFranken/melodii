@@ -13,5 +13,5 @@ export const CONTROLLERS = [
   DrumsController,
   PianoController,
   BoxController,
-  ArcController
+  ArcController,
 ];
