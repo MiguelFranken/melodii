@@ -1,4 +1,4 @@
-import * as Tone from 'tone';
+import { Sampler, NoiseSynth, Synth } from 'tone';
 
 /**
  * creates samplers based on wav/mp3/oog files
@@ -6,7 +6,7 @@ import * as Tone from 'tone';
 export class SampleLib {
   public baseUrl: string = 'samples/';
 
-  public pianoNotes: object = {
+  public pianoNotes = {
     'A0': 'A0.mp3',
     'A1': 'A1.mp3',
     'A2': 'A2.mp3',
@@ -96,44 +96,42 @@ export class SampleLib {
 
   // TODO MF: Using optionals instead of this. Maybe the ToneJS TypeScript version already supports this
   // tslint:disable-next-line:no-empty
-  public getKickSampler(onLoad: () => void = () => {}) {
+  public getKickSampler(onLoad: () => void = () => { }) {
     const path = 'drums/jazz_kick.wav';
-    return new Tone.Sampler(
-      {C2: path},
+    return new Sampler(
+      { C2: path },
       onLoad,
       this.baseUrl,
     );
   }
 
   // tslint:disable-next-line:no-empty
-  public getSnareSampler(onLoad: () => void = () => {}) {
+  public getSnareSampler(onLoad: () => void = () => { }) {
     const path = 'drums/jazz_snare.wav';
-    return new Tone.Sampler(
-      {C2: path},
+    return new Sampler(
+      { C2: path },
       onLoad,
       this.baseUrl,
     );
   }
 
   // tslint:disable-next-line:no-empty
-  public getPianoSampler(onLoad: () => void = () => {}) {
-    const sampler = new Tone.Sampler(
-      this.pianoNotes,
-      {
-        attack: 0,
-        release: 1.5,
-        onload: onLoad,
-        baseUrl: this.baseUrl + 'piano/',
-        curve: 'sinus',
-      },
-
+  public getPianoSampler(onLoad: () => void = () => { }) {
+    const sampler = new Sampler({
+      urls: this.pianoNotes,
+      attack: 0,
+      release: 1.5,
+      onload: onLoad,
+      baseUrl: this.baseUrl + 'piano/',
+      curve: 'linear',
+    }
     );
     sampler.volume.value = -15;
     return sampler;
   }
 
   public getHiHatSynth() {
-    const synth = new Tone.NoiseSynth({
+    const synth = new NoiseSynth({
       noise: {
         type: "white",
       },
@@ -149,7 +147,7 @@ export class SampleLib {
   }
 
   public getLongNoteSynth() {
-    const synth = new Tone.Synth({
+    const synth = new Synth({
       oscillator: {
         type: 'square',
       },
