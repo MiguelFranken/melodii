@@ -338,6 +338,7 @@ export class PrototypeComponent implements OnInit {
   }
   //endregion
 
+  //region Piano Matrix
   private createMatrixPiano() {
     const matrix: Matrix = new Matrix();
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
@@ -360,6 +361,7 @@ export class PrototypeComponent implements OnInit {
     this.matrixCollection.push(matrix);
     this.logger.info("Created matrix for instrument: 'Piano'", matrix);
   }
+  //endregion
   //endregion
 
   /**

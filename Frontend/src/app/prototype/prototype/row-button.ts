@@ -4,7 +4,7 @@ export class RowButton {
   public isPlayed = false;
   public isActive = false;
   public id: string;
-  public velocity = 100; // Percent
+  public velocity = 80; // Percent
 
   public oscMessage: IOSCMessage;
 
