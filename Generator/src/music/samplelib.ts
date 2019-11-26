@@ -124,7 +124,7 @@ export class SampleLib {
       onload: onLoad,
       baseUrl: this.baseUrl + 'piano/',
       curve: 'linear',
-    }
+    },
     );
     sampler.volume.value = -15;
     return sampler;
