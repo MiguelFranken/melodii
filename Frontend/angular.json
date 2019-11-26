@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "mcp",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -33,11 +33,35 @@
             "scripts": []
           },
           "configurations": {
-            "production": {
+            "master": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/environment.master.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            },
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
                 }
               ],
               "optimization": true,
@@ -65,9 +89,6 @@
             "browserTarget": "osc-frontend:build"
           },
           "configurations": {
-            "production": {
-              "browserTarget": "osc-frontend:build:production"
-            }
           }
         },
         "extract-i18n": {

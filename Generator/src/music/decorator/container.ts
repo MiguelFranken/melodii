@@ -22,7 +22,7 @@ export class Container {
   private resolve<T>(someControllerClass: new (...args: any[]) => T): T {
     // find or create new instances for dependencies of the controller
     const ctorParams: any[] = Reflect.getMetadata("design:paramtypes", someControllerClass) || [];
-    let params = ctorParams.map((param) => {
+    const params = ctorParams.map((param) => {
       if (this.dependenciesRegistry.has(param)) {
         return this.dependenciesRegistry.get(param);
       } else {

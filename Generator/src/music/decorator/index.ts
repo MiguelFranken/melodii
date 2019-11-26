@@ -1,5 +1,4 @@
 import { MetadataArgsStorage } from './metadata-builder/metadata-args-storage';
-// import { importClassesFromDirectories } from './util/directory-exported-classes-loader';
 import { ControllerExecutor } from './controller-executor';
 
 export function addControllers(socket: SocketIOClient.Socket, controllers: Function[] | string[]) {
@@ -19,9 +18,8 @@ export function defaultMetadataArgsStorage(): MetadataArgsStorage {
 }
 
 /**
- * @param io
+ * @param socket
  * @param controllers List of directories from where to "require" all the controllers
- * @param webserver Socket server for bi-directional communication with the Angular frontend
  */
 export function createExecutor(socket: SocketIOClient.Socket, controllers: Function[] | string[]) {
   const executor = new ControllerExecutor(socket);
@@ -29,8 +27,6 @@ export function createExecutor(socket: SocketIOClient.Socket, controllers: Funct
   // get controller classes
   let controllerClasses: Function[];
   controllerClasses = (controllers as any[]).filter((controller) => controller instanceof Function);
-  // const controllerDirs = (controllers as any[]).filter((controller) => typeof controller === "string");
-  // controllerClasses.push(...importClassesFromDirectories(controllerDirs));
 
   executor.execute(controllerClasses);
 }

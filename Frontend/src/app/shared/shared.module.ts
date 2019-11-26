@@ -3,17 +3,17 @@ import { MaterialModule } from './material/material.module';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from "./layout/layout.module";
-import { LongPress } from "./directives/longpress";
+import { LongPressDirective } from "./directives/long-press.directive";
 import { ToppyModule } from 'toppy';
 
-let modules = [
+const modules = [
   MaterialModule,
   LayoutModule,
 ];
 
 @NgModule({
   declarations: [
-    LongPress,
+    LongPressDirective,
   ],
   imports: [
     CommonModule,
@@ -24,7 +24,7 @@ let modules = [
   exports: [
     modules,
     FlexLayoutModule,
-    LongPress
+    LongPressDirective
   ]
 })
 export class SharedModule { }

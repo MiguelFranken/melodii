@@ -12,9 +12,11 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
       "camelCase"
     ],
+    "radix": false,
+    "no-shadowed-variable": false,
+    "comment-format": false,
     "component-selector": [
       true,
       "element",
@@ -31,6 +33,14 @@
       true,
       140
     ],
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore",
+        "allow-pascal-case"
+      ]
+    },
     "member-access": false,
     "member-ordering": [
       true,
@@ -69,8 +79,7 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "quotemark": [
-      true,
-      "single"
+      false
     ],
     "trailing-comma": false,
     "no-conflicting-lifecycle": true,

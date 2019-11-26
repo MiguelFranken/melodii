@@ -1,0 +1,2 @@
+jazz_kick & jazz_snare -> https://github.com/d-subat/synthsequencer/tree/master/assets
+piano folder -> https://github.com/nbrosowsky/tonejs-instruments

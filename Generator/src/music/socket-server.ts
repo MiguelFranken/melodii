@@ -4,12 +4,15 @@ import { addControllers } from "./decorator";
 
 export class SocketServer {
 
-  private socket: SocketIOClient.Socket;
+  private readonly socket: SocketIOClient.Socket;
 
   constructor(path: string) {
     this.socket = io(path);
     this.socket.on(Event.CONNECT, () => {
       console.log(`Established websocket connection to OSC-Server (${path})`);
+    });
+    this.socket.on(Event.DISCONNECT, () => {
+      console.log(`Disconnected websocket connection to OSC-Server (${path})`);
     });
   }
 
