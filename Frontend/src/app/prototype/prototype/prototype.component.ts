@@ -42,7 +42,7 @@ export class PrototypeComponent implements OnInit {
   constructor(
     private socketService: SocketService,
     private navigationService: NavigationService,
-    private _toppy: Toppy) { }
+    private toppy: Toppy) { }
 
   public height = '100%';
 
@@ -155,7 +155,7 @@ export class PrototypeComponent implements OnInit {
       src: this.el.nativeElement
     });
 
-    this.instrumentSelectionOverlay = this._toppy
+    this.instrumentSelectionOverlay = this.toppy
       .position(position)
       .config({
         closeOnDocClick: true
@@ -416,7 +416,10 @@ export class PrototypeComponent implements OnInit {
     }
   }
 
-  onLongPress(event, button) {
+  /**
+   * A long press activates the context menu with further setting options for an entry in the matrix.
+   */
+  onLongPress(event: MouseEvent, button: RowButton) {
     event.preventDefault();
 
     if (button.isActive) {
@@ -427,6 +430,9 @@ export class PrototypeComponent implements OnInit {
     }
   }
 
+  /**
+   * Opens the context menu of a specific entry of the matrix specified by the row button.
+   */
   onContextMenu(event: MouseEvent, button: RowButton) {
     event.preventDefault();
 
