@@ -9,6 +9,7 @@ import { Matrix } from './matrix';
 import { Row } from './row';
 import { RowButton } from './row-button';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
+import { Logger } from '@upe/logger';
 
 const NOTES_PENTATONIC_C = [
   'C',
@@ -39,10 +40,13 @@ const NUMBER_OF_ROWS = 30;
 })
 export class PrototypeComponent implements OnInit {
 
+  private logger: Logger = new Logger({ name: 'PrototypeComponent', flags: ['component'] });
+
   constructor(
     private socketService: SocketService,
     private navigationService: NavigationService,
-    private toppy: Toppy) { }
+    private toppy: Toppy) {
+  }
 
   public height = '100%';
 
@@ -102,13 +106,13 @@ export class PrototypeComponent implements OnInit {
   public increaseVelocity(event: MouseEvent, button: RowButton) {
     event.stopPropagation();
     button.velocity += 10;
-    console.log(button.velocity);
+    this.logger.info(`Increased velocity to ${button.velocity}`);
   }
 
   public decreaseVelocity(event: MouseEvent, button: RowButton) {
     event.stopPropagation();
     button.velocity -= 10;
-    console.log(button.velocity);
+    this.logger.info(`Decreased velocity to ${button.velocity}`);
   }
 
   public onTapOnVelocitySlider() {
@@ -162,6 +166,8 @@ export class PrototypeComponent implements OnInit {
       })
       .content(this.tpl, { name: 'Johny' })
       .create();
+
+    this.logger.info('Initialized instrument selection menu');
   }
 
   public openInstrumentSelectionMenu() {
@@ -212,6 +218,7 @@ export class PrototypeComponent implements OnInit {
   public nextMatrix() {
     this.matrixCollectionIndex = (this.matrixCollectionIndex + 1) % this.matrixCollection.length;
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+    this.logger.info('Switched to next matrix', this.matrix);
   }
 
   /**
@@ -224,6 +231,7 @@ export class PrototypeComponent implements OnInit {
       this.matrixCollectionIndex = (this.matrixCollectionIndex - 1) % this.matrixCollection.length;
     }
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+    this.logger.info('Switched to previous matrix', this.matrix);
   }
 
   //region Folding
@@ -326,6 +334,7 @@ export class PrototypeComponent implements OnInit {
     matrix.rows.push(this.createSnareRow());
     matrix.name = 'Drums';
     this.matrixCollection.push(matrix);
+    this.logger.info("Created matrix for instrument: 'Drums'", matrix);
   }
   //endregion
 
@@ -349,6 +358,7 @@ export class PrototypeComponent implements OnInit {
     }
     matrix.name = 'Synth';
     this.matrixCollection.push(matrix);
+    this.logger.info("Created matrix for instrument: 'Piano'", matrix);
   }
   //endregion
 
@@ -428,6 +438,8 @@ export class PrototypeComponent implements OnInit {
       this.contextMenu.menuData = {button};
       this.contextMenu.openMenu();
     }
+
+    this.logger.info('Performed long press on button', button);
   }
 
   /**
