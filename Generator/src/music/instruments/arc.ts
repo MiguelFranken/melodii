@@ -1,7 +1,7 @@
 import { Polyphonizer } from '../polyphonizer';
 import { Note, Velocity, Cents } from '../types';
 import { isVoiceActive } from '../utils';
-import { Synth } from 'tone/build/esm';
+import { Synth } from 'tone';
 
 export class Arc {
     private readonly voices = new Polyphonizer<Synth>(() => new Synth().toDestination());
