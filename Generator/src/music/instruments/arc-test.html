@@ -8,7 +8,8 @@
 </head>
 
 <body>
-    <input id="ip" type="text" value="http://192.168.0.101:8080" />
+    <input id="ip" type="text" value="" />
+    <button id="connect">Connect</button>
     <span id="indicator">Not connected.</span>
     <br>
 
@@ -46,11 +47,14 @@
     <script>
         const ipInput = document.getElementById("ip");
         const indicator = document.getElementById("indicator");
-        ipInput.addEventListener("input", function () {
-            initSocket(this.value);
+        const connect = document.getElementById("connect");
+        connect.addEventListener("click", function () {
+            initSocket(ipInput.value);
         });
-        initSocket(ipInput.value);
+        const ip = ipInput.value || `${window.location.hostname}:8080`;
+        initSocket(ip);
         function initSocket(ip) {
+            ipInput.value = ip;
             indicator.innerText = "Connecting...";
             socket = io(ip);
             socket.on('connect', () => indicator.innerText = "Connected.");
@@ -61,7 +65,7 @@
             socket.on('connect_timeout', () => indicator.innerText = "The connection timed out.");
         }
 
-        const OSC_MESSAGE = 3;
+        const OSC_MESSAGE = 'redirect-osc-message';
 
         function set(note, strength) {
             console.log(`Set ${note} to ${strength}.`);
