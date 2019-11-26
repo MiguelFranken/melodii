@@ -5,8 +5,10 @@
     "object-literal-shorthand": false,
     "no-namespace": false,
     "max-line-length": {
-      "options": [100]
+      "options": [150]
     },
+    "radix": false,
+    "no-shadowed-variable": false,
     "member-ordering": false,
     "no-consecutive-blank-lines": false,
     "object-literal-sort-keys": false,

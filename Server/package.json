@@ -1,0 +1,41 @@
+{
+  "name": "mcp-osc-server",
+  "description": "mcp-osc-server",
+  "repository": "https://gitlab.com/miguelfranken90/media-computing-project",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc --outDir dist/ --p tsconfig.json",
+    "start": "npm run build && node dist/index.js",
+    "start:refresh": "ts-node-dev --respawn --transpileOnly src/index.ts",
+    "lint": "tslint --project ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@overnightjs/core": "^1.6.9",
+    "@overnightjs/logger": "^1.1.9",
+    "@types/socket.io": "^2.1.4",
+    "body-parser": "^1.19.0",
+    "deprecated-decorator": "^0.1.6",
+    "express": "^4.17.1",
+    "glob": "^7.1.5",
+    "ip": "^1.1.5",
+    "osc": "^2.3.1",
+    "path-to-regexp": "^3.1.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.3",
+    "socket.io": "^2.3.0",
+    "ws": "^7.1.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "@types/ip": "^1.1.0",
+    "@types/node": "^12.11.1",
+    "@types/ws": "^6.0.3",
+    "ts-node": "^8.4.1",
+    "ts-node-dev": "^1.0.0-pre.43",
+    "tslint": "^5.20.0",
+    "typescript": "^3.7.2"
+  }
+}

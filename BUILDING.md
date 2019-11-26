@@ -14,7 +14,7 @@ The monitor frontend shows information about the system, like the received messa
 # Backend
 ## Run
 ### Starting the OSC-Server
-- `cd OSCServer`
+- `cd Server`
 - `npm run start:refresh` or `npm run start` to disable recompiling when detecting source code changes
 
 ### Starting the tone generator

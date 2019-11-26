@@ -7,12 +7,7 @@ export class DrumsController {
 
     constructor(private music: Music) { }
 
-    @OnMessage()
-    public receivedMsg(@Message() message: IOSCMessage) {
-        
-    }
-
-    @OnMessage('/snare', '/snareVariation')
+    @OnMessage('/snare')
     public receivedMsgSnare(@Message() message: IOSCMessage) {
         this.music.playDrums('snare');
     }

@@ -1,6 +1,6 @@
-import { Row } from "./row";
+import { Row } from './row';
 
 export class Matrix {
-  public name: string = "testName";
+  public name = 'testName';
   public rows: Row[] = [];
 }

@@ -7,14 +7,15 @@
     "node": "12.x"
   },
   "scripts": {
-    "build": "npm run build:express && npm run build:tonejs:ci",
+    "build:master": "npm run build:express && npm run build:tonejs:master",
     "build:dev": "npm run build:express && npm run build:tonejs:dev",
+    "build:local": "npm run build:express && npm run build:tonejs",
     "build:express": "tsc --p tsconfig.json",
-    "build:tonejs:ci": "webpack --env.production --config ./webpack.config.js && cp -r ./src/static/* ./dist/static",
-    "build:tonejs:dev": "webpack --env.development --config ./webpack.config.js && cp -r ./src/static/* ./dist/static",
+    "build:tonejs:master": "webpack --env.master --config ./webpack.config.js && cp -r ./src/static/* ./dist/static",
+    "build:tonejs:dev": "webpack --env.dev --config ./webpack.config.js && cp -r ./src/static/* ./dist/static",
+    "build:tonejs": "webpack --env.local --config ./webpack.config.js && cp -r ./src/static/* ./dist/static",
     "start": "node dist/index.js",
-    "start:dev": "npm run build:dev && node dist/index.js",
-    "lint": "tslint -- src/*.ts"
+    "lint": "tslint --project ."
   },
   "author": "",
   "license": "ISC",
@@ -24,7 +25,7 @@
     "express": "^4.17.1",
     "socket.io-client": "^2.3.0",
     "tonal": "^2.2.2",
-    "tone": "^13.8.25",
+    "tone": "typescript",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
