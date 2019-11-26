@@ -1,9 +1,9 @@
-import * as Tone from "tone";
 import { Polyphonizer } from '../polyphonizer';
 import { Note, Velocity, Cents } from '../types';
+import { Synth, Frequency } from 'tone';
 
 export class Box {
-    private readonly voices = new Polyphonizer(() => new Tone.Synth().toMaster());
+    private readonly voices = new Polyphonizer(() => new Synth().toDestination());
 
     public trigger(note: Note, velocity: Velocity) {
         console.log(`Trigger with note ${note} and velocity ${velocity}.`);
@@ -14,7 +14,7 @@ export class Box {
     public detune(note: Note, cents: Cents) {
         console.log(`Detune with note ${note} and cents ${cents}.`);
         const voice = this.voices.getVoice(note);
-        voice.setNote(Tone.Frequency("C4").toFrequency() + cents);
+        voice.setNote(Frequency("C4").toFrequency() + cents);
     }
 
     public release(note: Note) {

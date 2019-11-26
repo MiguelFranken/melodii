@@ -4,7 +4,7 @@ import { isVoiceActive } from '../utils';
 import { Synth } from 'tone';
 
 export class Arc {
-    private readonly voices = new Polyphonizer<Synth>(() => new Synth().toDestination());
+    private readonly voices = new Polyphonizer(() => new Synth().toDestination());
 
     public set(note: Note, strength: Velocity) {
         console.log(`Set with note ${note} and velocity ${strength}.`);
