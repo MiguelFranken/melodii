@@ -1,6 +1,7 @@
-type Voice = any;
+import { Monophonic } from "tone/build/esm/instrument/Monophonic";
+import { isVoiceActive } from './utils';
 
-export class Polyphonizer {
+export class Polyphonizer<Voice extends Monophonic<any>> {
     private voices: Map<string, Voice> = new Map();
 
     constructor(
@@ -17,12 +18,10 @@ export class Polyphonizer {
         // No voice assigned to this key.
 
         // Search for idle voice.
-        for (let k in this.voices.entries()) {
-            const voice = this.voices.get(k);
-            const isActive = voice.getLevelAtTime("+0") > 1e-5; // Taken from `PolySynth._getClosestVoice()`.
+        for (let [k, voice] of this.voices) {
 
             // If this voice is idle, reuse and assign it to the key.
-            if (!isActive) {
+            if (!isVoiceActive(voice)) {
                 console.log("Found inactive voice.")
                 this.voices.delete(k);
                 this.voices.set(key, voice);
