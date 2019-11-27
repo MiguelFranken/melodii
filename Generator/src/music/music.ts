@@ -2,6 +2,9 @@ import { Scale } from "tonal";
 import { note } from "@tonaljs/tonal";
 import * as Tone from "tone";
 import { SampleLib } from './samplelib';
+import DrumsSnare from './instruments/drums_snare';
+import DrumsKick from './instruments/drums_kick';
+
 
 export enum ChordQuality {
   MAJOR = "",
@@ -28,17 +31,13 @@ export class Music {
 
   constructor() {
     this.scale = Scale.notes("C major");
+    const drumsSnare = new DrumsSnare();
+    const drumsKick = new DrumsKick();
+
     this.instruments.synth = new Tone.Synth().toMaster();
-    this.instruments.drum_kick = this.sampleLib.getKickSampler(
-      () => console.log("drum kick bufferd"), // just for debug purpose
-    ).toMaster();
-    this.instruments.drum_snare = this.sampleLib.getSnareSampler(
-      () => console.log("drum snare bufferd"), // just for debug purpose
-    ).toMaster();
     this.instruments.piano = this.sampleLib.getPianoSampler(
       () => console.log("piano bufferd"), // just for debug purpose
     ).toMaster();
-    this.instruments.hihat = this.sampleLib.getHiHatSynth().toMaster();
     this.instruments.longNote = this.sampleLib.getLongNoteSynth().toMaster();
   }
 
@@ -68,18 +67,6 @@ export class Music {
   public pianoPlayNote(note: string): void {
     console.log(`Play sound ${note}.`);
     this.instruments.piano.triggerAttackRelease(note, "8n");
-  }
-
-  /**
-   * plays the drums
-   * @param instrument which part of the drums should be played
-   */
-  public playDrums(instrument: string): void {
-    switch (instrument) {
-      case 'kick': this.instruments.drum_kick.triggerAttack("C2"); break;
-      case 'snare': this.instruments.drum_snare.triggerAttack("C2"); break;
-      case 'hihat': this.instruments.hihat.triggerAttackRelease("8n"); break;
-    }
   }
 
   /**
