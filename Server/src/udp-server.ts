@@ -4,7 +4,7 @@ import { IOSCMessage } from "./osc/osc-message";
 import { Logger } from "@overnightjs/logger";
 
 enum UdpEvent {
-  MESSAGE = "message"
+  MESSAGE = "message",
 }
 
 export class UdpServer {

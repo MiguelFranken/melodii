@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SocketService } from '../../shared/socket/socket.service';
-import { Event } from '../../shared/socket/event';
+// import { Event } from '../../shared/socket/event';
 
 @Component({
   selector: 'app-echo',

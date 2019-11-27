@@ -2,9 +2,9 @@
 
   <div class="menu" fxLayout fxFlex="10">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">play_arrow</mat-icon></button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="stop()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">stop</mat-icon></button>
-      <div class="bpm-card" fxFlex="calc(66.67% - 2px)" fxLayout fxLayoutAlign="start center" fxLayoutGap="75px">
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="calc(11.11% - 2px)" #playButtonElement><mat-icon class="action-icon">play_arrow</mat-icon></button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="stop()" fxFlex="calc(11.11% - 2px)" #stopButtonElement><mat-icon class="action-icon">stop</mat-icon></button>
+      <div class="bpm-card" fxFlex="calc(66.67% - 2px)" fxLayout fxLayoutAlign="start center" fxLayoutGap="75px" #bpmSliderElement>
         <span fxFlex="5">{{bpm}}bpm</span>
         <mat-slider
                 class="example-margin"
@@ -24,15 +24,15 @@
 
   <div class="menu" fxLayout fxFlex="5">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="open()" #el>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="openInstrumentSelectionMenu()" #el>
         {{matrix.name}}
       </button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="previousMatrix()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="nextMatrix()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="clearMatrix()">Clear</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex>Load Preset</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex>Save as Preset</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchVelocity()">{{showVelocity ? 'Hide' : 'Show'}} Velocity</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="showHelp()" #helpButton>Help</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchVelocity()" #velocityButtonElement>{{showVelocity ? 'Hide' : 'Show'}} Velocity</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
     </div>
@@ -47,9 +47,10 @@
             [class.minHeightRowNotExpanded]="!row.isExpanded"
             fxFlex
     >
-      <button (click)="switchRow(row)" mat-button class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="showRowNames">
+      <button (click)="switchRowExpansionMode(row)" mat-button class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="showRowNames">
         <span>{{row.name}}</span>
       </button>
+      <!-- Row Button -->
       <a
               class="card"
               [class.played]="button.isPlayed && !button.isActive"
@@ -57,15 +58,17 @@
               fxFlex *ngFor="let button of row.buttons; let column = index"
               fxLayout="column"
               fxLayoutAlign="end stretch"
-              (click)="switch($event, button)"
-              long-press
+              (click)="switchRowButtonActivationStatus($event, button)"
+              longPress
               (contextmenu)="onContextMenu($event, button)"
-              (onLongPress)="onLongPress($event, button)"
+              (longPress)="onLongPress($event, button)"
               style="position: relative;"
               [ngStyle]="{'background-color': button.isActive ? 'rgba(0,0,0,' + ((0.3-0.15)/100*(button.velocity-100)+0.3) +')' : 'rgba(0,0,0,.1)'}"
+              #rowButtonElement
       >
-        <div class="velocity-slider" *ngIf="button.isActive && showVelocity" fxLayout>
-          <mat-slider fxFlex style="height: 25px" (click)="clickedSlider()" (input)="setVelocity($event, button)" [value]="button.velocity"></mat-slider>
+        <!-- Velocity Slider -->
+        <div class="velocity-slider" *ngIf="button.isActive && showVelocity" fxLayout #sliderElement>
+          <mat-slider fxFlex style="height: 25px" (click)="onTapOnVelocitySlider()" (input)="setVelocity($event, button)" [value]="button.velocity"></mat-slider>
         </div>
       </a>
     </div>
@@ -110,6 +113,7 @@
 <!--endregion-->
 
 <!--region Overlay Templates-->
+<!-- Instrument Selection Menu -->
 <ng-template #tpl let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
     <div fxLayout fxLayoutGap="2px">
@@ -131,6 +135,34 @@
       <ng-template #shrinkIconTemplate><mat-icon>unfold_less</mat-icon></ng-template>
       <ng-template #expandIconTemplate><mat-icon>unfold_more</mat-icon></ng-template>
       <!--endregion-->
+    </div>
+  </div>
+</ng-template>
+
+<!-- Overlays -->
+<ng-template #helpMenuTemplate let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout="column" fxLayoutGap="2px">
+      <div fxLayout fxLayoutGap="2px">
+        <button
+                mat-button
+                class="overlay-button"
+                fxFlex
+                (click)="showVelocityHelp(); toppy.close()"
+        >
+          Velocity
+        </button>
+      </div>
+      <div fxLayout fxLayoutGap="2px">
+        <button
+                mat-button
+                class="overlay-button"
+                fxFlex
+                (click)="showTutorial(); toppy.close()"
+        >
+          Tutorial
+        </button>
+      </div>
     </div>
   </div>
 </ng-template>

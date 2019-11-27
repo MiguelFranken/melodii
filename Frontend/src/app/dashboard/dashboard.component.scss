@@ -1,3 +1,5 @@
+@import "./src/scss/variables";
+
 ::ng-deep .mat-progress-bar-element {
   transition: none !important;
 }
@@ -8,7 +10,7 @@
 
 .card {
   width: 60vw;
-  background-color: rgba(0,0,0,.1);
+  background-color: $mcp-black-5;
   border-radius: 6px;
   padding: 10px;
   margin-bottom: 20px;

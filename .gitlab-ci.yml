@@ -6,14 +6,14 @@ variables:
   USERNAME: $DOCKER_USERNAME
   PASSWORD: $DOCKER_PASSWORD
 
-#cache:
-#  untracked: true
-#  key: ${CI_COMMIT_REF_SLUG}
-#  paths:
-#    - Server/node_modules/
-#    - Frontend/node_modules/
-#    - Generator/node_modules/
-#    - OSCClient/node_modules/
+cache:
+  untracked: true
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - Server/node_modules/
+    - Frontend/node_modules/
+    - Generator/node_modules/
+    - OSCClient/node_modules/
 
 stages:
   - install_packages
@@ -23,134 +23,134 @@ stages:
   - package
   - deploy
 
-#install_packages:
-#  image: nikolaik/python-nodejs:latest
-#  stage: install_packages
-#  script:
-#    - cd Server
-#    - npm ci
-#    - cd ../Frontend
-#    - npm ci
-#    - cd ../Generator
-#    - npm ci
-#    - cd ../OSCClient
-#    - npm ci
-#  tags:
-#    - docker
-#
-#build:tone-generator:
-#  image: nikolaik/python-nodejs:latest
-#  stage: build
-#  script:
-#    - cd Generator
-#    - npm run build
-#  artifacts:
-#    expire_in: 1 day
-#    paths:
-#      - Generator/dist/
-#  tags:
-#    - docker
-#
-#build:frontend:
-#  image: trion/ng-cli
-#  stage: build
-#  before_script:
-#    - cd Frontend
-#  script:
-#    - npm run build:local # TODO: Bessere Lösung notwendig
-#  artifacts:
-#    expire_in: 1 day
-#    paths:
-#      - Frontend/dist/
-#  tags:
-#    - docker
-#
-#build:osc-server:
-#  image: nikolaik/python-nodejs:latest
-#  stage: build
-#  before_script:
-#    - cd Server
-#  script:
-#    - npm run build
-#  artifacts:
-#    expire_in: 1 day
-#    paths:
-#      - Server/dist/
-#  tags:
-#    - docker
-#
-#build:osc-client:
-#  image: nikolaik/python-nodejs:latest
-#  stage: build
-#  before_script:
-#    - cd OSCClient
-#  script:
-#    - npm run build
-#  artifacts:
-#    expire_in: 1 day
-#    paths:
-#      - OSCClient/dist/
-#  tags:
-#    - docker
-#
-#lint:frontend:
-#  image: trion/ng-cli
-#  allow_failure: true
-#  before_script:
-#    - cd Frontend
-#  stage: lint
-#  script:
-#    - ng lint
-#  tags:
-#    - docker
-#
-#lint:tone-generator:
-#  image: nikolaik/python-nodejs:latest
-#  allow_failure: true
-#  before_script:
-#    - cd Generator
-#  stage: lint
-#  script:
-#    - npm run lint
-#  tags:
-#    - docker
-#
-#lint:osc-server:
-#  image: nikolaik/python-nodejs:latest
-#  allow_failure: true
-#  before_script:
-#    - cd Server
-#  stage: lint
-#  script:
-#    - npm run lint
-#  tags:
-#    - docker
-#
-#lint:osc-client:
-#  image: nikolaik/python-nodejs:latest
-#  allow_failure: true
-#  before_script:
-#    - cd OSCClient
-#  stage: lint
-#  script:
-#    - npm run lint
-#  tags:
-#    - docker
-#
-#test:frontend:karma:
-#  image: trion/ng-cli-karma
-#  stage: test
-#  allow_failure: false
-#  before_script:
-#    - cd Frontend
-#  script:
-#    - ng test --code-coverage --progress false --watch false
-#  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
-#  artifacts:
-#    paths:
-#      - Frontend/coverage/
-#  tags:
-#    - docker
+install_packages:
+  image: nikolaik/python-nodejs:latest
+  stage: install_packages
+  script:
+    - cd Server
+    - npm ci
+    - cd ../Frontend
+    - npm ci
+    - cd ../Generator
+    - npm ci
+    - cd ../OSCClient
+    - npm ci
+  tags:
+    - docker
+
+build:tone-generator:
+  image: nikolaik/python-nodejs:latest
+  stage: build
+  script:
+    - cd Generator
+    - npm run build:dev # todo: better solution
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - Generator/dist/
+  tags:
+    - docker
+
+build:frontend:
+  image: trion/ng-cli
+  stage: build
+  before_script:
+    - cd Frontend
+  script:
+    - npm run build:local # TODO: Bessere Lösung notwendig
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - Frontend/dist/
+  tags:
+    - docker
+
+build:osc-server:
+  image: nikolaik/python-nodejs:latest
+  stage: build
+  before_script:
+    - cd Server
+  script:
+    - npm run build
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - Server/dist/
+  tags:
+    - docker
+
+build:osc-client:
+  image: nikolaik/python-nodejs:latest
+  stage: build
+  before_script:
+    - cd OSCClient
+  script:
+    - npm run build
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - OSCClient/dist/
+  tags:
+    - docker
+
+lint:frontend:
+  image: trion/ng-cli
+  allow_failure: true
+  before_script:
+    - cd Frontend
+  stage: lint
+  script:
+    - ng lint
+  tags:
+    - docker
+
+lint:tone-generator:
+  image: nikolaik/python-nodejs:latest
+  allow_failure: true
+  before_script:
+    - cd Generator
+  stage: lint
+  script:
+    - npm run lint
+  tags:
+    - docker
+
+lint:osc-server:
+  image: nikolaik/python-nodejs:latest
+  allow_failure: true
+  before_script:
+    - cd Server
+  stage: lint
+  script:
+    - npm run lint
+  tags:
+    - docker
+
+lint:osc-client:
+  image: nikolaik/python-nodejs:latest
+  allow_failure: true
+  before_script:
+    - cd OSCClient
+  stage: lint
+  script:
+    - npm run lint
+  tags:
+    - docker
+
+test:frontend:karma:
+  image: trion/ng-cli-karma
+  stage: test
+  allow_failure: false
+  before_script:
+    - cd Frontend
+  script:
+    - ng test --code-coverage --progress false --watch false
+  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
+  artifacts:
+    paths:
+      - Frontend/coverage/
+  tags:
+    - docker
 
 package:master:web:
   stage: package
@@ -160,8 +160,8 @@ package:master:web:
     - docker push $DOCKER_USERNAME/mcp-master
   tags:
     - docker
-#  only:
-#    - master
+  only:
+    - master
 
 package:master:server:
   stage: package
@@ -172,8 +172,8 @@ package:master:server:
     - docker push $DOCKER_USERNAME/mcp-server-master
   tags:
     - docker
-#  only:
-#    - master
+  only:
+    - master
 
 deploy:master:
   image: node:12.13
@@ -188,8 +188,8 @@ deploy:master:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - ssh root@$SERVER_MASTER_IP "./deploy.sh $USERNAME '$PASSWORD' master"
-#  only:
-#    - master
+  only:
+    - master
 
 package:dev:web:
   stage: package
@@ -199,8 +199,8 @@ package:dev:web:
     - docker push $DOCKER_USERNAME/mcp-dev
   tags:
     - docker
-#  only:
-#    - dev
+  only:
+    - dev
 
 package:dev:server:
   stage: package
@@ -211,8 +211,8 @@ package:dev:server:
     - docker push $DOCKER_USERNAME/mcp-server-dev
   tags:
     - docker
-#  only:
-#    - master
+  only:
+    - master
 
 deploy:dev:
   image: node:12.13
@@ -227,5 +227,5 @@ deploy:dev:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - ssh root@$SERVER_DEV_IP "./deploy.sh $USERNAME '$PASSWORD' dev"
-#  only:
-#    - dev
+  only:
+    - dev

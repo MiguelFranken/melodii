@@ -15,7 +15,7 @@
     "build:tonejs:dev": "webpack --env.dev --config ./webpack.config.js && cp -r ./src/static/* ./dist/static",
     "build:tonejs": "webpack --env.local --config ./webpack.config.js && cp -r ./src/static/* ./dist/static",
     "start": "node dist/index.js",
-    "lint": "tslint -- src/*.ts"
+    "lint": "tslint --project ."
   },
   "author": "",
   "license": "ISC",
@@ -25,7 +25,7 @@
     "express": "^4.17.1",
     "socket.io-client": "^2.3.0",
     "tonal": "^2.2.2",
-    "tone": "^13.8.25",
+    "tone": "typescript",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
