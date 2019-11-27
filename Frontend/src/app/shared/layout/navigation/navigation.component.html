@@ -1,10 +1,11 @@
-<mat-toolbar color="primary" fxLayout fxLayoutAlign="space-between center" style="background: gray" [hidden]="(isClosed | async) === true">
-  <a fxLayout fxLayoutAlign="start center" fxLayoutGap="10px" routerLink="" class="main-nav-link">
-    <img height="40px" alt="logo" src="assets/logo.svg">
-  </a>
-  <div>
-    <button mat-button routerLink="prototype">Prototype</button>
-<!--    <button mat-button>Basic</button>-->
-<!--    <button mat-button>Basic</button>-->
+<div class="menu" fxLayout [hidden]="(isClosed | async) === true">
+  <div fxFill fxLayout fxLayoutGap="2px">
+    <a fxFlex="calc(11.11% - 2px)" fxLayout fxLayoutAlign="center center" fxLayoutGap="10px" routerLink="" class="main-nav-link action-button">
+      <img height="30px" alt="logo" src="assets/logo.svg">
+    </a>
+<!--    <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">stop</mat-icon></button>-->
+    <div fxFlex="calc(11.11% - 2px)"></div><!-- spacer -->
+    <div fxFlex="calc(66.67% - 2px)"></div><!-- spacer -->
+    <button routerLink="/prototype" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)">Prototype</button>
   </div>
-</mat-toolbar>
+</div>

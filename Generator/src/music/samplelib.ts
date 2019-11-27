@@ -1,4 +1,4 @@
-import { Sampler, NoiseSynth, Synth } from 'tone';
+import { NoiseSynth, Sampler, Synth } from 'tone';
 
 /**
  * creates samplers based on wav/mp3/oog files
@@ -158,7 +158,6 @@ export class SampleLib {
         release: 0.001,
       },
     });
-    return synth;
   }
 
 }
