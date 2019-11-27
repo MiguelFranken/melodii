@@ -8,21 +8,22 @@
 </head>
 
 <body>
-    <input id="ip" type="text" value="http://192.168.0.101:8080" />
+    <input id="ip" type="text" value="" />
+    <button id="connect">Connect</button>
     <span id="indicator">Not connected.</span>
     <br>
 
-    <button id="c4">C4</button>
-    <button id="d4">D4</button>
-    <button id="e4">E4</button>
-    <button id="f4">F4</button>
-    <button id="g4">G4</button>
-    <button id="a4">A4</button>
-    <button id="b4">B4</button>
-    <button id="c5">C5</button>
+    <button id="c4" class="key">C4</button>
+    <button id="d4" class="key">D4</button>
+    <button id="e4" class="key">E4</button>
+    <button id="f4" class="key">F4</button>
+    <button id="g4" class="key">G4</button>
+    <button id="a4" class="key">A4</button>
+    <button id="b4" class="key">B4</button>
+    <button id="c5" class="key">C5</button>
 
     <style>
-        button {
+        .key {
             width: 10em;
             height: 10em;
             background: linear-gradient(hsl(0, 60%, 60%), hsl(0, 0%, 75%) 50%);
@@ -32,15 +33,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
     <script>
-        let socket;
-
         const ipInput = document.getElementById("ip");
         const indicator = document.getElementById("indicator");
-        ipInput.addEventListener("input", function () {
-            initSocket(this.value);
+        const connect = document.getElementById("connect");
+        connect.addEventListener("click", function () {
+            initSocket(ipInput.value);
         });
-        initSocket(ipInput.value);
+        const ip = ipInput.value || `${window.location.hostname}:8080`;
+        initSocket(ip);
         function initSocket(ip) {
+            ipInput.value = ip;
             indicator.innerText = "Connecting...";
             socket = io(ip);
             socket.on('connect', () => indicator.innerText = "Connected.");
@@ -51,7 +53,7 @@
             socket.on('connect_timeout', () => indicator.innerText = "The connection timed out.");
         }
 
-        const OSC_MESSAGE = 3;
+        const OSC_MESSAGE = 'redirect-osc-message';
 
         function trigger(note, velocity) {
             console.log(`Trigger ${note}.`);
