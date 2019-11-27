@@ -23,26 +23,9 @@ export class DashboardComponent implements OnInit {
   private initIoConnection(): void {
     this.socketService.initSocket();
 
-    this.socketService.onEvent(Event.CONNECT)
-      .subscribe(() => {
-        // Todo: Snackbar
-        console.log('Established websocket connection to OSC-Server');
-      });
-
-    this.socketService.onEvent(Event.DISCONNECT)
-      .subscribe(() => {
-        // Todo: Snackbar
-        console.log('Disconnected websocket connection to OSC-Server');
-      });
-
     this.socketService.onEvent(Event.OSC_MESSAGE)
       .subscribe((msg: IOSCMessage) => {
         this.messages.push(JSON.stringify(msg));
-      });
-
-    this.socketService.onAddress('/clean_switch_1')
-      .subscribe(() => {
-        this.messages.push('SWITCH ONE SWITCHED!');
       });
 
     // this.socketService.onEvent(Event.SLIDER_UPDATE)
@@ -54,15 +37,14 @@ export class DashboardComponent implements OnInit {
   // send actions back to osc server
   // TODO MF: Handler on osc server side necessary
   public send(action: Action, data: any): void {
-    // TODO
-    switch (action) {
-      case Action.JOINED:
-        break;
-      case Action.LEFT:
-        break;
-      case Action.RENAME:
-        break;
-    }
+    // switch (action) {
+    //   case Action.JOINED:
+    //     break;
+    //   case Action.LEFT:
+    //     break;
+    //   case Action.RENAME:
+    //     break;
+    // }
 
     this.socketService.send(action, data);
   }

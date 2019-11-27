@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 })
 export class NavigationService {
 
-  private isClosed: boolean = false; // current value of isClosedSubject
+  private isClosed = false; // current value of isClosedSubject
   private isClosedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() { }

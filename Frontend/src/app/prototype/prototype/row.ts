@@ -1,10 +1,11 @@
-import { RowButton } from "./row-button";
+import { RowButton } from './row-button';
 
 export class Row {
   public isExpanded = true;
-  public isFolded: boolean = false;
-  public name: string = "row name";
+  public isFolded = false;
+  public name = 'row name';
 
-  constructor(public buttons: RowButton[]) {
+  constructor(public buttons: RowButton[], name?: string) {
+    this.name = name;
   }
 }
