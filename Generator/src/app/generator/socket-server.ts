@@ -1,6 +1,6 @@
-import * as io from "socket.io-client";
-import { Event } from "./socket-event";
-import { addControllers } from "./decorator";
+import * as io from 'socket.io-client';
+import { Event } from './socket-event';
+import { addControllers } from './decorator';
 
 export class SocketServer {
 
