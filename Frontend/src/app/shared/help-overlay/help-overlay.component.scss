@@ -1,0 +1,60 @@
+@import "src/scss/variables";
+
+$overlay-margin-top: 12px;
+
+.overlay {
+  margin-top: $overlay-margin-top;
+  position: relative;
+  font-size: 1.2em;
+  padding: 8px;
+  background-color: $mcp-yellow-1;
+  margin-right: 10px;
+  color: white;
+
+  -moz-animation: fadeIn 0.5s ease;
+  -webkit-animation: fadeIn 0.5s ease;
+  animation: fadeIn 0.5s ease;
+
+  .overlay-button {
+    padding: 10px;
+    cursor: pointer;
+    background-color: $mcp-black-5;
+    border-radius: 0;
+  }
+}
+
+@-webkit-keyframes fadeIn { from {opacity: 0; margin-top: 20px } to { opacity: 1; margin-top: $overlay-margin-top } }
+@-moz-keyframes fadeIn { from {opacity: 0; margin-top: 20px} to { opacity: 1; margin-top: $overlay-margin-top} }
+@keyframes fadeIn { from {opacity: 0; margin-top: 20px} to { opacity: 1; margin-top: $overlay-margin-top} }
+
+.sliderOverlayFix {
+  margin-top: 26px;
+
+  @-webkit-keyframes fadeInSliderOverlayFix { from {opacity: 0; margin-top: 34px } to { opacity: 1; margin-top: 26px } }
+  @-moz-keyframes fadeInSliderOverlayFix { from {opacity: 0; margin-top: 34px} to { opacity: 1; margin-top: 26px} }
+  @keyframes fadeInSliderOverlayFix { from {opacity: 0; margin-top: 34px} to { opacity: 1; margin-top: 26px} }
+
+  .overlay {
+    -moz-animation: fadeInSliderOverlayFix 0.5s ease;
+    -webkit-animation: fadeInSliderOverlayFix 0.5s ease;
+    animation: fadeInSliderOverlayFix 0.5s ease;
+  }
+}
+
+.overlay:after, .overlay:before {
+  bottom: 99%;
+  left: 10%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.overlay:after {
+  border-color: rgba(0, 0, 0, 0);
+  border-bottom-color: $mcp-yellow-1;
+  border-width: 10px;
+  margin-left: -10px;
+}

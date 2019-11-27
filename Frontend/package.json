@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "ng serve",
-    "start:iPad": "ng serve --host 0.0.0.0 --port 4200 --disable-host-check",
+    "start:iPad": "ng serve --host 0.0.0.0 --port 4200 --disable-host-check --disableHostCheck",
     "build:master": "ng build --configuration=master --base-href \"/monitor/\"",
     "build:dev": "ng build --configuration=dev --base-href \"/monitor/\"",
     "build:local": "ng build --base-href \"/monitor/\"",

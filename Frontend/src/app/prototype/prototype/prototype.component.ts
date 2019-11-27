@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { interval, Observable, Subject, Subscription } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChild } from '@angular/core';
+import { BehaviorSubject, interval, Observable, Subject, Subscription } from 'rxjs';
 import { SocketService } from '../../shared/socket/socket.service';
 import { Action } from '../../shared/socket/action';
 import { switchMap } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { Row } from './row';
 import { RowButton } from './row-button';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Logger } from '@upe/logger';
+import { Chain, HelpOverlayService, OverlayElements } from '../../shared/help-overlay/help-overlay.service';
 
 const NOTES_PENTATONIC_C = [
   'C',
@@ -45,7 +46,8 @@ export class PrototypeComponent implements OnInit {
   constructor(
     private socketService: SocketService,
     private navigationService: NavigationService,
-    private toppy: Toppy) {
+    private toppy: Toppy,
+    private helpOverlayService: HelpOverlayService) {
   }
 
   public height = '100%';
@@ -71,19 +73,48 @@ export class PrototypeComponent implements OnInit {
 
   public isClosedNavigation: Observable<boolean>;
 
+  //region Overlay References
+  //region Element Refs
   @ViewChild('el', { static: true, read: ElementRef })
   el: ElementRef;
 
+  @ViewChild('velocityButtonElement', { static: true, read: ElementRef })
+  velocityButtonElement: ElementRef;
+
+  @ViewChild('sliderElement', { static: false, read: ElementRef })
+  sliderElement: ElementRef;
+
+  @ViewChild('helpButton', { static: false, read: ElementRef })
+  helpButtonElement: ElementRef;
+
+  @ViewChild('rowButtonElement', { static: false, read: ElementRef })
+  rowButtonElement: ElementRef;
+  //endregion
+
+  //region Template Refs
   @ViewChild('tpl', { static: true })
   tpl: TemplateRef<any>;
 
-  public isInExpandedMode = true;
+  @ViewChild('helpMenuTemplate', { static: true })
+  helpMenuTemplate: TemplateRef<any>;
 
+  @ViewChild('helpTemplate', { static: true })
+  helpTemplate: TemplateRef<any>;
+  //endregion
+
+  //region Overlay instances
   /**
    * Overlay used to select the current instrument,
    * i.e. selection of on of the available matrices
    */
   private instrumentSelectionOverlay;
+  private helpMenuOverlay;
+
+
+  //endregion
+  //endregion
+
+  public isInExpandedMode = true;
 
   private isInFoldMode = false;
 
@@ -152,6 +183,40 @@ export class PrototypeComponent implements OnInit {
   }
   //endregion
 
+  //region Help Overlays
+  //region Help Overlays
+  public showHelp() {
+    this.initHelpMenuOverlay();
+    this.helpMenuOverlay.open();
+  }
+
+  public showVelocityHelp() {
+    this.helpOverlayService.triggerChain('velocity');
+  }
+
+  private initHelpMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.helpButtonElement.nativeElement
+    });
+
+    this.helpMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.helpMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+  //endregion
+
+  private initOverlays() {
+    this.initInstrumentSelectionMenu();
+  }
+  //endregion
+
   //region Instrument Selection Menu
   private initInstrumentSelectionMenu() {
     const position = new RelativePosition({
@@ -180,8 +245,49 @@ export class PrototypeComponent implements OnInit {
   }
   //endregion
 
+  private createVelocityChain() {
+    const subject: BehaviorSubject<OverlayElements> = this.helpOverlayService.getSubject();
+    this.helpOverlayService.getOutputObservable().subscribe(() => {
+      subject.next({
+        chainID: 'velocity',
+        elements: [
+          { overlayID: "showRowButtonOverlay", element: this.rowButtonElement },
+          { overlayID: "showVelocityButtonOverlay", element: this.velocityButtonElement },
+          { overlayID: "showSliderOverlay", element: this.sliderElement },
+        ]
+      });
+    });
+
+    const chain: Chain = {
+      chainID: 'velocity',
+      entries: [
+        {
+          overlayID: "showRowButtonOverlay",
+          preCondition: () => !this.hasActivatedButton(),
+          text: "Tap here to add a note",
+          event: "click"
+        },
+        {
+          overlayID: "showVelocityButtonOverlay",
+          preCondition: () => !this.showVelocity,
+          text: "Open the velocity sliders",
+          event: "click"
+        },
+        {
+          overlayID: "showSliderOverlay",
+          preCondition: () => true,
+          text: "Slide to change the velocity",
+          event: "touchmove"
+        }
+      ]
+    };
+    this.helpOverlayService.addChain(chain);
+  }
+
   ngOnInit() {
-    this.initInstrumentSelectionMenu();
+    this.createVelocityChain();
+    this.initOverlays();
+
     this.isClosedNavigation = this.navigationService.getIsClosedObservable();
     this.isClosedNavigation.subscribe(value => {
       if (value) {
@@ -210,6 +316,19 @@ export class PrototypeComponent implements OnInit {
         this.matrix.rows[i].buttons[y].isActive = false;
       }
     }
+  }
+
+  public hasActivatedButton(): boolean {
+    for (let i = 0; i < 3; i++) {
+      for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
+        if (this.matrix.rows[i].buttons[y].isActive) {
+          this.logger.debug('Has activated button');
+          return true;
+        }
+      }
+    }
+    this.logger.debug('Has NO activated button');
+    return false;
   }
 
   /**
@@ -428,6 +547,7 @@ export class PrototypeComponent implements OnInit {
     }
   }
 
+  //region Context Menu For Row Buttons
   /**
    * A long press activates the context menu with further setting options for an entry in the matrix.
    */
@@ -457,6 +577,7 @@ export class PrototypeComponent implements OnInit {
       this.contextMenu.openMenu();
     }
   }
+  //endregion
 
   /**
    * Hides the main navigation so that there is more space for the matrix

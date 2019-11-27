@@ -158,8 +158,10 @@
   top: unset;
 }
 
+$overlay-margin-top: 12px;
+
 .overlay {
-  margin-top: 12px;
+  margin-top: $overlay-margin-top;
   background-color: $mcp-black-1;
   padding: 2px;
   position: relative;
@@ -172,7 +174,6 @@
     border-radius: 0;
   }
 }
-
 
 .overlay:after, .overlay:before {
   bottom: 99%;
