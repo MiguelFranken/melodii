@@ -15,10 +15,8 @@ export class Box {
         console.log(`Detune with note ${note} and cents ${cents}.`);
         const voice = this.voices.getVoice(note);
         // A Cent is one hundreth semitone. That makes an octave 1200 cents, and an octave is a doubling of frequency.
-        const baseFrequency = Frequency(note).toFrequency();
-        const frequencyChange = baseFrequency * (2 * cents / 1200);
-        const finalFrequency = baseFrequency + frequencyChange;
-        voice.setNote(finalFrequency);
+        const frequency = Frequency(note).toFrequency() * (2 * cents / 1200);
+        voice.setNote(frequency);
     }
 
     public release(note: Note) {
