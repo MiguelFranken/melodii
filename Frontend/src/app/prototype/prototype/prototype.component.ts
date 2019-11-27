@@ -81,6 +81,9 @@ export class PrototypeComponent implements OnInit {
   @ViewChild('velocityButtonElement', { static: true, read: ElementRef })
   velocityButtonElement: ElementRef;
 
+  @ViewChild('bpmSliderElement', { static: true, read: ElementRef })
+  bpmSliderElement: ElementRef;
+
   @ViewChild('playButtonElement', { static: true, read: ElementRef })
   playButtonElement: ElementRef;
 
@@ -274,6 +277,7 @@ export class PrototypeComponent implements OnInit {
             { overlayID: "showRowButtonOverlay", element: this.rowButtonElement },
             { overlayID: "playButtonOverlay", element: this.playButtonElement },
             { overlayID: "stopButtonOverlay", element: this.stopButtonElement },
+            { overlayID: "bpmSliderOverlay", element: this.bpmSliderElement },
           ]
         }
       ]);
@@ -295,6 +299,12 @@ export class PrototypeComponent implements OnInit {
           preCondition: () => true,
           text: "Tap here to start playback",
           event: "click"
+        },
+        {
+          overlayID: "bpmSliderOverlay",
+          preCondition: () => true,
+          text: "Slide here to change the BPM (Beats per Minute)",
+          event: "touchmove"
         },
         {
           overlayID: "stopButtonOverlay",

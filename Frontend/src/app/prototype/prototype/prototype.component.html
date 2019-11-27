@@ -4,7 +4,7 @@
     <div fxFill fxLayout fxLayoutGap="2px">
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="calc(11.11% - 2px)" #playButtonElement><mat-icon class="action-icon">play_arrow</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="stop()" fxFlex="calc(11.11% - 2px)" #stopButtonElement><mat-icon class="action-icon">stop</mat-icon></button>
-      <div class="bpm-card" fxFlex="calc(66.67% - 2px)" fxLayout fxLayoutAlign="start center" fxLayoutGap="75px">
+      <div class="bpm-card" fxFlex="calc(66.67% - 2px)" fxLayout fxLayoutAlign="start center" fxLayoutGap="75px" #bpmSliderElement>
         <span fxFlex="5">{{bpm}}bpm</span>
         <mat-slider
                 class="example-margin"
