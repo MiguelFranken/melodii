@@ -1,5 +1,5 @@
-import { Controller, Message, OnMessage } from "../decorator";
-import { IOSCMessage } from "../../osc/osc-message";
+import { Controller, Message, OnMessage } from '../decorator';
+import { IOSCMessage } from '../osc/osc-message';
 import { Music } from '../music';
 
 @Controller('/drums')

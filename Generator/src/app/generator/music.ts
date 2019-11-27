@@ -13,18 +13,18 @@ export class Music {
 
   constructor() {
     this.scale = Scale.notes('C major');
-    this.instruments.synth = new Tone.Synth().toMaster();
+    this.instruments.synth = new Tone.Synth().toDestination();
     this.instruments.drum_kick = this.sampleLib.getKickSampler(
       () => console.log('drum kick bufferd'), // just for debug purpose
-    ).toMaster();
+    ).toDestination();
     this.instruments.drum_snare = this.sampleLib.getSnareSampler(
       () => console.log('drum snare bufferd'), // just for debug purpose
-    ).toMaster();
+    ).toDestination();
     this.instruments.piano = this.sampleLib.getPianoSampler(
       () => console.log('piano bufferd'), // just for debug purpose
-    ).toMaster();
-    this.instruments.hihat = this.sampleLib.getHiHatSynth().toMaster();
-    this.instruments.longNote = this.sampleLib.getLongNoteSynth().toMaster();
+    ).toDestination();
+    this.instruments.hihat = this.sampleLib.getHiHatSynth().toDestination();
+    this.instruments.longNote = this.sampleLib.getLongNoteSynth().toDestination();
   }
 
   private static MAJOR_CHORD_QUALITIES: ChordQuality[] = [
@@ -47,9 +47,6 @@ export class Music {
    * note in the scale, and then returns the chord quality of the triad that can
    * be built with the specified note in the given scale.
    * See http://www2.siba.fi/muste1/index.php?id=76&la=en
-   * @param forNote
-   * @param inScale
-   * @constructor
    */
   private static GetChordQuality(forNote: string, inScale: string[]): ChordQuality {
     // TODO MF: Im Moment gehen wir immer von Major aus. Das ist falsch! Aus dem type string[] für

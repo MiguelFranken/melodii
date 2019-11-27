@@ -18,7 +18,6 @@ export function defaultMetadataArgsStorage(): MetadataArgsStorage {
 }
 
 /**
- * @param socket
  * @param controllers List of directories from where to "require" all the controllers
  */
 export function createExecutor(socket: SocketIOClient.Socket, controllers: Function[] | string[]) {
@@ -31,5 +30,5 @@ export function createExecutor(socket: SocketIOClient.Socket, controllers: Funct
   executor.execute(controllerClasses);
 }
 
-export * from "./container";
-export * from "./decorators";
+export * from './container';
+export * from './decorators';

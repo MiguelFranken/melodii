@@ -1,6 +1,6 @@
-import { Controller, Message, OnMessage } from "../decorator";
-import { IOSCMessage } from "../../osc/osc-message";
-import { Box } from "../instruments/box";
+import { Controller, Message, OnMessage } from '../decorator';
+import { IOSCMessage } from '../osc/osc-message';
+import { Box } from '../instruments/box';
 
 @Controller('/box')
 export class BoxController {

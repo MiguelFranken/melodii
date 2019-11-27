@@ -1,9 +1,9 @@
 import { MetadataBuilder } from './metadata-builder/metadata-builder';
 import { ActionMetadata } from './metadata/action-metadata';
 import { ControllerMetadata } from './metadata/controller-metadata';
-import { ParamTypes } from "./metadata/types/param-types";
-import { Event } from "../socket-event";
-import { IOSCMessage } from "../../osc/osc-message";
+import { ParamTypes } from './metadata/types/param-types';
+import { Event } from '../socket-event';
+import { IOSCMessage } from '../osc/osc-message';
 
 export class ControllerExecutor {
 
@@ -25,8 +25,8 @@ export class ControllerExecutor {
     const controllersWithoutNamespaces = controllers.filter((ctrl) => !ctrl.namespace);
     const controllersWithNamespaces = controllers.filter((ctrl) => !!ctrl.namespace);
 
-    console.log("Controller with namespaces: " + controllersWithNamespaces.length);
-    console.log("Controller without namespaces: " + controllersWithoutNamespaces.length);
+    console.log('Controller with namespaces: ' + controllersWithNamespaces.length);
+    console.log('Controller without namespaces: ' + controllersWithoutNamespaces.length);
 
     //region register controllers without namespaces
     this.socket.on(Event.OSC_MESSAGE,
@@ -88,7 +88,7 @@ export class ControllerExecutor {
 
     // after all parameters are computed
     const paramsPromise = Promise.all(paramsPromises).catch((error) => {
-      console.error("Error during computation params of the controller: ", error);
+      console.error('Error during computation params of the controller: ', error);
       throw error;
     });
 
@@ -103,7 +103,7 @@ export class ControllerExecutor {
         const addressWithoutNamespace = oscMessage.address.replace(controller.namespace, '');
         if (action.names.size === 0 || action.names.has(addressWithoutNamespace)) {
           this.handleAction(action, oscMessage)
-            .then(() => {/* maybe add something here */})
+            .then(() => {/* maybe add something here */ })
             .catch((error: any) => console.error(error));
         }
       });

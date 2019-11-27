@@ -146,8 +146,8 @@ export class SampleLib {
     return synth;
   }
 
-  public getLongNoteSynth() {
-    const synth = new Synth({
+  public getLongNoteSynth(): Synth {
+    return new Synth({
       oscillator: {
         type: 'square',
       },

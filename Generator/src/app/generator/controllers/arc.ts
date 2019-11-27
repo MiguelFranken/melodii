@@ -1,6 +1,6 @@
-import { Controller, Message, OnMessage } from "../decorator";
-import { IOSCMessage } from "../../osc/osc-message";
-import { Arc } from "../instruments/arc";
+import { Controller, Message, OnMessage } from '../decorator';
+import { IOSCMessage } from '../osc/osc-message';
+import { Arc } from '../instruments/arc';
 
 @Controller('/arc')
 export class ArcController {
