@@ -81,6 +81,12 @@ export class PrototypeComponent implements OnInit {
   @ViewChild('velocityButtonElement', { static: true, read: ElementRef })
   velocityButtonElement: ElementRef;
 
+  @ViewChild('playButtonElement', { static: true, read: ElementRef })
+  playButtonElement: ElementRef;
+
+  @ViewChild('stopButtonElement', { static: true, read: ElementRef })
+  stopButtonElement: ElementRef;
+
   @ViewChild('sliderElement', { static: false, read: ElementRef })
   sliderElement: ElementRef;
 
@@ -194,6 +200,11 @@ export class PrototypeComponent implements OnInit {
     this.helpOverlayService.triggerChain('velocity');
   }
 
+  public showTutorial() {
+    console.log('Show tutorial');
+    this.helpOverlayService.triggerChain('tutorial');
+  }
+
   private initHelpMenuOverlay() {
     const position = new RelativePosition({
       placement: OutsidePlacement.BOTTOM_LEFT,
@@ -245,19 +256,58 @@ export class PrototypeComponent implements OnInit {
   }
   //endregion
 
-  private createVelocityChain() {
-    const subject: BehaviorSubject<OverlayElements> = this.helpOverlayService.getSubject();
+  private addElements() {
+    const subject: BehaviorSubject<OverlayElements[]> = this.helpOverlayService.getSubject();
     this.helpOverlayService.getOutputObservable().subscribe(() => {
-      subject.next({
-        chainID: 'velocity',
-        elements: [
-          { overlayID: "showRowButtonOverlay", element: this.rowButtonElement },
-          { overlayID: "showVelocityButtonOverlay", element: this.velocityButtonElement },
-          { overlayID: "showSliderOverlay", element: this.sliderElement },
-        ]
-      });
+      subject.next([
+        {
+          chainID: 'velocity',
+          elements: [
+            { overlayID: "showRowButtonOverlay", element: this.rowButtonElement },
+            { overlayID: "showVelocityButtonOverlay", element: this.velocityButtonElement },
+            { overlayID: "showSliderOverlay", element: this.sliderElement },
+          ]
+        },
+        {
+          chainID: 'tutorial',
+          elements: [
+            { overlayID: "showRowButtonOverlay", element: this.rowButtonElement },
+            { overlayID: "playButtonOverlay", element: this.playButtonElement },
+            { overlayID: "stopButtonOverlay", element: this.stopButtonElement },
+          ]
+        }
+      ]);
     });
+  }
 
+  private createTutorialChain() {
+    const chain: Chain = {
+      chainID: 'tutorial',
+      entries: [
+        {
+          overlayID: "showRowButtonOverlay",
+          preCondition: () => !this.hasActivatedButton(),
+          text: "Tap here to add a note",
+          event: "click"
+        },
+        {
+          overlayID: "playButtonOverlay",
+          preCondition: () => true,
+          text: "Tap here to start playback",
+          event: "click"
+        },
+        {
+          overlayID: "stopButtonOverlay",
+          preCondition: () => true,
+          text: "Press here to stop playback",
+          event: "click"
+        },
+      ]
+    };
+    this.helpOverlayService.addChain(chain);
+  }
+
+  private createVelocityChain() {
     const chain: Chain = {
       chainID: 'velocity',
       entries: [
@@ -285,6 +335,8 @@ export class PrototypeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.addElements();
+    this.createTutorialChain();
     this.createVelocityChain();
     this.initOverlays();
 

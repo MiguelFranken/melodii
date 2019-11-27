@@ -2,8 +2,8 @@
 
   <div class="menu" fxLayout fxFlex="10">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">play_arrow</mat-icon></button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="stop()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">stop</mat-icon></button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="calc(11.11% - 2px)" #playButtonElement><mat-icon class="action-icon">play_arrow</mat-icon></button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="stop()" fxFlex="calc(11.11% - 2px)" #stopButtonElement><mat-icon class="action-icon">stop</mat-icon></button>
       <div class="bpm-card" fxFlex="calc(66.67% - 2px)" fxLayout fxLayoutAlign="start center" fxLayoutGap="75px">
         <span fxFlex="5">{{bpm}}bpm</span>
         <mat-slider
@@ -153,11 +153,16 @@
           Velocity
         </button>
       </div>
-      <!--<div fxLayout fxLayoutGap="2px">
-        <button mat-button class="overlay-button" fxFlex>
-          Test 2
+      <div fxLayout fxLayoutGap="2px">
+        <button
+                mat-button
+                class="overlay-button"
+                fxFlex
+                (click)="showTutorial(); toppy.close()"
+        >
+          Tutorial
         </button>
-      </div>-->
+      </div>
     </div>
   </div>
 </ng-template>

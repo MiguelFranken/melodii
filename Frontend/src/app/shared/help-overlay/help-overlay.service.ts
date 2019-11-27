@@ -53,10 +53,10 @@ export class HelpOverlayService {
   private chains: Map<ChainID, Chain> = new Map();
 
   public outputSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  public inputSubject: BehaviorSubject<OverlayElements> = new BehaviorSubject<OverlayElements>(null);
+  public inputSubject: BehaviorSubject<OverlayElements[]> = new BehaviorSubject<OverlayElements[]>(null);
 
   //region Public Methods
-  public getSubject(): BehaviorSubject<OverlayElements> {
+  public getSubject(): BehaviorSubject<OverlayElements[]> {
     return this.inputSubject;
   }
 
@@ -81,10 +81,13 @@ export class HelpOverlayService {
   }
   //endregion
 
-  private getElement(entry: ChainEntry): Observable<ElementRef> {
+  private getElement(chainID: ChainID, entry: ChainEntry): Observable<ElementRef> {
     this.outputSubject.next(true);
     return this.inputSubject.pipe(
       take(1),
+      map((allOverlayElements: OverlayElements[]) => {
+        return allOverlayElements.filter((overlayElements: OverlayElements) => overlayElements.chainID === chainID)[0];
+      }),
       map((overlayElements: OverlayElements) => {
         return overlayElements.elements.filter((element: Element) => element.overlayID === entry.overlayID)[0].element;
       }));
@@ -100,7 +103,7 @@ export class HelpOverlayService {
       // remove current listener
       this.logger.debug('Removing event listener..');
 
-      this.getElement(entry).subscribe((element: ElementRef) => {
+      this.getElement(chainID, entry).subscribe((element: ElementRef) => {
         element.nativeElement.removeEventListener(entry.event, listenerFn, false);
         this.logger.debug('Removed event lister for entry:', entry);
       });
@@ -121,7 +124,7 @@ export class HelpOverlayService {
       }
     };
 
-    this.getElement(entry).subscribe((element: ElementRef) => {
+    this.getElement(chainID, entry).subscribe((element: ElementRef) => {
       element.nativeElement.addEventListener(entry.event, listenerFn);
       this.logger.debug('Added event listener for entry:', entry);
     });
@@ -165,7 +168,7 @@ export class HelpOverlayService {
   private initOverlay(chainID: ChainID, chainEntry: ChainEntry) {
     this.logger.info(`Initializing overlay '${chainEntry.overlayID}'..`, chainEntry);
 
-    this.getElement(chainEntry).subscribe((element: ElementRef) => {
+    this.getElement(chainID, chainEntry).subscribe((element: ElementRef) => {
       const position = new RelativePosition({
         placement: OutsidePlacement.BOTTOM_LEFT,
         src: element.nativeElement
