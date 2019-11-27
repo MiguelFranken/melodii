@@ -303,7 +303,7 @@ export class PrototypeComponent implements OnInit {
         {
           overlayID: "bpmSliderOverlay",
           preCondition: () => true,
-          text: "Slide here to change the BPM (Beats per Minute)",
+          text: "Slide to change the BPM (Beats per Minute)",
           event: "touchmove"
         },
         {
