@@ -1,12 +1,12 @@
 import { Controller, Message, OnMessage } from "../decorator";
 import { IOSCMessage } from "../../osc/osc-message";
 import { Music } from '../music';
-import { Synth } from '../instruments/synth';
 
 @Controller('/play_note')
 export class PlayNoteController {
 
-  constructor(private music: Music, private synth: Synth) { }
+  constructor(private music: Music) {
+  }
 
   @OnMessage()
   public receivedMessage(@Message() message: IOSCMessage) {
@@ -19,8 +19,16 @@ export class PlayNoteController {
         args[1].value >= 0  && args[1].value <= 1) {
       velocity = parseFloat(args[1].value.toString());
     }
-     
-    this.synth.triggerRelease(note, velocity);
+
+    // volume is measured in dB
+    let volume: number = 0;
+    if (args.length > 2 && args[2].type === "i") {
+      volume = parseInt(args[2].value.toString());
+      if (isNaN(volume)) {
+        volume = 0;
+      }
+    }
+    this.music.playNote(note, velocity, volume);
   }
 
   @OnMessage('/start')
@@ -36,13 +44,13 @@ export class PlayNoteController {
     } else {
       volume = 1;
     }
-    this.synth.trigger(note, volume);
+
+    this.music.startLongNote(note, volume);
   }
 
   @OnMessage('/stop')
   public receivedMessageStop(@Message() message: IOSCMessage) {
-    let note = message.args[0].value.toString();
-    this.synth.release(note);
+    this.music.stopLongNote();
   }
 
 }

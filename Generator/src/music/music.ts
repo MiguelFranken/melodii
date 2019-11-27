@@ -58,7 +58,7 @@ export class Music {
     console.log(`Play sound ${note}, ${velocity}, ${volume}.`);
     const {synth} = this.instruments;
     synth.volume.value = volume;
-    synth.triggerAttackRelease(note, 1, undefined, velocity);
+    synth.triggerAttackRelease(note, velocity);
   }
 
   /**
