@@ -94,6 +94,27 @@ export class SampleLib {
     'G#6': 'Gs6.mp3',
   };
 
+  // TODO MF: Using optionals instead of this. Maybe the ToneJS TypeScript version already supports this
+  // tslint:disable-next-line:no-empty
+  public getKickSampler(onLoad: () => void = () => { }) {
+    const path = 'drums/jazz_kick.wav';
+    return new Sampler(
+      { C2: path },
+      onLoad,
+      this.baseUrl,
+    );
+  }
+
+  // tslint:disable-next-line:no-empty
+  public getSnareSampler(onLoad: () => void = () => { }) {
+    const path = 'drums/jazz_snare.wav';
+    return new Sampler(
+      { C2: path },
+      onLoad,
+      this.baseUrl,
+    );
+  }
+
   // tslint:disable-next-line:no-empty
   public getPianoSampler(onLoad: () => void = () => { }) {
     const sampler = new Sampler({
@@ -109,6 +130,22 @@ export class SampleLib {
     return sampler;
   }
 
+  public getHiHatSynth() {
+    const synth = new NoiseSynth({
+      noise: {
+        type: "white",
+      },
+      envelope: {
+        attack: 0.001,
+        decay: 0.3,
+        sustain: 0,
+        release: 0.3,
+      },
+    });
+    synth.volume.value = -20;
+    return synth;
+  }
+
   public getLongNoteSynth() {
     const synth = new Synth({
       oscillator: {
@@ -121,7 +158,6 @@ export class SampleLib {
         release: 0.001,
       },
     });
-    return synth;
   }
 
 }
