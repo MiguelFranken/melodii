@@ -1,4 +1,5 @@
 import { Registry } from "./registry";
+import 'reflect-metadata';
 
 /**
  * Container for inversion of control (IoC).
@@ -66,3 +67,5 @@ export class Container {
   }
 
 }
+
+export const container = new Container();

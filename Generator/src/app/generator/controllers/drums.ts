@@ -14,7 +14,8 @@ export class DrumsController {
 
     @OnMessage('/kick')
     public receivedMsgKick(@Message() message: IOSCMessage) {
-        this.music.playDrums('kick');
+      console.log('TEST!!!');
+      this.music.playDrums('kick');
     }
 
     @OnMessage('/hihat')

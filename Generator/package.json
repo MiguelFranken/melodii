@@ -22,7 +22,6 @@
     "@overnightjs/logger": "^1.1.9",
     "@tonaljs/tonal": "^3.2.2",
     "express": "^4.17.1",
-    "reflect-metadata": "^0.1.13",
     "rxjs": "~6.4.0",
     "socket.io-client": "^2.3.0",
     "tonal": "^2.2.2",
@@ -48,6 +47,7 @@
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "protractor": "~5.4.0",
+    "reflect-metadata": "^0.1.13",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3"

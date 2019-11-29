@@ -1,8 +1,6 @@
 import { ActionMetadata } from './action-metadata';
 import { IControllerMetadataArgs } from './args/controller-metadata-args';
-import { Container } from '..';
-
-export const container = new Container();
+import { container } from '..';
 
 export class ControllerMetadata {
 

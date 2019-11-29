@@ -3,7 +3,7 @@ import { defaultMetadataArgsStorage } from './index';
 import { IActionMetadataArgs } from './metadata/args/action-metadata-args';
 import { IParamMetadataArgs } from './metadata/args/param-metadata-args';
 import { ParamTypes } from './metadata/types/param-types';
-
+import 'reflect-metadata';
 /**
  * Registers a class to be a osc controller that can listen to osc messages and respond to them.
  * @param namespace Namespace in which this controller's events will be registered.

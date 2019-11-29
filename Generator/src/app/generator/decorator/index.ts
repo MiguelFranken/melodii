@@ -5,16 +5,17 @@ export function addControllers(socket: SocketIOClient.Socket, controllers: Funct
   createExecutor(socket, controllers);
 }
 
+// declare var global: any;
 /**
  * Gets the metadata arguments storage.
  */
 export function defaultMetadataArgsStorage(): MetadataArgsStorage {
   // create metadata args storage if not already created
-  if (!(global as any).metadataArgsStorage) {
-    (global as any).metadataArgsStorage = new MetadataArgsStorage();
+  if (!(window as any).metadataArgsStorage) {
+    (window as any).metadataArgsStorage = new MetadataArgsStorage();
   }
 
-  return (global as any).metadataArgsStorage;
+  return (window as any).metadataArgsStorage;
 }
 
 /**
