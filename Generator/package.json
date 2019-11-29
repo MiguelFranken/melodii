@@ -26,7 +26,8 @@
     "tone": "^14.4.84",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "@upe/logger": "^2.0.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.19",

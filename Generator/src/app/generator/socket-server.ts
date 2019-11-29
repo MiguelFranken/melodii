@@ -1,18 +1,21 @@
 import * as io from 'socket.io-client';
 import { Event } from './socket-event';
 import { addControllers } from './decorator';
+import { Logger } from '@upe/logger';
 
 export class SocketServer {
+
+  private logger: Logger = new Logger({ name: 'SocketServer', flags: ['service'] });
 
   private readonly socket: SocketIOClient.Socket;
 
   constructor(path: string) {
     this.socket = io(path);
     this.socket.on(Event.CONNECT, () => {
-      console.log(`Established websocket connection to OSC-Server (${path})`);
+      this.logger.info(`Established websocket connection to OSC-Server (${path})`);
     });
     this.socket.on(Event.DISCONNECT, () => {
-      console.log(`Disconnected websocket connection to OSC-Server (${path})`);
+      this.logger.info(`Disconnected websocket connection to OSC-Server (${path})`);
     });
   }
 

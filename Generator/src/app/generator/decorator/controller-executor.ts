@@ -4,8 +4,11 @@ import { ControllerMetadata } from './metadata/controller-metadata';
 import { ParamTypes } from './metadata/types/param-types';
 import { Event } from '../socket-event';
 import { IOSCMessage } from '../osc/osc-message';
+import { Logger } from '@upe/logger';
 
 export class ControllerExecutor {
+
+  private logger: Logger = new Logger({ name: 'Routing', flags: ['routing'] });
 
   private metadataBuilder: MetadataBuilder;
 
@@ -25,8 +28,8 @@ export class ControllerExecutor {
     const controllersWithoutNamespaces = controllers.filter((ctrl) => !ctrl.namespace);
     const controllersWithNamespaces = controllers.filter((ctrl) => !!ctrl.namespace);
 
-    console.log('Controller with namespaces: ' + controllersWithNamespaces.length);
-    console.log('Controller without namespaces: ' + controllersWithoutNamespaces.length);
+    this.logger.info(`Registered ${controllersWithNamespaces.length} controllers with namespaces`);
+    this.logger.info(`Registered ${controllersWithoutNamespaces.length} controllers without namespaces`);
 
     //region register controllers without namespaces
     this.socket.on(Event.OSC_MESSAGE,
@@ -88,7 +91,7 @@ export class ControllerExecutor {
 
     // after all parameters are computed
     const paramsPromise = Promise.all(paramsPromises).catch((error) => {
-      console.error('Error during computation params of the controller: ', error);
+      this.logger.error('Error during computation params of the controller: ', error);
       throw error;
     });
 
@@ -104,7 +107,7 @@ export class ControllerExecutor {
         if (action.names.size === 0 || action.names.has(addressWithoutNamespace)) {
           this.handleAction(action, oscMessage)
             .then(() => {/* maybe add something here */ })
-            .catch((error: any) => console.error(error));
+            .catch((error: any) => this.logger.error("An error occurred inside a controller method", error));
         }
       });
     });

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { path } from './generator/config';
 import { SocketServer } from './generator/socket-server';
 import { CONTROLLERS } from './generator/controllers';
@@ -13,7 +12,6 @@ export class AppComponent {
 
   constructor() {
     const socket = new SocketServer(path);
-    console.log(`path is: '${path}'`);
     socket.addControllers(CONTROLLERS);
   }
 
