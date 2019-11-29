@@ -10,11 +10,11 @@ import { CONTROLLERS } from './generator/controllers';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'Generator';
 
   constructor() {
     const socket = new SocketServer(path);
     console.log(`path is: '${path}'`);
     socket.addControllers(CONTROLLERS);
   }
+
 }
