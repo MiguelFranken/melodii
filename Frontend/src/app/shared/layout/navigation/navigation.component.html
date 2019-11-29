@@ -5,11 +5,15 @@
     </button>
     <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" (click)="openSoundMenu()" #el>Sound</button>
     <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="log">Log</button>
-    <div fxFlex="calc(55.56% - 2px)"></div><!-- spacer -->
+    <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/arc">Arc</button>
+    <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/box">Box</button>
+    <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/mat">Mat</button>
+    <div fxFlex="calc(22.23% - 2px)"></div><!-- spacer -->
     <button routerLink="/prototype" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)">Prototype</button>
   </div>
 </div>
 
+<!--region Sound Settings Menu-->
 <ng-template #tpl let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
     <div fxLayout fxLayoutGap="2px">
@@ -39,3 +43,4 @@
     </div>
   </div>
 </ng-template>
+<!--endregion-->

@@ -7,6 +7,9 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PrototypeModule } from "./prototype/prototype.module";
 import { GeneratorModule } from './generator/generator.module';
+import { ArcModule } from './arc/arc.module';
+import { BoxModule } from './box/box.module';
+import { MatModule } from './mat/mat.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { GeneratorModule } from './generator/generator.module';
     AppRoutingModule,
     DashboardModule,
     PrototypeModule,
-    GeneratorModule
+    GeneratorModule,
+    ArcModule,
+    BoxModule,
+    MatModule
   ],
   providers: [],
   bootstrap: [AppComponent]
