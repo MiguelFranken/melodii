@@ -2,13 +2,16 @@ import { Polyphonizer } from '../polyphonizer';
 import { Note, Velocity } from '../types';
 import { isVoiceActive } from '../utils';
 import { Synth } from 'tone';
+import { Logger } from '@upe/logger';
 
 export class Arc {
+
+    private logger: Logger = new Logger({ name: 'Arc Instrument', flags: ['music'] });
 
     private readonly voices = new Polyphonizer(() => new Synth().toDestination());
 
     public set(note: Note, strength: Velocity) {
-        console.log(`Set with note ${note} and velocity ${strength}.`);
+        this.logger.info(`Set with note ${note} and velocity ${strength}.`);
         const voice = this.voices.getVoice(note);
         const volume = -40 + strength * 40; // In db.
         if (strength > 0) {
