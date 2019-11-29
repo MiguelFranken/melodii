@@ -1,8 +1,8 @@
-import { defaultMetadataArgsStorage } from '../index';
 import { IControllerMetadataArgs } from '../metadata/args/controller-metadata-args';
 import { ParamMetadata } from '../metadata/param-metadata';
 import { ControllerMetadata } from '../metadata/controller-metadata';
 import { ActionMetadata } from '../metadata/action-metadata';
+import { defaultMetadataArgsStorage } from '../storage';
 
 export class MetadataBuilder {
 

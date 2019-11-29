@@ -1,18 +1,21 @@
 import * as Tone from 'tone';
 import { SampleLib } from './samplelib';
+import { Logger } from '@upe/logger';
 
 export class Music {
+
+  private logger: Logger = new Logger({ name: 'Music' });
 
   constructor() {
     this.instruments.synth = new Tone.Synth().toDestination();
     this.instruments.drum_kick = this.sampleLib.getKickSampler(
-      () => console.log('drum kick bufferd'), // just for debug purpose
+      () => this.logger.info('drum kick buffered'), // just for debug purpose
     ).toDestination();
     this.instruments.drum_snare = this.sampleLib.getSnareSampler(
-      () => console.log('drum snare bufferd'), // just for debug purpose
+      () => this.logger.info('drum snare buffered'), // just for debug purpose
     ).toDestination();
     this.instruments.piano = this.sampleLib.getPianoSampler(
-      () => console.log('piano bufferd'), // just for debug purpose
+      () => this.logger.info('piano buffered'), // just for debug purpose
     ).toDestination();
     this.instruments.hihat = this.sampleLib.getHiHatSynth().toDestination();
     this.instruments.longNote = this.sampleLib.getLongNoteSynth().toDestination();
@@ -28,7 +31,7 @@ export class Music {
    * @param volume TODO
    */
   public playNote(note: string, velocity: number, volume: number): void {
-    console.log(`Play sound ${note}, ${velocity}, ${volume}.`);
+    this.logger.info(`Play sound ${note}, ${velocity}, ${volume}.`);
     const { synth } = this.instruments;
     synth.volume.value = volume;
     synth.triggerAttackRelease(note, velocity);
@@ -39,7 +42,7 @@ export class Music {
    * @param note "C4", "D2", "A2", ...
    */
   public pianoPlayNote(note: string): void {
-    console.log(`Play sound ${note}.`);
+    this.logger.info(`Play sound ${note}.`);
     this.instruments.piano.triggerAttackRelease(note, '8n');
   }
 

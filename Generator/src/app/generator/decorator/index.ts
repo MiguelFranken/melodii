@@ -1,35 +1,26 @@
-import { MetadataArgsStorage } from './metadata-builder/metadata-args-storage';
 import { ControllerExecutor } from './controller-executor';
+import { Container } from './container';
 
-export function addControllers(socket: SocketIOClient.Socket, controllers: Function[] | string[]) {
-  createExecutor(socket, controllers);
-}
+export class ControllerHandler {
 
-// declare var global: any;
-/**
- * Gets the metadata arguments storage.
- */
-export function defaultMetadataArgsStorage(): MetadataArgsStorage {
-  // create metadata args storage if not already created
-  if (!(window as any).metadataArgsStorage) {
-    (window as any).metadataArgsStorage = new MetadataArgsStorage();
+  private container: Container;
+
+  constructor() {
+    this.container = new Container();
   }
 
-  return (window as any).metadataArgsStorage;
+  public addControllers(socket: SocketIOClient.Socket, controllers: Function[] | string[]) {
+    this.createExecutor(socket, controllers);
+  }
+
+  public createExecutor(socket: SocketIOClient.Socket, controllers: Function[] | string[]) {
+    const executor = new ControllerExecutor(socket);
+
+    // get controller classes
+    let controllerClasses: Function[];
+    controllerClasses = (controllers as any[]).filter((controller) => controller instanceof Function);
+
+    executor.execute(controllerClasses);
+  }
+
 }
-
-/**
- * @param controllers List of directories from where to "require" all the controllers
- */
-export function createExecutor(socket: SocketIOClient.Socket, controllers: Function[] | string[]) {
-  const executor = new ControllerExecutor(socket);
-
-  // get controller classes
-  let controllerClasses: Function[];
-  controllerClasses = (controllers as any[]).filter((controller) => controller instanceof Function);
-
-  executor.execute(controllerClasses);
-}
-
-export * from './container';
-export * from './decorators';

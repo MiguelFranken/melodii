@@ -1,4 +1,4 @@
-import { Controller, Message, OnMessage } from '../decorator';
+import { Controller, Message, OnMessage } from '../decorator/decorators';
 import { IOSCMessage } from '../osc/osc-message';
 import { Box } from '../instruments/box';
 
