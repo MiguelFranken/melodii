@@ -4,7 +4,7 @@
     "array-type": false,
     "arrow-parens": false,
     "deprecation": {
-      "severity": "warning"
+      "severity": "warn"
     },
     "component-class-suffix": true,
     "contextual-lifecycle": true,
@@ -12,13 +12,14 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
       "camelCase"
     ],
+    "radix": false,
+    "no-shadowed-variable": false,
+    "comment-format": false,
     "component-selector": [
       true,
       "element",
-      "app",
       "kebab-case"
     ],
     "import-blacklist": [
@@ -31,6 +32,14 @@
       true,
       140
     ],
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore",
+        "allow-pascal-case"
+      ]
+    },
     "member-access": false,
     "member-ordering": [
       true,
@@ -60,6 +69,7 @@
     "no-non-null-assertion": true,
     "no-redundant-jsdoc": true,
     "no-switch-case-fall-through": true,
+    "no-use-before-declare": true,
     "no-var-requires": false,
     "object-literal-key-quotes": [
       true,
@@ -68,8 +78,7 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "quotemark": [
-      true,
-      "single"
+      false
     ],
     "trailing-comma": false,
     "no-conflicting-lifecycle": true,
