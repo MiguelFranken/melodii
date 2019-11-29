@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { PrototypeComponent } from "./prototype/prototype/prototype.component";
+import { LogComponent } from './generator/log/log.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'prototype',
     component: PrototypeComponent
+  },
+  {
+    path: 'log',
+    component: LogComponent
   },
   {
     path: '**', redirectTo: '/'

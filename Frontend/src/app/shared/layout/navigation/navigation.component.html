@@ -1,11 +1,41 @@
 <div class="menu" fxLayout [hidden]="(isClosed | async) === true">
   <div fxFill fxLayout fxLayoutGap="2px">
-    <a fxFlex="calc(11.11% - 2px)" fxLayout fxLayoutAlign="center center" fxLayoutGap="10px" routerLink="" class="main-nav-link action-button">
+    <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/">
       <img height="30px" alt="logo" src="assets/logo.svg">
-    </a>
-<!--    <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">stop</mat-icon></button>-->
-    <div fxFlex="calc(11.11% - 2px)"></div><!-- spacer -->
-    <div fxFlex="calc(66.67% - 2px)"></div><!-- spacer -->
+    </button>
+    <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" (click)="openSoundMenu()" #el>Sound</button>
+    <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="log">Log</button>
+    <div fxFlex="calc(55.56% - 2px)"></div><!-- spacer -->
     <button routerLink="/prototype" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)">Prototype</button>
   </div>
 </div>
+
+<ng-template #tpl let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchSound()"
+      >Sound <span [class.off]="hasSound">On</span>/<span [class.off]="!hasSound">Off</span>
+      </button>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchGenerator()"
+              >Generator <span [class.off]="useGenerator">On</span>/<span [class.off]="!useGenerator">Off</span>
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchDirectCommunication()"
+              >Direct Communication <span [class.off]="useDirectCommunication">On</span>/<span [class.off]="!useDirectCommunication">Off</span>
+      </button>
+    </div>
+  </div>
+</ng-template>

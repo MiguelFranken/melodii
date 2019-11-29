@@ -1,7 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, interval, Observable, Subject, Subscription } from 'rxjs';
-import { SocketService } from '../../shared/socket/socket.service';
-import { Action } from '../../shared/socket/action';
 import { switchMap } from 'rxjs/operators';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { NavigationService } from '../../shared/layout/navigation/navigation.service';
@@ -11,14 +9,8 @@ import { RowButton } from './row-button';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Logger } from '@upe/logger';
 import { Chain, HelpOverlayService, OverlayElements } from '../../shared/help-overlay/help-overlay.service';
+import { GeneratorCommunicationService } from '../../generator/library/generator-communication.service';
 
-const NOTES_PENTATONIC_C = [
-  'C',
-  'D',
-  'E',
-  'A',
-  'G'
-];
 const NOTES_MAJOR_C = [
   'C',
   'D',
@@ -39,13 +31,13 @@ const NUMBER_OF_ROWS = 30;
   templateUrl: './prototype.component.html',
   styleUrls: ['./prototype.component.scss']
 })
-export class PrototypeComponent implements OnInit {
+export class PrototypeComponent implements OnInit, OnDestroy {
 
   private logger: Logger = new Logger({ name: 'PrototypeComponent', flags: ['component'] });
 
   constructor(
-    private socketService: SocketService,
     private navigationService: NavigationService,
+    private communicationService: GeneratorCommunicationService,
     private toppy: Toppy,
     private helpOverlayService: HelpOverlayService) {
   }
@@ -360,7 +352,6 @@ export class PrototypeComponent implements OnInit {
     });
 
     this.interval = this.subject.pipe(switchMap((period: number) => interval(period)));
-    this.socketService.initSocket();
 
     // create matrices
     this.createMatrixDrums();
@@ -573,7 +564,7 @@ export class PrototypeComponent implements OnInit {
       oldButton.isPlayed = true;
 
       if (oldButton.isActive) {
-        this.socketService.send(Action.REDIRECT_OSC_MESSAGE, oldButton.oscMessage);
+        this.communicationService.sendMessage(oldButton.oscMessage);
       }
     }
 
@@ -588,7 +579,7 @@ export class PrototypeComponent implements OnInit {
         newButton.isPlayed = true;
 
         if (newButton.isActive) {
-          this.socketService.send(Action.REDIRECT_OSC_MESSAGE, newButton.oscMessage);
+          this.communicationService.sendMessage(newButton.oscMessage);
         }
       }
       this.temp = newTemp;
@@ -646,6 +637,11 @@ export class PrototypeComponent implements OnInit {
    */
   public switchNavigation() {
     this.navigationService.switchNavigation();
+  }
+
+  // TODO: Das sollte nur ein Workaround sein!
+  ngOnDestroy() {
+    this.stop();
   }
 
 }

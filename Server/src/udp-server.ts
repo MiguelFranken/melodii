@@ -2,6 +2,7 @@ import * as OSC from 'osc';
 import { IOSCRawMessage } from "./osc/osc-types";
 import { IOSCMessage } from "./osc/osc-message";
 import { Logger } from "@overnightjs/logger";
+import * as ip from 'ip';
 
 enum UdpEvent {
   MESSAGE = "message",
@@ -18,6 +19,9 @@ export class UdpServer {
       metadata: true,
     });
     this.udp.open();
+
+    const myIp = ip.address();
+    Logger.Info(`[UDP] Started listening for OSC messages at ${myIp}:${port}`);
   }
 
   public onMessage(callback: (message: IOSCMessage) => void) {
@@ -27,7 +31,7 @@ export class UdpServer {
         args: oscRawMsg.args,
         info: info,
       };
-      Logger.Info(`[UDP server] Received message: ${JSON.stringify(msg)}`);
+      Logger.Info(`[UDP] Received message: ${JSON.stringify(msg)}`);
       callback(msg);
     });
   }

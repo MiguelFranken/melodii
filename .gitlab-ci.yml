@@ -12,7 +12,6 @@ cache:
   paths:
     - Server/node_modules/
     - Frontend/node_modules/
-    - Generator/node_modules/
     - OSCClient/node_modules/
 
 stages:
@@ -35,19 +34,6 @@ install_packages:
     - npm ci
     - cd ../OSCClient
     - npm ci
-  tags:
-    - docker
-
-build:tone-generator:
-  image: nikolaik/python-nodejs:latest
-  stage: build
-  script:
-    - cd Generator
-    - npm run build # todo: better solution
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - Generator/dist/
   tags:
     - docker
 
@@ -101,17 +87,6 @@ lint:frontend:
   stage: lint
   script:
     - ng lint
-  tags:
-    - docker
-
-lint:tone-generator:
-  image: nikolaik/python-nodejs:latest
-  allow_failure: true
-  before_script:
-    - cd Generator
-  stage: lint
-  script:
-    - npm run lint
   tags:
     - docker
 
