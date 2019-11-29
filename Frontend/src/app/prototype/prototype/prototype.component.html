@@ -1,5 +1,6 @@
 <div fxLayout="column" style="padding: 2px" fxLayoutGap="2px" [ngStyle]="{'height': height}">
 
+  <!-- Menu Row 1 -->
   <div class="menu" fxLayout fxFlex="10">
     <div fxFill fxLayout fxLayoutGap="2px">
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="calc(11.11% - 2px)" #playButtonElement><mat-icon class="action-icon">play_arrow</mat-icon></button>
@@ -22,6 +23,7 @@
     </div>
   </div>
 
+  <!-- Menu Row 2 -->
   <div class="menu" fxLayout fxFlex="5">
     <div fxFill fxLayout fxLayoutGap="2px">
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="openInstrumentSelectionMenu()" #el>
@@ -38,6 +40,7 @@
     </div>
   </div>
 
+  <!-- Matrix -->
   <div fxLayout="column" fxLayoutGap="2px" fxFlex style="overflow: auto">
     <div
             fxLayout
@@ -74,6 +77,7 @@
     </div>
   </div>
 
+  <!-- Menu below matrix -->
   <div class="menu" fxLayout fxFlex="5">
     <div fxFill fxLayout fxLayoutGap="2px">
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex *ngIf="showRowNames" (click)="switchFold()">Fold</button>
