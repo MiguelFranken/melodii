@@ -30,8 +30,6 @@ install_packages:
     - npm ci
     - cd ../Frontend
     - npm ci
-    - cd ../Generator
-    - npm ci
     - cd ../OSCClient
     - npm ci
   tags:
