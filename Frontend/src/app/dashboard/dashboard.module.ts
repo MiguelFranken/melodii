@@ -6,7 +6,6 @@ import { SharedModule } from '../shared/shared.module';
 import { ArcDashboardComponent } from './arc/arc-dashboard.component';
 import { BoxDashboardComponent } from './box/box-dashboard.component';
 import { MatDashboardComponent } from './mat/mat-dashboard.component';
-import { AudioContextModule } from 'angular-audio-context';
 
 @NgModule({
   declarations: [
@@ -21,11 +20,9 @@ import { AudioContextModule } from 'angular-audio-context';
   imports: [
     CommonModule,
     SharedModule,
-    AudioContextModule.forChild()
   ],
   providers: [
-    SocketService,
-    AudioContext
+    SocketService
   ]
 })
 export class DashboardModule { }
