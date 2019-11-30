@@ -1,10 +1,11 @@
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NavigationService } from "./navigation.service";
-import { Observable } from "rxjs";
+import { Observable, timer } from 'rxjs';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Logger } from '@upe/logger';
 import { GeneratorCommunicationService } from '../../../generator/library/generator-communication.service';
 import { SocketServer } from '../../../generator/library/socket-server';
+import { LogService } from '../../../generator/log/log.service';
 
 @Component({
   selector: 'app-navigation',
@@ -28,20 +29,36 @@ export class NavigationComponent implements OnInit {
   public useGenerator = true;
   public useDirectCommunication = true;
   public hasSound = true;
+  public hasReceivedMessage = false;
+  public showMessageIndicator: boolean = true;
 
   constructor(
     private navigationService: NavigationService,
     private socketServer: SocketServer,
     private toppy: Toppy,
-    private directCommunicationService: GeneratorCommunicationService) { }
+    private generatorCommunicationService: GeneratorCommunicationService,
+    private logService: LogService) { }
 
   ngOnInit() {
     this.isClosed = this.navigationService.getIsClosedObservable();
     this.initSoundMenu();
+
+    this.logService.getEventObservable().subscribe(() => {
+      if (this.showMessageIndicator) {
+        this.hasReceivedMessage = true;
+        timer(300).subscribe(() => {
+          this.hasReceivedMessage = false;
+        });
+      }
+    });
   }
 
   public switchSound() {
     // TODO
+  }
+
+  public switchMessageIndicator() {
+    this.showMessageIndicator = !this.showMessageIndicator;
   }
 
   public switchGenerator() {
@@ -56,7 +73,7 @@ export class NavigationComponent implements OnInit {
 
   public switchDirectCommunication() {
     this.useDirectCommunication = !this.useDirectCommunication;
-    this.directCommunicationService.switchDirectCommunication();
+    this.generatorCommunicationService.switchDirectCommunication();
   }
 
   private initSoundMenu() {

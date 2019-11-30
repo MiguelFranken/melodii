@@ -19,6 +19,15 @@
   background-color: $mcp-green-2 !important;
 }
 
+.connection-indicator {
+  background-color: $mcp-black-4;
+  width: 5px;
+}
+
+.connection-indicator-active {
+  background-color: $mcp-green-1;
+}
+
 .action-button {
   padding: 10px;
   cursor: pointer;
