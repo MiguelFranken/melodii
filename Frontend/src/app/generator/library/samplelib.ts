@@ -1,4 +1,4 @@
-import { NoiseSynth, Sampler, Synth } from 'tone';
+import { Meter, NoiseSynth, Sampler, Synth } from 'tone';
 
 /**
  * creates samplers based on wav/mp3/oog files

@@ -1,6 +1,8 @@
 import * as Tone from 'tone';
 import { SampleLib } from './samplelib';
 import { Logger } from '@upe/logger';
+import { interval } from 'rxjs';
+import { Volume } from 'tone';
 
 export class Music {
 
@@ -18,6 +20,14 @@ export class Music {
       () => this.logger.info('piano buffered'), // just for debug purpose
     ).toDestination();
     this.instruments.hihat = this.sampleLib.getHiHatSynth().toDestination();
+    const meter = new Tone.Meter();
+    this.instruments.hihat.connect(meter);
+    var vol = new Volume(-12);
+    this.instruments.hihat.chain(vol,);
+    interval(1000).subscribe(() => {
+
+      console.log(meter.getValue());
+    });
     this.instruments.longNote = this.sampleLib.getLongNoteSynth().toDestination();
   }
 

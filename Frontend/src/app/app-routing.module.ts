@@ -10,35 +10,38 @@ import { MatComponent } from './mat/mat.component';
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent
+    component: DashboardComponent,
   },
   {
     path: 'prototype',
-    component: PrototypeComponent
+    component: PrototypeComponent,
   },
   {
     path: 'log',
-    component: LogComponent
+    component: LogComponent,
   },
   {
     path: 'box',
-    component: BoxComponent
+    component: BoxComponent,
   },
   {
     path: 'arc',
-    component: ArcComponent
+    component: ArcComponent,
   },
   {
     path: 'mat',
-    component: MatComponent
+    component: MatComponent,
   },
   {
-    path: '**', redirectTo: '/'
-  }
+    path: 'experiments',
+    loadChildren: () => import(`./experiments/experiments.module`).then(m => m.ExperimentsModule)
+  },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: 'dashboard' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { enableTracing: false })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

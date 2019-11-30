@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Context, Gain, MembraneSynth, MonoSynth, NoiseSynth, Transport } from 'tone';
 
 @Component({
   selector: 'mcp-arc-dashboard',

@@ -10,6 +10,7 @@ import { GeneratorModule } from './generator/generator.module';
 import { ArcModule } from './arc/arc.module';
 import { BoxModule } from './box/box.module';
 import { MatModule } from './mat/mat.module';
+import { ExperimentsModule } from './experiments/experiments.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MatModule } from './mat/mat.module';
     GeneratorModule,
     ArcModule,
     BoxModule,
-    MatModule
+    MatModule,
+    ExperimentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
