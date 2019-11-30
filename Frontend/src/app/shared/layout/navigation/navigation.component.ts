@@ -31,7 +31,7 @@ export class NavigationComponent implements OnInit {
   public useDirectCommunication = true;
   public hasSound = true;
   public hasReceivedMessage = false;
-  public showMessageIndicator: boolean = true;
+  public showMessageIndicator = true;
 
   constructor(
     private navigationService: NavigationService,
