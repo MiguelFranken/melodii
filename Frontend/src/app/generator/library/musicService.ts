@@ -1,8 +1,7 @@
 import * as Tone from 'tone';
 import { SampleLib } from './samplelib';
 import { Logger } from '@upe/logger';
-import { interval } from 'rxjs';
-import { Volume } from 'tone';
+import { NoiseSynth } from 'tone';
 import { Gain } from 'tone';
 import { Meter } from 'tone';
 import { Injectable } from '@angular/core';
@@ -93,9 +92,9 @@ export class MusicService {
       case 'kick': this.instruments.drum_kick.triggerAttack('C2'); break;
       case 'snare': this.instruments.drum_snare.triggerAttack('C2'); break;
       case 'hihat':
-        this.instruments.hihat.triggerAttackRelease('8n');
-
-        break; // 64n als workaround fix
+        const synth = this.instruments.hihat as NoiseSynth;
+        synth.triggerAttack();
+        break;
     }
   }
 
