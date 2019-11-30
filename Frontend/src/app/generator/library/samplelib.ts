@@ -1,4 +1,4 @@
-import { Meter, NoiseSynth, Sampler, Synth } from 'tone';
+import { NoiseSynth, Sampler, Synth } from 'tone';
 
 /**
  * creates samplers based on wav/mp3/oog files
@@ -94,7 +94,7 @@ export class SampleLib {
     'G#6': 'Gs6.mp3',
   };
 
-  public getKickSampler(onLoad?: () => void) {
+  public getKickSampler(onLoad?: () => void): Sampler {
     const path = 'drums/jazz_kick.wav';
     return new Sampler(
       { C2: path },
@@ -103,7 +103,7 @@ export class SampleLib {
     );
   }
 
-  public getSnareSampler(onLoad?: () => void) {
+  public getSnareSampler(onLoad?: () => void): Sampler {
     const path = 'drums/jazz_snare.wav';
     return new Sampler(
       { C2: path },
@@ -112,7 +112,7 @@ export class SampleLib {
     );
   }
 
-  public getPianoSampler(onLoad?: () => void) {
+  public getPianoSampler(onLoad?: () => void): Sampler {
     const sampler = new Sampler({
       urls: this.pianoNotes,
       attack: 0,
@@ -126,7 +126,7 @@ export class SampleLib {
     return sampler;
   }
 
-  public getHiHatSynth() {
+  public getHiHatSynth(): NoiseSynth {
     const synth = new NoiseSynth({
       noise: {
         type: 'white',
@@ -142,7 +142,7 @@ export class SampleLib {
     return synth;
   }
 
-  public getLongNoteSynth() {
+  public getLongNoteSynth(): Synth {
     return new Synth({
       oscillator: {
         type: 'square',

@@ -51,6 +51,8 @@ export class Music {
 
     // Connect to master output
     Music.GAIN.toDestination();
+
+    this.logger.info('Initialized successfully');
   }
 
   private instruments: { [k: string]: any } = {};
@@ -86,7 +88,10 @@ export class Music {
     switch (instrument) {
       case 'kick': this.instruments.drum_kick.triggerAttack('C2'); break;
       case 'snare': this.instruments.drum_snare.triggerAttack('C2'); break;
-      case 'hihat': this.instruments.hihat.triggerAttackRelease('64n'); break; // 64n als workaround fix
+      case 'hihat':
+        this.instruments.hihat.triggerAttackRelease('8n');
+
+        break; // 64n als workaround fix
     }
   }
 
