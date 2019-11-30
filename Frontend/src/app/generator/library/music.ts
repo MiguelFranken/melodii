@@ -20,14 +20,6 @@ export class Music {
       () => this.logger.info('piano buffered'), // just for debug purpose
     ).toDestination();
     this.instruments.hihat = this.sampleLib.getHiHatSynth().toDestination();
-    const meter = new Tone.Meter();
-    this.instruments.hihat.connect(meter);
-    var vol = new Volume(-12);
-    this.instruments.hihat.chain(vol,);
-    interval(1000).subscribe(() => {
-
-      console.log(meter.getValue());
-    });
     this.instruments.longNote = this.sampleLib.getLongNoteSynth().toDestination();
   }
 
