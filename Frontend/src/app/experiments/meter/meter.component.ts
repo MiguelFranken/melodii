@@ -28,7 +28,7 @@ export class MeterComponent implements OnInit {
   @ViewChild('canvasSnare', { static: true })
   cvsSnare: ElementRef<HTMLCanvasElement>;
 
-  @ViewChild('canvasHihat', { static: true })
+  @ViewChild('canvasHiHat', { static: true })
   cvsHihat: ElementRef<HTMLCanvasElement>;
 
   private ctxMaster: CanvasRenderingContext2D;
@@ -93,13 +93,22 @@ class MeterVisualization {
 
   private currentVolume: IVolume;
 
+  private dpi = window.devicePixelRatio;
+
   constructor(private meter: Meter, private canvas: HTMLCanvasElement, private ctx: CanvasRenderingContext2D) {
-    this.canvasActualHeight = this.canvas.height - this.padding * 2;
-    this.canvasActualWidth = this.canvas.width - this.padding * 2;
-    this.barSize = this.canvasActualWidth / 2 - 5; // 2 bars, padding of 5px
+    const ratio =  Math.max(window.devicePixelRatio || 1, 1);
+    const w = 80 * ratio;
+    const h = 400 * ratio;
+
+    canvas.width = w;
+    canvas.height = h;
+
+    this.canvasActualHeight = h - this.padding * 2;
+    this.canvasActualWidth = w - this.padding * 2;
+    this.barSize = this.canvasActualWidth / 2 - 2.5; // 2 bars, padding of 5px
   }
 
-  private padding = 10;
+  private padding = 2;
   private gridScale = 20;
   private gridColor = "#616161";
   private color = "#595959";
@@ -184,7 +193,7 @@ class MeterVisualization {
 
   private drawVolumeBar(value: number, barIndex: number) {
     const barHeight = Math.round( this.canvasActualHeight * value / this.maxValue) ;
-    const marginRight = barIndex > 0 ? 10 : 0;
+    const marginRight = barIndex > 0 ? 5 : 0;
     MeterVisualization.drawGenericBar(
       this.ctx,
       this.padding + barIndex * this.barSize + marginRight,

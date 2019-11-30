@@ -641,7 +641,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   // TODO: Das sollte nur ein Workaround sein!
   ngOnDestroy() {
-    this.stop();
+    // this.stop();
   }
 
 }

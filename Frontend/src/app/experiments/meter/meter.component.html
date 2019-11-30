@@ -1,8 +1,18 @@
-<div class="container" fxLayout="column" fxLayoutAlign="center center">
-  <div fxLayout fxLayoutGap="10px">
-    <canvas #canvasMaster style="width: 50px; height: 200px"></canvas>
-    <canvas #canvasKick style="width: 50px; height: 200px"></canvas>
-    <canvas #canvasSnare style="width: 50px; height: 200px"></canvas>
-    <canvas #canvasHihat style="width: 50px; height: 200px"></canvas>
+<div class="container" fxLayout fxLayoutAlign="space-around">
+  <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start center">
+    <div fxFlex><canvas #canvasMaster style="width: 75px; height: 100%"></canvas></div>
+    <span class="meterName">Master</span>
+  </div>
+  <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start center">
+    <div fxFlex><canvas #canvasKick style="width: 75px; height: 100%"></canvas></div>
+    <span class="meterName">Kick</span>
+  </div>
+  <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start center">
+    <div fxFlex><canvas #canvasSnare style="width: 75px; height: 100%"></canvas></div>
+    <span class="meterName">Snare</span>
+  </div>
+  <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start center">
+    <div fxFlex><canvas #canvasHiHat style="width: 75px; height: 100%"></canvas></div>
+    <span class="meterName">HiHat</span>
   </div>
 </div>
