@@ -110,20 +110,20 @@ lint:osc-client:
   tags:
     - docker
 
-test:frontend:karma:
-  image: trion/ng-cli-karma
-  stage: test
-  allow_failure: false
-  before_script:
-    - cd Frontend
-  script:
-    - ng test --code-coverage --progress false --watch false
-  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
-  artifacts:
-    paths:
-      - Frontend/coverage/
-  tags:
-    - docker
+#test:frontend:karma:
+#  image: trion/ng-cli-karma
+#  stage: test
+#  allow_failure: false
+#  before_script:
+#    - cd Frontend
+#  script:
+#    - ng test --code-coverage --progress false --watch false
+#  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
+#  artifacts:
+#    paths:
+#      - Frontend/coverage/
+#  tags:
+#    - docker
 
 package:master:web:
   stage: package
