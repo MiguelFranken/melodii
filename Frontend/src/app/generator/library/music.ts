@@ -11,6 +11,9 @@ export class Music {
   static GAIN = new Gain(0.4);
   static MASTER_METER = new Meter(0.9);
   static PIANO_METER = new Meter(0.9);
+  static KICK_METER = new Meter(0.9);
+  static SNARE_METER = new Meter(0.9);
+  static HIHAT_METER = new Meter(0.9);
 
   private logger: Logger = new Logger({ name: 'Music' });
 
@@ -37,10 +40,13 @@ export class Music {
 
     this.instruments.synth.connect(Music.MASTER_METER);
     this.instruments.drum_kick.connect(Music.MASTER_METER);
+    this.instruments.drum_kick.connect(Music.KICK_METER);
     this.instruments.drum_snare.connect(Music.MASTER_METER);
+    this.instruments.drum_snare.connect(Music.SNARE_METER);
     this.instruments.piano.connect(Music.MASTER_METER);
     this.instruments.piano.connect(Music.PIANO_METER);
     this.instruments.hihat.connect(Music.MASTER_METER);
+    this.instruments.hihat.connect(Music.HIHAT_METER);
     this.instruments.longNote.connect(Music.MASTER_METER);
 
     Music.GAIN.toDestination();
@@ -79,7 +85,7 @@ export class Music {
     switch (instrument) {
       case 'kick': this.instruments.drum_kick.triggerAttack('C2'); break;
       case 'snare': this.instruments.drum_snare.triggerAttack('C2'); break;
-      case 'hihat': this.instruments.hihat.triggerAttackRelease('8n'); break;
+      case 'hihat': this.instruments.hihat.triggerAttackRelease('64n'); break; // 64n als workaround fix
     }
   }
 

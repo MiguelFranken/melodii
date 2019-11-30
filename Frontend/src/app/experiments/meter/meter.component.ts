@@ -14,60 +14,86 @@ interface IVolume {
 })
 export class MeterComponent implements OnInit {
 
-  private volume: IVolume = {
-    left: 100,
-    right: 80
-  };
-  private meterVisualization: MeterVisualization;
+  private meterVisualizationMaster: MeterVisualization;
+  private meterVisualizationKick: MeterVisualization;
+  private meterVisualizationSnare: MeterVisualization;
+  private meterVisualizationHihat: MeterVisualization;
 
-  @ViewChild('canvas', { static: true })
-  cvs: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasMaster', { static: true })
+  cvsMaster: ElementRef<HTMLCanvasElement>;
 
-  private ctx: CanvasRenderingContext2D;
+  @ViewChild('canvasKick', { static: true })
+  cvsKick: ElementRef<HTMLCanvasElement>;
+
+  @ViewChild('canvasSnare', { static: true })
+  cvsSnare: ElementRef<HTMLCanvasElement>;
+
+  @ViewChild('canvasHihat', { static: true })
+  cvsHihat: ElementRef<HTMLCanvasElement>;
+
+  private ctxMaster: CanvasRenderingContext2D;
+  private ctxKick: CanvasRenderingContext2D;
+  private ctxSnare: CanvasRenderingContext2D;
+  private ctxHihat: CanvasRenderingContext2D;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.ctx = this.cvs.nativeElement.getContext('2d');
+    this.ctxMaster = this.cvsMaster.nativeElement.getContext('2d');
+    this.ctxKick = this.cvsKick.nativeElement.getContext('2d');
+    this.ctxSnare = this.cvsSnare.nativeElement.getContext('2d');
+    this.ctxHihat = this.cvsHihat.nativeElement.getContext('2d');
 
-    this.meterVisualization = new MeterVisualization(
-      this.volume,
-      this.cvs.nativeElement,
-      this.ctx
+    this.initMasterMeter();
+    this.initKickMeter();
+    this.initSnareMeter();
+    this.initHihatMeter();
+  }
+
+  private initMasterMeter() {
+    this.meterVisualizationMaster = new MeterVisualization(
+      Music.MASTER_METER,
+      this.cvsMaster.nativeElement,
+      this.ctxMaster
     );
-    this.meterVisualization.draw();
-
-    requestAnimationFrame(this.animate.bind(this));
+    this.meterVisualizationMaster.animate();
   }
 
-  private clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
+  private initKickMeter() {
+    this.meterVisualizationKick = new MeterVisualization(
+      Music.KICK_METER,
+      this.cvsKick.nativeElement,
+      this.ctxKick
+    );
+    this.meterVisualizationKick.animate();
   }
 
-  private normalize(value, r1, r2) {
-    return (value - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
+  private initSnareMeter() {
+    this.meterVisualizationSnare = new MeterVisualization(
+      Music.SNARE_METER,
+      this.cvsSnare.nativeElement,
+      this.ctxSnare
+    );
+    this.meterVisualizationSnare.animate();
   }
 
-  public animate() {
-    requestAnimationFrame(this.animate.bind(this));
-
-    let meterValue = Music.MASTER_METER.getValue();
-    meterValue = this.clamp(meterValue, -100, -10);
-    meterValue = this.normalize( meterValue, [ -100, -10 ], [ 0, 100 ] );
-
-    this.volume.left = meterValue;
-    this.volume.right = meterValue;
-    this.meterVisualization.updateData(this.volume);
-    this.meterVisualization.clear();
-    this.meterVisualization.draw();
+  private initHihatMeter() {
+    this.meterVisualizationHihat = new MeterVisualization(
+      Music.HIHAT_METER,
+      this.cvsHihat.nativeElement,
+      this.ctxHihat
+    );
+    this.meterVisualizationHihat.animate();
   }
 
 }
 
 class MeterVisualization {
 
-  constructor(private data: IVolume, private canvas: HTMLCanvasElement, private ctx: CanvasRenderingContext2D) {
+  private currentVolume: IVolume;
+
+  constructor(private meter: Meter, private canvas: HTMLCanvasElement, private ctx: CanvasRenderingContext2D) {
     this.canvasActualHeight = this.canvas.height - this.padding * 2;
     this.canvasActualWidth = this.canvas.width - this.padding * 2;
     this.barSize = this.canvasActualWidth / 2 - 5; // 2 bars, padding of 5px
@@ -91,8 +117,33 @@ class MeterVisualization {
     ctx.restore();
   }
 
-  public updateData(data: IVolume) {
-    this.data = data;
+  private static clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  private static normalize(value, r1, r2) {
+    return (value - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
+  }
+
+  public animate() {
+    requestAnimationFrame(this.animate.bind(this));
+
+    let meterValue = this.meter.getValue();
+    meterValue = MeterVisualization.clamp(meterValue, -100, -10);
+    meterValue = MeterVisualization.normalize( meterValue, [ -100, -10 ], [ 0, 100 ] );
+
+    // TODO: Stereo
+    const volume: IVolume = {
+      left: meterValue,
+      right: meterValue
+    };
+    this.updateData(volume);
+    this.clear();
+    this.draw();
+  }
+
+  public updateData(volume: IVolume) {
+    this.currentVolume = volume;
   }
 
   public clear() {
@@ -117,8 +168,8 @@ class MeterVisualization {
     }
 
     //drawing the volume bars
-    this.drawVolumeBar(this.data.left, 0);
-    this.drawVolumeBar(this.data.right, 1);
+    this.drawVolumeBar(this.currentVolume.left, 0);
+    this.drawVolumeBar(this.currentVolume.right, 1);
   }
 
   private drawLine(ctx: CanvasRenderingContext2D, startX: number, startY: number, endX: number, endY: number, color: string) {
