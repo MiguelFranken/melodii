@@ -5,8 +5,12 @@ import { interval } from 'rxjs';
 import { Volume } from 'tone';
 import { Gain } from 'tone';
 import { Meter } from 'tone';
+import { Injectable } from '@angular/core';
 
-export class Music {
+@Injectable({
+  providedIn: 'root'
+})
+export class MusicService {
 
   static GAIN = new Gain(0.4);
   static MASTER_METER = new Meter(0.9);
@@ -31,26 +35,26 @@ export class Music {
     this.instruments.hihat = this.sampleLib.getHiHatSynth();
     this.instruments.longNote = this.sampleLib.getLongNoteSynth();
 
-    this.instruments.synth.connect(Music.GAIN);
-    this.instruments.drum_kick.connect(Music.GAIN);
-    this.instruments.drum_snare.connect(Music.GAIN);
-    this.instruments.piano.connect(Music.GAIN);
-    this.instruments.hihat.connect(Music.GAIN);
-    this.instruments.longNote.connect(Music.GAIN);
+    this.instruments.synth.connect(MusicService.GAIN);
+    this.instruments.drum_kick.connect(MusicService.GAIN);
+    this.instruments.drum_snare.connect(MusicService.GAIN);
+    this.instruments.piano.connect(MusicService.GAIN);
+    this.instruments.hihat.connect(MusicService.GAIN);
+    this.instruments.longNote.connect(MusicService.GAIN);
 
-    this.instruments.synth.connect(Music.MASTER_METER);
-    this.instruments.drum_kick.connect(Music.MASTER_METER);
-    this.instruments.drum_kick.connect(Music.KICK_METER);
-    this.instruments.drum_snare.connect(Music.MASTER_METER);
-    this.instruments.drum_snare.connect(Music.SNARE_METER);
-    this.instruments.piano.connect(Music.MASTER_METER);
-    this.instruments.piano.connect(Music.PIANO_METER);
-    this.instruments.hihat.connect(Music.MASTER_METER);
-    this.instruments.hihat.connect(Music.HIHAT_METER);
-    this.instruments.longNote.connect(Music.MASTER_METER);
+    this.instruments.synth.connect(MusicService.MASTER_METER);
+    this.instruments.drum_kick.connect(MusicService.MASTER_METER);
+    this.instruments.drum_kick.connect(MusicService.KICK_METER);
+    this.instruments.drum_snare.connect(MusicService.MASTER_METER);
+    this.instruments.drum_snare.connect(MusicService.SNARE_METER);
+    this.instruments.piano.connect(MusicService.MASTER_METER);
+    this.instruments.piano.connect(MusicService.PIANO_METER);
+    this.instruments.hihat.connect(MusicService.MASTER_METER);
+    this.instruments.hihat.connect(MusicService.HIHAT_METER);
+    this.instruments.longNote.connect(MusicService.MASTER_METER);
 
     // Connect to master output
-    Music.GAIN.toDestination();
+    MusicService.GAIN.toDestination();
 
     this.logger.info('Initialized successfully');
   }

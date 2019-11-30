@@ -1,11 +1,11 @@
 import { Controller, Message, OnMessage } from '../decorator/decorators';
 import { IOSCMessage } from '../osc/osc-message';
-import { Music } from '../music';
+import { MusicService } from '../musicService';
 
 @Controller('/piano')
 export class PianoController {
 
-  constructor(private music: Music) { }
+  constructor(private music: MusicService) { }
 
   @OnMessage('/play_note')
   public receivedMessage(@Message() message: IOSCMessage) {

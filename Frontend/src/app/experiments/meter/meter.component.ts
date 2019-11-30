@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Gain, Meter, MonoSynth } from 'tone';
-import { Music } from '../../generator/library/music';
+import { MusicService } from '../../generator/library/musicService';
 
 interface IVolume {
   left: number;
@@ -53,7 +53,7 @@ export class MeterComponent implements OnInit {
 
   private initMasterMeter() {
     this.meterVisualizationMaster = new MeterVisualization(
-      Music.MASTER_METER,
+      MusicService.MASTER_METER,
       this.cvsMaster.nativeElement,
       this.ctxMaster
     );
@@ -62,7 +62,7 @@ export class MeterComponent implements OnInit {
 
   private initKickMeter() {
     this.meterVisualizationKick = new MeterVisualization(
-      Music.KICK_METER,
+      MusicService.KICK_METER,
       this.cvsKick.nativeElement,
       this.ctxKick
     );
@@ -71,7 +71,7 @@ export class MeterComponent implements OnInit {
 
   private initSnareMeter() {
     this.meterVisualizationSnare = new MeterVisualization(
-      Music.SNARE_METER,
+      MusicService.SNARE_METER,
       this.cvsSnare.nativeElement,
       this.ctxSnare
     );
@@ -80,7 +80,7 @@ export class MeterComponent implements OnInit {
 
   private initHihatMeter() {
     this.meterVisualizationHihat = new MeterVisualization(
-      Music.HIHAT_METER,
+      MusicService.HIHAT_METER,
       this.cvsHihat.nativeElement,
       this.ctxHihat
     );
