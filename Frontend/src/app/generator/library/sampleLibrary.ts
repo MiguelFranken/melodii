@@ -3,7 +3,7 @@ import { NoiseSynth, Sampler, Synth } from 'tone';
 /**
  * creates samplers based on wav/mp3/oog files
  */
-export class SampleLib {
+export class SampleLibrary {
   public baseUrl = 'assets/samples/';
 
   public pianoNotes = {

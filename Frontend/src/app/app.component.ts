@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MusicService } from './generator/library/musicService';
+import { MusicService } from './generator/library/music.service';
 import { container } from './generator/library/decorator/container';
 
 @Component({

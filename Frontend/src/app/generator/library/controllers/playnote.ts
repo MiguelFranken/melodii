@@ -1,6 +1,6 @@
 import { Controller, Message, OnMessage } from '../decorator/decorators';
 import { IOSCMessage } from '../osc/osc-message';
-import { MusicService } from '../musicService';
+import { MusicService } from '../music.service';
 
 @Controller('/play_note')
 export class PlayNoteController {

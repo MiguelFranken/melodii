@@ -1,5 +1,5 @@
 import * as Tone from 'tone';
-import { SampleLib } from './samplelib';
+import { SampleLibrary } from './sampleLibrary';
 import { Logger } from '@upe/logger';
 import { NoiseSynth } from 'tone';
 import { Gain } from 'tone';
@@ -11,55 +11,59 @@ import { Injectable } from '@angular/core';
 })
 export class MusicService {
 
-  static GAIN = new Gain(0.4);
-  static MASTER_METER = new Meter(0.9);
-  static PIANO_METER = new Meter(0.9);
-  static KICK_METER = new Meter(0.9);
-  static SNARE_METER = new Meter(0.9);
-  static HIHAT_METER = new Meter(0.9);
+  private instruments: { [k: string]: any } = {};
+  private sampleLibrary = new SampleLibrary();
+
+  private gain = new Gain(0.4);
+
+  // meters
+  public masterMeter = new Meter(0.9);
+  public pianoMeter = new Meter(0.9);
+  public kickMeter = new Meter(0.9);
+  public snareMeter = new Meter(0.9);
+  public hihatMeter = new Meter(0.9);
 
   private logger: Logger = new Logger({ name: 'Music' });
 
   constructor() {
     this.instruments.synth = new Tone.Synth();
-    this.instruments.drum_kick = this.sampleLib.getKickSampler(
+    this.instruments.drum_kick = this.sampleLibrary.getKickSampler(
       () => this.logger.debug('drum kick buffered'),
     );
-    this.instruments.drum_snare = this.sampleLib.getSnareSampler(
+    this.instruments.drum_snare = this.sampleLibrary.getSnareSampler(
       () => this.logger.debug('drum snare buffered'),
     );
-    this.instruments.piano = this.sampleLib.getPianoSampler(
+    this.instruments.piano = this.sampleLibrary.getPianoSampler(
       () => this.logger.debug('piano buffered'),
     );
-    this.instruments.hihat = this.sampleLib.getHiHatSynth();
-    this.instruments.longNote = this.sampleLib.getLongNoteSynth();
+    this.instruments.hihat = this.sampleLibrary.getHiHatSynth();
+    this.instruments.longNote = this.sampleLibrary.getLongNoteSynth();
 
-    this.instruments.synth.connect(MusicService.GAIN);
-    this.instruments.drum_kick.connect(MusicService.GAIN);
-    this.instruments.drum_snare.connect(MusicService.GAIN);
-    this.instruments.piano.connect(MusicService.GAIN);
-    this.instruments.hihat.connect(MusicService.GAIN);
-    this.instruments.longNote.connect(MusicService.GAIN);
+    // Connect to gain
+    this.instruments.synth.connect(this.gain);
+    this.instruments.drum_kick.connect(this.gain);
+    this.instruments.drum_snare.connect(this.gain);
+    this.instruments.piano.connect(this.gain);
+    this.instruments.hihat.connect(this.gain);
+    this.instruments.longNote.connect(this.gain);
 
-    this.instruments.synth.connect(MusicService.MASTER_METER);
-    this.instruments.drum_kick.connect(MusicService.MASTER_METER);
-    this.instruments.drum_kick.connect(MusicService.KICK_METER);
-    this.instruments.drum_snare.connect(MusicService.MASTER_METER);
-    this.instruments.drum_snare.connect(MusicService.SNARE_METER);
-    this.instruments.piano.connect(MusicService.MASTER_METER);
-    this.instruments.piano.connect(MusicService.PIANO_METER);
-    this.instruments.hihat.connect(MusicService.MASTER_METER);
-    this.instruments.hihat.connect(MusicService.HIHAT_METER);
-    this.instruments.longNote.connect(MusicService.MASTER_METER);
+    // Connect to meter
+    this.instruments.synth.connect(this.masterMeter);
+    this.instruments.drum_kick.connect(this.masterMeter);
+    this.instruments.drum_kick.connect(this.kickMeter);
+    this.instruments.drum_snare.connect(this.masterMeter);
+    this.instruments.drum_snare.connect(this.snareMeter);
+    this.instruments.piano.connect(this.masterMeter);
+    this.instruments.piano.connect(this.pianoMeter);
+    this.instruments.hihat.connect(this.masterMeter);
+    this.instruments.hihat.connect(this.hihatMeter);
+    this.instruments.longNote.connect(this.masterMeter);
 
     // Connect to master output
-    MusicService.GAIN.toDestination();
+    this.gain.toDestination();
 
     this.logger.info('Initialized successfully');
   }
-
-  private instruments: { [k: string]: any } = {};
-  private sampleLib = new SampleLib();
 
   /**
    * Plays a single note

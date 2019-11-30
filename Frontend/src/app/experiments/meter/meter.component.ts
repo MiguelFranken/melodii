@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MusicService } from '../../generator/library/musicService';
+import { MusicService } from '../../generator/library/music.service';
 import { MeterVisualization } from './meter-visualization';
 
 @Component({
@@ -31,7 +31,7 @@ export class MeterComponent implements OnInit {
   private ctxSnare: CanvasRenderingContext2D;
   private ctxHihat: CanvasRenderingContext2D;
 
-  constructor() {
+  constructor(private musicService: MusicService) {
   }
 
   ngOnInit() {
@@ -48,7 +48,7 @@ export class MeterComponent implements OnInit {
 
   private initMasterMeter() {
     this.meterVisualizationMaster = new MeterVisualization(
-      MusicService.MASTER_METER,
+      this.musicService.masterMeter,
       this.cvsMaster.nativeElement,
       this.ctxMaster
     );
@@ -57,7 +57,7 @@ export class MeterComponent implements OnInit {
 
   private initKickMeter() {
     this.meterVisualizationKick = new MeterVisualization(
-      MusicService.KICK_METER,
+      this.musicService.kickMeter,
       this.cvsKick.nativeElement,
       this.ctxKick
     );
@@ -66,7 +66,7 @@ export class MeterComponent implements OnInit {
 
   private initSnareMeter() {
     this.meterVisualizationSnare = new MeterVisualization(
-      MusicService.SNARE_METER,
+      this.musicService.snareMeter,
       this.cvsSnare.nativeElement,
       this.ctxSnare
     );
@@ -75,7 +75,7 @@ export class MeterComponent implements OnInit {
 
   private initHihatMeter() {
     this.meterVisualizationHihat = new MeterVisualization(
-      MusicService.HIHAT_METER,
+      this.musicService.hihatMeter,
       this.cvsHihat.nativeElement,
       this.ctxHihat
     );
