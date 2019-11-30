@@ -6,6 +6,7 @@ import { Logger } from '@upe/logger';
 import { GeneratorCommunicationService } from '../../../generator/library/generator-communication.service';
 import { SocketServer } from '../../../generator/library/socket-server';
 import { LogService } from '../../../generator/log/log.service';
+import { NotYetImplementedService } from '../../../not-yet-implemented.service';
 
 @Component({
   selector: 'app-navigation',
@@ -37,7 +38,8 @@ export class NavigationComponent implements OnInit {
     private socketServer: SocketServer,
     private toppy: Toppy,
     private generatorCommunicationService: GeneratorCommunicationService,
-    private logService: LogService) { }
+    private logService: LogService,
+    private notYetImplementedService: NotYetImplementedService) { }
 
   ngOnInit() {
     this.isClosed = this.navigationService.getIsClosedObservable();
@@ -55,6 +57,7 @@ export class NavigationComponent implements OnInit {
 
   public switchSound() {
     // TODO
+    this.notYetImplementedService.openSnackbar();
   }
 
   public switchMessageIndicator() {

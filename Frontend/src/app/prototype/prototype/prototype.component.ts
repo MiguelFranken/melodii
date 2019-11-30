@@ -10,6 +10,7 @@ import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Logger } from '@upe/logger';
 import { Chain, HelpOverlayService, OverlayElements } from '../../shared/help-overlay/help-overlay.service';
 import { GeneratorCommunicationService } from '../../generator/library/generator-communication.service';
+import { NotYetImplementedService } from '../../not-yet-implemented.service';
 
 const NOTES_MAJOR_C = [
   'C',
@@ -39,7 +40,8 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     private navigationService: NavigationService,
     private communicationService: GeneratorCommunicationService,
     private toppy: Toppy,
-    private helpOverlayService: HelpOverlayService) {
+    private helpOverlayService: HelpOverlayService,
+    private notYetImplementedService: NotYetImplementedService) {
   }
 
   public height = '100%';
@@ -642,6 +644,10 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   // TODO: Das sollte nur ein Workaround sein!
   ngOnDestroy() {
     // this.stop();
+  }
+
+  public notYetImplemented() {
+    this.notYetImplementedService.openSnackbar();
   }
 
 }
