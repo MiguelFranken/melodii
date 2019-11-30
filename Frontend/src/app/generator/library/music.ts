@@ -20,16 +20,16 @@ export class Music {
   constructor() {
     this.instruments.synth = new Tone.Synth();
     this.instruments.drum_kick = this.sampleLib.getKickSampler(
-      () => this.logger.info('drum kick buffered'), // just for debug purpose
-    ).toDestination();
+      () => this.logger.debug('drum kick buffered'),
+    );
     this.instruments.drum_snare = this.sampleLib.getSnareSampler(
-      () => this.logger.info('drum snare buffered'), // just for debug purpose
-    ).toDestination();
+      () => this.logger.debug('drum snare buffered'),
+    );
     this.instruments.piano = this.sampleLib.getPianoSampler(
-      () => this.logger.info('piano buffered'), // just for debug purpose
-    ).toDestination();
-    this.instruments.hihat = this.sampleLib.getHiHatSynth().toDestination();
-    this.instruments.longNote = this.sampleLib.getLongNoteSynth().toDestination();
+      () => this.logger.debug('piano buffered'),
+    );
+    this.instruments.hihat = this.sampleLib.getHiHatSynth();
+    this.instruments.longNote = this.sampleLib.getLongNoteSynth();
 
     this.instruments.synth.connect(Music.GAIN);
     this.instruments.drum_kick.connect(Music.GAIN);
@@ -49,6 +49,7 @@ export class Music {
     this.instruments.hihat.connect(Music.HIHAT_METER);
     this.instruments.longNote.connect(Music.MASTER_METER);
 
+    // Connect to master output
     Music.GAIN.toDestination();
   }
 
