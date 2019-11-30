@@ -3,13 +3,19 @@ import { SampleLib } from './samplelib';
 import { Logger } from '@upe/logger';
 import { interval } from 'rxjs';
 import { Volume } from 'tone';
+import { Gain } from 'tone';
+import { Meter } from 'tone';
 
 export class Music {
+
+  static GAIN = new Gain(0.4);
+  static MASTER_METER = new Meter(0.9);
+  static PIANO_METER = new Meter(0.9);
 
   private logger: Logger = new Logger({ name: 'Music' });
 
   constructor() {
-    this.instruments.synth = new Tone.Synth().toDestination();
+    this.instruments.synth = new Tone.Synth();
     this.instruments.drum_kick = this.sampleLib.getKickSampler(
       () => this.logger.info('drum kick buffered'), // just for debug purpose
     ).toDestination();
@@ -21,6 +27,23 @@ export class Music {
     ).toDestination();
     this.instruments.hihat = this.sampleLib.getHiHatSynth().toDestination();
     this.instruments.longNote = this.sampleLib.getLongNoteSynth().toDestination();
+
+    this.instruments.synth.connect(Music.GAIN);
+    this.instruments.drum_kick.connect(Music.GAIN);
+    this.instruments.drum_snare.connect(Music.GAIN);
+    this.instruments.piano.connect(Music.GAIN);
+    this.instruments.hihat.connect(Music.GAIN);
+    this.instruments.longNote.connect(Music.GAIN);
+
+    this.instruments.synth.connect(Music.MASTER_METER);
+    this.instruments.drum_kick.connect(Music.MASTER_METER);
+    this.instruments.drum_snare.connect(Music.MASTER_METER);
+    this.instruments.piano.connect(Music.MASTER_METER);
+    this.instruments.piano.connect(Music.PIANO_METER);
+    this.instruments.hihat.connect(Music.MASTER_METER);
+    this.instruments.longNote.connect(Music.MASTER_METER);
+
+    Music.GAIN.toDestination();
   }
 
   private instruments: { [k: string]: any } = {};

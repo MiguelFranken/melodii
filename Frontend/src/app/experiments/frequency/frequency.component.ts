@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Gain, MonoSynth, Transport } from 'tone';
 
 class Drum {
@@ -26,7 +26,6 @@ class Drum {
   }
 
   tickResolution() {
-    // console.log('TICK');
     this.synth.triggerAttackRelease(Math.random() < 0.5 ? "C2" : "E4", "1n");
     this._tick++;
   }
@@ -42,7 +41,7 @@ class Drum {
   templateUrl: './frequency.component.html',
   styleUrls: ['./frequency.component.scss']
 })
-export class FrequencyComponent implements OnInit {
+export class FrequencyComponent implements OnInit, OnDestroy {
 
   @ViewChild('canvas', { static: true })
   CVS: ElementRef<HTMLCanvasElement>;
@@ -60,6 +59,10 @@ export class FrequencyComponent implements OnInit {
 
     Transport.start();
     this.animate();
+  }
+
+  ngOnDestroy(): void {
+    Transport.stop();
   }
 
   ngOnInit() {

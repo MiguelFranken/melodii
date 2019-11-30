@@ -2,7 +2,8 @@
 
 .menu {
   color: $mcp-white-1;
-  min-height: 55px;
+  height: 56px;
+  max-height: 56px !important;
 }
 
 .action-button {
