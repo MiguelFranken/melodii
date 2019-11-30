@@ -16,7 +16,25 @@ export class SocketServer {
   private readonly server: Server;
   private io: socketIo.Server;
 
-  constructor(public readonly port: Port) {
+  private _port: any;
+  private socketName: any;
+
+  private set port(port: Port) {
+    this._port = port;
+
+    if (port === 8000) {
+      this.socketName = 'Generator Socket';
+    } else {
+      this.socketName = 'Frontend Socket';
+    }
+  }
+
+  private get port() {
+    return this._port;
+  }
+
+  constructor(port: Port) {
+    this.port = port;
     this.app = express();
     this.server = createServer(this.app);
     this.io = socketIo(this.server);
@@ -30,10 +48,10 @@ export class SocketServer {
    */
   public emit(event: Event, data?: any) {
     if (data) {
-      Logger.Info(`[Socket:${this.port}] Emitting event '${event}' with data ${JSON.stringify(data)}`);
+      Logger.Info(`[${this.socketName}] Emitting event '${event}' with data ${JSON.stringify(data)}`);
       this.io.emit(event, data);
     } else {
-      Logger.Info(`[Socket:${this.port}] Emitting event '${event}' without data`);
+      Logger.Info(`[${this.socketName}] Emitting event '${event}' without data`);
       this.io.emit(event);
     }
   }
@@ -43,10 +61,13 @@ export class SocketServer {
    */
   private listen(): void {
     this.server.listen(this.port, () => {
-      Logger.Info(`[Socket:${this.port}] Started websocket`);
+      Logger.Info(`[${this.socketName}] Opened socket (${this.port})`);
     });
     this.io.on(Event.CONNECT, (socket: socketIo.Socket) => {
-      Logger.Info(`[Socket:${this.port}] Connected client ${socket.conn.remoteAddress}.`);
+      Logger.Info(`[${this.socketName}] Connected client ${socket.conn.remoteAddress}.`);
+    });
+    this.io.on(Event.DISCONNECT, (socket: socketIo.Socket) => {
+      Logger.Info(`[${this.socketName}] Disconnected client ${socket.conn.remoteAddress}.`);
     });
   }
 
@@ -58,7 +79,7 @@ export class SocketServer {
   public onAction(action: Action, callback: (msg: IOSCMessage) => void) {
     this.io.on(Event.CONNECT, (socket: socketIo.Socket) => {
       const fn = (msg: IOSCMessage) => {
-        Logger.Info(`[Socket:${this.port}] Received action '${action}' from frontend with message '${JSON.stringify(msg)}'`);
+        Logger.Info(`[${this.socketName}] Received action '${action}' from frontend with message '${JSON.stringify(msg)}'`);
         callback(msg);
       };
       socket.on(action, fn);

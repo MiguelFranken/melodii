@@ -80,6 +80,7 @@
     "quotemark": [
       false
     ],
+    "ban-types": false,
     "trailing-comma": false,
     "no-conflicting-lifecycle": true,
     "no-host-metadata-property": true,

@@ -1,11 +1,60 @@
 <div class="menu" fxLayout [hidden]="(isClosed | async) === true">
   <div fxFill fxLayout fxLayoutGap="2px">
-    <a fxFlex="calc(11.11% - 2px)" fxLayout fxLayoutAlign="center center" fxLayoutGap="10px" routerLink="" class="main-nav-link action-button">
-      <img height="30px" alt="logo" src="assets/logo.svg">
-    </a>
-<!--    <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">stop</mat-icon></button>-->
-    <div fxFlex="calc(11.11% - 2px)"></div><!-- spacer -->
-    <div fxFlex="calc(66.67% - 2px)"></div><!-- spacer -->
-    <button routerLink="/prototype" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)">Prototype</button>
+    <div fxFlex="calc(11.11% - 2px)" fxLayout fxLayoutGap="2px">
+      <div class="connection-indicator" [class.connection-indicator-active]="hasReceivedMessage" *ngIf="showMessageIndicator"></div>
+      <button fxFlex mat-button class="action-button" fxLayout fxLayoutAlign="center center" routerLink="/">
+        <img height="30px" alt="logo" src="assets/logo.svg">
+      </button>
+    </div>
+
+    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(5.555% - 2px)" (click)="openSoundMenu()" #el><mat-icon class="action-icon">settings</mat-icon></button>
+    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(5.555% - 2px)" routerLink="log"><mat-icon class="action-icon">message</mat-icon></button>
+    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/experiments">Experiments</button>
+    <div fxFlex="calc(22.23% - 2px)"></div><!-- spacer -->
+    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/arc">Arc</button>
+    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/box">Box</button>
+    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/mat">Mat</button>
+    <button routerLinkActive="active-link" routerLink="/prototype" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)">Matrix</button>
   </div>
 </div>
+
+<!--region Sound Settings Menu-->
+<ng-template #tpl let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchSound()"
+      >Sound <span [class.off]="hasSound">On</span>/<span [class.off]="!hasSound">Off</span>
+      </button>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchGenerator()"
+              >Generator <span [class.off]="useGenerator">On</span>/<span [class.off]="!useGenerator">Off</span>
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchDirectCommunication()"
+              >Direct Communication <span [class.off]="useDirectCommunication">On</span>/<span [class.off]="!useDirectCommunication">Off</span>
+      </button>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchMessageIndicator()"
+      ><span [class.off]="showMessageIndicator">Show</span>/<span [class.off]="!showMessageIndicator">Hide</span> Message Indicator
+      </button>
+    </div>
+  </div>
+</ng-template>
+<!--endregion-->
