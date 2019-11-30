@@ -34,7 +34,7 @@ const routes: Routes = [
   },
   {
     path: 'experiments',
-    loadChildren: () => import(`./experiments/experiments.module`).then(m => m.ExperimentsModule)
+    loadChildren: './experiments/experiments.module#ExperimentsModule',
   },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: 'dashboard' },
