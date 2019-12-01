@@ -1,13 +1,9 @@
 import fs from 'fs';
 import { logger, loggerD } from './tools';
 
-export default class ConfigHandler {
+export class ConfigHandler {
     private fileName: string = 'occonfig.json';
     private path: string = __dirname + '/' + this.fileName;
-
-    constructor() {
-        loggerD("constructor");
-    }
 
     public existsFile() {
         return fs.existsSync(this.path);
