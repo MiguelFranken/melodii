@@ -1,4 +1,4 @@
-const DEBUG = true;
+const DEBUG = false;
 export function logger(msg: string | Object): void {
   console.log(msg);
 }

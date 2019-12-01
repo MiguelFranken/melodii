@@ -1,11 +1,11 @@
-import * as OSC from 'osc';
+import osc from 'osc';
 import { IOSCArgs } from './osc/osc-types';
 import dns from 'dns';
 import { logger, loggerD } from './tools';
 
 // just a comment
 
-export default class Client {
+export class OSCClient {
   private udpClient: any;
   private port: number;
   private address: string;
@@ -15,26 +15,45 @@ export default class Client {
   constructor(address: string, port: number) {
     this.port = port;
     this.address = address;
-    this.udpClient = new OSC.UDPPort({
+    const udp = new osc.UDPPort({
       localAddress: "0.0.0.0",
       localPort: 57333,
       metadata: false,
     });
-    loggerD('udpClient initialized successfully');
-    this.udpClient.open();
-    loggerD('udp port open()');
-    this.udpClient.on("ready", () => {
+    udp.on("ready", () => {
       loggerD('port is ready');
 
       this.portReady = true;
     });
+    loggerD('udpClient initialized successfully');
+
+    loggerD('udp port open()');
+    this.udpClient = udp;
+  }
+
+  public openUDP() {
+    this.udpClient.open();
+  }
+
+  public setPort(port: number): void {
+    this.port = port;
+  }
+
+  public setAddress(address: string): void {
+    this.address = address;
   }
 
   public dnslookup(
     url: string, callback: (err: NodeJS.ErrnoException | null, address: string) => void,
   ) {
-    dns.lookup(url, (err, address, family) => {
-      console.log('addres-s: %j family: IPv%s', address, family);
+    let str = url;
+    if (str.includes("http://")) {
+      str = str.substring(7, str.length);
+    }
+    if (str.endsWith("/")) {
+      str = str.substring(0, str.length - 1);
+    }
+    dns.lookup(str, (err, address, family) => {
       callback(err, address);
     });
   }
