@@ -130,22 +130,6 @@ export class SampleLib {
     return sampler;
   }
 
-  public getHiHatSynth() {
-    const synth = new NoiseSynth({
-      noise: {
-        type: "white",
-      },
-      envelope: {
-        attack: 0.001,
-        decay: 0.3,
-        sustain: 0,
-        release: 0.3,
-      },
-    });
-    synth.volume.value = -20;
-    return synth;
-  }
-
   public getLongNoteSynth() {
     const synth = new Synth({
       oscillator: {

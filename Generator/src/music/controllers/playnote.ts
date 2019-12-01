@@ -1,11 +1,14 @@
 import { Controller, Message, OnMessage } from "../decorator";
 import { IOSCMessage } from "../../osc/osc-message";
 import { Music } from '../music';
+import { PlayNoteSynth } from '../instruments/playnoteSynth';
 
 @Controller('/play_note')
 export class PlayNoteController {
+  private synth: PlayNoteSynth;
 
   constructor(private music: Music) {
+    this.synth = music.instruments.playNoteSynth;
   }
 
   @OnMessage()
@@ -51,6 +54,11 @@ export class PlayNoteController {
   @OnMessage('/stop')
   public receivedMessageStop(@Message() message: IOSCMessage) {
     this.music.stopLongNote();
+  }
+
+  @OnMessage('/volume')
+  public receivedMessageVolume(@Message() message: IOSCMessage) {
+    this.
   }
 
 }

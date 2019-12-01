@@ -2,6 +2,8 @@ import { Scale } from "tonal";
 import { note } from "@tonaljs/tonal";
 import * as Tone from "tone";
 import { SampleLib } from './samplelib';
+import { PlayNoteSynth } from './instruments/playnoteSynth';
+import { PianoController } from './controllers/piano';
 
 export enum ChordQuality {
   MAJOR = "",
@@ -21,25 +23,17 @@ export class Music {
     ChordQuality.DIMINISHED,
   ];
 
-  private instruments: {[k: string]: any} = {};
-  private sampleLib = new SampleLib();
+  public instruments: {[k: string]: any} = {};
   private readonly scale: string[];
   private isEchoActivated = false;
 
   constructor() {
     this.scale = Scale.notes("C major");
-    this.instruments.synth = new Tone.Synth().toMaster();
-    this.instruments.drum_kick = this.sampleLib.getKickSampler(
-      () => console.log("drum kick bufferd"), // just for debug purpose
-    ).toMaster();
-    this.instruments.drum_snare = this.sampleLib.getSnareSampler(
-      () => console.log("drum snare bufferd"), // just for debug purpose
-    ).toMaster();
-    this.instruments.piano = this.sampleLib.getPianoSampler(
-      () => console.log("piano bufferd"), // just for debug purpose
-    ).toMaster();
-    this.instruments.hihat = this.sampleLib.getHiHatSynth().toMaster();
-    this.instruments.longNote = this.sampleLib.getLongNoteSynth().toMaster();
+    this.instruments.playNoteSynth = new PlayNoteSynth();
+    this.instruments.drumsKick = new DrumsKick();
+    this.instruments.drumsSnare = new DrumsSnare();
+    this.instruments.drumsHiHat = new DrumsHiHat();
+    this.instruments.piano = new Piano();
   }
 
   /**
