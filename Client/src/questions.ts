@@ -61,5 +61,5 @@ export default [
         name: 'anotherarg',
         message: text.msg_another_args,
         default: true,
-    }
+    },
 ];

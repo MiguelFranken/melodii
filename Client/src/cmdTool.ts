@@ -41,7 +41,7 @@ export default class CmdTool {
   private createCli() {
     loggerD('no client defined');
     this.cli = new Client(
-      this.settings.address, 
+      this.settings.address,
       this.settings.port,
     );
   }

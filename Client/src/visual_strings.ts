@@ -8,8 +8,8 @@ export default {
     msg_menu: 'Menu:',
     msg_settings_menu: 'Settings-Menu:',
     msg_menu_drums: 'Drums-Menu:',
-    
-    
+
+
     // navigation
     EXIT: 'exit',
     BACK: 'back',

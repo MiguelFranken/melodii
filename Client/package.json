@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc --p tsconfig.json",
     "start": "npm run build && node dist/index.js",
-    "lint": "tslint --project ."
+    "lint": "tslint --project .",
+    "lint:fix": "tslint --project . --fix"
   },
   "dependencies": {
     "@overnightjs/logger": "^1.1.9",
