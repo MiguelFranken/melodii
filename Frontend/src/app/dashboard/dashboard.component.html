@@ -1,16 +1,47 @@
-<div fxLayout="column" fxLayoutAlign="center center" class="container">
-  <div class="card">
-    <app-echo></app-echo>
-  </div>
+<div fxLayout="column" style="padding: 2px; height: 100%" fxLayoutGap="2px">
+  <div fxLayout="column" fxLayoutGap="2px" fxFlex style="overflow: auto">
 
-  <div class="card">
-    <h1>Slider</h1>
-    <mat-progress-bar mode="determinate" [value]="sliderValue"></mat-progress-bar>
-  </div>
+    <!-- Row 1 -->
+    <div
+            fxLayout
+            fxLayoutGap="2px"
+            fxFlex
+    >
+      <div
+              class="card"
+              fxFlex
+              >
+        <mcp-mat-dashboard></mcp-mat-dashboard>
+      </div>
+      <div
+              class="card"
+              fxFlex
+              >
+        <mcp-arc-dashboard></mcp-arc-dashboard>
+      </div>
+    </div>
 
-  <div class="card">
-    <h1>Messages</h1>
-    <p *ngFor="let message of messages; let index = index">Message {{index}}: {{message}}</p>
+    <!-- Row 2 -->
+    <div
+            fxLayout
+            fxLayoutGap="2px"
+            fxFlex
+    >
+      <div
+              class="card"
+              fxFlex
+              fxLayout
+              fxLayoutAlign="stretch stretch"
+              >
+        <mcp-box-dashboard fxFlex></mcp-box-dashboard>
+      </div>
+      <div
+              class="card"
+              fxFlex
+              >
+        Currently unused
+      </div>
+    </div>
+
   </div>
 </div>
-
