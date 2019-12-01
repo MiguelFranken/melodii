@@ -99,15 +99,26 @@ export default class Client {
   private async playDrumBeat() {
     while (this.drumLoop) {
       this.send('/drums/kick', [{ type: 's', value: 'C2' }]);
-      await this.sleep(700);
-      this.send('/drums/snare', [{ type: 's', value: 'C2' }]);
-      await this.sleep(700);
-      this.send('/drums/kick', [{ type: 's', value: 'C2' }]);
+      this.send('/drums/hihat', [{ type: 's', value: 'C2' }]);
       await this.sleep(350);
-      this.send('/drums/kick', [{ type: 's', value: 'C2' }]);
+      this.send('/drums/hihat', [{ type: 's', value: 'C2' }]);
       await this.sleep(350);
       this.send('/drums/snare', [{ type: 's', value: 'C2' }]);
-      await this.sleep(700);
+      this.send('/drums/hihat', [{ type: 's', value: 'C2' }]);
+      await this.sleep(350);
+      this.send('/drums/hihat', [{ type: 's', value: 'C2' }]);
+      await this.sleep(350);
+      this.send('/drums/kick', [{ type: 's', value: 'C2' }]);
+      this.send('/drums/hihat', [{ type: 's', value: 'C2' }]);
+      await this.sleep(350);
+      this.send('/drums/kick', [{ type: 's', value: 'C2' }]);
+      this.send('/drums/hihat', [{ type: 's', value: 'C2' }]);
+      await this.sleep(350);
+      this.send('/drums/snare', [{ type: 's', value: 'C2' }]);
+      this.send('/drums/hihat', [{ type: 's', value: 'C2' }]);
+      await this.sleep(350);
+      this.send('/drums/hihat', [{ type: 's', value: 'C2' }]);
+      await this.sleep(350);
     }
   }
 

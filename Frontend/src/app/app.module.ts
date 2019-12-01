@@ -6,6 +6,11 @@ import { SharedModule } from './shared/shared.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PrototypeModule } from "./prototype/prototype.module";
+import { GeneratorModule } from './generator/generator.module';
+import { ArcModule } from './arc/arc.module';
+import { BoxModule } from './box/box.module';
+import { MatModule } from './mat/mat.module';
+import { ExperimentsModule } from './experiments/experiments.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +22,12 @@ import { PrototypeModule } from "./prototype/prototype.module";
     SharedModule,
     AppRoutingModule,
     DashboardModule,
-    PrototypeModule
+    PrototypeModule,
+    GeneratorModule,
+    ArcModule,
+    BoxModule,
+    MatModule,
+    ExperimentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

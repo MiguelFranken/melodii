@@ -5,6 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from "./layout/layout.module";
 import { LongPressDirective } from "./directives/long-press.directive";
 import { ToppyModule } from 'toppy';
+import { HelpOverlayComponent } from './help-overlay/help-overlay.component';
 
 const modules = [
   MaterialModule,
@@ -14,6 +15,7 @@ const modules = [
 @NgModule({
   declarations: [
     LongPressDirective,
+    HelpOverlayComponent,
   ],
   imports: [
     CommonModule,
@@ -25,6 +27,9 @@ const modules = [
     modules,
     FlexLayoutModule,
     LongPressDirective
+  ],
+  entryComponents: [
+    HelpOverlayComponent
   ]
 })
 export class SharedModule { }
