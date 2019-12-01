@@ -67,13 +67,13 @@ build:client:
   image: nikolaik/python-nodejs:latest
   stage: build
   before_script:
-    - cd client
+    - cd Client
   script:
     - npm run build
   artifacts:
     expire_in: 1 day
     paths:
-      - client/dist/
+      - Client/dist/
   tags:
     - docker
 
