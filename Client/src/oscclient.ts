@@ -1,4 +1,6 @@
 import * as OSC from 'osc';
+import { IOSCArgs } from './osc/osc-types';
+import dns from 'dns';
 import { logger, loggerD } from './tools';
 
 // just a comment
@@ -25,6 +27,14 @@ export default class Client {
       loggerD('port is ready');
 
       this.portReady = true;
+    });
+  }
+
+  public dnslookup(
+    url: string, callback: (err: NodeJS.ErrnoException | null, address: string) => void,
+  ) {
+    dns.lookup(url, (err, address, family) => {
+      console.log('address: %j family: IPv%s', address, family);
     });
   }
 
