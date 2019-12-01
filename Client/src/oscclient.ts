@@ -1,5 +1,5 @@
 import * as OSC from 'osc';
-import { logger } from './tools';
+import { logger, loggerD } from './tools';
 
 // just a comment
 
@@ -18,11 +18,11 @@ export default class Client {
       localPort: 57333,
       metadata: false,
     });
-    logger('udpClient initialized successfully', { debug: true });
+    loggerD('udpClient initialized successfully');
     this.udpClient.open();
-    logger('udp port open()', { debug: true });
+    loggerD('udp port open()');
     this.udpClient.on("ready", () => {
-      logger('port is ready', { debug: true });
+      loggerD('port is ready');
 
       this.portReady = true;
     });
@@ -113,6 +113,6 @@ export default class Client {
 
   public close(): void {
     this.udpClient.close();
-    logger('closed udpClient', { debug: true });
+    loggerD('closed udpClient');
   }
 }

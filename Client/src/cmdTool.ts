@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
-import Client from './client';
-import { logger } from './tools';
+import Client from './oscclient';
+import { logger, loggerD } from './tools';
 import ConfigHandler from './configHandler';
 
 export default class CmdTool {
@@ -125,7 +125,7 @@ export default class CmdTool {
   }
 
   private createCli() {
-    logger('no client defined', { debug: true });
+    loggerD('no client defined');
     this.cli = new Client(
       this.settings.address, this.settings.port,
     );
@@ -301,7 +301,7 @@ export default class CmdTool {
   private exitConsole() {
     this.configHandler.storeData(this.settings,
       () => {
-        logger('exited oscclient successfully', { debug: true });
+        loggerD('exited oscclient successfully');
         process.exit();
       });
   }
