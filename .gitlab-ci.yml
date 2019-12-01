@@ -12,7 +12,7 @@ cache:
   paths:
     - Server/node_modules/
     - Frontend/node_modules/
-    - OSCClient/node_modules/
+    - Client/node_modules/
 
 stages:
   - install_packages
@@ -30,7 +30,7 @@ install_packages:
     - npm ci
     - cd ../Frontend
     - npm ci
-    - cd ../OSCClient
+    - cd ../Client
     - npm ci
   tags:
     - docker
@@ -49,7 +49,7 @@ build:frontend:
   tags:
     - docker
 
-build:osc-server:
+build:server:
   image: nikolaik/python-nodejs:latest
   stage: build
   before_script:
@@ -63,17 +63,17 @@ build:osc-server:
   tags:
     - docker
 
-build:osc-client:
+build:client:
   image: nikolaik/python-nodejs:latest
   stage: build
   before_script:
-    - cd OSCClient
+    - cd Client
   script:
     - npm run build
   artifacts:
     expire_in: 1 day
     paths:
-      - OSCClient/dist/
+      - Client/dist/
   tags:
     - docker
 
@@ -88,7 +88,7 @@ lint:frontend:
   tags:
     - docker
 
-lint:osc-server:
+lint:server:
   image: nikolaik/python-nodejs:latest
   allow_failure: true
   before_script:
@@ -99,11 +99,11 @@ lint:osc-server:
   tags:
     - docker
 
-lint:osc-client:
+lint:client:
   image: nikolaik/python-nodejs:latest
   allow_failure: true
   before_script:
-    - cd OSCClient
+    - cd Client
   stage: lint
   script:
     - npm run lint
