@@ -36,7 +36,7 @@ export default class CmdTool {
     this.cli = new OSCClient(
       this.settings.address,
       this.settings.port,
-    );        
+    );
   }
 
   private validString(str: string, r: RegExp): boolean {

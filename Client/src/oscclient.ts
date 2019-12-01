@@ -15,7 +15,7 @@ export class OSCClient {
   constructor(address: string, port: number) {
     this.port = port;
     this.address = address;
-    var udp = new osc.UDPPort({
+    const udp = new osc.UDPPort({
       localAddress: "0.0.0.0",
       localPort: 57333,
       metadata: false,
@@ -26,8 +26,8 @@ export class OSCClient {
       this.portReady = true;
     });
     loggerD('udpClient initialized successfully');
-    
-    loggerD('udp port open()');    
+
+    loggerD('udp port open()');
     this.udpClient = udp;
   }
 
@@ -51,7 +51,7 @@ export class OSCClient {
       str = str.substring(7, str.length);
     }
     if (str.endsWith("/")) {
-      str = str.substring(0, str.length-1);
+      str = str.substring(0, str.length - 1);
     }
     dns.lookup(str, (err, address, family) => {
       callback(err, address);
@@ -65,7 +65,7 @@ export class OSCClient {
   }
 
   public async send(path: string, args: object[]) {
-    let counter = 0;  
+    let counter = 0;
     while (!this.portReady) {
 
       ++counter;
