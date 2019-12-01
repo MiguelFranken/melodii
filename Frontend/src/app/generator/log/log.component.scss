@@ -1,0 +1,13 @@
+@import "src/scss/variables";
+
+.container {
+  padding: 20px;
+  overflow-y: scroll;
+}
+
+.index {
+  padding: 3px;
+  border-radius: 2px;
+  background: $mcp-black-3;
+  color: $mcp-white-1;
+}

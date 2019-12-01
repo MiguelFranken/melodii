@@ -15,12 +15,68 @@
   padding: 2px 2px 0;
 }
 
+.active-link {
+  background-color: $mcp-green-2 !important;
+}
+
+.connection-indicator {
+  background-color: $mcp-black-4;
+  width: 5px;
+}
+
+.connection-indicator-active {
+  background-color: $mcp-green-1;
+}
+
 .action-button {
   padding: 10px;
   cursor: pointer;
   background-color: $mcp-black-4;
   border-radius: 0;
 }
+
 .action-button:hover {
   background-color: $mcp-black-4-hover;
 }
+
+//region TODO: Das gehört in eine andere Komponente
+$overlay-margin-top: 12px;
+
+.off {
+  color: $mcp-white-2
+}
+
+.overlay {
+  margin-top: $overlay-margin-top;
+  background-color: $mcp-black-1;
+  padding: 2px;
+  position: relative;
+  min-width: 50vw;
+  color: $mcp-white-1;
+
+  .overlay-button {
+    padding: 10px;
+    cursor: pointer;
+    background-color: $mcp-black-5;
+    border-radius: 0;
+  }
+}
+
+.overlay:after, .overlay:before {
+  bottom: 99%;
+  left: 5.3%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.overlay:after {
+  border-color: rgba(0, 0, 0, 0);
+  border-bottom-color: $mcp-black-1;
+  border-width: 10px;
+  margin-left: -10px;
+}
+//endregion

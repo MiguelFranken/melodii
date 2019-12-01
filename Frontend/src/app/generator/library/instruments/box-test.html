@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Box</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <input id="ip" type="text" value="http://192.168.0.101:8080" />
+    <span id="indicator">Not connected.</span>
+    <br>
+
+    <button id="c4">C4</button>
+    <button id="d4">D4</button>
+    <button id="e4">E4</button>
+    <button id="f4">F4</button>
+    <button id="g4">G4</button>
+    <button id="a4">A4</button>
+    <button id="b4">B4</button>
+    <button id="c5">C5</button>
+
+    <style>
+        button {
+            width: 10em;
+            height: 10em;
+            background: linear-gradient(hsl(0, 60%, 60%), hsl(0, 0%, 75%) 50%);
+            user-select: none;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+    <script>
+        let socket;
+
+        const ipInput = document.getElementById("ip");
+        const indicator = document.getElementById("indicator");
+        ipInput.addEventListener("input", function () {
+            initSocket(this.value);
+        });
+        initSocket(ipInput.value);
+        function initSocket(ip) {
+            indicator.innerText = "Connecting...";
+            socket = io(ip);
+            socket.on('connect', () => indicator.innerText = "Connected.");
+            socket.on('event', () => console.log("Received event."));
+            socket.on('disconnect', () => indicator.innerText = "Disconnected.");
+            socket.on('error', () => indicator.innerText = "An error occurred.");
+            socket.on('connect_error', () => indicator.innerText = "An error occurred while connecting.");
+            socket.on('connect_timeout', () => indicator.innerText = "The connection timed out.");
+        }
+
+        const OSC_MESSAGE = 3;
+
+        function trigger(note, velocity) {
+            console.log(`Trigger ${note}.`);
+            socket.emit(OSC_MESSAGE, {
+                address: "/box/trigger",
+                args: [
+                    { type: "s", value: note },
+                    { type: "i", value: velocity }
+                ],
+                info: {},
+            });
+        }
+
+        function detune(note, cents) {
+            console.log(`Detune ${note}.`);
+            socket.emit(OSC_MESSAGE, {
+                address: "/box/detune",
+                args: [
+                    { type: "s", value: note },
+                    { type: "i", value: cents }
+                ],
+                info: {}
+            });
+        }
+
+        function release(note) {
+            console.log(`Release ${note}.`);
+            socket.emit(OSC_MESSAGE, {
+                address: "/box/release",
+                args: [
+                    { type: "s", value: note }
+                ],
+                info: {}
+            });
+        }
+
+        const button_ids = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
+        let x_start = null;
+        for (id of button_ids) {
+            let my_id = id;
+            const el = document.getElementById(id.toLowerCase());
+            el.addEventListener("mousedown", (event) => {
+                console.log("Mousedown");
+                const height = relativeHeight(event.offsetY, event.target.offsetHeight);
+                start(height, event.clientX);
+            });
+            el.addEventListener("touchstart", (event) => {
+                console.log("Touchstart");
+                event.preventDefault(); // Prevent mouse event.
+                const t = event.changedTouches[0];
+                const offsetY = t.clientY - t.target.offsetTop;
+                const height = relativeHeight(offsetY, t.target.offsetHeight);
+                start(height, t.clientX);
+            });
+            function start(relativeHeight, clientX) {
+                const velocity = relativeHeight;
+                x_start = clientX;
+                trigger(my_id, velocity);
+            }
+
+            el.addEventListener("mousemove", (event) => {
+                console.log("Mousemove");
+                move(event.clientX);
+            });
+            el.addEventListener("touchmove", (event) => {
+                const t = event.changedTouches[0];
+                const clientX = t.clientX;
+                move(clientX);
+            });
+            function move(clientX) {
+                if (x_start) {
+                    const x_diff = clientX - x_start;
+                    const cents = x_diff * 10;
+                    detune(my_id, cents);
+                }
+            }
+
+            el.addEventListener("mouseup", () => {
+                console.log("Mouseup");
+                stop();
+            });
+            el.addEventListener("touchend", (event) => {
+                console.log("Touchend");
+                event.preventDefault();
+                stop();
+            });
+            function stop() {
+                x_start = null;
+                release(my_id);
+            }
+        }
+
+        function relativeHeight(offsetY, targetOffsetHeight) {
+            const topZero = Math.min(1, Math.max(0, offsetY / targetOffsetHeight));
+            const bottomZero = 1 - topZero;
+            return bottomZero;
+        }
+    </script>
+</body>
+
+</html>
