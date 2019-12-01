@@ -6,7 +6,15 @@ import text from './visual_strings';
 import questions from './questions';
 
 export default class CmdTool {
- 
+  private regex = {
+    url: /^[A-za-z0-9-:./]+$/,
+    path: /\/[A-Za-z_]+$/,
+    args: /^[isfb]+,[A-Za-z0-9]+$/,
+    address: /^[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+$/,
+    port: /^[0-9]+$/,
+    number: /^[0-9]+$/,
+  };
+
   private settings = {
     port: 57121,
     address: '127.0.0.1',
@@ -26,42 +34,15 @@ export default class CmdTool {
     this.createCli();
   }
 
-  private validOSCPath(str: string): boolean {
-    const regex = /\/[A-Za-z_]+$/;
-    if (str.match(regex)) {
-      return true;
-    }
-    return false;
-  }
-
-  private validOSCArgs(str: string): boolean {
-    const regex = /^[isfb]+,[A-Za-z0-9]+$/;
-    if (str.match(regex)) {
-      return true;
-    }
-    return false;
-  }
-
-  private validAddress(str: string): boolean {
-    const regex = /^[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+$/;
-    if (str.match(regex)) {
-      return true;
-    }
-    return false;
-  }
-
-  private validPort(str: string): boolean {
-    const regex = /^[0-9]+$/;
-    if (str.match(regex)) {
-      return true;
-    }
-    return false;
+  private validString(str: string, r: RegExp): boolean {
+    return (str.match(r)) ? true : false;
   }
 
   private createCli() {
     loggerD('no client defined');
     this.cli = new Client(
-      this.settings.address, this.settings.port,
+      this.settings.address, 
+      this.settings.port,
     );
   }
 
@@ -82,7 +63,7 @@ export default class CmdTool {
     inquirer.prompt(questions[0])
       .then((answers: { oscpath: string; }) => {
         const { oscpath } = answers;
-        if (!this.validOSCPath(oscpath)) {
+        if (!this.validString(oscpath, this.regex.path)) {
           logger("wrong path syntax");
           return this.changePath(ft);
         }
@@ -95,7 +76,7 @@ export default class CmdTool {
     inquirer.prompt(questions[1])
       .then((answers: { oscargs: string; }) => {
         const { oscargs } = answers;
-        if (!this.validOSCArgs(oscargs)) {
+        if (!this.validString(oscargs, this.regex.args)) {
           logger('wrong args syntax');
           return this.changeArgs();
         }
@@ -113,7 +94,7 @@ export default class CmdTool {
     inquirer.prompt(questions[2])
       .then((answers: { address: string; }) => {
         const { address } = answers;
-        if (!this.validAddress(address)) {
+        if (!this.validString(address, this.regex.address)) {
           logger('wrong address syntax');
           return this.changeAddress();
         }
@@ -129,7 +110,7 @@ export default class CmdTool {
     inquirer.prompt(questions[3])
       .then((answers: { port: string; }) => {
         const { port } = answers;
-        if (!this.validPort(port)) {
+        if (!this.validString(port, this.regex.port)) {
           logger('wrong port syntax');
           return this.changePort();
         }
