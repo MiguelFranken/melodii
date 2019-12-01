@@ -3,6 +3,7 @@ import Client from './oscclient';
 import { logger, loggerD } from './tools';
 import ConfigHandler from './configHandler';
 import text from './visual_strings';
+import questions from './questions';
 
 export default class CmdTool {
  
@@ -13,63 +14,6 @@ export default class CmdTool {
     args: new Array(),
   };
   private cli: any;
-  private questions: Object[] = [
-    {
-      type: 'input',
-      name: 'oscpath',
-      message: text.msg_path,
-    },
-    {
-      type: 'input',
-      name: 'oscargs',
-      message: text.msg_args,
-    },
-    {
-      type: 'input',
-      name: 'address',
-      message: text.msg_address,
-    },
-    {
-      type: 'input',
-      name: 'port',
-      message: text.msg_port,
-    },
-    {
-      type: 'list',
-      name: 'askNext',
-      message: text.msg_menu,
-      choices: [
-        text.SEND,
-        text.PLAY_NOTE,
-        text.PLAY_SONG,
-        text.DRUMS_MENU,
-        text.SETTINGS_MENU,
-        text.EXIT,
-      ],
-    },
-    {
-      type: 'list',
-      name: 'asksettings',
-      message: text.msg_settings_menu,
-      choices: [
-        text.CHANGE_PATH, 
-        text.CHANGE_ARGS,
-        text.CHANGE_ADDRESS, 
-        text.CHANGE_PORT,
-        text.BACK,
-      ],
-    },
-    {
-      type: 'list',
-      name: 'askdrums',
-      message: text.msg_menu_drums,
-      choices: [
-        text.START_DRUMLOOP,
-        text.STOP_DRUMLOOP,
-        text.BACK,
-      ],
-    },
-  ];
   private configHandler: any;
   private ft: boolean = true;
 
@@ -135,7 +79,7 @@ export default class CmdTool {
   }
 
   private changePath(ft: boolean = false) {
-    inquirer.prompt(this.questions[0])
+    inquirer.prompt(questions[0])
       .then((answers: { oscpath: string; }) => {
         const { oscpath } = answers;
         if (!this.validOSCPath(oscpath)) {
@@ -148,7 +92,7 @@ export default class CmdTool {
   }
 
   private changeArgs() {
-    inquirer.prompt(this.questions[1])
+    inquirer.prompt(questions[1])
       .then((answers: { oscargs: string; }) => {
         const { oscargs } = answers;
         if (!this.validOSCArgs(oscargs)) {
@@ -166,7 +110,7 @@ export default class CmdTool {
   }
 
   private changeAddress() {
-    inquirer.prompt(this.questions[2])
+    inquirer.prompt(questions[2])
       .then((answers: { address: string; }) => {
         const { address } = answers;
         if (!this.validAddress(address)) {
@@ -182,7 +126,7 @@ export default class CmdTool {
   }
 
   private changePort() {
-    inquirer.prompt(this.questions[3])
+    inquirer.prompt(questions[3])
       .then((answers: { port: string; }) => {
         const { port } = answers;
         if (!this.validPort(port)) {
@@ -235,7 +179,7 @@ export default class CmdTool {
 
   public menu() {
     logger(JSON.stringify(this.settings, undefined, 2));
-    inquirer.prompt(this.questions[4])
+    inquirer.prompt(questions[4])
       .then((answers: { askNext: string; }) => {
         const { askNext } = answers;
         switch (askNext) {
@@ -252,7 +196,7 @@ export default class CmdTool {
 
   public settingsMenu() {
     logger(JSON.stringify(this.settings, undefined, 2));
-    inquirer.prompt(this.questions[5])
+    inquirer.prompt(questions[5])
       .then((answers: { asksettings: string; }) => {
         switch (answers.asksettings) {
           case text.CHANGE_ADDRESS: return this.changeAddress();
@@ -267,7 +211,7 @@ export default class CmdTool {
 
   public drumMenu() {
     logger(JSON.stringify(this.settings, undefined, 2));
-    inquirer.prompt(this.questions[6])
+    inquirer.prompt(questions[6])
       .then((answers: { askdrums: string; }) => {
         switch (answers.askdrums) {
           case text.START_DRUMLOOP:
