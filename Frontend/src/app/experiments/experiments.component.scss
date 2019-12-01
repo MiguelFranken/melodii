@@ -1,0 +1,18 @@
+@import "src/scss/variables";
+
+.menu {
+  color: $mcp-white-1;
+  height: 56px;
+  max-height: 56px !important;
+}
+
+.action-button {
+  padding: 10px;
+  cursor: pointer;
+  background-color: $mcp-black-2;
+  border-radius: 0;
+}
+
+.action-button:hover {
+  background-color: $mcp-black-2-hover;
+}

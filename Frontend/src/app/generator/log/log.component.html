@@ -1,0 +1,10 @@
+<div fxLayout="column" style="padding: 2px; height: 100%" fxLayoutGap="2px">
+<div class="container" fxLayout="column" fxLayoutGap="5px" fxFlex>
+  <div *ngFor="let message of messages; let index = index" fxLayout fxLayoutGap="10px">
+    <div class="index">Message {{index}}</div>
+    <span fxLayout="column" fxLayoutAlign="center">{{message}}</span>
+  </div>
+  <div *ngIf="messages.length == 0">
+    No log data received yet
+  </div>
+</div>

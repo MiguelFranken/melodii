@@ -10,7 +10,7 @@ import { Logger } from '@upe/logger';
 @Injectable()
 export class SocketService {
 
-  private logger: Logger = new Logger({ name: 'SocketService', flags: ['service'] });
+  private logger: Logger = new Logger({ name: 'Socket Prototype', flags: ['service'] });
 
   private socket;
 

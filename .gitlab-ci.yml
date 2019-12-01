@@ -12,7 +12,6 @@ cache:
   paths:
     - Server/node_modules/
     - Frontend/node_modules/
-    - Generator/node_modules/
     - OSCClient/node_modules/
 
 stages:
@@ -31,23 +30,8 @@ install_packages:
     - npm ci
     - cd ../Frontend
     - npm ci
-    - cd ../Generator
-    - npm ci
     - cd ../OSCClient
     - npm ci
-  tags:
-    - docker
-
-build:tone-generator:
-  image: nikolaik/python-nodejs:latest
-  stage: build
-  script:
-    - cd Generator
-    - npm run build:dev # todo: better solution
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - Generator/dist/
   tags:
     - docker
 
@@ -104,17 +88,6 @@ lint:frontend:
   tags:
     - docker
 
-lint:tone-generator:
-  image: nikolaik/python-nodejs:latest
-  allow_failure: true
-  before_script:
-    - cd Generator
-  stage: lint
-  script:
-    - npm run lint
-  tags:
-    - docker
-
 lint:osc-server:
   image: nikolaik/python-nodejs:latest
   allow_failure: true
@@ -137,20 +110,20 @@ lint:osc-client:
   tags:
     - docker
 
-test:frontend:karma:
-  image: trion/ng-cli-karma
-  stage: test
-  allow_failure: false
-  before_script:
-    - cd Frontend
-  script:
-    - ng test --code-coverage --progress false --watch false
-  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
-  artifacts:
-    paths:
-      - Frontend/coverage/
-  tags:
-    - docker
+#test:frontend:karma:
+#  image: trion/ng-cli-karma
+#  stage: test
+#  allow_failure: false
+#  before_script:
+#    - cd Frontend
+#  script:
+#    - ng test --code-coverage --progress false --watch false
+#  coverage: '/Lines \W+: (\d+\.\d+)%.*/'
+#  artifacts:
+#    paths:
+#      - Frontend/coverage/
+#  tags:
+#    - docker
 
 package:master:web:
   stage: package

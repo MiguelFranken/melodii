@@ -1,7 +1,5 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { interval, Observable, Subject, Subscription } from 'rxjs';
-import { SocketService } from '../../shared/socket/socket.service';
-import { Action } from '../../shared/socket/action';
+import { Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { BehaviorSubject, interval, Observable, Subject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { NavigationService } from '../../shared/layout/navigation/navigation.service';
@@ -10,14 +8,10 @@ import { Row } from './row';
 import { RowButton } from './row-button';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Logger } from '@upe/logger';
+import { Chain, HelpOverlayService, OverlayElements } from '../../shared/help-overlay/help-overlay.service';
+import { GeneratorCommunicationService } from '../../generator/library/generator-communication.service';
+import { NotYetImplementedService } from '../../not-yet-implemented.service';
 
-const NOTES_PENTATONIC_C = [
-  'C',
-  'D',
-  'E',
-  'A',
-  'G'
-];
 const NOTES_MAJOR_C = [
   'C',
   'D',
@@ -38,14 +32,16 @@ const NUMBER_OF_ROWS = 30;
   templateUrl: './prototype.component.html',
   styleUrls: ['./prototype.component.scss']
 })
-export class PrototypeComponent implements OnInit {
+export class PrototypeComponent implements OnInit, OnDestroy {
 
   private logger: Logger = new Logger({ name: 'PrototypeComponent', flags: ['component'] });
 
   constructor(
-    private socketService: SocketService,
     private navigationService: NavigationService,
-    private toppy: Toppy) {
+    private communicationService: GeneratorCommunicationService,
+    private toppy: Toppy,
+    private helpOverlayService: HelpOverlayService,
+    private notYetImplementedService: NotYetImplementedService) {
   }
 
   public height = '100%';
@@ -71,19 +67,57 @@ export class PrototypeComponent implements OnInit {
 
   public isClosedNavigation: Observable<boolean>;
 
+  //region Overlay References
+  //region Element Refs
   @ViewChild('el', { static: true, read: ElementRef })
   el: ElementRef;
 
+  @ViewChild('velocityButtonElement', { static: true, read: ElementRef })
+  velocityButtonElement: ElementRef;
+
+  @ViewChild('bpmSliderElement', { static: true, read: ElementRef })
+  bpmSliderElement: ElementRef;
+
+  @ViewChild('playButtonElement', { static: true, read: ElementRef })
+  playButtonElement: ElementRef;
+
+  @ViewChild('stopButtonElement', { static: true, read: ElementRef })
+  stopButtonElement: ElementRef;
+
+  @ViewChild('sliderElement', { static: false, read: ElementRef })
+  sliderElement: ElementRef;
+
+  @ViewChild('helpButton', { static: false, read: ElementRef })
+  helpButtonElement: ElementRef;
+
+  @ViewChild('rowButtonElement', { static: false, read: ElementRef })
+  rowButtonElement: ElementRef;
+  //endregion
+
+  //region Template Refs
   @ViewChild('tpl', { static: true })
   tpl: TemplateRef<any>;
 
-  public isInExpandedMode = true;
+  @ViewChild('helpMenuTemplate', { static: true })
+  helpMenuTemplate: TemplateRef<any>;
 
+  @ViewChild('helpTemplate', { static: true })
+  helpTemplate: TemplateRef<any>;
+  //endregion
+
+  //region Overlay instances
   /**
    * Overlay used to select the current instrument,
    * i.e. selection of on of the available matrices
    */
   private instrumentSelectionOverlay;
+  private helpMenuOverlay;
+
+
+  //endregion
+  //endregion
+
+  public isInExpandedMode = true;
 
   private isInFoldMode = false;
 
@@ -152,6 +186,45 @@ export class PrototypeComponent implements OnInit {
   }
   //endregion
 
+  //region Help Overlays
+  //region Help Overlays
+  public showHelp() {
+    this.initHelpMenuOverlay();
+    this.helpMenuOverlay.open();
+  }
+
+  public showVelocityHelp() {
+    this.helpOverlayService.triggerChain('velocity');
+  }
+
+  public showTutorial() {
+    console.log('Show tutorial');
+    this.helpOverlayService.triggerChain('tutorial');
+  }
+
+  private initHelpMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.helpButtonElement.nativeElement
+    });
+
+    this.helpMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.helpMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+  //endregion
+
+  private initOverlays() {
+    this.initInstrumentSelectionMenu();
+  }
+  //endregion
+
   //region Instrument Selection Menu
   private initInstrumentSelectionMenu() {
     const position = new RelativePosition({
@@ -180,8 +253,97 @@ export class PrototypeComponent implements OnInit {
   }
   //endregion
 
+  private addElements() {
+    const subject: BehaviorSubject<OverlayElements[]> = this.helpOverlayService.getSubject();
+    this.helpOverlayService.getOutputObservable().subscribe(() => {
+      subject.next([
+        {
+          chainID: 'velocity',
+          elements: [
+            { overlayID: "showRowButtonOverlay", element: this.rowButtonElement },
+            { overlayID: "showVelocityButtonOverlay", element: this.velocityButtonElement },
+            { overlayID: "showSliderOverlay", element: this.sliderElement },
+          ]
+        },
+        {
+          chainID: 'tutorial',
+          elements: [
+            { overlayID: "showRowButtonOverlay", element: this.rowButtonElement },
+            { overlayID: "playButtonOverlay", element: this.playButtonElement },
+            { overlayID: "stopButtonOverlay", element: this.stopButtonElement },
+            { overlayID: "bpmSliderOverlay", element: this.bpmSliderElement },
+          ]
+        }
+      ]);
+    });
+  }
+
+  private createTutorialChain() {
+    const chain: Chain = {
+      chainID: 'tutorial',
+      entries: [
+        {
+          overlayID: "showRowButtonOverlay",
+          preCondition: () => !this.hasActivatedButton(),
+          text: "Tap here to add a note",
+          event: "click"
+        },
+        {
+          overlayID: "playButtonOverlay",
+          preCondition: () => true,
+          text: "Tap here to start playback",
+          event: "click"
+        },
+        {
+          overlayID: "bpmSliderOverlay",
+          preCondition: () => true,
+          text: "Slide to change the BPM (Beats per Minute)",
+          event: "touchmove"
+        },
+        {
+          overlayID: "stopButtonOverlay",
+          preCondition: () => true,
+          text: "Press here to stop playback",
+          event: "click"
+        },
+      ]
+    };
+    this.helpOverlayService.addChain(chain);
+  }
+
+  private createVelocityChain() {
+    const chain: Chain = {
+      chainID: 'velocity',
+      entries: [
+        {
+          overlayID: "showRowButtonOverlay",
+          preCondition: () => !this.hasActivatedButton(),
+          text: "Tap here to add a note",
+          event: "click"
+        },
+        {
+          overlayID: "showVelocityButtonOverlay",
+          preCondition: () => !this.showVelocity,
+          text: "Open the velocity sliders",
+          event: "click"
+        },
+        {
+          overlayID: "showSliderOverlay",
+          preCondition: () => true,
+          text: "Slide to change the velocity",
+          event: "touchmove"
+        }
+      ]
+    };
+    this.helpOverlayService.addChain(chain);
+  }
+
   ngOnInit() {
-    this.initInstrumentSelectionMenu();
+    this.addElements();
+    this.createTutorialChain();
+    this.createVelocityChain();
+    this.initOverlays();
+
     this.isClosedNavigation = this.navigationService.getIsClosedObservable();
     this.isClosedNavigation.subscribe(value => {
       if (value) {
@@ -192,7 +354,6 @@ export class PrototypeComponent implements OnInit {
     });
 
     this.interval = this.subject.pipe(switchMap((period: number) => interval(period)));
-    this.socketService.initSocket();
 
     // create matrices
     this.createMatrixDrums();
@@ -210,6 +371,19 @@ export class PrototypeComponent implements OnInit {
         this.matrix.rows[i].buttons[y].isActive = false;
       }
     }
+  }
+
+  public hasActivatedButton(): boolean {
+    for (let i = 0; i < 3; i++) {
+      for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
+        if (this.matrix.rows[i].buttons[y].isActive) {
+          this.logger.debug('Has activated button');
+          return true;
+        }
+      }
+    }
+    this.logger.debug('Has NO activated button');
+    return false;
   }
 
   /**
@@ -392,7 +566,7 @@ export class PrototypeComponent implements OnInit {
       oldButton.isPlayed = true;
 
       if (oldButton.isActive) {
-        this.socketService.send(Action.REDIRECT_OSC_MESSAGE, oldButton.oscMessage);
+        this.communicationService.sendMessage(oldButton.oscMessage);
       }
     }
 
@@ -407,7 +581,7 @@ export class PrototypeComponent implements OnInit {
         newButton.isPlayed = true;
 
         if (newButton.isActive) {
-          this.socketService.send(Action.REDIRECT_OSC_MESSAGE, newButton.oscMessage);
+          this.communicationService.sendMessage(newButton.oscMessage);
         }
       }
       this.temp = newTemp;
@@ -428,6 +602,7 @@ export class PrototypeComponent implements OnInit {
     }
   }
 
+  //region Context Menu For Row Buttons
   /**
    * A long press activates the context menu with further setting options for an entry in the matrix.
    */
@@ -457,12 +632,22 @@ export class PrototypeComponent implements OnInit {
       this.contextMenu.openMenu();
     }
   }
+  //endregion
 
   /**
    * Hides the main navigation so that there is more space for the matrix
    */
   public switchNavigation() {
     this.navigationService.switchNavigation();
+  }
+
+  // TODO: Das sollte nur ein Workaround sein!
+  ngOnDestroy() {
+    // this.stop();
+  }
+
+  public notYetImplemented() {
+    this.notYetImplementedService.openSnackbar();
   }
 
 }

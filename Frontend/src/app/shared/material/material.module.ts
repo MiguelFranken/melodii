@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
-  MatProgressBarModule,
+  MatProgressBarModule, MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
 import { MatIconModule } from "@angular/material/icon";
@@ -16,7 +16,8 @@ const modules = [
   MatIconModule,
   MatButtonModule,
   MatListModule,
-  MatMenuModule
+  MatMenuModule,
+  MatSnackBarModule
 ];
 
 @NgModule({
