@@ -1,11 +1,14 @@
 import { Registry } from "./registry";
 import 'reflect-metadata';
+import { Logger } from '@upe/logger';
 
 /**
  * Container for inversion of control (IoC).
  * See https://www.tutorialsteacher.com/ioc for some helpful information about IoC
  */
 export class Container {
+
+  private logger: Logger = new Logger({ name: 'Container', flags: ['routing'] });
 
   // registry of all controller instances
   private controllerRegistry: Registry = new Registry();
@@ -18,7 +21,7 @@ export class Container {
    * If this class could not be resolved, then a new instance is created,
    * stored in the registry and returned.
    *
-   * @param someControllerClass Controller class in directory Backend/src/controllers
+   * @param someControllerClass Controller class
    */
   private resolve<T>(someControllerClass: new (...args: any[]) => T): T {
     // find or create new instances for dependencies of the controller
@@ -36,7 +39,9 @@ export class Container {
       return this.controllerRegistry.get(someControllerClass);
     } else {
       // create new instance if nothing was found and then return this instance
-      return this.controllerRegistry.set(someControllerClass, new someControllerClass(...params));
+      const dependency = new someControllerClass(...params);
+      this.logger.debug('Created a new instance', someControllerClass);
+      return this.controllerRegistry.set(someControllerClass, dependency);
     }
   }
 
@@ -50,6 +55,7 @@ export class Container {
    */
   public addSingletonDependency(key: Function, value: any) {
     this.dependenciesRegistry.set(key, value);
+    this.logger.debug('Added singleton dependency into container', value);
   }
 
   /**
