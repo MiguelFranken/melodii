@@ -9,7 +9,7 @@ export default class CmdTool {
   private regex = {
     url: /^[A-za-z0-9-:./]+$/,
     path: /\/[A-Za-z_]+$/,
-    args: /^[isfb]+,[A-Za-z0-9]+$/,
+    args: /^[isfb]+,[A-Za-z0-9.]+$/,
     address: /^[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+$/,
     port: /^[0-9]+$/,
     number: /^[0-9]+$/,
@@ -72,7 +72,19 @@ export default class CmdTool {
       });
   }
 
-  private changeArgs() {
+  private addAnotherArg() {
+    inquirer.prompt(questions[7])
+      .then((answers: { anotherarg: string; }) => {
+        const { anotherarg } = answers;
+        if (anotherarg) {
+          this.changeArgs();
+        } else {
+          this.menu();
+        }
+      });
+  }
+
+  private changeArgs(ft: boolean = false) {
     inquirer.prompt(questions[1])
       .then((answers: { oscargs: string; }) => {
         const { oscargs } = answers;
@@ -84,9 +96,11 @@ export default class CmdTool {
         const argsObj = {
           type: tmpAr[0], value: tmpAr[1],
         };
-        this.settings.args.pop();
+        if (ft) {
+          this.settings.args.pop();
+        }
         this.settings.args.push(argsObj);
-        this.menu();
+        this.addAnotherArg();
       });
   }
 
@@ -142,7 +156,7 @@ export default class CmdTool {
     return this.menu();
   }
 
-  private playAmelie() {
+  private playSong() {
     if (!this.cli) {
       this.createCli();
     }
@@ -169,7 +183,7 @@ export default class CmdTool {
           case text.SETTINGS_MENU: return this.settingsMenu();
           case text.DRUMS_MENU: return this.drumMenu();
           case text.EXIT: return this.exitConsole();
-          case text.PLAY_SONG: return this.playAmelie();
+          case text.PLAY_SONG: return this.playSong();
           default: return this.menu();
         }
       });
@@ -183,7 +197,7 @@ export default class CmdTool {
           case text.CHANGE_ADDRESS: return this.changeAddress();
           case text.CHANGE_PORT: return this.changeAddress();
           case text.CHANGE_PATH: return this.changePath();
-          case text.CHANGE_ARGS: return this.changeArgs();
+          case text.CHANGE_ARGS: return this.changeArgs(true);
           case text.BACK: return this.menu();
           default: return this.menu();
         }

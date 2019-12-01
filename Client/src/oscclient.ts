@@ -34,7 +34,8 @@ export default class Client {
     url: string, callback: (err: NodeJS.ErrnoException | null, address: string) => void,
   ) {
     dns.lookup(url, (err, address, family) => {
-      console.log('address: %j family: IPv%s', address, family);
+      console.log('addres-s: %j family: IPv%s', address, family);
+      callback(err, address);
     });
   }
 
@@ -64,6 +65,13 @@ export default class Client {
       this.port,
     );
     return true;
+  }
+
+  public playRandomNote() {
+    this.send(
+      '/play_note',
+      [{ type: 's', value: 'C4' }],
+    );
   }
 
   // E2 G2 B2
