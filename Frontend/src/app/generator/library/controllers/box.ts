@@ -15,7 +15,7 @@ export class BoxController {
         this.box.trigger(note, velocity);
     }
 
-    @OnMessage(`/detune`)
+    @OnMessage('/detune')
     public detune(@Message() message: IOSCMessage) {
         const { args } = message;
         const note = args[0].value.toString();

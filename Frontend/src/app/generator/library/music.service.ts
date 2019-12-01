@@ -5,6 +5,10 @@ import { NoiseSynth } from 'tone';
 import { Gain } from 'tone';
 import { Meter } from 'tone';
 import { Injectable } from '@angular/core';
+import { PlayNoteSynth } from './instruments/playnote_synth';
+import { DrumsKick } from './instruments/drums_kick';
+import { DrumsHiHat } from './instruments/drums_hihat';
+import { DrumsSnare } from './instruments/drums_snare';
 
 @Injectable({
   providedIn: 'root'
@@ -26,18 +30,13 @@ export class MusicService {
   private logger: Logger = new Logger({ name: 'Music' });
 
   constructor() {
-    this.instruments.synth = new Tone.Synth();
-    this.instruments.drum_kick = this.sampleLibrary.getKickSampler(
-      () => this.logger.debug('drum kick buffered'),
-    );
-    this.instruments.drum_snare = this.sampleLibrary.getSnareSampler(
-      () => this.logger.debug('drum snare buffered'),
-    );
+    this.instruments.synth = new PlayNoteSynth();
+    this.instruments.kick = new DrumsKick();
+    this.instruments.snare = new DrumsSnare();
     this.instruments.piano = this.sampleLibrary.getPianoSampler(
       () => this.logger.debug('piano buffered'),
     );
-    this.instruments.hihat = this.sampleLibrary.getHiHatSynth();
-    this.instruments.longNote = this.sampleLibrary.getLongNoteSynth();
+    this.instruments.hihat = new DrumsHiHat();
 
     // Connect to gain
     this.instruments.synth.connect(this.gain);
@@ -45,7 +44,6 @@ export class MusicService {
     this.instruments.drum_snare.connect(this.gain);
     this.instruments.piano.connect(this.gain);
     this.instruments.hihat.connect(this.gain);
-    this.instruments.longNote.connect(this.gain);
 
     // Connect to meter
     this.instruments.synth.connect(this.masterMeter);
@@ -57,7 +55,6 @@ export class MusicService {
     this.instruments.piano.connect(this.pianoMeter);
     this.instruments.hihat.connect(this.masterMeter);
     this.instruments.hihat.connect(this.hihatMeter);
-    this.instruments.longNote.connect(this.masterMeter);
 
     // Connect to master output
     this.gain.toDestination();

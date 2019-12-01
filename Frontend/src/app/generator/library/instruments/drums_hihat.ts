@@ -2,7 +2,7 @@ import { Velocity, Duration } from '../types';
 import { NoiseSynth, Frequency } from 'tone';
 
 export class DrumsHiHat {
-    public static readonly synth = new NoiseSynth({
+    public readonly synth = new NoiseSynth({
         noise: {
             type: "white",
         },
@@ -15,11 +15,11 @@ export class DrumsHiHat {
     }).toDestination();
 
     constructor() {
-        DrumsHiHat.synth.volume.value = -20;
+        this.synth.volume.value = -20;
     }
 
-    public trigger(duration: Duration, velocity: Velocity) {
+    public triggerRelease(duration: Duration = "8n", velocity: Velocity) {
         console.log(`Detune with duration ${duration} and velocity ${velocity}.`);
-        DrumsHiHat.synth.triggerAttackRelease(duration, undefined, velocity)
+        this.synth.triggerAttackRelease(duration, undefined, velocity)
     }
 }
