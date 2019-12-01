@@ -2,22 +2,10 @@ import inquirer from 'inquirer';
 import Client from './oscclient';
 import { logger, loggerD } from './tools';
 import ConfigHandler from './configHandler';
+import text from './visual_strings';
 
 export default class CmdTool {
-  private EXIT: string = 'exit';
-  private BACK: string = 'go back...';
-  private DRUMS: string = 'drums menu...';
-  private SETTINGS: string = 'change settings...';
-  private PLAYNOTE: string = 'play random note';
-  private CHANGEADDRESS: string = 'change address';
-  private CHANGEPORT: string = 'change port';
-  private CHANGEPATH: string = 'change osc path';
-  private CHANGEARGS: string = 'change osc args';
-  private SEND: string = 'send (again)';
-  private PLAYAMELIE: string = 'play song';
-  private STARTDRUMLOOP: string = 'starts a drum loop';
-  private STOPDRUMLOOP: string = 'stops the running drum Loop';
-
+ 
   private settings = {
     port: 57121,
     address: '127.0.0.1',
@@ -29,54 +17,56 @@ export default class CmdTool {
     {
       type: 'input',
       name: 'oscpath',
-      message: 'Enter OSC-Path:',
+      message: text.msg_path,
     },
     {
       type: 'input',
       name: 'oscargs',
-      message: 'Enter OSC-args (format: "type,value" ):',
+      message: text.msg_args,
     },
     {
       type: 'input',
       name: 'address',
-      message: 'Enter address of the OSC Server:',
+      message: text.msg_address,
     },
     {
       type: 'input',
       name: 'port',
-      message: 'Enter port of the OSC Server:',
+      message: text.msg_port,
     },
     {
       type: 'list',
       name: 'askNext',
-      message: 'Menu:',
+      message: text.msg_menu,
       choices: [
-        this.SEND,
-        this.PLAYNOTE,
-        this.PLAYAMELIE,
-        this.DRUMS,
-        this.SETTINGS,
-        this.EXIT,
+        text.SEND,
+        text.PLAY_NOTE,
+        text.PLAY_SONG,
+        text.DRUMS_MENU,
+        text.SETTINGS_MENU,
+        text.EXIT,
       ],
     },
     {
       type: 'list',
       name: 'asksettings',
-      message: 'Settings-Menu:',
+      message: text.msg_settings_menu,
       choices: [
-        this.CHANGEPATH, this.CHANGEARGS,
-        this.CHANGEADDRESS, this.CHANGEPORT,
-        this.BACK,
+        text.CHANGE_PATH, 
+        text.CHANGE_ARGS,
+        text.CHANGE_ADDRESS, 
+        text.CHANGE_PORT,
+        text.BACK,
       ],
     },
     {
       type: 'list',
       name: 'askdrums',
-      message: 'Drums-Menu:',
+      message: text.msg_menu_drums,
       choices: [
-        this.STARTDRUMLOOP,
-        this.STOPDRUMLOOP,
-        this.BACK,
+        text.START_DRUMLOOP,
+        text.STOP_DRUMLOOP,
+        text.BACK,
       ],
     },
   ];
@@ -148,9 +138,6 @@ export default class CmdTool {
     inquirer.prompt(this.questions[0])
       .then((answers: { oscpath: string; }) => {
         const { oscpath } = answers;
-        if (oscpath === this.EXIT) {
-          this.exitConsole();
-        }
         if (!this.validOSCPath(oscpath)) {
           logger("wrong path syntax");
           return this.changePath(ft);
@@ -164,9 +151,6 @@ export default class CmdTool {
     inquirer.prompt(this.questions[1])
       .then((answers: { oscargs: string; }) => {
         const { oscargs } = answers;
-        if (oscargs === this.EXIT) {
-          this.exitConsole();
-        }
         if (!this.validOSCArgs(oscargs)) {
           logger('wrong args syntax');
           return this.changeArgs();
@@ -255,12 +239,12 @@ export default class CmdTool {
       .then((answers: { askNext: string; }) => {
         const { askNext } = answers;
         switch (askNext) {
-          case this.SEND: return this.send();
-          case this.PLAYNOTE: return this.playRandomNote();
-          case this.SETTINGS: return this.settingsMenu();
-          case this.DRUMS: return this.drumMenu();
-          case this.EXIT: return this.exitConsole();
-          case this.PLAYAMELIE: return this.playAmelie();
+          case text.SEND: return this.send();
+          case text.PLAY_NOTE: return this.playRandomNote();
+          case text.SETTINGS_MENU: return this.settingsMenu();
+          case text.DRUMS_MENU: return this.drumMenu();
+          case text.EXIT: return this.exitConsole();
+          case text.PLAY_SONG: return this.playAmelie();
           default: return this.menu();
         }
       });
@@ -271,11 +255,11 @@ export default class CmdTool {
     inquirer.prompt(this.questions[5])
       .then((answers: { asksettings: string; }) => {
         switch (answers.asksettings) {
-          case this.CHANGEADDRESS: return this.changeAddress();
-          case this.CHANGEPORT: return this.changeAddress();
-          case this.CHANGEPATH: return this.changePath();
-          case this.CHANGEARGS: return this.changeArgs();
-          case this.BACK: return this.menu();
+          case text.CHANGE_ADDRESS: return this.changeAddress();
+          case text.CHANGE_PORT: return this.changeAddress();
+          case text.CHANGE_PATH: return this.changePath();
+          case text.CHANGE_ARGS: return this.changeArgs();
+          case text.BACK: return this.menu();
           default: return this.menu();
         }
       });
@@ -286,13 +270,13 @@ export default class CmdTool {
     inquirer.prompt(this.questions[6])
       .then((answers: { askdrums: string; }) => {
         switch (answers.askdrums) {
-          case this.STARTDRUMLOOP:
+          case text.START_DRUMLOOP:
             this.cli.startDrumLoop();
             return this.drumMenu();
-          case this.STOPDRUMLOOP:
+          case text.STOP_DRUMLOOP:
             this.cli.stopDrumLoop();
             return this.drumMenu();
-          case this.BACK: return this.menu();
+          case text.BACK: return this.menu();
           default: return this.menu();
         }
       });

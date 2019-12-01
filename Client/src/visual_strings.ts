@@ -1,4 +1,13 @@
 export default {
+    // messages
+    msg_path: 'Enter OSC-Path:',
+    msg_args: 'Enter OSC-args (format: "type,value):',
+    msg_address: 'Enter address of the OSC-Server:',
+    msg_port: 'Enter port of the OSC-Server:',
+    msg_menu: 'Menu:',
+    msg_settings_menu: 'Settings-Menu:',
+    msg_menu_drums: 'Drums-Menu:',
+    
     // navigation
     EXIT: 'exit',
     BACK: 'back',
