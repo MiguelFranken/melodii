@@ -3,9 +3,10 @@
   <!-- Menu Row 1 -->
   <div class="menu" fxLayout fxFlex="10">
     <div fxFill fxLayout fxLayoutGap="2px">
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showHelp()" fxFlex="calc(11.11% - 2px)" #helpButton>Help</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="start()" fxFlex="calc(11.11% - 2px)" #playButtonElement><mat-icon class="action-icon">play_arrow</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="stop()" fxFlex="calc(11.11% - 2px)" #stopButtonElement><mat-icon class="action-icon">stop</mat-icon></button>
-      <div class="bpm-card" fxFlex="calc(66.67% - 2px)" fxLayout fxLayoutAlign="start center" fxLayoutGap="75px" #bpmSliderElement>
+      <div class="bpm-card" fxFlex="calc(44.45% - 2px)" fxLayout fxLayoutAlign="start center" fxLayoutGap="75px" #bpmSliderElement>
         <span fxFlex="5">{{bpm}}bpm</span>
         <mat-slider
                 class="example-margin"
@@ -19,6 +20,7 @@
         >
         </mat-slider>
       </div>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchReverb()" fxFlex="calc(11.11% - 2px)">Reverb</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchNavigation()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">menu</mat-icon></button>
     </div>
   </div>
@@ -33,7 +35,7 @@
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="nextMatrix()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="clearMatrix()">Clear</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()">Load Preset</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="showHelp()" #helpButton>Help</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()" >Save Preset</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchVelocity()" #velocityButtonElement>{{showVelocity ? 'Hide' : 'Show'}} Velocity</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>

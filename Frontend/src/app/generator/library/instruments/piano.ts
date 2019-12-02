@@ -115,12 +115,12 @@ export class Piano implements IMCPInstrument {
       baseUrl: Piano.baseUrl,
       onload: () => this.logger.debug('piano buffered'),
       urls: this.mappedNotes,
-    }).toDestination();
+    });
     this.sampler.volume.value = -15;
   }
 
-  getInstrument(): Polyphonizer<any> {
-    return this.voices;
+  getInstrument(): Sampler {
+    return this.sampler;
   }
 
   public play(note: Note, duration: Duration = "8n", velocity: Velocity) {

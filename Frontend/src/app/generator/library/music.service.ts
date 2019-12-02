@@ -1,6 +1,6 @@
 import { SampleLibrary } from './sample-library';
 import { Logger } from '@upe/logger';
-import { Gain } from 'tone';
+import { FeedbackDelay, Gain, JCReverb, PingPongDelay, Reverb } from 'tone';
 import { Meter } from 'tone';
 import { Injectable } from '@angular/core';
 import { DrumsKick } from './instruments/drums/drums_kick';
@@ -28,6 +28,7 @@ export class MusicService {
   private meters: Map<MeterName, Meter> = new Map();
 
   private gain = new Gain(0.4);
+  private masterReverb: JCReverb = new JCReverb(0.55);
 
   private logger: Logger = new Logger({ name: 'Music' });
 
@@ -43,9 +44,11 @@ export class MusicService {
     this.connectAllInstrumentsToMasterMeter();
     this.createMetersForAllInstruments();
 
-    // Connect to master output
-    this.gain.toDestination();
-    this.logger.info('Connected gain to destination');
+    // Connect gain to reverb and reverb to master output
+    const delay = new PingPongDelay('4n', 0.2);
+    this.gain.chain(this.masterReverb, delay);
+    delay.wet.value = 0.5;
+    delay.toDestination();
 
     this.logger.info('Initialized successfully');
   }

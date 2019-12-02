@@ -11,6 +11,7 @@ import { Logger } from '@upe/logger';
 import { Chain, HelpOverlayService, OverlayElements } from '../../shared/help-overlay/help-overlay.service';
 import { GeneratorCommunicationService } from '../../generator/library/generator-communication.service';
 import { NotYetImplementedService } from '../../not-yet-implemented.service';
+import { IOSCMessage } from '../../shared/osc/osc-message';
 
 const NOTES_MAJOR_C = [
   'C',
@@ -690,6 +691,23 @@ export class PrototypeComponent implements OnInit, OnDestroy {
    */
   public switchNavigation() {
     this.navigationService.switchNavigation();
+  }
+
+  public switchReverb() {
+    const oscMessage: IOSCMessage = {
+      address: '/reverb',
+      args: [
+        { type: 'f', value: 1 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
   }
 
   // TODO: Das sollte nur ein Workaround sein!
