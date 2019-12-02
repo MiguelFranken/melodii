@@ -1,10 +1,20 @@
 import { IOSCMessage } from '../../shared/osc/osc-message';
+import { Velocity } from '../../generator/library/types';
 
 export class RowButton {
   public isPlayed = false;
   public isActive = false;
   public id: string;
-  public velocity = 80; // Percent
+  public _velocity: Velocity = 80;
+
+  public set velocity(value: Velocity) {
+    this._velocity = value;
+    this.oscMessage.args[1].value = value;
+  }
+
+  public get velocity(): Velocity {
+    return this._velocity;
+  }
 
   public oscMessage: IOSCMessage;
 

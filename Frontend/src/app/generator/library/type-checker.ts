@@ -23,18 +23,27 @@ export class TypeChecker {
     if (args.length < 2) {
       return undefined;
     }
-    const regex = /^[0-9.]+$/;
+    const regex = /^[0-9.]+$/; // TODO MF: Das ist wohl falsch. Es gehen auch Werte durch die nicht in der Range sind.
     const { type, value } = args[1];
     const parsed = parseFloat(value.toString());
     if (type !== "f") {
       throw new OSCError("MCPx0002", "Velocity has invalid type");
     } else if (!String(value).match(regex)) {
       // velocity should be in normal range ([0,1])
-      throw new OSCError("MCPx0003", "Velocity value is not as expected");
+      throw new OSCError("MCPx0003", "Velocity value is not in normal range ([0,1])");
     } else if (isNaN(parsed)) {
       throw new OSCError("MCPx0004", "Velocity value matches not the right type");
     }
     return parsed;
+  }
+
+  public static ValidDurationArg(arg: IOSCArgs): Duration | undefined {
+    const { type, value } = arg;
+    if (type !== "s") {
+      throw new OSCError("MCPx0005", "Duration has invalid type");
+    }
+    // TODO
+    return value;
   }
 
   public static ValidDuration(args: IOSCArgs[]): Duration | undefined {

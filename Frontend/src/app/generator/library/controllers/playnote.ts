@@ -4,9 +4,12 @@ import { MusicService } from '../music.service';
 import { PlayNoteSynth } from '../instruments/playnote_synth';
 import { OSCError } from '../error';
 import { TypeChecker } from '../type-checker';
+import { Logger } from '@upe/logger';
 
 @Controller('/play_note')
 export class PlayNoteController {
+
+  private logger: Logger = new Logger({ name: 'PlayNoteController', flags: ['controller'] });
 
   private synth: PlayNoteSynth;
 
@@ -24,7 +27,7 @@ export class PlayNoteController {
       this.synth.triggerRelease(note, duration, velocity);
     } catch (e) {
       if (e instanceof OSCError) {
-        e.print();
+        e.print(this.logger);
       }
     }
   }
@@ -38,7 +41,7 @@ export class PlayNoteController {
       this.synth.trigger(note, velocity);
     } catch (e) {
       if (e instanceof OSCError) {
-        e.print();
+        e.print(this.logger);
       }
     }
   }
@@ -52,7 +55,7 @@ export class PlayNoteController {
       this.synth.detune(note, cents);
     } catch (e) {
       if (e instanceof OSCError) {
-        e.print();
+        e.print(this.logger);
       }
     }
   }
@@ -65,7 +68,7 @@ export class PlayNoteController {
       this.synth.release(note);
     } catch (e) {
       if (e instanceof OSCError) {
-        e.print();
+        e.print(this.logger);
       }
     }
   }

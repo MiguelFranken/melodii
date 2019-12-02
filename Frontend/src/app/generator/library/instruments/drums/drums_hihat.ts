@@ -1,8 +1,11 @@
 import { Velocity, Duration } from '../../types';
 import { NoiseSynth } from 'tone';
 import { IMCPInstrument, MCPInstrumentName } from '../../mcp-instrument';
+import { Logger } from '@upe/logger';
 
 export class DrumsHiHat implements IMCPInstrument {
+
+  private logger: Logger = new Logger({ name: 'DrumsHiHat', flags: ['music'] });
 
   public name: MCPInstrumentName = "DrumsHiHat";
 
@@ -30,7 +33,7 @@ export class DrumsHiHat implements IMCPInstrument {
   }
 
   public triggerRelease(duration: Duration = "8n", velocity: Velocity) {
-    console.log(`Detune with duration ${duration} and velocity ${velocity}.`);
+    this.logger.info(`Trigger attack and release with duration ${duration} and velocity ${velocity}.`);
     this.synth.triggerAttackRelease(duration, undefined, velocity);
   }
 

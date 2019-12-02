@@ -23,7 +23,6 @@ export class MusicService {
   private static METER_SMOOTHING_FACTOR = 0.9;
 
   private instruments: Map<InstrumentName, IMCPInstrument> = new Map();
-  // private instruments: Map<string, Instrument<any> | Polyphonizer<any>> = new Map(); // TODO MF: Polyphonizer should be an instrument!
 
   private meters: Map<MeterName, Meter> = new Map();
 
@@ -32,9 +31,6 @@ export class MusicService {
   private logger: Logger = new Logger({ name: 'Music' });
 
   constructor() {
-    // TODO MF: Using the name from the instrument instance instead of hardcoding this one here
-    // This should also allow to define multiple instruments of the same type with different names!
-    // The constructor of the instrument classes should contain an optional name to set the name when one is given!
     this.instruments.set('playnote-synth', new PlayNoteSynth()); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
     this.instruments.set('kick', new DrumsKick());
     this.instruments.set('snare', new DrumsSnare());
@@ -47,6 +43,7 @@ export class MusicService {
 
     // Connect to master output
     this.gain.toDestination();
+    this.logger.info('Connected gain to destination');
 
     this.logger.info('Initialized successfully');
   }
@@ -55,6 +52,8 @@ export class MusicService {
     this.instruments.forEach((instrument: IMCPInstrument) => {
       instrument.getInstrument().connect(this.gain);
     });
+
+    this.logger.info(`Connected all ${this.instruments.size} instruments to gain node`);
   }
 
   private connectAllInstrumentsToMasterMeter() {
@@ -64,7 +63,7 @@ export class MusicService {
       instrument.getInstrument().connect(meter);
     });
 
-    this.logger.info('Connected all instruments to master meter');
+    this.logger.info(`Connected all ${this.instruments.size} instruments to master meter`);
   }
 
   private createMetersForAllInstruments() {
@@ -73,15 +72,22 @@ export class MusicService {
       this.meters.set(instrument.name, meter);
       instrument.getInstrument().connect(meter);
     });
+
+    this.logger.info(`Created meters for all ${this.instruments.size} instruments and connected instruments to it`);
   }
 
   public getMeter(name: MeterName): Meter {
-    // TODO MF: Error wenn der Meter nicht gefunden werden kann
+    if (!this.meters.has(name)) {
+      this.logger.error('Cannot find meter'); // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
+    }
     return this.meters.get(name) as Meter;
   }
 
   public getInstrument(name: InstrumentName): IMCPInstrument {
-    return this.instruments.get(name); // TODO MF: Error wenn es dieses Instrument nicht gibt
+    if (!this.instruments.has(name)) {
+      this.logger.error('Cannot find instrument'); // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
+    }
+    return this.instruments.get(name);
   }
 
   // Wird im Moment nicht genutzt. So oder ähnlich wird das aber demnächst im Frontend gebraucht

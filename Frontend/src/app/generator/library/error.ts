@@ -13,8 +13,13 @@ export class OSCError {
   constructor(private code: ErrorCode, private msg: string) {
   }
 
-  public print() {
-    this.logger.error(`${this.code}: ${this.msg}`);
+  public print(logger?: Logger) {
+    const errorMessage = `${this.code}: ${this.msg}`;
+    if (logger) {
+      logger.error(errorMessage);
+    } else {
+      this.logger.error(errorMessage);
+    }
   }
 
 }

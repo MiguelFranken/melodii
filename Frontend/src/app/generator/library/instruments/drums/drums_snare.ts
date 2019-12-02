@@ -28,9 +28,14 @@ export class DrumsSnare implements IMCPInstrument {
     return this.sampler;
   }
 
+  public triggerAttack(velocity: Velocity) {
+    this.logger.info(`Trigger with velocity ${velocity}`);
+    this.sampler.triggerAttack('C2');
+  }
+
   public triggerRelease(duration: Duration = "8n", velocity: Velocity) {
-    this.logger.info(`TriggerRelease with duration ${duration} and velocity ${velocity}.`);
-    this.sampler.triggerAttackRelease(duration, undefined, velocity);
+    this.logger.info(`TriggerRelease with duration ${duration} and velocity ${velocity}`);
+    this.sampler.triggerAttackRelease("C2", duration, velocity);
   }
 
 }

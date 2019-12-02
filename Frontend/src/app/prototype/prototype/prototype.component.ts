@@ -444,7 +444,16 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       const kickButton = new RowButton();
       kickButton.setOSCMessage({
         address: '/drums/kick',
-        args: [],
+        args: [
+          {
+            'type': "s",
+            value: "8n"
+          },
+          {
+            'type': "f",
+            value: kickButton.velocity / 100
+          }
+        ],
         info: {
           address: '/play_note',
           family: 'IPv4',
@@ -462,10 +471,19 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     const rowArray: RowButton[] = [];
 
     for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-      const kickButton = new RowButton();
-      kickButton.setOSCMessage({
+      const snareButton = new RowButton();
+      snareButton.setOSCMessage({
         address: '/drums/snare',
-        args: [],
+        args: [
+          {
+            'type': "s",
+            value: "8n"
+          },
+          {
+            'type': "f",
+            value: snareButton.velocity / 100
+          }
+        ],
         info: {
           address: '/play_note',
           family: 'IPv4',
@@ -473,7 +491,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
           size: 1,
         }
       });
-      rowArray.push(kickButton);
+      rowArray.push(snareButton);
     }
 
     return new Row(rowArray, 'Snare');
@@ -484,10 +502,19 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
     for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
       // kick
-      const kickButton = new RowButton();
-      kickButton.setOSCMessage({
+      const hihatButton = new RowButton();
+      hihatButton.setOSCMessage({
         address: '/drums/hihat',
-        args: [],
+        args: [
+          {
+            'type': "s",
+            value: "8n"
+          },
+          {
+            'type': "f",
+            value: hihatButton.velocity / 100
+          }
+        ],
         info: {
           address: '/play_note',
           family: 'IPv4',
@@ -495,7 +522,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
           size: 1,
         }
       });
-      rowArray.push(kickButton);
+      rowArray.push(hihatButton);
     }
 
     return new Row(rowArray, 'Hihat');
