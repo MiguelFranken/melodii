@@ -508,7 +508,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
         args: [
           {
             'type': "s",
-            value: "8n"
+            value: "64n"
           },
           {
             'type': "f",

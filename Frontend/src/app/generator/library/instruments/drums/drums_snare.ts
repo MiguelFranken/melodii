@@ -5,7 +5,7 @@ import { IMCPInstrument, MCPInstrumentName } from '../../mcp-instrument';
 
 export class DrumsSnare implements IMCPInstrument {
 
-  private static readonly baseUrl: string = "samples/";
+  private static readonly baseUrl: string = "assets/samples/";
   private static readonly path = "drums/jazz_snare.wav";
 
   public name: MCPInstrumentName = 'DrumsSnare';
@@ -28,7 +28,7 @@ export class DrumsSnare implements IMCPInstrument {
     return this.sampler;
   }
 
-  public triggerAttack(velocity: Velocity) {
+  public play(velocity: Velocity) {
     this.logger.info(`Trigger with velocity ${velocity}`);
     this.sampler.triggerAttack('C2');
   }
