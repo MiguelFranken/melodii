@@ -52,6 +52,7 @@ export class MusicService {
   constructor() {
     // Logger.MuteType(LogType.DEBUG);
 
+    // create instances of all our instruments
     this.instruments.set('playnote-synth', new PlayNoteSynth()); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
     this.instruments.set('kick', new DrumsKick());
     this.instruments.set('snare', new DrumsSnare());
@@ -59,12 +60,16 @@ export class MusicService {
     this.instruments.set('piano', new Piano());
     this.instruments.set('hihat', new DrumsHiHat());
 
+    // adds some dummy effects for testing
     this.addSomeEffectToTheMasterEffectChain();
 
-    this.connectAllInstrumentsToGain();
+    // wiring for meter
+    // TODO: Effekte müssen hier auch mit betrachtet werden. Im Moment geht in die Meters nur das Instrumenten-Signal ein!
     this.connectAllInstrumentsToMasterMeter();
     this.createMetersForAllInstruments();
 
+    // wires all the signals correctly for sound output
+    this.connectAllInstrumentsToGain();
     this.createConnectionsBetweenEffectChain();
     this.connectGainToChainToMaster();
 
@@ -83,12 +88,17 @@ export class MusicService {
     }
   }
 
+  // adds dummy effects (for testing)
   private addSomeEffectToTheMasterEffectChain() {
     this.addPingPongDelayToMasterEffectChain();
     this.addReverbEffectToMasterEffectChain();
     this.logger.info(`Added some dummy effects`);
   }
 
+  /**
+   * Adds a new effect to the end of the master effect chain. This means that everything has to be rewired.
+   * @param effect Effect to push at the end of the master effect chain
+   */
   private pushEffectToMasterEffectChain(effect: MCPEffect) {
     this.masterEffectChain.push(effect);
     this.deleteConnectionsFromMasterEffectChain();
@@ -115,6 +125,10 @@ export class MusicService {
     this.pushEffectToMasterEffectChain(pingPongDelay);
   }
 
+  /**
+   * Adds connections within the chain so that an output signal of a predecessor effect flows into the input of the successor effect.
+   * effect 1 -> effect 2 -> ... -> effect n-1 -> effect n
+   */
   private createConnectionsBetweenEffectChain() {
     this.masterEffectChain.forEach((effect, index) => {
       if (index + 1 < this.masterEffectChain.length) {
@@ -124,6 +138,10 @@ export class MusicService {
     this.logger.debug('Created connections between effect chain', this.masterEffectChain);
   }
 
+  /**
+   * Deletes the specified effect from the master effect chain. Then the chain has to be "rewired".
+   * @param effectID The id of the effect that should be deleted from the master effect chain
+   */
   public deleteEffectFromMasterEffectChain(effectID: string) {
     this.deleteConnectionsFromMasterEffectChain();
     this.masterEffectChain = this.masterEffectChain.filter((effect: MCPEffect) => effect.id !== effectID);
@@ -131,6 +149,9 @@ export class MusicService {
     this.connectGainToChainToMaster();
   }
 
+  /**
+   * Deletes all connections from the effect nodes in the master effect chain so that it is possible to reset them later.
+   */
   private deleteConnectionsFromMasterEffectChain() {
     for (const effect of this.masterEffectChain) {
       effect.effect.disconnect();
@@ -138,6 +159,9 @@ export class MusicService {
     }
   }
 
+  /**
+   * Connects all signal outputs of the instruments to the input of the gain node.
+   */
   private connectAllInstrumentsToGain() {
     this.instruments.forEach((instrument: IMCPInstrument) => {
       instrument.getInstrument().connect(this.gain);
@@ -146,6 +170,9 @@ export class MusicService {
     this.logger.info(`Connected all ${this.instruments.size} instruments to gain node`);
   }
 
+  /**
+   * Adds all instruments to a master meter so that the total volume can be measured.
+   */
   private connectAllInstrumentsToMasterMeter() {
     const meter: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
     this.meters.set('master', meter);
@@ -156,6 +183,11 @@ export class MusicService {
     this.logger.info(`Connected all ${this.instruments.size} instruments to master meter`);
   }
 
+  /**
+   * Creates meters for each instrument so that the volume of each instrument
+   * can also be measured independently of the other instruments. With this
+   * method the instruments are also "wired" to this meter to make the measurement really possible.
+   */
   private createMetersForAllInstruments() {
     this.instruments.forEach((instrument: IMCPInstrument) => {
       const meter: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
@@ -166,6 +198,10 @@ export class MusicService {
     this.logger.info(`Created meters for all ${this.instruments.size} instruments and connected instruments to it`);
   }
 
+  /**
+   * Returns the meter associated with the given name.
+   * @param name Unique name of the meter
+   */
   public getMeter(name: MeterName): Meter {
     if (!this.meters.has(name)) {
       this.logger.error('Cannot find meter'); // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
@@ -173,6 +209,13 @@ export class MusicService {
     return this.meters.get(name) as Meter;
   }
 
+  /**
+   * Returns the meter associated with the given name.
+   *
+   * At the moment the names are still quite useless.
+   * But later it should also be possible to have multiple instances of an MCP instrument.
+   * These can then be given different names for identification.
+   */
   public getInstrument(name: InstrumentName): IMCPInstrument {
     if (!this.instruments.has(name)) {
       this.logger.error('Cannot find instrument'); // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
