@@ -7,6 +7,7 @@ import { DrumsKick } from './instruments/drums/drums_kick';
 import { DrumsHiHat } from './instruments/drums/drums_hihat';
 import { DrumsSnare } from './instruments/drums/drums_snare';
 import { IMCPInstrument } from './instruments/mcp-instrument';
+import { PlayNoteSynth } from './instruments/playnote_synth';
 
 // unique name of an instrument
 export type InstrumentName = string;
@@ -31,13 +32,15 @@ export class MusicService {
   private logger: Logger = new Logger({ name: 'Music' });
 
   constructor() {
-    // this.instruments.synth = new PlayNoteSynth().getInstrument(); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
+    // TODO MF: Using the name from the instrument instance instead of hardcoding this one here
+    // This should also allow to define multiple instruments of the same type with different names!
+    // The constructor of the instrument classes should contain an optional name to set the name when one is given!
+    this.instruments.set('playnote-synth', new PlayNoteSynth()); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
     this.instruments.set('kick', new DrumsKick());
     this.instruments.set('snare', new DrumsSnare());
     this.instruments.set('piano', new SampleLibrary()); // TODO MF: Mit der neuen Piano Klasse ersetzen
     this.instruments.set('hihat', new DrumsHiHat());
 
-    // this.instruments.synth.connect(this.gain); // TODO MF: Siehe oben
     this.connectAllInstrumentsToGain();
     this.connectAllInstrumentsToMasterMeter();
     this.createMetersForAllInstruments();
@@ -77,9 +80,13 @@ export class MusicService {
     return this.meters.get(name) as Meter;
   }
 
+  public getInstrument(name: InstrumentName): IMCPInstrument {
+    return this.instruments.get(name); // TODO MF: Error wenn es dieses Instrument nicht gibt
+  }
+
   // Wird im Moment nicht genutzt. So oder ähnlich wird das aber demnächst im Frontend gebraucht
   public getAllInstrumentNames(): InstrumentName[] {
-    return [...this.instruments.keys()];
+    return Array.from(this.instruments.keys());
   }
 
 }

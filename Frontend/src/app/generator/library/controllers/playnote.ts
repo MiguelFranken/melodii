@@ -7,10 +7,11 @@ import { OSCError } from '../error';
 
 @Controller('/play_note')
 export class PlayNoteController {
+
   private synth: PlayNoteSynth;
 
   constructor(private music: MusicService) {
-    this.synth = music.instruments.playNoteSynth;
+    this.synth = music.getInstrument('playnote-synth') as PlayNoteSynth;
   }
 
   @OnMessage()

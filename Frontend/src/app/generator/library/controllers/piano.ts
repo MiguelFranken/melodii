@@ -1,15 +1,21 @@
 import { Controller, Message, OnMessage } from '../decorator/decorators';
 import { IOSCMessage } from '../osc/osc-message';
 import { MusicService } from '../music.service';
+import { SampleLibrary } from '../sampleLibrary';
 
 @Controller('/piano')
 export class PianoController {
 
-  constructor(private music: MusicService) { }
+  constructor(private music: MusicService) {
+    this.piano = music.getInstrument('piano') as SampleLibrary;
+  }
+
+  private piano: SampleLibrary;
 
   @OnMessage('/play_note')
   public receivedMessage(@Message() message: IOSCMessage) {
-    this.music.pianoPlayNote(message.args[0].value.toString());
+    // const note = message.args[0].value.toString();
+    // this.piano.triggerAttackRelease(note, '8n');
   }
 
 }

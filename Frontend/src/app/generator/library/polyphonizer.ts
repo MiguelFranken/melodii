@@ -39,4 +39,9 @@ export class Polyphonizer<Voice extends Monophonic<any>> {
     return newVoice;
   }
 
+  public connect() {
+    this.logger.error('Not implemented yet!');
+    // TODO MF: Das sollte behoben werden indem diese Klasse von INstrument erbt
+  }
+
 }

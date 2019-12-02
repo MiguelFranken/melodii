@@ -2,8 +2,12 @@ import { Polyphonizer } from '../polyphonizer';
 import { Note, Velocity, Duration, Cents } from '../types';
 import { Synth, Frequency } from 'tone';
 import { Logger } from '@upe/logger';
+import { IMCPInstrument } from './mcp-instrument';
+import { InstrumentName } from '../music.service';
 
-export class PlayNoteSynth {
+export class PlayNoteSynth implements IMCPInstrument {
+
+  public name: InstrumentName = 'playnote-synth';
 
   private logger: Logger = new Logger({ name: 'PlayNoteSynth Instrument', flags: ['music'] });
   private readonly voices = new Polyphonizer(() => new Synth().toDestination());

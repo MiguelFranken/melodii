@@ -15,9 +15,9 @@ export class DrumsController {
     private synthSnare: DrumsSnare;
 
     constructor(private music: MusicService) {
-        this.synthHihat = music.instruments.hihat;
-        this.synthKick = music.instruments.kick;
-        this.synthSnare = music.instruments.snare;
+        this.synthHihat = this.music.getInstrument('DrumsHiHat') as DrumsHiHat;
+        this.synthKick = this.music.getInstrument('DrumsHiHat') as DrumsKick;
+        this.synthSnare = this.music.getInstrument('DrumsHiHat') as DrumsSnare;
     }
 
     @OnMessage('/snare')
