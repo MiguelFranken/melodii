@@ -9,12 +9,16 @@ import { DrumsSnare } from './instruments/drums/drums_snare';
 import { IMCPInstrument } from './mcp-instrument';
 import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Piano } from './instruments/piano';
+import { Effect } from 'tone/build/esm/effect/Effect';
+import { StereoEffect } from 'tone/build/esm/effect/StereoEffect';
 
 // unique name of an instrument
 export type InstrumentName = string;
 
 // unique name of an meter
 export type MeterName = InstrumentName | 'master';
+
+export type MCPEffect = Effect<any> | StereoEffect<any>;
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +32,8 @@ export class MusicService {
   private meters: Map<MeterName, Meter> = new Map();
 
   private gain = new Gain(0.4);
-  private masterReverb: JCReverb = new JCReverb(0.55);
+
+  private masterEffectChain: MCPEffect[] = [];
 
   private logger: Logger = new Logger({ name: 'Music' });
 
@@ -40,17 +45,31 @@ export class MusicService {
     this.instruments.set('piano', new Piano());
     this.instruments.set('hihat', new DrumsHiHat());
 
+    this.addSomeEffectToTheMasterEffectChain();
+
     this.connectAllInstrumentsToGain();
     this.connectAllInstrumentsToMasterMeter();
     this.createMetersForAllInstruments();
+    this.createConnectionsBetweenEffectChain();
 
-    // Connect gain to reverb and reverb to master output
-    const delay = new PingPongDelay('4n', 0.2);
-    this.gain.chain(this.masterReverb, delay);
-    delay.wet.value = 0.5;
-    delay.toDestination();
+    // gain -> master effect chain -> master
+    this.gain.connect(this.masterEffectChain[0]);
+    this.masterEffectChain[this.masterEffectChain.length - 1].toDestination();
 
     this.logger.info('Initialized successfully');
+  }
+
+  private addSomeEffectToTheMasterEffectChain() {
+    this.masterEffectChain.push(new PingPongDelay('4n', 0.2));
+    this.masterEffectChain.push(new JCReverb(0.55));
+  }
+
+  private createConnectionsBetweenEffectChain() {
+    this.masterEffectChain.forEach((effect, index) => {
+      if (index + 1 < this.masterEffectChain.length) {
+        effect.connect(this.masterEffectChain[index + 1]);
+      }
+    });
   }
 
   private connectAllInstrumentsToGain() {
