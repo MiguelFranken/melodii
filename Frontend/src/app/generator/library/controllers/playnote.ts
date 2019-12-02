@@ -2,8 +2,8 @@ import { Controller, Message, OnMessage } from "../decorator/decorators";
 import { IOSCMessage } from "../osc/osc-message";
 import { MusicService } from '../music.service';
 import { PlayNoteSynth } from '../instruments/playnote_synth';
-import { TypeChecker } from '../types';
 import { OSCError } from '../error';
+import { TypeChecker } from '../type-checker';
 
 @Controller('/play_note')
 export class PlayNoteController {
@@ -17,9 +17,9 @@ export class PlayNoteController {
   @OnMessage()
   public receivedMessage(@Message() msg: IOSCMessage) {
     try {
-      const note = TypeChecker.validNote(msg.args);
-      const duration = TypeChecker.validDuration(msg.args);
-      const velocity = TypeChecker.validVelocity(msg.args);
+      const note = TypeChecker.ValidNote(msg.args);
+      const duration = TypeChecker.ValidDuration(msg.args);
+      const velocity = TypeChecker.ValidVelocity(msg.args);
 
       this.synth.triggerRelease(note, duration, velocity);
     } catch (e) {
@@ -32,8 +32,8 @@ export class PlayNoteController {
   @OnMessage('/trigger')
   public receivedMessageStart(@Message() msg: IOSCMessage) {
     try {
-      const note = TypeChecker.validNote(msg.args);
-      const velocity = TypeChecker.validVelocity(msg.args);
+      const note = TypeChecker.ValidNote(msg.args);
+      const velocity = TypeChecker.ValidVelocity(msg.args);
 
       this.synth.trigger(note, velocity);
     } catch (e) {
@@ -46,8 +46,8 @@ export class PlayNoteController {
   @OnMessage('/detune')
   public detune(@Message() msg: IOSCMessage) {
     try {
-      const note = TypeChecker.validNote(msg.args);
-      const cents = TypeChecker.validCents(msg.args);
+      const note = TypeChecker.ValidNote(msg.args);
+      const cents = TypeChecker.ValidCents(msg.args);
 
       this.synth.detune(note, cents);
     } catch (e) {
@@ -60,7 +60,7 @@ export class PlayNoteController {
   @OnMessage('/stop')
   public receivedMessageStop(@Message() msg: IOSCMessage) {
     try {
-      const note = TypeChecker.validNote(msg.args);
+      const note = TypeChecker.ValidNote(msg.args);
 
       this.synth.release(note);
     } catch (e) {

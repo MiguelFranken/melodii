@@ -1,7 +1,7 @@
 import { Controller, Message, OnMessage } from '../decorator/decorators';
 import { IOSCMessage } from '../osc/osc-message';
 import { MusicService } from '../music.service';
-import { SampleLibrary } from '../sampleLibrary';
+import { SampleLibrary } from '../sample-library';
 
 @Controller('/piano')
 export class PianoController {

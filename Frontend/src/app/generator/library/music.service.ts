@@ -1,4 +1,4 @@
-import { SampleLibrary } from './sampleLibrary';
+import { SampleLibrary } from './sample-library';
 import { Logger } from '@upe/logger';
 import { Gain } from 'tone';
 import { Meter } from 'tone';

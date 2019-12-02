@@ -4,8 +4,8 @@ import { MusicService } from '../music.service';
 import { DrumsHiHat } from '../instruments/drums/drums_hihat';
 import { DrumsKick } from '../instruments/drums/drums_kick';
 import { DrumsSnare } from '../instruments/drums/drums_snare';
-import { TypeChecker } from '../types';
 import { OSCError } from '../error';
+import { TypeChecker } from '../type-checker';
 
 @Controller('/drums')
 export class DrumsController {
@@ -23,8 +23,8 @@ export class DrumsController {
     @OnMessage('/snare')
     public receivedMsgSnare(@Message() msg: IOSCMessage) {
         try {
-            const duration = TypeChecker.validDuration(msg.args);
-            const velocity = TypeChecker.validVelocity(msg.args);
+            const duration = TypeChecker.ValidDuration(msg.args);
+            const velocity = TypeChecker.ValidVelocity(msg.args);
 
             this.synthSnare.triggerRelease(duration, velocity);
         } catch (e) {
@@ -37,8 +37,8 @@ export class DrumsController {
     @OnMessage('/kick')
     public receivedMsgKick(@Message() msg: IOSCMessage) {
         try {
-            const duration = TypeChecker.validDuration(msg.args);
-            const velocity = TypeChecker.validVelocity(msg.args);
+            const duration = TypeChecker.ValidDuration(msg.args);
+            const velocity = TypeChecker.ValidVelocity(msg.args);
 
             this.synthKick.triggerRelease(duration, velocity);
         } catch (e) {
@@ -51,8 +51,8 @@ export class DrumsController {
     @OnMessage('/hihat')
     public receivedMsgHiHat(@Message() msg: IOSCMessage) {
         try {
-            const duration = TypeChecker.validDuration(msg.args);
-            const velocity = TypeChecker.validVelocity(msg.args);
+            const duration = TypeChecker.ValidDuration(msg.args);
+            const velocity = TypeChecker.ValidVelocity(msg.args);
 
             this.synthHihat.triggerRelease(duration, velocity);
         } catch (e) {

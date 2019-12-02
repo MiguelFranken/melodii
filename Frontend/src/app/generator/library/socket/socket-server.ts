@@ -1,10 +1,10 @@
 import * as io from 'socket.io-client';
 import { Event } from './socket-event';
-import { ControllerHandler } from './decorator';
+import { ControllerHandler } from '../decorator';
 import { Logger } from '@upe/logger';
-import { LogService } from '../log/log.service';
+import { LogService } from '../../log/log.service';
 import { Injectable } from '@angular/core';
-import { GeneratorCommunicationService } from './generator-communication.service';
+import { GeneratorCommunicationService } from '../generator-communication.service';
 
 @Injectable({
   providedIn: 'root'
