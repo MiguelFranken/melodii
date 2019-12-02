@@ -18,7 +18,7 @@ export class Box implements IMCPInstrument {
     }
   }
 
-  public getInstrument(): Polyphonizer<any> {
+  public getAudioNode(): Polyphonizer<any> {
     return this.voices;
   }
 

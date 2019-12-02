@@ -164,7 +164,7 @@ export class MusicService {
    */
   private connectAllInstrumentsToGain() {
     this.instruments.forEach((instrument: IMCPInstrument) => {
-      instrument.getInstrument().connect(this.gain);
+      instrument.getAudioNode().connect(this.gain);
     });
 
     this.logger.info(`Connected all ${this.instruments.size} instruments to gain node`);
@@ -177,7 +177,7 @@ export class MusicService {
     const meter: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
     this.meters.set('master', meter);
     this.instruments.forEach((instrument: IMCPInstrument) => {
-      instrument.getInstrument().connect(meter);
+      instrument.getAudioNode().connect(meter);
     });
 
     this.logger.info(`Connected all ${this.instruments.size} instruments to master meter`);
@@ -192,7 +192,7 @@ export class MusicService {
     this.instruments.forEach((instrument: IMCPInstrument) => {
       const meter: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
       this.meters.set(instrument.name, meter);
-      instrument.getInstrument().connect(meter);
+      instrument.getAudioNode().connect(meter);
     });
 
     this.logger.info(`Created meters for all ${this.instruments.size} instruments and connected instruments to it`);

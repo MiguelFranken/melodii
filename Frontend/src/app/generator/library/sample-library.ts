@@ -112,7 +112,7 @@ export class SampleLibrary implements IMCPInstrument {
     this.sampler.volume.value = -15; // TODO MF: Das sollte durch den Mixer geregelt werden
   }
 
-  public getInstrument(): Sampler {
+  public getAudioNode(): Sampler {
     return this.sampler;
   }
 

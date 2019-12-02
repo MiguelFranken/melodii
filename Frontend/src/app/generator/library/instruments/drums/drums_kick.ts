@@ -26,7 +26,7 @@ export class DrumsKick implements IMCPInstrument {
     }
   }
 
-  public getInstrument(): Sampler {
+  public getAudioNode(): Sampler {
     return this.sampler;
   }
 

@@ -21,7 +21,7 @@ export class DrumsHiHat implements IMCPInstrument {
     },
   });
 
-  public getInstrument(): NoiseSynth {
+  public getAudioNode(): NoiseSynth {
     return this.synth;
   }
 

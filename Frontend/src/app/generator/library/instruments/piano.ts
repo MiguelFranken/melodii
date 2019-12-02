@@ -119,7 +119,7 @@ export class Piano implements IMCPInstrument {
     this.sampler.volume.value = -15;
   }
 
-  getInstrument(): Sampler {
+  getAudioNode(): Sampler {
     return this.sampler;
   }
 
