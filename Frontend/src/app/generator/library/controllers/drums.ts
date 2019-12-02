@@ -29,8 +29,7 @@ export class DrumsController {
             const duration = TypeChecker.ValidDurationArg(msg.args[0]);
             const velocity = TypeChecker.ValidVelocity(msg.args);
 
-            // this.synthSnare.triggerRelease(duration, velocity);
-            this.synthSnare.play(velocity);
+            this.synthSnare.play(duration, velocity);
         } catch (e) {
             if (e instanceof OSCError) {
                 e.print(this.logger);
@@ -44,8 +43,7 @@ export class DrumsController {
             const duration = TypeChecker.ValidDurationArg(msg.args[0]);
             const velocity = TypeChecker.ValidVelocity(msg.args);
 
-            // this.synthKick.triggerRelease(duration, velocity);
-            this.synthKick.play(velocity);
+            this.synthKick.play(duration, velocity);
         } catch (e) {
             if (e instanceof OSCError) {
                 e.print(this.logger);
@@ -59,7 +57,7 @@ export class DrumsController {
             const duration = TypeChecker.ValidDurationArg(msg.args[0]);
             const velocity = TypeChecker.ValidVelocity(msg.args);
 
-            this.synthHihat.triggerRelease(duration, velocity);
+            this.synthHihat.play(duration, velocity);
         } catch (e) {
             if (e instanceof OSCError) {
                 e.print(this.logger);

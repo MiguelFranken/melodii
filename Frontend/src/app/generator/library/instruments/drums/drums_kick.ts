@@ -30,14 +30,9 @@ export class DrumsKick implements IMCPInstrument {
     return this.sampler;
   }
 
-  public play(velocity: Velocity) {
-    this.logger.info(`Playing kick drum with velocity ${velocity}.`);
-    this.sampler.triggerAttack('C2');
-  }
-
-  public triggerRelease(duration: Duration = "8n", velocity: Velocity) {
-    this.logger.info(`TriggerRelease with duration ${duration} and velocity ${velocity}.`);
-    // this.sampler.triggerAttackRelease("C2", duration, velocity);
+  public play(duration: Duration = "8n", velocity: Velocity) {
+    this.logger.info(`play kick drum with duration ${duration} and velocity ${velocity}.`);
+    this.sampler.triggerAttackRelease("C2", duration, undefined, velocity);
   }
 
 }

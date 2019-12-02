@@ -32,8 +32,8 @@ export class DrumsHiHat implements IMCPInstrument {
     this.synth.volume.value = -20;
   }
 
-  public triggerRelease(duration: Duration = "8n", velocity: Velocity) {
-    this.logger.info(`Trigger attack and release with duration ${duration} and velocity ${velocity}.`);
+  public play(duration: Duration = "8n", velocity: Velocity) {
+    this.logger.info(`play hihat with duration ${duration} and velocity ${velocity}.`);
     this.synth.triggerAttackRelease(duration, undefined, velocity);
   }
 
