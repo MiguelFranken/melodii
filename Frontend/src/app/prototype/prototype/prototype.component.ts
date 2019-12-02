@@ -135,6 +135,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   setVelocity(event, button: RowButton) {
     button.velocity = event.value;
+    this.logger.debug('Setting velocity', button.velocity);
   }
 
   public increaseVelocity(event: MouseEvent, button: RowButton) {
@@ -451,7 +452,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
           },
           {
             'type': "f",
-            value: kickButton.velocity / 100
+            value: kickButton.velocity
           }
         ],
         info: {
@@ -481,7 +482,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
           },
           {
             'type': "f",
-            value: snareButton.velocity / 100
+            value: snareButton.velocity
           }
         ],
         info: {
@@ -512,7 +513,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
           },
           {
             'type': "f",
-            value: hihatButton.velocity / 100
+            value: hihatButton.velocity
           }
         ],
         info: {

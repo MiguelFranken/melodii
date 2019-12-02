@@ -5,7 +5,7 @@ export class RowButton {
   public isPlayed = false;
   public isActive = false;
   public id: string;
-  public _velocity: Velocity = 80;
+  public _velocity: Velocity = 0.8;
 
   public set velocity(value: Velocity) {
     this._velocity = value;

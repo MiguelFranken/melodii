@@ -66,12 +66,12 @@
               (contextmenu)="onContextMenu($event, button)"
               (longPress)="onLongPress($event, button)"
               style="position: relative;"
-              [ngStyle]="{'background-color': button.isActive ? 'rgba(0,0,0,' + ((0.3-0.15)/100*(button.velocity-100)+0.3) +')' : 'rgba(0,0,0,.1)'}"
+              [ngStyle]="{'background-color': button.isActive ? 'rgba(0,0,0,' + ((0.3-0.15)/1*(button.velocity-1)+0.3) +')' : 'rgba(0,0,0,.1)'}"
               #rowButtonElement
       >
         <!-- Velocity Slider -->
         <div class="velocity-slider" *ngIf="button.isActive && showVelocity" fxLayout #sliderElement>
-          <mat-slider fxFlex style="height: 25px" (click)="onTapOnVelocitySlider()" (input)="setVelocity($event, button)" [value]="button.velocity"></mat-slider>
+          <mat-slider fxFlex style="height: 25px" (click)="onTapOnVelocitySlider()" (input)="setVelocity($event, button)" [value]="button.velocity" min="0" max="1" step="0.001"></mat-slider>
         </div>
       </a>
     </div>
