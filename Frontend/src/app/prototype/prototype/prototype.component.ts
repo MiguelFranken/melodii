@@ -551,6 +551,29 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
       for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
         const button = new RowButton(note);
+        button.setOSCMessage({
+          address: '/piano/play_note',
+          args: [
+            {
+              'type': 's',
+              value: note // note
+            },
+            {
+              'type': 'f',
+              value: button.velocity // velocity
+            },
+            {
+              'type': 's',
+              value: '8n' // duration
+            },
+          ],
+          info: {
+            address: '/play_note',
+            family: 'IPv4',
+            port: 80,
+            size: 1,
+          }
+        });
         rowArray.push(button);
       }
 
@@ -559,7 +582,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
       matrix.rows.push(row);
     }
-    matrix.name = 'Synth';
+    matrix.name = 'Piano';
     this.matrixCollection.push(matrix);
     this.logger.info("Created matrix for instrument: 'Piano'", matrix);
   }

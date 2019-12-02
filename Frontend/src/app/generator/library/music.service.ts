@@ -8,6 +8,7 @@ import { DrumsHiHat } from './instruments/drums/drums_hihat';
 import { DrumsSnare } from './instruments/drums/drums_snare';
 import { IMCPInstrument } from './mcp-instrument';
 import { PlayNoteSynth } from './instruments/playnote_synth';
+import { Piano } from './instruments/piano';
 
 // unique name of an instrument
 export type InstrumentName = string;
@@ -34,7 +35,8 @@ export class MusicService {
     this.instruments.set('playnote-synth', new PlayNoteSynth()); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
     this.instruments.set('kick', new DrumsKick());
     this.instruments.set('snare', new DrumsSnare());
-    this.instruments.set('piano', new SampleLibrary()); // TODO MF: Mit der neuen Piano Klasse ersetzen
+    this.instruments.set('pianoALT', new SampleLibrary()); // TODO MF: Das ist die alte Piano Klasse. Löschen?
+    this.instruments.set('piano', new Piano());
     this.instruments.set('hihat', new DrumsHiHat());
 
     this.connectAllInstrumentsToGain();

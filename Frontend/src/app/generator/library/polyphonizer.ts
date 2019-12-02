@@ -17,31 +17,30 @@ export class Polyphonizer<Voice extends Monophonic<any>> {
     if (matchingVoice) {
       this.logger.info('Found match.');
       return matchingVoice;
+    } else { /* No voice assigned to this key. */
+      // Search for idle voice.
+      this.voices.forEach((voice: Voice, k: string) => {
+        // If this voice is idle, reuse and assign it to the key.
+        if (!isVoiceActive(voice)) {
+          this.logger.info('Found inactive voice.', voice);
+          this.voices.delete(k);
+          this.voices.set(key, voice);
+          return voice;
+        }
+      });
+      // No idle voice found.
+
+      const newVoice = this.voiceConstructor();
+      this.voices.set(key, newVoice);
+      this.logger.info('Created new voice.', newVoice);
+
+      return newVoice;
     }
-    // No voice assigned to this key.
-
-    // Search for idle voice.
-    this.voices.forEach((voice: Voice, k: string) => {
-      // If this voice is idle, reuse and assign it to the key.
-      if (!isVoiceActive(voice)) {
-        this.logger.info('Found inactive voice.', voice);
-        this.voices.delete(k);
-        this.voices.set(key, voice);
-        return voice;
-      }
-    });
-    // No idle voice found.
-
-    const newVoice = this.voiceConstructor();
-    this.voices.set(key, newVoice);
-    this.logger.info('Created new voice.', newVoice);
-
-    return newVoice;
   }
 
   public connect() {
-    this.logger.error('Not implemented yet!');
-    // TODO MF: Das sollte behoben werden indem diese Klasse von INstrument erbt
+    this.logger.error('Connect method is not yet implemented!');
+    // TODO MF: Das sollte behoben werden indem diese Klasse von Instrument erbt
   }
 
 }

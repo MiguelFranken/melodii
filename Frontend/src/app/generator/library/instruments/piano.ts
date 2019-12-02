@@ -6,7 +6,7 @@ import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 
 export class Piano implements IMCPInstrument {
 
-  private static baseUrl = 'samples/piano/';
+  private static baseUrl = 'assets/samples/piano/';
 
   private readonly voices = new Polyphonizer(() => new Synth().toDestination());
 
@@ -121,6 +121,11 @@ export class Piano implements IMCPInstrument {
 
   getInstrument(): Polyphonizer<any> {
     return this.voices;
+  }
+
+  public play(note: Note, duration: Duration = "8n", velocity: Velocity) {
+    this.logger.info(`Play note ${note} with duration ${duration} and velocity ${velocity}`);
+    this.sampler.triggerAttackRelease(note, duration, undefined, velocity);
   }
 
   public trigger(note: Note, velocity: Velocity) {
