@@ -6,8 +6,11 @@ import { Logger } from '@upe/logger';
 export class PlayNoteSynth {
 
     private logger: Logger = new Logger({ name: 'PlayNoteSynth Instrument', flags: ['music'] });
-
     private readonly voices = new Polyphonizer(() => new Synth().toDestination());
+
+    public getInstrument(): Polyphonizer<any> {
+        return this.voices;
+    }
 
     public trigger(note: Note, velocity: Velocity) {
         console.log(`Trigger with note${note} and velocity ${velocity}.`);

@@ -48,7 +48,7 @@ export class MeterComponent implements OnInit {
 
   private initMasterMeter() {
     this.meterVisualizationMaster = new MeterVisualization(
-      this.musicService.masterMeter,
+      this.musicService.getMeter('master'),
       this.cvsMaster.nativeElement,
       this.ctxMaster
     );
@@ -57,7 +57,7 @@ export class MeterComponent implements OnInit {
 
   private initKickMeter() {
     this.meterVisualizationKick = new MeterVisualization(
-      this.musicService.kickMeter,
+      this.musicService.getMeter('kick'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
       this.cvsKick.nativeElement,
       this.ctxKick
     );
@@ -66,7 +66,7 @@ export class MeterComponent implements OnInit {
 
   private initSnareMeter() {
     this.meterVisualizationSnare = new MeterVisualization(
-      this.musicService.snareMeter,
+      this.musicService.getMeter('snare'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
       this.cvsSnare.nativeElement,
       this.ctxSnare
     );
@@ -75,7 +75,7 @@ export class MeterComponent implements OnInit {
 
   private initHihatMeter() {
     this.meterVisualizationHihat = new MeterVisualization(
-      this.musicService.hihatMeter,
+      this.musicService.getMeter('hihat'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
       this.cvsHihat.nativeElement,
       this.ctxHihat
     );

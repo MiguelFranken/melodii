@@ -3,7 +3,7 @@ import { NoiseSynth, Frequency } from 'tone';
 
 export class DrumsHiHat {
 
-    public readonly synth = new NoiseSynth({
+    private readonly synth = new NoiseSynth({
         noise: {
             type: "white",
         },
@@ -13,7 +13,11 @@ export class DrumsHiHat {
             sustain: 0,
             release: 0.3,
         },
-    }).toDestination();
+    });
+
+    public getInstrument(): NoiseSynth {
+        return this.synth;
+    }
 
     constructor() {
         this.synth.volume.value = -20;

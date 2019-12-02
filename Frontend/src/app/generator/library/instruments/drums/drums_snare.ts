@@ -11,11 +11,15 @@ export class DrumsSnare {
 
     private logger: Logger = new Logger({ name: 'DrumsSnare Instrument', flags: ['music'] });
 
-    public readonly sampler = new Sampler(
+    private readonly sampler = new Sampler(
       { C2: DrumsSnare.path },
       () => this.logger.debug('drum snare buffered'),
       DrumsSnare.baseUrl
-    ).toDestination();
+    );
+
+    public getInstrument() {
+        return this.sampler;
+    }
 
     public triggerRelease(duration: Duration = "8n", velocity: Velocity) {
         this.logger.info(`TriggerRelease with duration ${duration} and velocity ${velocity}.`);

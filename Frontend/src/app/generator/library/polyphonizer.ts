@@ -2,15 +2,14 @@ import { Monophonic } from 'tone/build/esm/instrument/Monophonic';
 import { isVoiceActive } from './utils';
 import { Logger } from '@upe/logger';
 
+// TODO MF: This should extend Tone's Instrument class
 export class Polyphonizer<Voice extends Monophonic<any>> {
 
     private logger: Logger = new Logger({ name: 'Polyphonizer', flags: ['music'] });
 
     private voices: Map<string, Voice> = new Map();
 
-    constructor(
-        private readonly voiceConstructor: () => Voice,
-    ) {
+    constructor(private readonly voiceConstructor: () => Voice) {
     }
 
     public getVoice(key: string): Voice {
