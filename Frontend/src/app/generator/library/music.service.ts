@@ -10,6 +10,7 @@ import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Piano } from './instruments/piano';
 import { Effect } from 'tone/build/esm/effect/Effect';
 import { StereoEffect } from 'tone/build/esm/effect/StereoEffect';
+import { EffectChain } from './effect-chain';
 
 /**
  * Unique name of an instrument
@@ -45,7 +46,9 @@ export class MusicService {
 
   private gain = new Gain(0.4);
 
-  private masterEffectChain: MCPEffect[] = [];
+  private masterEffectChainOLD: MCPEffect[] = [];
+
+  private masterEffectChain: EffectChain;
 
   private logger: Logger = new Logger({ name: 'Music' });
 
@@ -60,9 +63,6 @@ export class MusicService {
     this.instruments.set('piano', new Piano());
     this.instruments.set('hihat', new DrumsHiHat());
 
-    // adds some dummy effects for testing
-    this.addSomeEffectToTheMasterEffectChain();
-
     // wiring for meter
     // TODO: Effekte müssen hier auch mit betrachtet werden. Im Moment geht in die Meters nur das Instrumenten-Signal ein!
     this.connectAllInstrumentsToMasterMeter();
@@ -70,93 +70,50 @@ export class MusicService {
 
     // wires all the signals correctly for sound output
     this.connectAllInstrumentsToGain();
-    this.createConnectionsBetweenEffectChain();
-    this.connectGainToChainToMaster();
+    this.masterEffectChain = new EffectChain('master', this.gain);
+    this.addPingPongDelayToMasterEffectChain();
+    this.addReverbEffectToMasterEffectChain();
+    this.rewire();
 
     this.logger.info('Initialized successfully');
   }
 
-  // gain -> master effect chain -> master
-  private connectGainToChainToMaster() {
-    this.gain.disconnect();
-
-    if (this.masterEffectChain.length > 0) {
-      this.gain.connect(this.masterEffectChain[0].effect);
-      this.masterEffectChain[this.masterEffectChain.length - 1].effect.toDestination();
-    } else {
-      this.gain.toDestination();
-    }
-  }
-
-  // adds dummy effects (for testing)
-  private addSomeEffectToTheMasterEffectChain() {
-    this.addPingPongDelayToMasterEffectChain();
-    this.addReverbEffectToMasterEffectChain();
-    this.logger.info(`Added some dummy effects`);
-  }
-
-  /**
-   * Adds a new effect to the end of the master effect chain. This means that everything has to be rewired.
-   * @param effect Effect to push at the end of the master effect chain
-   */
-  private pushEffectToMasterEffectChain(effect: MCPEffect) {
-    this.masterEffectChain.push(effect);
-    this.deleteConnectionsFromMasterEffectChain();
-    this.createConnectionsBetweenEffectChain();
-    this.connectGainToChainToMaster();
-
-    this.logger.debug(`Added effect ${effect.id} at the end of the master effect chain`, this.masterEffectChain);
-  }
-
-  public addReverbEffectToMasterEffectChain() {
+  public getReverbEffect(): MCPEffect {
     const reverb: MCPEffect = {
       id: 'reverb',
       effect: new JCReverb(0.55)
     };
-    this.pushEffectToMasterEffectChain(reverb);
+    return reverb;
   }
 
-  public addPingPongDelayToMasterEffectChain() {
+  public getPingPongDelayEffect(): MCPEffect {
     const pingPongDelay: MCPEffect = {
       id: 'pingpongdelay',
       effect: new PingPongDelay('4n', 0.2)
     };
     pingPongDelay.effect.wet.value = 0.5;
-    this.pushEffectToMasterEffectChain(pingPongDelay);
+    return pingPongDelay;
   }
 
-  /**
-   * Adds connections within the chain so that an output signal of a predecessor effect flows into the input of the successor effect.
-   * effect 1 -> effect 2 -> ... -> effect n-1 -> effect n
-   */
-  private createConnectionsBetweenEffectChain() {
-    this.masterEffectChain.forEach((effect, index) => {
-      if (index + 1 < this.masterEffectChain.length) {
-        effect.effect.connect(this.masterEffectChain[index + 1].effect);
-      }
-    });
-    this.logger.debug('Created connections between effect chain', this.masterEffectChain);
+  public deleteEffectFromMasterEffectChain(effectID: MCPEffectIdentifier) {
+    this.masterEffectChain.deleteEffectByID(effectID);
+    this.rewire();
   }
 
-  /**
-   * Deletes the specified effect from the master effect chain. Then the chain has to be "rewired".
-   * @param effectID The id of the effect that should be deleted from the master effect chain
-   */
-  public deleteEffectFromMasterEffectChain(effectID: string) {
-    this.deleteConnectionsFromMasterEffectChain();
-    this.masterEffectChain = this.masterEffectChain.filter((effect: MCPEffect) => effect.id !== effectID);
-    this.createConnectionsBetweenEffectChain();
-    this.connectGainToChainToMaster();
+  public addPingPongDelayToMasterEffectChain() {
+    this.masterEffectChain.pushEffect(this.getPingPongDelayEffect());
+    this.rewire();
   }
 
-  /**
-   * Deletes all connections from the effect nodes in the master effect chain so that it is possible to reset them later.
-   */
-  private deleteConnectionsFromMasterEffectChain() {
-    for (const effect of this.masterEffectChain) {
-      effect.effect.disconnect();
-      this.logger.debug(`Disconnecting effect ${effect.id}`);
-    }
+  public addReverbEffectToMasterEffectChain() {
+    this.masterEffectChain.pushEffect(this.getReverbEffect());
+    this.rewire();
+  }
+
+  public rewire() {
+    const outputNode = this.masterEffectChain.getOutputNode();
+    this.logger.debug('Output node', outputNode);
+    outputNode.toDestination();
   }
 
   /**

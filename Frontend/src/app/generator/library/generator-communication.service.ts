@@ -26,7 +26,7 @@ export class GeneratorCommunicationService {
     if (this.useDirectCommunication) {
       this._subject.next(msg);
       this.log.addMessage(JSON.stringify(msg));
-      this.logger.info('Forwarded osc message directly to tone generator');
+      this.logger.info('Forwarded osc message directly to tone generator', msg);
     } else {
       this.socketService.send(Action.REDIRECT_OSC_MESSAGE, msg);
     }
