@@ -16,7 +16,10 @@ export class EffectsController {
 
     if (message.args[0].value === 0) {
       this.musicService.deleteEffectFromMasterEffectChain('reverb');
-      this.logger.info('Removed reverb effect');
+      this.logger.info('Removed reverb effect from master effect chain');
+    } else {
+      this.musicService.addReverbEffectToMasterEffectChain();
+      this.logger.info('Added reverb effect from master effect chain');
     }
   }
 
@@ -26,7 +29,10 @@ export class EffectsController {
 
     if (message.args[0].value === 0) {
       this.musicService.deleteEffectFromMasterEffectChain('pingpongdelay');
-      this.logger.info('Removed pingpongdelay effect');
+      this.logger.info('Removed pingpongdelay effect from master effect chain');
+    } else {
+      this.musicService.addPingPongDelayToMasterEffectChain();
+      this.logger.info('Added pingpongdelay effect from master effect chain');
     }
   }
 

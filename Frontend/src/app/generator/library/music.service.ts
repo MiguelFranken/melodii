@@ -1,7 +1,6 @@
 import { SampleLibrary } from './sample-library';
 import { Logger } from '@upe/logger';
-import { FeedbackDelay, Gain, JCReverb, PingPongDelay, Reverb } from 'tone';
-import { Meter } from 'tone';
+import { Gain, JCReverb, Meter, PingPongDelay } from 'tone';
 import { Injectable } from '@angular/core';
 import { DrumsKick } from './instruments/drums/drums_kick';
 import { DrumsHiHat } from './instruments/drums/drums_hihat';
@@ -51,6 +50,8 @@ export class MusicService {
   private logger: Logger = new Logger({ name: 'Music' });
 
   constructor() {
+    // Logger.MuteType(LogType.DEBUG);
+
     this.instruments.set('playnote-synth', new PlayNoteSynth()); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
     this.instruments.set('kick', new DrumsKick());
     this.instruments.set('snare', new DrumsSnare());
@@ -63,6 +64,7 @@ export class MusicService {
     this.connectAllInstrumentsToGain();
     this.connectAllInstrumentsToMasterMeter();
     this.createMetersForAllInstruments();
+
     this.createConnectionsBetweenEffectChain();
     this.connectGainToChainToMaster();
 
@@ -82,18 +84,35 @@ export class MusicService {
   }
 
   private addSomeEffectToTheMasterEffectChain() {
-    const pingPongDelay: MCPEffect = {
-      id: 'pingpongdelay',
-      effect: new PingPongDelay('4n', 0.2)
-    };
+    this.addPingPongDelayToMasterEffectChain();
+    this.addReverbEffectToMasterEffectChain();
+    this.logger.info(`Added some dummy effects`);
+  }
 
+  private pushEffectToMasterEffectChain(effect: MCPEffect) {
+    this.masterEffectChain.push(effect);
+    this.deleteConnectionsFromMasterEffectChain();
+    this.createConnectionsBetweenEffectChain();
+    this.connectGainToChainToMaster();
+
+    this.logger.debug(`Added effect ${effect.id} at the end of the master effect chain`, this.masterEffectChain);
+  }
+
+  public addReverbEffectToMasterEffectChain() {
     const reverb: MCPEffect = {
       id: 'reverb',
       effect: new JCReverb(0.55)
     };
+    this.pushEffectToMasterEffectChain(reverb);
+  }
 
-    this.masterEffectChain.push(pingPongDelay);
-    this.masterEffectChain.push(reverb);
+  public addPingPongDelayToMasterEffectChain() {
+    const pingPongDelay: MCPEffect = {
+      id: 'pingpongdelay',
+      effect: new PingPongDelay('4n', 0.2)
+    };
+    pingPongDelay.effect.wet.value = 0.5;
+    this.pushEffectToMasterEffectChain(pingPongDelay);
   }
 
   private createConnectionsBetweenEffectChain() {
