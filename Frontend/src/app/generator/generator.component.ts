@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SocketServer } from './library/socket-server';
 import { CONTROLLERS } from './library/controllers';
 import { environment } from '../../environments/environment';
+import { container } from './library/decorator/container';
 
 @Component({
   selector: 'mcp-generator',

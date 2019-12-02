@@ -2,8 +2,8 @@ import { Controller, Message, OnMessage } from "../decorator/decorators";
 import { IOSCMessage } from "../osc/osc-message";
 import { MusicService } from '../music.service';
 import { PlayNoteSynth } from '../instruments/playnote_synth';
-import { TypeChecker, OSCError } from '../types';
-import { Type } from '@angular/compiler';
+import { TypeChecker } from '../types';
+import { OSCError } from '../error';
 
 @Controller('/play_note')
 export class PlayNoteController {
@@ -56,8 +56,6 @@ export class PlayNoteController {
     }
   }
 
-  
-
   @OnMessage('/stop')
   public receivedMessageStop(@Message() msg: IOSCMessage) {
     try {
@@ -70,4 +68,5 @@ export class PlayNoteController {
       }
     }
   }
+
 }
