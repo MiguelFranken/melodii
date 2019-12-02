@@ -1,9 +1,13 @@
-import { NoiseSynth, Sampler } from 'tone';
+import { Sampler } from 'tone';
+import { IMCPInstrument } from './instruments/mcp-instrument';
+import { InstrumentName } from './music.service';
 
 /**
  * creates samplers based on wav/mp3/oog files
  */
-export class SampleLibrary {
+export class SampleLibrary implements IMCPInstrument {
+
+  public name: InstrumentName = 'SampleLibrary';
 
   public baseUrl = 'assets/samples/';
 

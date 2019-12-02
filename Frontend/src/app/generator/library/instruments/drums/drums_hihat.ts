@@ -1,7 +1,10 @@
 import { Velocity, Duration } from '../../types';
-import { NoiseSynth, Frequency } from 'tone';
+import { NoiseSynth } from 'tone';
+import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 
-export class DrumsHiHat {
+export class DrumsHiHat implements IMCPInstrument {
+
+  public name: MCPInstrumentName = "DrumsHiHat";
 
   private readonly synth = new NoiseSynth({
     noise: {
