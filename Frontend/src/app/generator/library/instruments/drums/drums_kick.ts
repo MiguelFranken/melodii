@@ -1,7 +1,7 @@
 import { Velocity, Duration } from '../../types';
 import { Sampler } from 'tone';
 import { Logger } from '@upe/logger';
-import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
+import { IMCPInstrument, MCPInstrumentName } from '../../mcp-instrument';
 
 export class DrumsKick implements IMCPInstrument {
 
@@ -18,7 +18,11 @@ export class DrumsKick implements IMCPInstrument {
     DrumsKick.baseUrl
   );
 
-  constructor() {}
+  constructor(name?: MCPInstrumentName) {
+    if (name) {
+      this.name = name;
+    }
+  }
 
   public getInstrument(): Sampler {
     return this.sampler;

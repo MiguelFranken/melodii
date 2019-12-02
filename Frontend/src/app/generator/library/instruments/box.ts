@@ -2,12 +2,25 @@ import { Polyphonizer } from '../polyphonizer';
 import { Note, Velocity, Cents } from '../types';
 import { Synth, Frequency } from 'tone';
 import { Logger } from '@upe/logger';
+import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 
-export class Box {
+export class Box implements IMCPInstrument {
+
+  public name: MCPInstrumentName = 'Box';
 
   private logger: Logger = new Logger({ name: 'Box Instrument', flags: ['music'] });
 
   private readonly voices = new Polyphonizer(() => new Synth().toDestination());
+
+  constructor(name?: MCPInstrumentName) {
+    if (name) {
+      this.name = name;
+    }
+  }
+
+  public getInstrument(): Polyphonizer<any> {
+    return this.voices;
+  }
 
   public trigger(note: Note, velocity: Velocity) {
     this.logger.info(`Trigger with note ${note} and velocity ${velocity}.`);

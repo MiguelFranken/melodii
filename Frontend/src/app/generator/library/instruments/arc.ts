@@ -3,12 +3,21 @@ import { Note, Velocity } from '../types';
 import { isVoiceActive } from '../utils';
 import { Synth } from 'tone';
 import { Logger } from '@upe/logger';
+import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 
-export class Arc {
+export class Arc implements IMCPInstrument {
+
+  public name: MCPInstrumentName = "Arc";
 
   private logger: Logger = new Logger({ name: 'Arc Instrument', flags: ['music'] });
 
   private readonly voices = new Polyphonizer(() => new Synth().toDestination());
+
+  constructor(name?: MCPInstrumentName) {
+    if (name) {
+      this.name = name;
+    }
+  }
 
   public set(note: Note, strength: Velocity) {
     this.logger.info(`Set with note ${note} and velocity ${strength}.`);
@@ -24,6 +33,10 @@ export class Arc {
       voice.volume.value = 0; // Reset volume for next use.
       voice.triggerRelease();
     }
+  }
+
+  getInstrument(): Polyphonizer<any> {
+    return this.voices;
   }
 
 }

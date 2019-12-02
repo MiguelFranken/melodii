@@ -1,5 +1,5 @@
 import { Sampler } from 'tone';
-import { IMCPInstrument } from './instruments/mcp-instrument';
+import { IMCPInstrument } from './mcp-instrument';
 import { InstrumentName } from './music.service';
 
 /**

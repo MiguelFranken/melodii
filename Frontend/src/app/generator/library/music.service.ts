@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { DrumsKick } from './instruments/drums/drums_kick';
 import { DrumsHiHat } from './instruments/drums/drums_hihat';
 import { DrumsSnare } from './instruments/drums/drums_snare';
-import { IMCPInstrument } from './instruments/mcp-instrument';
+import { IMCPInstrument } from './mcp-instrument';
 import { PlayNoteSynth } from './instruments/playnote_synth';
 
 // unique name of an instrument

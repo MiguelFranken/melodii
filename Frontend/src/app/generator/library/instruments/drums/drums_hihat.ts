@@ -1,6 +1,6 @@
 import { Velocity, Duration } from '../../types';
 import { NoiseSynth } from 'tone';
-import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
+import { IMCPInstrument, MCPInstrumentName } from '../../mcp-instrument';
 
 export class DrumsHiHat implements IMCPInstrument {
 
@@ -22,7 +22,10 @@ export class DrumsHiHat implements IMCPInstrument {
     return this.synth;
   }
 
-  constructor() {
+  constructor(name?: MCPInstrumentName) {
+    if (name) {
+      this.name = name;
+    }
     this.synth.volume.value = -20;
   }
 

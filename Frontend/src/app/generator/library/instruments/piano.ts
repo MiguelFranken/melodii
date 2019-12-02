@@ -2,24 +2,15 @@ import { Logger } from '@upe/logger';
 import { Duration, Note, Velocity } from '../types';
 import { Polyphonizer } from '../polyphonizer';
 import { Sampler, Synth } from 'tone';
+import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 
-export class Piano {
-
-  constructor() {
-    this.sampler = new Sampler({
-      attack: 0,
-      release: 1.5,
-      baseUrl: Piano.baseUrl,
-      onload: () => this.logger.debug('piano buffered'),
-      urls: this.mappedNotes,
-    }).toDestination();
-    this.sampler.volume.value = -15;
-    // this.synth
-  }
+export class Piano implements IMCPInstrument {
 
   private static baseUrl = 'samples/piano/';
 
   private readonly voices = new Polyphonizer(() => new Synth().toDestination());
+
+  public name: MCPInstrumentName = 'piano';
 
   private logger: Logger = new Logger({ name: 'Piano Instrument', flags: ['music'] });
 
@@ -111,8 +102,26 @@ export class Piano {
     'G#6': 'Gs6.mp3'
   };
 
-  // private synth: PolySynth;
   private sampler: Sampler;
+
+  constructor(name?: MCPInstrumentName) {
+    if (name) {
+      this.name = name;
+    }
+
+    this.sampler = new Sampler({
+      attack: 0,
+      release: 1.5,
+      baseUrl: Piano.baseUrl,
+      onload: () => this.logger.debug('piano buffered'),
+      urls: this.mappedNotes,
+    }).toDestination();
+    this.sampler.volume.value = -15;
+  }
+
+  getInstrument(): Polyphonizer<any> {
+    return this.voices;
+  }
 
   public trigger(note: Note, velocity: Velocity) {
     console.log(`Trigger with note${note} and velocity ${velocity}.`);

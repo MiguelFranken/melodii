@@ -1,5 +1,5 @@
 import { Instrument } from 'tone/build/esm/instrument/Instrument';
-import { Polyphonizer } from '../polyphonizer';
+import { Polyphonizer } from './polyphonizer';
 
 export type MCPInstrumentName = string;
 
