@@ -12,13 +12,26 @@ import { Piano } from './instruments/piano';
 import { Effect } from 'tone/build/esm/effect/Effect';
 import { StereoEffect } from 'tone/build/esm/effect/StereoEffect';
 
-// unique name of an instrument
+/**
+ * Unique name of an instrument
+ */
 export type InstrumentName = string;
 
-// unique name of an meter
+/**
+ * Unique name of an meter
+ * Needed as we insert Meter objects in a Map and we access the objects via the name
+ */
 export type MeterName = InstrumentName | 'master';
 
-export type MCPEffect = Effect<any> | StereoEffect<any>;
+/**
+ *
+ */
+export type MCPEffectIdentifier = string;
+
+export interface MCPEffect {
+  id: MCPEffectIdentifier;
+  effect: Effect<any> | StereoEffect<any>;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -51,25 +64,59 @@ export class MusicService {
     this.connectAllInstrumentsToMasterMeter();
     this.createMetersForAllInstruments();
     this.createConnectionsBetweenEffectChain();
-
-    // gain -> master effect chain -> master
-    this.gain.connect(this.masterEffectChain[0]);
-    this.masterEffectChain[this.masterEffectChain.length - 1].toDestination();
+    this.connectGainToChainToMaster();
 
     this.logger.info('Initialized successfully');
   }
 
+  // gain -> master effect chain -> master
+  private connectGainToChainToMaster() {
+    this.gain.disconnect();
+
+    if (this.masterEffectChain.length > 0) {
+      this.gain.connect(this.masterEffectChain[0].effect);
+      this.masterEffectChain[this.masterEffectChain.length - 1].effect.toDestination();
+    } else {
+      this.gain.toDestination();
+    }
+  }
+
   private addSomeEffectToTheMasterEffectChain() {
-    this.masterEffectChain.push(new PingPongDelay('4n', 0.2));
-    this.masterEffectChain.push(new JCReverb(0.55));
+    const pingPongDelay: MCPEffect = {
+      id: 'pingpongdelay',
+      effect: new PingPongDelay('4n', 0.2)
+    };
+
+    const reverb: MCPEffect = {
+      id: 'reverb',
+      effect: new JCReverb(0.55)
+    };
+
+    this.masterEffectChain.push(pingPongDelay);
+    this.masterEffectChain.push(reverb);
   }
 
   private createConnectionsBetweenEffectChain() {
     this.masterEffectChain.forEach((effect, index) => {
       if (index + 1 < this.masterEffectChain.length) {
-        effect.connect(this.masterEffectChain[index + 1]);
+        effect.effect.connect(this.masterEffectChain[index + 1].effect);
       }
     });
+    this.logger.debug('Created connections between effect chain', this.masterEffectChain);
+  }
+
+  public deleteEffectFromMasterEffectChain(effectID: string) {
+    this.deleteConnectionsFromMasterEffectChain();
+    this.masterEffectChain = this.masterEffectChain.filter((effect: MCPEffect) => effect.id !== effectID);
+    this.createConnectionsBetweenEffectChain();
+    this.connectGainToChainToMaster();
+  }
+
+  private deleteConnectionsFromMasterEffectChain() {
+    for (const effect of this.masterEffectChain) {
+      effect.effect.disconnect();
+      this.logger.debug(`Disconnecting effect ${effect.id}`);
+    }
   }
 
   private connectAllInstrumentsToGain() {

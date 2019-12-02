@@ -20,7 +20,7 @@
         >
         </mat-slider>
       </div>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchReverb()" fxFlex="calc(11.11% - 2px)">Reverb</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showEffectMenu()" fxFlex="calc(11.11% - 2px)" #effectButton>Effects</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchNavigation()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">menu</mat-icon></button>
     </div>
   </div>
@@ -169,6 +169,33 @@
           Tutorial
         </button>
       </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #effectMenuTemplate let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout="column" fxLayoutGap="2px">
+      <div fxLayout fxLayoutGap="2px">
+        <button
+                mat-button
+                class="overlay-button"
+                fxFlex
+                (click)="switchReverb()"
+                [class.off]="!useReverb"
+        >
+          Reverb
+        </button>
+      </div>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchPingPongDelay()"
+              [class.off]="!usePingPongDelay"
+      >
+        PingPongDelay
+      </button>
     </div>
   </div>
 </ng-template>

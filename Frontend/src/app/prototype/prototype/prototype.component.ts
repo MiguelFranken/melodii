@@ -8,7 +8,7 @@ import { Row } from './row';
 import { RowButton } from './row-button';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Logger } from '@upe/logger';
-import { Chain, HelpOverlayService, OverlayElements } from '../../shared/help-overlay/help-overlay.service';
+import { Chain, HelpOverlayService, Overlay, OverlayElements } from '../../shared/help-overlay/help-overlay.service';
 import { GeneratorCommunicationService } from '../../generator/library/generator-communication.service';
 import { NotYetImplementedService } from '../../not-yet-implemented.service';
 import { IOSCMessage } from '../../shared/osc/osc-message';
@@ -37,13 +37,8 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   private logger: Logger = new Logger({ name: 'PrototypeComponent', flags: ['component'] });
 
-  constructor(
-    private navigationService: NavigationService,
-    private communicationService: GeneratorCommunicationService,
-    private toppy: Toppy,
-    private helpOverlayService: HelpOverlayService,
-    private notYetImplementedService: NotYetImplementedService) {
-  }
+  public useReverb = true;
+  public usePingPongDelay = true;
 
   public height = '100%';
 
@@ -91,6 +86,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   @ViewChild('helpButton', { static: false, read: ElementRef })
   helpButtonElement: ElementRef;
 
+  @ViewChild('effectButton', { static: false, read: ElementRef })
+  effectButtonElement: ElementRef;
+
   @ViewChild('rowButtonElement', { static: false, read: ElementRef })
   rowButtonElement: ElementRef;
   //endregion
@@ -102,6 +100,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   @ViewChild('helpMenuTemplate', { static: true })
   helpMenuTemplate: TemplateRef<any>;
 
+  @ViewChild('effectMenuTemplate', { static: true })
+  effectMenuTemplate: TemplateRef<any>;
+
   @ViewChild('helpTemplate', { static: true })
   helpTemplate: TemplateRef<any>;
   //endregion
@@ -112,9 +113,8 @@ export class PrototypeComponent implements OnInit, OnDestroy {
    * i.e. selection of on of the available matrices
    */
   private instrumentSelectionOverlay;
-  private helpMenuOverlay;
-
-
+  private helpMenuOverlay: Overlay;
+  private effectMenuOverlay: Overlay;
   //endregion
   //endregion
 
@@ -128,6 +128,14 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   contextMenuPosition = { x: '0px', y: '0px' };
 
   private clicked = false;
+
+  constructor(
+    private navigationService: NavigationService,
+    private communicationService: GeneratorCommunicationService,
+    private toppy: Toppy,
+    private helpOverlayService: HelpOverlayService,
+    private notYetImplementedService: NotYetImplementedService) {
+  }
 
   //region Velocity
   public switchVelocity() {
@@ -195,6 +203,11 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.helpMenuOverlay.open();
   }
 
+  public showEffectMenu() {
+    this.initEffectMenuOverlay();
+    this.effectMenuOverlay.open();
+  }
+
   public showVelocityHelp() {
     this.helpOverlayService.triggerChain('velocity');
   }
@@ -202,6 +215,23 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   public showTutorial() {
     console.log('Show tutorial');
     this.helpOverlayService.triggerChain('tutorial');
+  }
+
+  private initEffectMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.effectButtonElement.nativeElement
+    });
+
+    this.effectMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.effectMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
   }
 
   private initHelpMenuOverlay() {
@@ -693,11 +723,14 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.navigationService.switchNavigation();
   }
 
+  //region Sound Effects
   public switchReverb() {
+    this.useReverb = !this.useReverb;
+
     const oscMessage: IOSCMessage = {
-      address: '/reverb',
+      address: '/effect/reverb',
       args: [
-        { type: 'f', value: 1 }
+        { type: 'f', value: this.useReverb ? 1 : 0 }
       ],
       info: {
         address: '/play_note',
@@ -708,7 +741,31 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     };
 
     this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched Reverb');
   }
+
+  public switchPingPongDelay() {
+    this.usePingPongDelay = !this.usePingPongDelay;
+
+    const oscMessage: IOSCMessage = {
+      address: '/effect/pingpongdelay',
+      args: [
+        { type: 'f', value: this.usePingPongDelay ? 1 : 0 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched PingPongDelay');
+  }
+  //endregion
 
   // TODO: Das sollte nur ein Workaround sein!
   ngOnDestroy() {
