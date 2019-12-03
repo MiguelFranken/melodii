@@ -17,13 +17,21 @@ export class PianoController {
     this.piano = music.getInstrument('piano') as Piano;
   }
 
+  /**
+   * @apiName Plays a note from the piano sampler
+   * @apiGroup Piano
+   * @apiPath /piano/play_note 
+   * @apiArgs s,note Expects a note as string 
+   * @apiArgs i,velocity Expects the duration of the note as string
+   * @apiArgs i,velocity Expects the velocity of the note as float
+   */
   @OnMessage('/play_note')
   public receivedMessage(@Message() message: IOSCMessage) {
     try {
-      const note = message.args[0].value.toString();
-      const velocity = parseFloat(message.args[1].value.toString());
       // TODO add position to decorators
-      const duration = message.args[2]? TypeChecker.ValidDurationArg(message.args[2]): undefined;
+      const note = TypeChecker.ValidNoteArg(message.args[0]);
+      const duration = TypeChecker.ValidDurationArg(message.args[1]);
+      const velocity = TypeChecker.ValidVelocityArg(message.args[2]);      
       
       this.piano.play(note, duration, velocity);
       this.logger.info('play_note', {note, duration, velocity});
