@@ -1,12 +1,13 @@
 import { Logger } from '@upe/logger';
 import { Gain, JCReverb, Meter, PingPongDelay, Reverb } from 'tone';
 import { Injectable } from '@angular/core';
-import { DrumsKick } from './instruments/drums/drums_kick';
-import { DrumsHiHat } from './instruments/drums/drums_hihat';
-import { DrumsSnare } from './instruments/drums/drums_snare';
 import { IMCPInstrument } from './mcp-instrument';
+
+// Instruments
+import { DrumsHiHat, DrumsKick, DrumsSnare } from './instruments/drums';
 import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Piano } from './instruments/piano';
+
 import { Effect } from 'tone/build/esm/effect/Effect';
 import { StereoEffect } from 'tone/build/esm/effect/StereoEffect';
 import { EffectChain } from './effect-chain';

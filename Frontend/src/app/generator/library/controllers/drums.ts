@@ -1,9 +1,7 @@
 import { Controller, Message, OnMessage } from "../decorator/decorators";
 import { IOSCMessage } from "../osc/osc-message";
 import { MusicService } from '../music.service';
-import { DrumsHiHat } from '../instruments/drums/drums_hihat';
-import { DrumsKick } from '../instruments/drums/drums_kick';
-import { DrumsSnare } from '../instruments/drums/drums_snare';
+import { DrumsHiHat, DrumsKick, DrumsSnare } from '../instruments/drums';
 import { OSCError } from '../error';
 import { TypeChecker } from '../type-checker';
 import { Logger } from '@upe/logger';
