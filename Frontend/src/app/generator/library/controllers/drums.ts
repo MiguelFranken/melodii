@@ -39,21 +39,36 @@ export class DrumsController {
     }
 
     @OnMessage('/snare/effect/reverb')
-    public reverb(@Message() message: IOSCMessage) {
-        if (message.args[0].value === 0) {
-            this.snareInstrument.deleteReverb();
-        } else {
-            this.snareInstrument.addReverb();
+    public reverb(@Message() msg: IOSCMessage) {
+        try {
+            const bool = TypeChecker.ValidEffectBoolArg(msg.args[0]);
+            if (bool) {
+                this.snareInstrument.deleteReverb();
+            } else {
+                this.snareInstrument.addReverb();
+            }
+        } catch (e) {
+            if (e instanceof OSCError) {
+                e.print(this.logger);
+            }
         }
     }
 
     @OnMessage('/snare/effect/pingpongdelay')
-    public pingpongdelay(@Message() message: IOSCMessage) {
-        if (message.args[0].value === 0) {
-            this.snareInstrument.deletePingPongDelay();
-        } else {
-            this.snareInstrument.addPingPongDelay();
+    public pingpongdelay(@Message() msg: IOSCMessage) {
+        try {
+            const bool = TypeChecker.ValidEffectBoolArg(msg.args[0]);
+            if (bool) {
+                this.snareInstrument.deletePingPongDelay();
+            } else {
+                this.snareInstrument.addPingPongDelay();
+            }
+        } catch (e) {
+            if (e instanceof OSCError) {
+                e.print(this.logger);
+            }
         }
+
     }
 
     @OnMessage('/kick')
