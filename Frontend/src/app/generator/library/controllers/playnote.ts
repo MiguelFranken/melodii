@@ -22,9 +22,8 @@ export class PlayNoteController {
     try {
       const note = TypeChecker.ValidNoteArg(msg.args[0]);
       //TODO add to decorator
-      const velocity = msg.args[1]? TypeChecker.ValidVelocityArg(msg.args[1]):undefined;
-      const duration = msg.args[2]? TypeChecker.ValidDurationArg(msg.args[2]):undefined;
-      
+      const duration = TypeChecker.ValidDurationArg(msg.args[1]);
+      const velocity = TypeChecker.ValidVelocityArg(msg.args[2]);      
 
       this.synth.triggerRelease(note, duration, velocity);
     } catch (e) {
@@ -38,7 +37,7 @@ export class PlayNoteController {
   public receivedMessageStart(@Message() msg: IOSCMessage) {
     try {
       const note = TypeChecker.ValidNoteArg(msg.args[0]);
-      const velocity = msg.args[1]? TypeChecker.ValidVelocityArg(msg.args[1]):undefined;
+      const velocity = TypeChecker.ValidVelocityArg(msg.args[1]);
 
       this.synth.trigger(note, velocity);
     } catch (e) {
