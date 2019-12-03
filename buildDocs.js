@@ -148,7 +148,7 @@ function createMarkdownFile() {
         element.apiArgs.forEach(e => {
             details += "    " + "{ " + e.value + " }," + "  // " + e.desc + "\n";
         });
-        details += NEW_LINE + "]" + ARGUMENTS_END
+        details += "]" + ARGUMENTS_END
         details += DETAILS_END;
         return details;
     }

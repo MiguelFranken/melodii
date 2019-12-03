@@ -24,7 +24,6 @@ Arguments:
 [
     { i,duration },  // Expects the duration of the snare note as string
     { i,velocity },  // Expects the velocity of the snare note as float
-
 ]
 ```
 
@@ -43,7 +42,6 @@ Arguments:
 ```
 [
     { i,boolean },  // Expects a boolean as integer to start = 1 or stop = 0 
-
 ]
 ```
 
@@ -62,7 +60,6 @@ Arguments:
 ```
 [
     { i,boolean },  // Expects a boolean as integer to start = 1 or stop = 0 
-
 ]
 ```
 
@@ -82,7 +79,6 @@ Arguments:
 [
     { i,duration },  // Expects the duration of the kick note as string
     { i,velocity },  // Expects the velocity of the kick note as float
-
 ]
 ```
 
@@ -102,7 +98,6 @@ Arguments:
 [
     { i,duration },  // Expects the duration of the hihat note as string
     { i,velocity },  // Expects the velocity of the hihat note as float
-
 ]
 ```
 
@@ -134,7 +129,6 @@ Arguments:
     { s,note },  // Expects a note as string
     { i,duration },  // Expects the duration of the note as string
     { i,velocity },  // Expects the velocity of the note as float
-
 ]
 ```
 
