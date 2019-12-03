@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
-import Client from './oscclient';
+import { OSCClient } from './oscclient';
 import { logger, loggerD } from './tools';
-import ConfigHandler from './configHandler';
+import { ConfigHandler } from './configHandler';
 import text from './visual_strings';
 import questions from './questions';
 
@@ -17,13 +17,15 @@ export default class CmdTool {
 
   private settings = {
     port: 57121,
-    address: '127.0.0.1',
+    address: "",
     path: "",
     args: new Array(),
+    url: "mcp-dev.miguel-franken.com",
   };
-  private cli: any;
+  private cli: OSCClient = new OSCClient(this.settings.address, this.settings.port);
   private configHandler: any;
   private ft: boolean = true;
+  private loading: boolean = false;
 
   constructor() {
     this.configHandler = new ConfigHandler();
@@ -31,30 +33,29 @@ export default class CmdTool {
       this.settings = this.configHandler.loadData();
       this.ft = false;
     }
-    this.createCli();
+    this.cli = new OSCClient(
+      this.settings.address,
+      this.settings.port,
+    );
   }
 
   private validString(str: string, r: RegExp): boolean {
     return (str.match(r)) ? true : false;
   }
 
-  private createCli() {
-    loggerD('no client defined');
-    this.cli = new Client(
-      this.settings.address,
-      this.settings.port,
-    );
-  }
-
-  private closeCli() {
-    this.cli.close();
-    this.cli = undefined;
-  }
-
   public init() {
+    this.cli.dnslookup(this.settings.url, (err, address) => {
+      if (err) {
+        logger("dnslookup unsuccessful");
+        this.menu();
+      }
+      this.settings.address = address;
+      this.cli.setAddress(address);
+    });
     if (this.ft) {
       this.changePath(true);
     } else {
+      this.cli.openUDP();
       this.menu();
     }
   }
@@ -108,14 +109,33 @@ export default class CmdTool {
     inquirer.prompt(questions[2])
       .then((answers: { address: string; }) => {
         const { address } = answers;
+        let parsed = "";
         if (!this.validString(address, this.regex.address)) {
-          logger('wrong address syntax');
-          return this.changeAddress();
+          logger(address);
+          if (this.validString(address, this.regex.url)) {
+            const url = address;
+            this.loading = true;
+            logger("dns lookup please wait");
+            this.cli.dnslookup(url, (err, address) => {
+              if (err) {
+                logger("dnslookup unsuccessful");
+                this.menu();
+              }
+              this.settings.url = url;
+              this.settings.address = address;
+              this.cli.setAddress(address);
+              this.menu();
+            });
+            return;
+          } else {
+            logger('wrong address syntax');
+            return this.changeAddress();
+          }
+        } else {
+          parsed = address;
         }
-        this.settings.address = address;
-        if (this.cli) {
-          this.closeCli();
-        }
+        this.settings.address = parsed;
+        this.cli.setAddress(parsed);
         this.menu();
       });
   }
@@ -134,18 +154,13 @@ export default class CmdTool {
           return this.changePort();
         }
         this.settings.port = parsed;
-        if (this.cli) {
-          this.closeCli();
-        }
+        this.cli.setPort(parsed);
         this.menu();
       });
   }
 
   private send() {
     const { path, args } = this.settings;
-    if (!this.cli) {
-      this.createCli();
-    }
 
     const deli = this.cli.send(path, args);
     if (!deli) {
@@ -157,17 +172,11 @@ export default class CmdTool {
   }
 
   private playSong() {
-    if (!this.cli) {
-      this.createCli();
-    }
     this.cli.playAmelie();
     this.menu();
   }
 
   private playRandomNote() {
-    if (!this.cli) {
-      this.createCli();
-    }
     this.cli.send('/play_note', [{ type: 's', value: 'C2' }]);
     this.menu();
   }
