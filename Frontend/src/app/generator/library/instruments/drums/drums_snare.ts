@@ -2,7 +2,7 @@ import { Velocity, Duration } from '../../types';
 import { Gain, JCReverb, PingPongDelay, Reverb, Sampler, ToneAudioNode } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../../mcp-instrument';
-import { MCPEffect } from '../../music.service';
+import { MCPEffect } from '../../types';
 import { EffectChain } from '../../effect-chain';
 
 export class DrumsSnare implements IMCPInstrument {

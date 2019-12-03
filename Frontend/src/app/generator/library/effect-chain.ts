@@ -1,5 +1,5 @@
 import { ToneAudioNode } from 'tone';
-import { MCPEffect, MCPEffectIdentifier } from './music.service';
+import { MCPEffect, MCPEffectIdentifier } from './types';
 import { Logger } from '@upe/logger';
 
 export type EffectChainIdentifier = string;
