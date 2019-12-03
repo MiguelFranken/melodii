@@ -590,14 +590,14 @@ export class PrototypeComponent implements OnInit, OnDestroy {
             {
               'type': 's',
               value: note // note
+            },            
+            {
+              'type': 's',
+              value: '8n' // duration
             },
             {
               'type': 'f',
               value: button.velocity // velocity
-            },
-            {
-              'type': 's',
-              value: '8n' // duration
             },
           ],
           info: {
@@ -732,7 +732,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     const oscMessage: IOSCMessage = {
       address: '/effect/reverb',
       args: [
-        { type: 'f', value: this.useReverbOnMaster ? 1 : 0 }
+        { type: 'i', value: this.useReverbOnMaster ? 1 : 0 }
       ],
       info: {
         address: '/play_note',
@@ -753,7 +753,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     const oscMessage: IOSCMessage = {
       address: '/effect/pingpongdelay',
       args: [
-        { type: 'f', value: this.usePingPongDelayOnMaster ? 1 : 0 }
+        { type: 'i', value: this.usePingPongDelayOnMaster ? 1 : 0 }
       ],
       info: {
         address: '/play_note',
@@ -774,7 +774,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     const oscMessage: IOSCMessage = {
       address: '/drums/snare/effect/reverb',
       args: [
-        { type: 'f', value: this.useReverbOnSnare ? 1 : 0 }
+        { type: 'i', value: this.useReverbOnSnare ? 1 : 0 }
       ],
       info: {
         address: '/play_note',
@@ -795,7 +795,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     const oscMessage: IOSCMessage = {
       address: '/drums/snare/effect/pingpongdelay',
       args: [
-        { type: 'f', value: this.usePingPongDelayOnSnare ? 1 : 0 }
+        { type: 'i', value: this.usePingPongDelayOnSnare ? 1 : 0 }
       ],
       info: {
         address: '/play_note',
