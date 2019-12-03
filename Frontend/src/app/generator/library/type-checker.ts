@@ -19,7 +19,7 @@ export class TypeChecker {
     const parsed = String(value);
     if (type !== "s") {
       throw new OSCError("MCPx0000", "Note has invalid type");
-    } else if (!parsed.match(TypeChecker.regex.velocity)) {
+    } else if (!parsed.match(TypeChecker.regex.note)) {
       throw new OSCError("MCPx0001", "Note has invalid value");
     }
     return parsed;
