@@ -1,4 +1,4 @@
-import { IOSCArg } from './osc/osc-types';
+import { IOSCArg, OSCTypeTag } from './osc/osc-types';
 import { OSCError } from './error';
 import { Cents, Duration, Note, Velocity } from './types';
 
@@ -9,6 +9,7 @@ export class TypeChecker {
     velocity: /^1$|^0$|^0.[0-9]+$/,
     duration: /^$/,
     cents: /^$/,
+    effectbool: /^0$|^1$/,
   };
 
   constructor() {
@@ -39,7 +40,7 @@ export class TypeChecker {
     return parsed;
   }
 
-  public static ValidDurationArg(arg: IOSCArg): Duration | undefined {
+  public static ValidDurationArg(arg: IOSCArg) {
     const { type, value } = arg;
     if (type !== "s") {
       throw new OSCError("MCPx0005", "Duration has invalid type", arg);
@@ -48,9 +49,21 @@ export class TypeChecker {
     return value;
   }
 
-  public static ValidCentsArg(arg: IOSCArg): Cents | undefined {
-    
+  public static ValidCentsArg(arg: IOSCArg) {
+
     // return value;
     return arg.value as number;
+  }
+
+  public static ValidEffectBoolArg(arg: IOSCArg):boolean {
+    const { type, value } = arg;
+    const parsed = String(value);
+    // TODO: update error code if the other functions use 0007
+    if (type !== "i") {
+      throw new OSCError("MCPx0007", "EffectBoolArg has invalid type", arg);
+    } else if (parsed.match(TypeChecker.regex.effectbool)) {
+      throw new OSCError("MCPx0008", "EffectBoolArg has invalid value", arg);
+    } 
+    return !!parsed;
   }
 }
