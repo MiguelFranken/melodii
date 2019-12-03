@@ -590,7 +590,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
             {
               'type': 's',
               value: note // note
-            },            
+            },
             {
               'type': 's',
               value: '8n' // duration

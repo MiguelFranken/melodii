@@ -23,7 +23,7 @@ export class PlayNoteController {
       const note = TypeChecker.ValidNoteArg(msg.args[0]);
       //TODO add to decorator
       const duration = TypeChecker.ValidDurationArg(msg.args[1]);
-      const velocity = TypeChecker.ValidVelocityArg(msg.args[2]);      
+      const velocity = TypeChecker.ValidVelocityArg(msg.args[2]);
 
       this.synth.triggerRelease(note, duration, velocity);
     } catch (e) {

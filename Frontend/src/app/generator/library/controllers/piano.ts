@@ -20,8 +20,8 @@ export class PianoController {
   /**
    * @apiName Plays a note from the piano sampler
    * @apiGroup Piano
-   * @apiPath /piano/play_note 
-   * @apiArgs s,note Expects a note as string 
+   * @apiPath /piano/play_note
+   * @apiArgs s,note Expects a note as string
    * @apiArgs i,velocity Expects the duration of the note as string
    * @apiArgs i,velocity Expects the velocity of the note as float
    */
@@ -31,8 +31,8 @@ export class PianoController {
       // TODO add position to decorators
       const note = TypeChecker.ValidNoteArg(message.args[0]);
       const duration = TypeChecker.ValidDurationArg(message.args[1]);
-      const velocity = TypeChecker.ValidVelocityArg(message.args[2]);      
-      
+      const velocity = TypeChecker.ValidVelocityArg(message.args[2]);
+
       this.piano.play(note, duration, velocity);
       this.logger.info('play_note', {note, duration, velocity});
     } catch (e) {
