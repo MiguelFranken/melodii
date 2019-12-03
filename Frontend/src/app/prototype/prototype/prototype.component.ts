@@ -37,8 +37,10 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   private logger: Logger = new Logger({ name: 'PrototypeComponent', flags: ['component'] });
 
-  public useReverb = true;
-  public usePingPongDelay = true;
+  public useReverbOnMaster = true;
+  public usePingPongDelayOnMaster = true;
+  public useReverbOnSnare = false;
+  public usePingPongDelayOnSnare = false;
 
   public height = '100%';
 
@@ -505,7 +507,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
       const snareButton = new RowButton();
       snareButton.setOSCMessage({
-        address: '/drums/snare',
+        address: '/drums/snare/play',
         args: [
           {
             'type': "s",
@@ -724,13 +726,13 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   //region Sound Effects
-  public switchReverb() {
-    this.useReverb = !this.useReverb;
+  public switchReverbOnMaster() {
+    this.useReverbOnMaster = !this.useReverbOnMaster;
 
     const oscMessage: IOSCMessage = {
       address: '/effect/reverb',
       args: [
-        { type: 'f', value: this.useReverb ? 1 : 0 }
+        { type: 'f', value: this.useReverbOnMaster ? 1 : 0 }
       ],
       info: {
         address: '/play_note',
@@ -742,16 +744,16 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
     this.communicationService.sendMessage(oscMessage);
 
-    this.logger.debug('Switched Reverb');
+    this.logger.debug('Switched reverb effect on master');
   }
 
-  public switchPingPongDelay() {
-    this.usePingPongDelay = !this.usePingPongDelay;
+  public switchPingPongDelayOnMaster() {
+    this.usePingPongDelayOnMaster = !this.usePingPongDelayOnMaster;
 
     const oscMessage: IOSCMessage = {
       address: '/effect/pingpongdelay',
       args: [
-        { type: 'f', value: this.usePingPongDelay ? 1 : 0 }
+        { type: 'f', value: this.usePingPongDelayOnMaster ? 1 : 0 }
       ],
       info: {
         address: '/play_note',
@@ -763,7 +765,49 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
     this.communicationService.sendMessage(oscMessage);
 
-    this.logger.debug('Switched PingPongDelay');
+    this.logger.debug('Switched PingPongDelay on master');
+  }
+
+  public switchReverbOnSnare() {
+    this.useReverbOnSnare = !this.useReverbOnSnare;
+
+    const oscMessage: IOSCMessage = {
+      address: '/drums/snare/effect/reverb',
+      args: [
+        { type: 'f', value: this.useReverbOnSnare ? 1 : 0 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched reverb effect on snare');
+  }
+
+  public switchPingPongDelayOnSnare() {
+    this.usePingPongDelayOnSnare = !this.usePingPongDelayOnSnare;
+
+    const oscMessage: IOSCMessage = {
+      address: '/drums/snare/effect/pingpongdelay',
+      args: [
+        { type: 'f', value: this.usePingPongDelayOnSnare ? 1 : 0 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched PingPongDelay on snare');
   }
   //endregion
 

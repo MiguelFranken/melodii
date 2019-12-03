@@ -46,8 +46,6 @@ export class MusicService {
 
   private gain = new Gain(0.4);
 
-  private masterEffectChainOLD: MCPEffect[] = [];
-
   private masterEffectChain: EffectChain;
 
   private logger: Logger = new Logger({ name: 'Music' });
@@ -91,7 +89,7 @@ export class MusicService {
       id: 'pingpongdelay',
       effect: new PingPongDelay('4n', 0.2)
     };
-    pingPongDelay.effect.wet.value = 0.5;
+    // pingPongDelay.effect.wet.value = 0.5;
     return pingPongDelay;
   }
 

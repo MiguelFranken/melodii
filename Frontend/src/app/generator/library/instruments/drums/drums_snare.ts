@@ -1,8 +1,9 @@
 import { Velocity, Duration } from '../../types';
-import { JCReverb, Sampler, ToneAudioNode } from 'tone';
+import { Gain, JCReverb, PingPongDelay, Sampler, ToneAudioNode } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../../mcp-instrument';
 import { MCPEffect } from '../../music.service';
+import { EffectChain } from '../../effect-chain';
 
 export class DrumsSnare implements IMCPInstrument {
 
@@ -13,27 +14,31 @@ export class DrumsSnare implements IMCPInstrument {
 
   private logger: Logger = new Logger({ name: 'DrumsSnare Instrument', flags: ['music'] });
 
-  private effectChain: MCPEffect[] = [];
+  private effectChain: EffectChain;
 
-  private outputAudioNode: ToneAudioNode;
+  private outputNode: ToneAudioNode;
+
+  private readonly sampler;
 
   constructor(name?: MCPInstrumentName) {
     if (name) {
       this.name = name;
     }
 
-    this.addReverb();
-    this.wireEffects();
+    this.outputNode = new Gain(0.4);
+
+    this.sampler = new Sampler(
+      { C2: DrumsSnare.path },
+      () => this.logger.debug('drum snare buffered'),
+      DrumsSnare.baseUrl
+    );
+
+    this.effectChain = new EffectChain(this.name, this.sampler);
+    this.rewire();
   }
 
-  private readonly sampler = new Sampler(
-    { C2: DrumsSnare.path },
-    () => this.logger.debug('drum snare buffered'),
-    DrumsSnare.baseUrl
-  );
-
   public getAudioNode() {
-    return this.outputAudioNode;
+    return this.outputNode;
   }
 
   public play(duration: Duration = "8n", velocity: Velocity) {
@@ -42,24 +47,45 @@ export class DrumsSnare implements IMCPInstrument {
   }
 
   public addReverb() {
+    this.effectChain.getOutputNode().disconnect(this.outputNode);
     const reverb: MCPEffect = {
       id: 'reverb',
       effect: new JCReverb(0.55)
     };
-    this.effectChain.push(reverb);
-    this.logger.debug('Added reverb effect. Effect chain:', this.effectChain);
+    this.effectChain.pushEffect(reverb);
+    this.rewire();
+    this.logger.debug('Added reverb effect');
   }
 
-  private wireEffects() {
-    if (this.effectChain.length === 0) {
-      this.outputAudioNode = this.sampler;
-    } else {
-      // TODO
-      this.sampler.connect(this.effectChain[0].effect);
-      this.outputAudioNode = this.effectChain[0].effect;
-    }
+  public deleteReverb() {
+    this.effectChain.getOutputNode().disconnect(this.outputNode);
+    this.effectChain.deleteEffectByID('reverb');
+    this.rewire();
+    this.logger.debug('Deleted reverb effect');
+  }
 
-    this.logger.debug('Wired effects. OutputAudioNode:', this.outputAudioNode);
+  public addPingPongDelay() {
+    this.effectChain.getOutputNode().disconnect(this.outputNode);
+    const pingPongDelay: MCPEffect = {
+      id: 'pingpongdelay',
+      effect: new PingPongDelay('4n', 0.2)
+    };
+    // pingPongDelay.effect.wet.value = 0.5;
+    this.effectChain.pushEffect(pingPongDelay);
+    this.rewire();
+    this.logger.debug('Added pingpongdelay effect');
+  }
+
+  public deletePingPongDelay() {
+    this.effectChain.getOutputNode().disconnect(this.outputNode);
+    this.effectChain.deleteEffectByID('pingpongdelay');
+    this.rewire();
+    this.logger.debug('Deleted pingpongdelay effect');
+  }
+
+  private rewire() {
+    const effectNode = this.effectChain.getOutputNode();
+    effectNode.connect(this.outputNode);
   }
 
 }

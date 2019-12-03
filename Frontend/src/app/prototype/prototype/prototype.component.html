@@ -181,20 +181,38 @@
                 mat-button
                 class="overlay-button"
                 fxFlex
-                (click)="switchReverb()"
-                [class.off]="!useReverb"
+                (click)="switchReverbOnMaster()"
+                [class.off]="!useReverbOnMaster"
         >
-          Reverb
+          Reverb (Master)
         </button>
       </div>
       <button
               mat-button
               class="overlay-button"
               fxFlex
-              (click)="switchPingPongDelay()"
-              [class.off]="!usePingPongDelay"
+              (click)="switchPingPongDelayOnMaster()"
+              [class.off]="!usePingPongDelayOnMaster"
       >
-        PingPongDelay
+        PingPongDelay (Master)
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchReverbOnSnare()"
+              [class.off]="!useReverbOnSnare"
+      >
+        Reverb (Snare)
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchPingPongDelayOnSnare()"
+              [class.off]="!usePingPongDelayOnSnare"
+      >
+        PingPongDelay (Snare)
       </button>
     </div>
   </div>

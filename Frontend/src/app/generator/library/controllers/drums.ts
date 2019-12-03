@@ -13,27 +13,45 @@ export class DrumsController {
 
     private logger: Logger = new Logger({ name: 'DrumsController', flags: ['controller'] });
 
-    private synthHihat: DrumsHiHat;
-    private synthKick: DrumsKick;
-    private synthSnare: DrumsSnare;
+    private hihatInstrument: DrumsHiHat;
+    private kickInstrument: DrumsKick;
+    private snareInstrument: DrumsSnare;
 
     constructor(private music: MusicService) {
-        this.synthHihat = this.music.getInstrument('hihat') as DrumsHiHat;
-        this.synthKick = this.music.getInstrument('kick') as DrumsKick;
-        this.synthSnare = this.music.getInstrument('snare') as DrumsSnare;
+        this.hihatInstrument = this.music.getInstrument('hihat') as DrumsHiHat;
+        this.kickInstrument = this.music.getInstrument('kick') as DrumsKick;
+        this.snareInstrument = this.music.getInstrument('snare') as DrumsSnare;
     }
 
-    @OnMessage('/snare')
+    @OnMessage('/snare/play')
     public receivedMsgSnare(@Message() msg: IOSCMessage) {
         try {
             const duration = TypeChecker.ValidDurationArg(msg.args[0]);
             const velocity = TypeChecker.ValidVelocity(msg.args);
 
-            this.synthSnare.play(duration, velocity);
+            this.snareInstrument.play(duration, velocity);
         } catch (e) {
             if (e instanceof OSCError) {
                 e.print(this.logger);
             }
+        }
+    }
+
+    @OnMessage('/snare/effect/reverb')
+    public reverb(@Message() message: IOSCMessage) {
+        if (message.args[0].value === 0) {
+            this.snareInstrument.deleteReverb();
+        } else {
+            this.snareInstrument.addReverb();
+        }
+    }
+
+    @OnMessage('/snare/effect/pingpongdelay')
+    public pingpongdelay(@Message() message: IOSCMessage) {
+        if (message.args[0].value === 0) {
+            this.snareInstrument.deletePingPongDelay();
+        } else {
+            this.snareInstrument.addPingPongDelay();
         }
     }
 
@@ -43,7 +61,7 @@ export class DrumsController {
             const duration = TypeChecker.ValidDurationArg(msg.args[0]);
             const velocity = TypeChecker.ValidVelocity(msg.args);
 
-            this.synthKick.play(duration, velocity);
+            this.kickInstrument.play(duration, velocity);
         } catch (e) {
             if (e instanceof OSCError) {
                 e.print(this.logger);
@@ -57,7 +75,7 @@ export class DrumsController {
             const duration = TypeChecker.ValidDurationArg(msg.args[0]);
             const velocity = TypeChecker.ValidVelocity(msg.args);
 
-            this.synthHihat.play(duration, velocity);
+            this.hihatInstrument.play(duration, velocity);
         } catch (e) {
             if (e instanceof OSCError) {
                 e.print(this.logger);
