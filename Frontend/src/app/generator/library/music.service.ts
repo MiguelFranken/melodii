@@ -1,4 +1,3 @@
-import { SampleLibrary } from './sample-library';
 import { Logger } from '@upe/logger';
 import { Gain, JCReverb, Meter, PingPongDelay, Reverb } from 'tone';
 import { Injectable } from '@angular/core';
@@ -58,7 +57,6 @@ export class MusicService {
     this.instruments.set('playnote-synth', new PlayNoteSynth()); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
     this.instruments.set('kick', new DrumsKick());
     this.instruments.set('snare', new DrumsSnare());
-    this.instruments.set('pianoALT', new SampleLibrary()); // TODO MF: Das ist die alte Piano Klasse. Löschen?
     this.instruments.set('piano', new Piano());
     this.instruments.set('hihat', new DrumsHiHat());
 
@@ -71,8 +69,8 @@ export class MusicService {
     this.connectAllInstrumentsToGain();
     const master = new Gain(0.4);
     this.masterEffectChain = new EffectChain('master', this.gain, this.outputGain);
-    this.addPingPongDelayToMasterEffectChain();
-    this.addReverbEffectToMasterEffectChain();
+    //this.addPingPongDelayToMasterEffectChain();
+    //this.addReverbEffectToMasterEffectChain();
     this.outputGain.toDestination();
 
     this.logger.info('Initialized successfully');
