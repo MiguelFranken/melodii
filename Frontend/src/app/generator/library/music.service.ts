@@ -45,6 +45,7 @@ export class MusicService {
   private meters: Map<MeterName, Meter> = new Map();
 
   private gain = new Gain(0.4);
+  private outputGain = new Gain(0.4);
 
   private masterEffectChain: EffectChain;
 
@@ -68,10 +69,11 @@ export class MusicService {
 
     // wires all the signals correctly for sound output
     this.connectAllInstrumentsToGain();
-    this.masterEffectChain = new EffectChain('master', this.gain);
+    const master = new Gain(0.4);
+    this.masterEffectChain = new EffectChain('master', this.gain, this.outputGain);
     this.addPingPongDelayToMasterEffectChain();
     this.addReverbEffectToMasterEffectChain();
-    this.rewire();
+    this.outputGain.toDestination();
 
     this.logger.info('Initialized successfully');
   }
@@ -81,6 +83,7 @@ export class MusicService {
       id: 'reverb',
       effect: new JCReverb(0.55)
     };
+    reverb.effect.wet.value = 0.5;
     return reverb;
   }
 
@@ -89,29 +92,20 @@ export class MusicService {
       id: 'pingpongdelay',
       effect: new PingPongDelay('4n', 0.2)
     };
-    // pingPongDelay.effect.wet.value = 0.5;
+    pingPongDelay.effect.wet.value = 0.5;
     return pingPongDelay;
   }
 
   public deleteEffectFromMasterEffectChain(effectID: MCPEffectIdentifier) {
     this.masterEffectChain.deleteEffectByID(effectID);
-    this.rewire();
   }
 
   public addPingPongDelayToMasterEffectChain() {
     this.masterEffectChain.pushEffect(this.getPingPongDelayEffect());
-    this.rewire();
   }
 
   public addReverbEffectToMasterEffectChain() {
     this.masterEffectChain.pushEffect(this.getReverbEffect());
-    this.rewire();
-  }
-
-  public rewire() {
-    const outputNode = this.masterEffectChain.getOutputNode();
-    this.logger.debug('Output node', outputNode);
-    outputNode.toDestination();
   }
 
   /**

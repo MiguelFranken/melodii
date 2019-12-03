@@ -13,21 +13,14 @@ export class EffectChain {
   /**
    * @param id An unique identifier for an effect chain
    * @param inputNode Input signal that flows into this effect chain
+   * @param outputNode TODO
    */
-  constructor(private id: EffectChainIdentifier, private inputNode: ToneAudioNode) {
+  constructor(private id: EffectChainIdentifier, private inputNode: ToneAudioNode, private outputNode: ToneAudioNode) {
     this.logger = new Logger({ name: `EffectChain ${id}`, flags: ['effect-chain'] });
+    this.inputNode.connect(this.outputNode);
   }
 
   //region Public Methods
-  public getOutputNode(): ToneAudioNode {
-    if (this.effects.length > 0) {
-      return this.effects[this.effects.length - 1].effect;
-    } else {
-      this.logger.warn('Output node is input node. Effect chain is empty!');
-      return this.inputNode;
-    }
-  }
-
   /**
    * Adds a new effect to the end of this effect chain. This means that everything has to be rewired.
    * @param effect Effect to push at the end of this effect chain
@@ -35,15 +28,11 @@ export class EffectChain {
   public pushEffect(effect: MCPEffect) {
     this.logger.debug(`Adding effect ${effect.id} at the end of the effect chain..`, this.effects);
 
-    this.effects.push(effect);
     this.deleteConnections();
+    this.effects.push(effect);
     this.createConnections();
 
-    if (this.effects.length === 1) {
-      this.inputNode.connect(effect.effect);
-    }
-
-    this.logger.debug(`Added effect ${effect.id} at the end of the effect chain`, this.effects);
+    this.logger.info(`Added effect ${effect.id} at the end of the effect chain`, this.effects);
   }
 
   /**
@@ -73,31 +62,49 @@ export class EffectChain {
       return;
     }
 
-    const effectToDelete: MCPEffect = this.effects[index];
-
     this.deleteConnections();
     this.effects = this.effects.filter((_, arrayIndex: number) => arrayIndex !== index);
     this.createConnections();
-
-    if (index === 0 && this.effects.length > 0) {
-      this.logger.debug(`Rewiring input node to effect '${this.effects[0].id}':`, this.effects[0]);
-      this.inputNode.disconnect(effectToDelete.effect);
-      this.inputNode.connect(this.effects[0].effect);
-    }
   }
   //endregion
 
   //region Private Methods
   /**
-   * Deletes all connections from the effect nodes in the master effect chain
-   * so that it is possible to reset them later.
+   * Deletes all connections between the nodes so that it is possible to rewire them later.
+   * inputNode -/-> effect 1 -/-> effect 2 -/-> ... -/-> effect n-1 -/-> effect n -/-> outputNode
    */
   private deleteConnections() {
     this.logger.debug('Disconnecting all effects...');
-    for (const effect of this.effects) {
-      effect.effect.disconnect();
-      this.logger.debug(`Disconnected effect ${effect.id}`);
+
+    // disconnect connection between effects
+    this.effects.forEach((effect: MCPEffect, index: number) => {
+      if (index + 1 < this.effects.length) {
+        effect.effect.disconnect();
+        this.logger.debug(`Disconnected effect '${effect.id}'`);
+      }
+    });
+
+    // delete connection from input node
+    this.logger.debug(`Disconnecting input node from chain...`);
+    if (this.effects.length > 0) {
+      // this.logger.info('fall 1.1');
+      const firstEffectInChain = this.effects[0];
+      this.inputNode.disconnect(firstEffectInChain.effect);
+    } else {
+      // this.logger.info('fall 1.2');
+      this.inputNode.disconnect(this.outputNode);
     }
+    this.logger.debug(`Disconnected input node from chain`);
+
+    // delete connection to output node
+    this.logger.debug(`Disconnecting chain from output node...`);
+    if (this.effects.length > 0) {
+      const lastEffectInChain = this.effects[this.effects.length - 1];
+      this.logger.info(`Disconnecting effect from output node:`, lastEffectInChain);
+      lastEffectInChain.effect.disconnect(this.outputNode);
+    }
+    this.logger.debug(`Disconnected chain from output node`);
+
     this.logger.debug('Disconnected all effects');
   }
 
@@ -105,9 +112,10 @@ export class EffectChain {
    * Adds connections within the chain so that an output signal of
    * a predecessor effect flows into the input of the successor effect.
    *
-   * effect 1 -> effect 2 -> ... -> effect n-1 -> effect n
+   * inputNode -> effect 1 -> effect 2 -> ... -> effect n-1 -> effect n -> outputNode
    */
   private createConnections() {
+    // create connections between effects
     this.logger.debug('Creating connections between the effects..');
     this.effects.forEach((effect, index) => {
       if (index + 1 < this.effects.length) {
@@ -115,6 +123,18 @@ export class EffectChain {
       }
     });
     this.logger.debug('Created connections between the effects');
+
+    // inputNode -> effect 1 && effect n -> outputNode
+    if (this.effects.length > 0) {
+      this.logger.info('Fall 1 bei createConnections()');
+      this.inputNode.connect(this.effects[0].effect);
+      this.logger.info(`Connected input node to effect:`, this.effects[0]);
+      this.effects[this.effects.length - 1].effect.connect(this.outputNode);
+      this.logger.info(`Connected effect to output node:`, this.effects[this.effects.length - 1]);
+    } else {
+      this.inputNode.connect(this.outputNode);
+    }
+    this.logger.debug('Connected input node and output node to effect chain');
   }
   //endregion
 
