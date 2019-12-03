@@ -18,11 +18,12 @@ export class PianoController {
   }
 
   /**
-   * @apiName Plays a note from the piano sampler
    * @apiGroup Piano
+   * @apiName Play Note
+   * @apiDesc Plays a note from the piano sampler
    * @apiPath /piano/play_note
    * @apiArgs s,note Expects a note as string
-   * @apiArgs i,velocity Expects the duration of the note as string
+   * @apiArgs i,duration Expects the duration of the note as string
    * @apiArgs i,velocity Expects the velocity of the note as float
    */
   @OnMessage('/play_note')

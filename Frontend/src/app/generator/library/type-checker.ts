@@ -57,13 +57,13 @@ export class TypeChecker {
 
   public static ValidEffectBoolArg(arg: IOSCArg): boolean {
     const { type, value } = arg;
-    const parsed = String(value);
+    const parsed = value;
     // TODO: update error code if the other functions use 0007
     if (type !== "i") {
       throw new OSCError("MCPx0007", "EffectBoolArg has invalid type", arg);
-    } else if (parsed.match(TypeChecker.regex.effectbool)) {
+    } else if (String(parsed).match(TypeChecker.regex.effectbool)) {
       throw new OSCError("MCPx0008", "EffectBoolArg has invalid value", arg);
     }
-    return !!parsed;
+    return (parsed === 0)?false:true;
   }
 }

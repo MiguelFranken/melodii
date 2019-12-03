@@ -27,15 +27,15 @@ const ARGUMENTS_END = NEW_LINE + CODE_CHAR + NEW_LINE2;
 const HEADER = TITLE + DESC;
 
 const TABLE_START = '<table style="width:100%;text-align:left;">' + NEW_LINE;
-const TABLE_END = '</table>' + NEW_LINE;
+const TABLE_END = '</table>' + NEW_LINE2 + NEW_LINE;
 const TABLE_ROW_START = '<tr style="vertical-align:top;">' + NEW_LINE;
 const TABLE_ROW_END = "</tr>" + NEW_LINE;
 const TABLE_COL_START = "<th>";
 const TABLE_COL1_START = '<th style="width:15%">';
-const TABLE_COL2_START = '<th style="width:25%">';
+const TABLE_COL2_START = '<th style="width:30%">';
 const TABLE_COL_END = "</th>" + NEW_LINE;
 const DETAILS_START = "<details><p>" + NEW_LINE2;
-const DETAILS_END = NEW_LINE2 + "</p></details>";
+const DETAILS_END = "</p></details>";
 
 
 /**
@@ -152,12 +152,15 @@ function createMarkdownFile() {
         details += DETAILS_END;
         return details;
     }
-    
 
-    
+
     console.log(groups);
 
-    for(let i = 0; i < groups.length; i++) {
+    var wStream = fs.createWriteStream(output_path);
+    wStream.write(HEADER);
+    
+
+    for (let i = 0; i < groups.length; i++) {
         let str = "";
         str += TITLE2_CHAR + groups[i] + NEW_LINE2;
         str += TABLE_START;
@@ -167,7 +170,7 @@ function createMarkdownFile() {
         str += TABLE_COL_START + TABLE_COL_END;
         str += TABLE_ROW_END;
 
-        for(let j = 0; j < objarr.length; j++) {
+        for (let j = 0; j < objarr.length; j++) {
             if (objarr[j].apiGroup == groups[i]) {
                 str += TABLE_ROW_START;
                 str += TABLE_COL_START + objarr[j].apiName + TABLE_COL_END;
@@ -180,8 +183,10 @@ function createMarkdownFile() {
         }
 
         str += TABLE_END;
-        fs.writeFileSync(output_path, HEADER + str);
+        wStream.write(str);
     };
+
+    wStream.end();
 
 }
 

@@ -21,6 +21,14 @@ export class DrumsController {
         this.snareInstrument = this.music.getInstrument('snare') as DrumsSnare;
     }
 
+    /**
+     * @apiGroup Drums
+     * @apiName Play Snare
+     * @apiDesc Plays the snare from the snare sampler
+     * @apiPath /snare/play
+     * @apiArgs i,duration Expects the duration of the snare note as string
+     * @apiArgs i,velocity Expects the velocity of the snare note as float
+     */
     @OnMessage('/snare/play')
     public receivedMsgSnare(@Message() msg: IOSCMessage) {
         try {
@@ -36,6 +44,13 @@ export class DrumsController {
         }
     }
 
+    /**
+     * @apiGroup Drums
+     * @apiName Start/Stop reverb
+     * @apiDesc Based on the arg starts or stops the reverb effect on the snare
+     * @apiPath /snare/effect/reverb
+     * @apiArgs i,boolean Expects a boolean as integer to start = 1 or stop = 0 
+     */
     @OnMessage('/snare/effect/reverb')
     public reverb(@Message() msg: IOSCMessage) {
         try {
@@ -52,6 +67,13 @@ export class DrumsController {
         }
     }
 
+    /**
+     * @apiGroup Drums
+     * @apiName Start/Stop pingpongdelay
+     * @apiDesc Based on the arg starts or stops the pingpongdelay effect on the snare
+     * @apiPath /snare/effect/pingpongdelay
+     * @apiArgs i,boolean Expects a boolean as integer to start = 1 or stop = 0 
+     */
     @OnMessage('/snare/effect/pingpongdelay')
     public pingpongdelay(@Message() msg: IOSCMessage) {
         try {
@@ -69,6 +91,14 @@ export class DrumsController {
 
     }
 
+    /**
+     * @apiGroup Drums
+     * @apiName Play Snare
+     * @apiDesc Plays the basedrum (kick) from the kick sampler
+     * @apiPath /kick
+     * @apiArgs i,duration Expects the duration of the kick note as string
+     * @apiArgs i,velocity Expects the velocity of the kick note as float
+     */
     @OnMessage('/kick')
     public receivedMsgKick(@Message() msg: IOSCMessage) {
         try {
@@ -84,6 +114,15 @@ export class DrumsController {
         }
     }
 
+
+    /**
+     * @apiGroup Drums
+     * @apiName Play HiHat
+     * @apiDesc Plays the HiHat from the hihat synth
+     * @apiPath /hihat
+     * @apiArgs i,duration Expects the duration of the hihat note as string
+     * @apiArgs i,velocity Expects the velocity of the hihat note as float
+     */
     @OnMessage('/hihat')
     public receivedMsgHiHat(@Message() msg: IOSCMessage) {
         try {
