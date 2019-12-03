@@ -27,7 +27,8 @@ export class DrumsController {
     public receivedMsgSnare(@Message() msg: IOSCMessage) {
         try {
             const duration = TypeChecker.ValidDurationArg(msg.args[0]);
-            const velocity = TypeChecker.ValidVelocity(msg.args);
+            //TODO add postion to decorators
+            const velocity = msg.args[1]? TypeChecker.ValidVelocityArg(msg.args[1]):undefined;
 
             this.snareInstrument.play(duration, velocity);
         } catch (e) {
@@ -59,7 +60,8 @@ export class DrumsController {
     public receivedMsgKick(@Message() msg: IOSCMessage) {
         try {
             const duration = TypeChecker.ValidDurationArg(msg.args[0]);
-            const velocity = TypeChecker.ValidVelocity(msg.args);
+            // TODO add position to decorators
+            const velocity = msg.args[1]? TypeChecker.ValidVelocityArg(msg.args[1]):undefined;
 
             this.kickInstrument.play(duration, velocity);
         } catch (e) {
@@ -73,7 +75,8 @@ export class DrumsController {
     public receivedMsgHiHat(@Message() msg: IOSCMessage) {
         try {
             const duration = TypeChecker.ValidDurationArg(msg.args[0]);
-            const velocity = TypeChecker.ValidVelocity(msg.args);
+            // TODO add position to decorators
+            const velocity = msg.args[1]?TypeChecker.ValidVelocityArg(msg.args[1]):undefined;
 
             this.hihatInstrument.play(duration, velocity);
         } catch (e) {

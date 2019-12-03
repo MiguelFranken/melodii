@@ -20,9 +20,11 @@ export class PlayNoteController {
   @OnMessage()
   public receivedMessage(@Message() msg: IOSCMessage) {
     try {
-      const note = TypeChecker.ValidNote(msg.args);
-      const duration = TypeChecker.ValidDuration(msg.args);
-      const velocity = TypeChecker.ValidVelocity(msg.args);
+      const note = TypeChecker.ValidNoteArg(msg.args[0]);
+      //TODO add to decorator
+      const velocity = msg.args[1]? TypeChecker.ValidVelocityArg(msg.args[1]):undefined;
+      const duration = msg.args[2]? TypeChecker.ValidDurationArg(msg.args[2]):undefined;
+      
 
       this.synth.triggerRelease(note, duration, velocity);
     } catch (e) {
@@ -35,8 +37,8 @@ export class PlayNoteController {
   @OnMessage('/trigger')
   public receivedMessageStart(@Message() msg: IOSCMessage) {
     try {
-      const note = TypeChecker.ValidNote(msg.args);
-      const velocity = TypeChecker.ValidVelocity(msg.args);
+      const note = TypeChecker.ValidNoteArg(msg.args[0]);
+      const velocity = msg.args[1]? TypeChecker.ValidVelocityArg(msg.args[1]):undefined;
 
       this.synth.trigger(note, velocity);
     } catch (e) {
@@ -49,8 +51,8 @@ export class PlayNoteController {
   @OnMessage('/detune')
   public detune(@Message() msg: IOSCMessage) {
     try {
-      const note = TypeChecker.ValidNote(msg.args);
-      const cents = TypeChecker.ValidCents(msg.args);
+      const note = TypeChecker.ValidNoteArg(msg.args[0]);
+      const cents = TypeChecker.ValidCentsArg(msg.args[1]);
 
       this.synth.detune(note, cents);
     } catch (e) {
@@ -63,7 +65,7 @@ export class PlayNoteController {
   @OnMessage('/stop')
   public receivedMessageStop(@Message() msg: IOSCMessage) {
     try {
-      const note = TypeChecker.ValidNote(msg.args);
+      const note = TypeChecker.ValidNoteArg(msg.args[0]);
 
       this.synth.release(note);
     } catch (e) {

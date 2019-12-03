@@ -22,8 +22,9 @@ export class PianoController {
     try {
       const note = message.args[0].value.toString();
       const velocity = parseFloat(message.args[1].value.toString());
-      const duration = TypeChecker.ValidDurationArg(message.args[2]);
-
+      // TODO add position to decorators
+      const duration = message.args[2]? TypeChecker.ValidDurationArg(message.args[2]): undefined;
+      
       this.piano.play(note, duration, velocity);
       this.logger.info('play_note', {note, duration, velocity});
     } catch (e) {
