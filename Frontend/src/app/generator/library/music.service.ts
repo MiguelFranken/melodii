@@ -1,6 +1,6 @@
 import { SampleLibrary } from './sample-library';
 import { Logger } from '@upe/logger';
-import { Gain, JCReverb, Meter, PingPongDelay } from 'tone';
+import { Gain, JCReverb, Meter, PingPongDelay, Reverb } from 'tone';
 import { Injectable } from '@angular/core';
 import { DrumsKick } from './instruments/drums/drums_kick';
 import { DrumsHiHat } from './instruments/drums/drums_hihat';
@@ -79,11 +79,13 @@ export class MusicService {
   }
 
   public getReverbEffect(): MCPEffect {
+    const toneEffect = new Reverb();
+    toneEffect.generate();
     const reverb: MCPEffect = {
       id: 'reverb',
-      effect: new JCReverb(0.55)
+      effect: toneEffect
     };
-    reverb.effect.wet.value = 0.5;
+    reverb.effect.wet.value = 0.35;
     return reverb;
   }
 

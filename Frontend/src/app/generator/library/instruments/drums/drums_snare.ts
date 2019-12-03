@@ -1,5 +1,5 @@
 import { Velocity, Duration } from '../../types';
-import { Gain, JCReverb, PingPongDelay, Sampler, ToneAudioNode } from 'tone';
+import { Gain, JCReverb, PingPongDelay, Reverb, Sampler, ToneAudioNode } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../../mcp-instrument';
 import { MCPEffect } from '../../music.service';
@@ -46,9 +46,11 @@ export class DrumsSnare implements IMCPInstrument {
   }
 
   public addReverb() {
+    const toneEffect = new Reverb();
+    toneEffect.generate();
     const reverb: MCPEffect = {
       id: 'reverb',
-      effect: new JCReverb(0.55)
+      effect: toneEffect
     };
     reverb.effect.wet.value = 0.5;
     this.effectChain.pushEffect(reverb);
