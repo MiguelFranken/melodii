@@ -22,12 +22,13 @@ export default {
     SETTINGS_MENU: '(e) change settings', // sub menu
 
     // settings menu
-    CHANGE_ADDRESS: '(a) change address',
-    CHANGE_PORT: '(b) change port',
-    CHANGE_PATH: '(c) change osc path',
-    CHANGE_ARGS: '(d) change osc args',
+    CHANGE_PATH: '(a) change osc path',
+    CHANGE_ARGS: '(b) change osc args',
+    CHANGE_ADDRESS: '(c) change address',
+    CHANGE_PORT: '(d) change port',
+    SEND_LATENCY_TEST: '(e) send latency test message',
 
     // drums menu
-    START_DRUMLOOP: '(a) starts a drum loop',
-    STOP_DRUMLOOP: '(b) stops the running drum Loop',
+    START_DRUM_LOOP: '(a) starts a drum loop',
+    STOP_DRUM_LOOP: '(b) stops the running drum Loop',
 };
