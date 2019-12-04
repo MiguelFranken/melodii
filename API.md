@@ -41,7 +41,7 @@ Path:
 Arguments:
 ```
 [
-    { i,boolean },  // Expects a boolean as integer to start = 1 or stop = 0 
+    { i,boolean },  // Expects a boolean as integer to start = 1 or stop = 0
 ]
 ```
 
@@ -59,7 +59,7 @@ Path:
 Arguments:
 ```
 [
-    { i,boolean },  // Expects a boolean as integer to start = 1 or stop = 0 
+    { i,boolean },  // Expects a boolean as integer to start = 1 or stop = 0
 ]
 ```
 
@@ -127,8 +127,8 @@ Arguments:
 ```
 [
     { s,note },  // Expects a note as string
-    { i,duration },  // Expects the duration of the note as string
-    { i,velocity },  // Expects the velocity of the note as float
+    { s,duration },  // Expects the duration of the note as string
+    { f,velocity },  // Expects the velocity [0,1] of the note as float
 ]
 ```
 
