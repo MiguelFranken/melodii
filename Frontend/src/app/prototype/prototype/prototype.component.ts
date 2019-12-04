@@ -13,6 +13,12 @@ import { GeneratorCommunicationService } from '../../generator/library/generator
 import { NotYetImplementedService } from '../../not-yet-implemented.service';
 import { IOSCMessage } from '../../shared/osc/osc-message';
 
+// TODO MF: Tonal npm package nutzen
+enum ChordQuality {
+  MAJOR,
+  MINOR
+}
+
 const NOTES_MAJOR_C = [
   'C',
   'D',
@@ -88,6 +94,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   @ViewChild('helpButton', { static: false, read: ElementRef })
   helpButtonElement: ElementRef;
 
+  @ViewChild('presetButton', { static: false, read: ElementRef })
+  presetButtonElement: ElementRef;
+
   @ViewChild('effectButton', { static: false, read: ElementRef })
   effectButtonElement: ElementRef;
 
@@ -102,6 +111,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   @ViewChild('helpMenuTemplate', { static: true })
   helpMenuTemplate: TemplateRef<any>;
 
+  @ViewChild('presetMenuTemplate', { static: true })
+  presetMenuTemplate: TemplateRef<any>;
+
   @ViewChild('effectMenuTemplate', { static: true })
   effectMenuTemplate: TemplateRef<any>;
 
@@ -114,9 +126,10 @@ export class PrototypeComponent implements OnInit, OnDestroy {
    * Overlay used to select the current instrument,
    * i.e. selection of on of the available matrices
    */
-  private instrumentSelectionOverlay;
+  private instrumentSelectionOverlay: Overlay;
   private helpMenuOverlay: Overlay;
   private effectMenuOverlay: Overlay;
+  private presetMenuOverlay: Overlay;
   //endregion
   //endregion
 
@@ -219,6 +232,11 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.helpOverlayService.triggerChain('tutorial');
   }
 
+  public openPresetMenu() {
+    this.initPresetMenuOverlay();
+    this.presetMenuOverlay.open();
+  }
+
   private initEffectMenuOverlay() {
     const position = new RelativePosition({
       placement: OutsidePlacement.BOTTOM_LEFT,
@@ -251,6 +269,23 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       .create();
 
     this.logger.info('Initialized help menu overlay');
+  }
+
+  private initPresetMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.presetButtonElement.nativeElement
+    });
+
+    this.presetMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.presetMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized preset menu overlay');
   }
   //endregion
 
@@ -287,6 +322,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
   //endregion
 
+  //region Tutorial chain
   private addElements() {
     const subject: BehaviorSubject<OverlayElements[]> = this.helpOverlayService.getSubject();
     this.helpOverlayService.getOutputObservable().subscribe(() => {
@@ -371,6 +407,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     };
     this.helpOverlayService.addChain(chain);
   }
+  //endregion
 
   ngOnInit() {
     this.addElements();
@@ -808,6 +845,50 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.communicationService.sendMessage(oscMessage);
 
     this.logger.debug('Switched PingPongDelay on snare');
+  }
+  //endregion
+
+  //region Presets
+  private getChord(rootNote: string, octave: number, quality: ChordQuality) {
+    const rootIndex = NOTES_MAJOR_C.findIndex((note: string) => note === rootNote);
+    const third = NOTES_MAJOR_C[(rootIndex + 2) % 7];
+    const fifth = NOTES_MAJOR_C[(rootIndex + 4) % 7];
+    return [
+      `${rootNote}${octave}`,
+      `${third}${octave}`,
+      `${fifth}${octave}`,
+    ];
+  }
+
+  private setNote(note: string, columnIndex: number) {
+    const rowIndex = this.matrix.rows.findIndex((row: Row) => row.name === note);
+    if (rowIndex >= 0) {
+      this.matrix.rows[rowIndex].buttons[columnIndex].isActive = true;
+    } else {
+      this.logger.error('Note not found in matrix');
+    }
+  }
+
+  public setChordProgression() {
+    const tonic = this.getChord('C', 2, ChordQuality.MAJOR);
+    const subdominant = this.getChord('F', 2, ChordQuality.MAJOR);
+    const dominant = this.getChord('G', 2, ChordQuality.MAJOR);
+
+    const tonicColumn = 0;
+    const subdominantColumn = 4;
+    const dominantColumn = 6;
+
+    tonic.forEach((note) => {
+      this.setNote(note, tonicColumn);
+    });
+
+    subdominant.forEach((note) => {
+      this.setNote(note, subdominantColumn);
+    });
+
+    dominant.forEach((note) => {
+      this.setNote(note, dominantColumn);
+    });
   }
   //endregion
 

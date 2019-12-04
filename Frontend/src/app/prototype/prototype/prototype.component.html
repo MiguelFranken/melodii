@@ -34,8 +34,8 @@
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="previousMatrix()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="nextMatrix()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="clearMatrix()">Clear</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()">Load Preset</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()" >Save Preset</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="openPresetMenu()" #presetButton>Presets</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()" >Metronom</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchVelocity()" #velocityButtonElement>{{showVelocity ? 'Hide' : 'Show'}} Velocity</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
@@ -145,7 +145,23 @@
   </div>
 </ng-template>
 
-<!-- Overlays -->
+<ng-template #presetMenuTemplate let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout="column" fxLayoutGap="2px">
+      <div fxLayout fxLayoutGap="2px">
+        <button
+                mat-button
+                class="overlay-button"
+                fxFlex
+                (click)="setChordProgression(); toppy.close()"
+        >
+          Chord Progression
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <ng-template #helpMenuTemplate let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
     <div fxLayout="column" fxLayoutGap="2px">
