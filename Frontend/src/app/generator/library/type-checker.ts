@@ -4,12 +4,12 @@ import { Cents, Duration, Note, Velocity } from './types';
 
 export class TypeChecker {
 
-  private static regex = {
-    note: /^[A-G][b#]?[0-9]$/,
-    velocity: /^1$|^0$|^0.[0-9]+$/,
-    duration: /^$/,
-    cents: /^$/,
-    effectbool: /^0$|^1$/,
+  private static Regex = {
+    Note: /^[A-G][b#]?[0-9]$/,
+    Velocity: /^1$|^0$|^0.[0-9]+$/,
+    Duration: /^$/,
+    Cents: /^$/,
+    Effectbool: /^0$|^1$/,
   };
 
   constructor() {
@@ -20,7 +20,7 @@ export class TypeChecker {
     const parsed = String(value);
     if (type !== "s") {
       throw new OSCError("MCPx0000", "Note has invalid type");
-    } else if (!parsed.match(TypeChecker.regex.note)) {
+    } else if (!parsed.match(TypeChecker.Regex.Note)) {
       throw new OSCError("MCPx0001", "Note has invalid value");
     }
     return parsed;
@@ -31,7 +31,7 @@ export class TypeChecker {
     const parsed = parseFloat(value.toString());
     if (type !== "f") {
       throw new OSCError("MCPx0002", "Velocity has invalid type", arg);
-    } else if (!String(parsed).match(TypeChecker.regex.velocity)) {
+    } else if (!String(parsed).match(TypeChecker.Regex.Velocity)) {
       // velocity should be in normal range ([0,1])
       throw new OSCError("MCPx0003", "Velocity value is not in normal range ([0,1])", arg);
     } else if (isNaN(parsed)) {
@@ -57,13 +57,15 @@ export class TypeChecker {
 
   public static ValidEffectBoolArg(arg: IOSCArg): boolean {
     const { type, value } = arg;
-    const parsed = value;
+    const parsed = Number(value);
     // TODO: update error code if the other functions use 0007
     if (type !== "i") {
       throw new OSCError("MCPx0007", "EffectBoolArg has invalid type", arg);
-    } else if (String(parsed).match(TypeChecker.regex.effectbool)) {
-      throw new OSCError("MCPx0008", "EffectBoolArg has invalid value", arg);
+    } else if (isNaN(parsed)) {
+      throw new OSCError("MCPx0008", "EffectBoolArg value is not an integer", arg);
+    } else if (parsed < 0 || parsed > 1) {
+      throw new OSCError("MCPx0009", "EffectBoolArg value is not an integer between [0,1]", arg);
     }
-    return (parsed === 0)?false:true;
+    return !!parsed;
   }
 }

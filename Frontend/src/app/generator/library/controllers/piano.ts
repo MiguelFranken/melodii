@@ -35,7 +35,7 @@ export class PianoController {
       const velocity = TypeChecker.ValidVelocityArg(message.args[2]);
 
       this.piano.play(note, duration, velocity);
-      this.logger.info('play_note', {note, duration, velocity});
+      this.logger.info('play_note', { note, duration, velocity });
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);

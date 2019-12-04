@@ -37,8 +37,8 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   private logger: Logger = new Logger({ name: 'PrototypeComponent', flags: ['component'] });
 
-  public useReverbOnMaster = true;
-  public usePingPongDelayOnMaster = true;
+  public useReverbOnMaster = false;
+  public usePingPongDelayOnMaster = false;
   public useReverbOnSnare = false;
   public usePingPongDelayOnSnare = false;
 
