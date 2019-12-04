@@ -6,18 +6,12 @@ import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 import { DefaultMap } from '../defaultMap';
 
 export class Arc implements IMCPInstrument {
-  public name: MCPInstrumentName = "Arc";
-
-  private logger: Logger = new Logger({ name: 'Arc Instrument', flags: ['music'] });
-
   private readonly voices: Map<string, Synth> = new Map();
-
   private readonly output = new Merge();
 
-  constructor(name?: MCPInstrumentName) {
-    if (name) {
-      this.name = name;
-    }
+  private readonly logger: Logger = new Logger({ name: 'Arc Instrument', flags: ['music'] });
+
+  constructor(public readonly name: MCPInstrumentName = "Arc") {
   }
 
   public set(note: Note, strength: Velocity) {
