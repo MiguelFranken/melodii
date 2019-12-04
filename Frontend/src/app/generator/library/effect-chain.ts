@@ -21,6 +21,10 @@ export class EffectChain {
   }
 
   //region Public Methods
+  public getSize() {
+    return this.effects.length;
+  }
+
   /**
    * Adds a new effect to the end of this effect chain. This means that everything has to be rewired.
    * @param effect Effect to push at the end of this effect chain

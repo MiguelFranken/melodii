@@ -1,5 +1,5 @@
 import { Logger } from '@upe/logger';
-import { Destination, Gain, JCReverb, Meter, PingPongDelay, Reverb } from 'tone';
+import { Destination, Gain, JCReverb, Meter, PingPongDelay, Reverb, Split } from 'tone';
 import { Injectable } from '@angular/core';
 import { IMCPInstrument } from './mcp-instrument';
 
@@ -40,7 +40,7 @@ export class MusicService {
     // wires all the signals correctly for sound output
     this.connectAllInstrumentsToGain();
 
-    // all instruments -> master effect chain -> Destination (aka speakers)
+    // all instruments -> master effect chain -> destination (aka speakers)
     this.masterEffectChain = new EffectChain('master', this.gain, Destination);
 
     this.createMasterMeter();
@@ -50,13 +50,16 @@ export class MusicService {
   }
 
   public getReverbEffect(): IMCPEffect {
-    const toneEffect = new Reverb();
+    const toneEffect = new Reverb({
+      decay : 1.7,
+      preDelay : 0.01
+    });
+    toneEffect.wet.value = 0.27;
     toneEffect.generate();
     const reverb: IMCPEffect = {
       id: 'reverb',
       effect: toneEffect
     };
-    reverb.effect.wet.value = 0.35;
     return reverb;
   }
 
@@ -96,9 +99,15 @@ export class MusicService {
    * Creates a master meter so that the total volume can be measured.
    */
   private createMasterMeter() {
-    const meter: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
-    this.meters.set('master', meter);
-    Destination.connect(meter);
+    const meterLeft: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+    const meterRight: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+    const split = new Split(2);
+    Destination.connect(split);
+    split.connect(meterLeft, 0);
+    split.connect(meterRight, 1);
+    this.meters.set("master-left", meterLeft);
+    this.meters.set("master-right", meterRight);
+
     this.logger.info(`Created master meter`);
   }
 
@@ -109,9 +118,14 @@ export class MusicService {
    */
   private createMetersForAllInstruments() {
     this.instruments.forEach((instrument: IMCPInstrument, name: InstrumentName) => {
-      const meter: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
-      this.meters.set(name, meter);
-      instrument.getAudioNode().connect(meter);
+      const meterLeft = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+      const meterRight = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+      const split = new Split(2);
+      this.meters.set(name + "-left", meterLeft);
+      this.meters.set(name + "-right", meterRight);
+      instrument.getAudioNode().connect(split);
+      split.connect(meterLeft, 0); // 0 -> Left
+      split.connect(meterRight, 1); // 1 -> Right
     });
 
     this.logger.info(`Created meters for all ${this.instruments.size} instruments and connected instruments to it`, this.meters);

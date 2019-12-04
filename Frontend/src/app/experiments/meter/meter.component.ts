@@ -48,7 +48,8 @@ export class MeterComponent implements OnInit {
 
   private initMasterMeter() {
     this.meterVisualizationMaster = new MeterVisualization(
-      this.musicService.getMeter('master'),
+      this.musicService.getMeter('master-left'),
+      this.musicService.getMeter('master-right'),
       this.cvsMaster.nativeElement,
       this.ctxMaster
     );
@@ -57,7 +58,8 @@ export class MeterComponent implements OnInit {
 
   private initKickMeter() {
     this.meterVisualizationKick = new MeterVisualization(
-      this.musicService.getMeter('kick'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('kick-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('kick-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
       this.cvsKick.nativeElement,
       this.ctxKick
     );
@@ -66,7 +68,8 @@ export class MeterComponent implements OnInit {
 
   private initSnareMeter() {
     this.meterVisualizationSnare = new MeterVisualization(
-      this.musicService.getMeter('snare'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('snare-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('snare-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
       this.cvsSnare.nativeElement,
       this.ctxSnare
     );
@@ -75,7 +78,8 @@ export class MeterComponent implements OnInit {
 
   private initHihatMeter() {
     this.meterVisualizationHihat = new MeterVisualization(
-      this.musicService.getMeter('hihat'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('hihat-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('hihat-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
       this.cvsHihat.nativeElement,
       this.ctxHihat
     );

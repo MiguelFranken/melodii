@@ -1,5 +1,5 @@
 import { Velocity, Duration } from '../../types';
-import { Gain, JCReverb, PingPongDelay, Reverb, Sampler, ToneAudioNode } from 'tone';
+import { Gain, Merge, PingPongDelay, Reverb, Sampler, ToneAudioNode } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../../mcp-instrument';
 import { IMCPEffect } from '../../types';
@@ -18,14 +18,15 @@ export class DrumsSnare implements IMCPInstrument {
 
   private readonly outputNode: ToneAudioNode;
 
-  private readonly sampler;
+  private readonly sampler: Sampler;
 
   constructor(name?: MCPInstrumentName) {
     if (name) {
       this.name = name;
     }
 
-    this.outputNode = new Gain(0.4);
+    // mono sampler -> stereo sampler -> effect chain -> gain
+    this.outputNode = new Gain();
 
     this.sampler = new Sampler(
       { C2: DrumsSnare.path },
@@ -33,7 +34,12 @@ export class DrumsSnare implements IMCPInstrument {
       DrumsSnare.baseUrl
     );
 
-    this.effectChain = new EffectChain(this.name, this.sampler, this.outputNode);
+    // convert mono sampler into a sampler with stereo signal
+    const merger = new Merge();
+    this.sampler.connect(merger, 0, 0); // routing the mono signal to the left channel of the merger
+    this.sampler.connect(merger, 0, 1); // routing the mono signal to the right channel of the merger
+
+    this.effectChain = new EffectChain(this.name, merger, this.outputNode);
   }
 
   public getAudioNode() {
