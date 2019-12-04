@@ -881,9 +881,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   private setNote(note: string, columnIndex: number) {
-    const rowIndex = this.matrix.rows.findIndex((row: Row) => row.name === note);
+    const rowIndex = this.matrixCollection[1].rows.findIndex((row: Row) => row.name === note);
     if (rowIndex >= 0) {
-      this.matrix.rows[rowIndex].buttons[columnIndex].isActive = true;
+      this.matrixCollection[1].rows[rowIndex].buttons[columnIndex].isActive = true;
     } else {
       this.logger.error('Note not found in matrix');
     }
@@ -909,6 +909,21 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     dominant.forEach((note) => {
       this.setNote(note, dominantColumn);
     });
+  }
+
+  public setDrumBeat() {
+    // kick
+    this.matrixCollection[0].rows[0].buttons[0].isActive = true;
+    this.matrixCollection[0].rows[0].buttons[4].isActive = true;
+
+    // snare
+    this.matrixCollection[0].rows[2].buttons[2].isActive = true;
+    this.matrixCollection[0].rows[2].buttons[6].isActive = true;
+
+    // hihat
+    for (let columnIndex = 0; columnIndex < NUMBER_OF_COLUMNS; columnIndex++) {
+      this.matrixCollection[0].rows[1].buttons[columnIndex].isActive = true;
+    }
   }
   //endregion
 
