@@ -23,8 +23,8 @@ export class PianoController {
    * @apiDesc Plays a note from the piano sampler
    * @apiPath /piano/play_note
    * @apiArgs s,note Expects a note as string
-   * @apiArgs i,duration Expects the duration of the note as string
-   * @apiArgs i,velocity Expects the velocity of the note as float
+   * @apiArgs s,duration Expects the duration of the note as string
+   * @apiArgs f,velocity Expects the velocity [0,1] of the note as float
    */
   @OnMessage('/play_note')
   public receivedMessage(@Message() message: IOSCMessage) {
@@ -41,7 +41,6 @@ export class PianoController {
         e.print(this.logger);
       }
     }
-
   }
 
 }
