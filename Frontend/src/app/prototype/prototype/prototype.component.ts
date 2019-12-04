@@ -463,6 +463,14 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   public nextMatrix() {
     this.matrixCollectionIndex = (this.matrixCollectionIndex + 1) % this.matrixCollection.length;
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+
+    for (const row of this.matrix.rows) {
+    //   row.buttons[this.currentPlayedColumnIndex].isPlayed = true;
+      row.buttons.forEach((button: RowButton, columnIndex: number) => {
+        button.isPlayed = columnIndex === this.currentPlayedColumnIndex;
+      });
+    }
+
     this.logger.info('Switched to next matrix', this.matrix);
   }
 
