@@ -63,7 +63,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   private msPerBeat: number = 1000 * 0.5 * (60 / DEFAULT_BPM); // TODO MF: different default
 
-  public temp = 0;
+  public currentPlayedColumnIndex = 0;
 
   private playSubscription: Subscription;
 
@@ -667,11 +667,11 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       this.playSubscription.unsubscribe();
 
       for (const rows of this.matrix.rows) {
-        const oldButton: RowButton = rows.buttons[this.temp];
+        const oldButton: RowButton = rows.buttons[this.currentPlayedColumnIndex];
         oldButton.isPlayed = false;
       }
 
-      this.temp = 0;
+      this.currentPlayedColumnIndex = 0;
     }
   }
 
@@ -692,23 +692,33 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     }
 
     this.playSubscription = this.interval.subscribe(_ => {
-      const newTemp = (this.temp + 1) % NUMBER_OF_COLUMNS;
+      const nextPlayedColumnIndex = (this.currentPlayedColumnIndex + 1) % NUMBER_OF_COLUMNS;
 
-      for (const rows of this.matrix.rows) {
-        const oldButton: RowButton = rows.buttons[this.temp];
-        oldButton.isPlayed = false;
+      this.showLights();
+      this.play(nextPlayedColumnIndex);
 
-        const newButton: RowButton = rows.buttons[(this.temp + 1) % NUMBER_OF_COLUMNS];
-        newButton.isPlayed = true;
-
-        if (newButton.isActive) {
-          this.communicationService.sendMessage(newButton.oscMessage);
-        }
-      }
-      this.temp = newTemp;
+      this.currentPlayedColumnIndex = nextPlayedColumnIndex;
     });
 
     this.subject.next(this.msPerBeat);
+  }
+
+  private play(columnIndex: number) {
+    for (const rows of this.matrix.rows) {
+      const newButton: RowButton = rows.buttons[columnIndex];
+      newButton.isPlayed = true;
+
+      if (newButton.isActive) {
+        this.communicationService.sendMessage(newButton.oscMessage);
+      }
+    }
+  }
+
+  private showLights() {
+    for (const rows of this.matrix.rows) {
+      const oldButton: RowButton = rows.buttons[this.currentPlayedColumnIndex];
+      oldButton.isPlayed = false;
+    }
   }
 
   /**
