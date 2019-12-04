@@ -704,12 +704,14 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   private play(columnIndex: number) {
-    for (const rows of this.matrix.rows) {
-      const newButton: RowButton = rows.buttons[columnIndex];
-      newButton.isPlayed = true;
+    for (const matrix of this.matrixCollection) {
+      for (const rows of matrix.rows) {
+        const newButton: RowButton = rows.buttons[columnIndex];
+        newButton.isPlayed = true;
 
-      if (newButton.isActive) {
-        this.communicationService.sendMessage(newButton.oscMessage);
+        if (newButton.isActive) {
+          this.communicationService.sendMessage(newButton.oscMessage);
+        }
       }
     }
   }
