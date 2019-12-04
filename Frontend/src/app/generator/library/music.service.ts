@@ -1,5 +1,5 @@
 import { Logger } from '@upe/logger';
-import { Gain, JCReverb, Meter, PingPongDelay, Reverb } from 'tone';
+import { Destination, Gain, JCReverb, Meter, PingPongDelay, Reverb } from 'tone';
 import { Injectable } from '@angular/core';
 import { IMCPInstrument } from './mcp-instrument';
 
@@ -7,25 +7,21 @@ import { IMCPInstrument } from './mcp-instrument';
 import { DrumsHiHat, DrumsKick, DrumsSnare } from './instruments/drums';
 import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Piano } from './instruments/piano';
-
-import { Effect } from 'tone/build/esm/effect/Effect';
-import { StereoEffect } from 'tone/build/esm/effect/StereoEffect';
 import { EffectChain } from './effect-chain';
-import { InstrumentName, MeterName, MCPEffect, MCPEffectIdentifier } from './types';
+import { InstrumentName, MeterName, IMCPEffect, MCPEffectIdentifier } from './types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MusicService {
 
-  private static METER_SMOOTHING_FACTOR = 0.9;
+  private static METER_SMOOTHING_FACTOR = 0.95;
 
   private instruments: Map<InstrumentName, IMCPInstrument> = new Map();
 
   private meters: Map<MeterName, Meter> = new Map();
 
-  private gain = new Gain(0.4);
-  private outputGain = new Gain(0.4);
+  private gain = new Gain();
 
   private masterEffectChain: EffectChain;
 
@@ -41,26 +37,22 @@ export class MusicService {
     this.instruments.set('piano', new Piano());
     this.instruments.set('hihat', new DrumsHiHat());
 
-    // wiring for meter
-    // TODO: Effekte müssen hier auch mit betrachtet werden. Im Moment geht in die Meters nur das Instrumenten-Signal ein!
-    this.connectAllInstrumentsToMasterMeter();
-    this.createMetersForAllInstruments();
-
     // wires all the signals correctly for sound output
     this.connectAllInstrumentsToGain();
-    const master = new Gain(0.4);
-    this.masterEffectChain = new EffectChain('master', this.gain, this.outputGain);
-    //this.addPingPongDelayToMasterEffectChain();
-    //this.addReverbEffectToMasterEffectChain();
-    this.outputGain.toDestination();
+
+    // all instruments -> master effect chain -> Destination (aka speakers)
+    this.masterEffectChain = new EffectChain('master', this.gain, Destination);
+
+    this.createMasterMeter();
+    this.createMetersForAllInstruments();
 
     this.logger.info('Initialized successfully');
   }
 
-  public getReverbEffect(): MCPEffect {
+  public getReverbEffect(): IMCPEffect {
     const toneEffect = new Reverb();
     toneEffect.generate();
-    const reverb: MCPEffect = {
+    const reverb: IMCPEffect = {
       id: 'reverb',
       effect: toneEffect
     };
@@ -68,8 +60,8 @@ export class MusicService {
     return reverb;
   }
 
-  public getPingPongDelayEffect(): MCPEffect {
-    const pingPongDelay: MCPEffect = {
+  public getPingPongDelayEffect(): IMCPEffect {
+    const pingPongDelay: IMCPEffect = {
       id: 'pingpongdelay',
       effect: new PingPongDelay('4n', 0.2)
     };
@@ -101,16 +93,13 @@ export class MusicService {
   }
 
   /**
-   * Adds all instruments to a master meter so that the total volume can be measured.
+   * Creates a master meter so that the total volume can be measured.
    */
-  private connectAllInstrumentsToMasterMeter() {
+  private createMasterMeter() {
     const meter: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
     this.meters.set('master', meter);
-    this.instruments.forEach((instrument: IMCPInstrument) => {
-      instrument.getAudioNode().connect(meter);
-    });
-
-    this.logger.info(`Connected all ${this.instruments.size} instruments to master meter`);
+    Destination.connect(meter);
+    this.logger.info(`Created master meter`);
   }
 
   /**
@@ -119,13 +108,13 @@ export class MusicService {
    * method the instruments are also "wired" to this meter to make the measurement really possible.
    */
   private createMetersForAllInstruments() {
-    this.instruments.forEach((instrument: IMCPInstrument) => {
+    this.instruments.forEach((instrument: IMCPInstrument, name: InstrumentName) => {
       const meter: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
-      this.meters.set(instrument.name, meter);
+      this.meters.set(name, meter);
       instrument.getAudioNode().connect(meter);
     });
 
-    this.logger.info(`Created meters for all ${this.instruments.size} instruments and connected instruments to it`);
+    this.logger.info(`Created meters for all ${this.instruments.size} instruments and connected instruments to it`, this.meters);
   }
 
   /**
@@ -134,7 +123,7 @@ export class MusicService {
    */
   public getMeter(name: MeterName): Meter {
     if (!this.meters.has(name)) {
-      this.logger.error('Cannot find meter'); // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
+      this.logger.error(`Cannot find meter with name '${name}'`); // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
     }
     return this.meters.get(name) as Meter;
   }
@@ -148,7 +137,8 @@ export class MusicService {
    */
   public getInstrument(name: InstrumentName): IMCPInstrument {
     if (!this.instruments.has(name)) {
-      this.logger.error('Cannot find instrument'); // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
+      // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
+      this.logger.error(`Cannot find instrument with name '${name}'`);
     }
     return this.instruments.get(name);
   }

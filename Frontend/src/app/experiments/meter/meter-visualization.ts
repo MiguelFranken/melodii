@@ -9,8 +9,6 @@ export class MeterVisualization {
 
   private currentVolume: IVolume;
 
-  private dpi = window.devicePixelRatio;
-
   constructor(private meter: Meter, private canvas: HTMLCanvasElement, private ctx: CanvasRenderingContext2D) {
     const ratio =  Math.max(window.devicePixelRatio || 1, 1);
     const w = 80 * ratio;

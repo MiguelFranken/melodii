@@ -1,5 +1,5 @@
 import { ToneAudioNode } from 'tone';
-import { MCPEffect, MCPEffectIdentifier } from './types';
+import { IMCPEffect, MCPEffectIdentifier } from './types';
 import { Logger } from '@upe/logger';
 
 export type EffectChainIdentifier = string;
@@ -8,7 +8,7 @@ export class EffectChain {
 
   private logger: Logger;
 
-  private effects: MCPEffect[] = [];
+  private effects: IMCPEffect[] = [];
 
   /**
    * @param id An unique identifier for an effect chain
@@ -25,7 +25,7 @@ export class EffectChain {
    * Adds a new effect to the end of this effect chain. This means that everything has to be rewired.
    * @param effect Effect to push at the end of this effect chain
    */
-  public pushEffect(effect: MCPEffect) {
+  public pushEffect(effect: IMCPEffect) {
     this.logger.debug(`Adding effect ${effect.id} at the end of the effect chain..`, this.effects);
 
     this.deleteConnections();
@@ -43,7 +43,7 @@ export class EffectChain {
    */
   public deleteEffectByID(effectID: MCPEffectIdentifier) {
     this.logger.debug(`Removing effect with id '${effectID}'...`);
-    const index = this.effects.findIndex((effect: MCPEffect) => effect.id === effectID);
+    const index = this.effects.findIndex((effect: IMCPEffect) => effect.id === effectID);
     if (index === -1) {
       this.logger.warn(`Cannot delete effect with id '${effectID}' as the chain doesn't contain such effect`);
     } else {
@@ -77,7 +77,7 @@ export class EffectChain {
     this.logger.debug('Disconnecting all effects...');
 
     // disconnect connection between effects
-    this.effects.forEach((effect: MCPEffect, index: number) => {
+    this.effects.forEach((effect: IMCPEffect, index: number) => {
       if (index + 1 < this.effects.length) {
         effect.effect.disconnect();
         this.logger.debug(`Disconnected effect '${effect.id}'`);

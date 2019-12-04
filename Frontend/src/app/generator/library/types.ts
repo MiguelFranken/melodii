@@ -37,7 +37,7 @@ export type MeterName = InstrumentName | 'master';
  */
 export type MCPEffectIdentifier = string;
 
-export interface MCPEffect {
+export interface IMCPEffect {
   id: MCPEffectIdentifier;
   effect: Effect<any> | StereoEffect<any>;
 }
