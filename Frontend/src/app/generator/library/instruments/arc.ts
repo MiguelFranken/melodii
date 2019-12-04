@@ -1,17 +1,18 @@
-import { Polyphonizer } from '../polyphonizer';
 import { Note, Velocity } from '../types';
 import { isVoiceActive } from '../utils';
-import { Synth } from 'tone';
+import { Synth, ToneAudioNode, Merge } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
+import { DefaultMap } from '../defaultMap';
 
 export class Arc implements IMCPInstrument {
-
   public name: MCPInstrumentName = "Arc";
 
   private logger: Logger = new Logger({ name: 'Arc Instrument', flags: ['music'] });
 
-  private readonly voices = new Polyphonizer(() => new Synth().toDestination());
+  private readonly voices: Map<string, Synth> = new Map();
+
+  private readonly output = new Merge();
 
   constructor(name?: MCPInstrumentName) {
     if (name) {
@@ -21,22 +22,29 @@ export class Arc implements IMCPInstrument {
 
   public set(note: Note, strength: Velocity) {
     this.logger.info(`Set with note ${note} and velocity ${strength}.`);
-    const voice = this.voices.getVoice(note);
+    const voice = this.voices.get(note);
     const volume = -40 + strength * 40; // In db.
-    if (strength > 0) {
-      voice.volume.linearRampToValueAtTime(volume, "+0.1");
-
-      if (!isVoiceActive(voice)) {
+    if (voice) {
+      if (strength > 0) {
+        voice.volume.linearRampToValueAtTime(volume, "+0.1");
+      } else {
+        voice.triggerRelease();
+        this.voices.delete(note);
+      }
+    } else { // Key not found in this.voices.
+      if (strength > 0) {
+        const voice = this.createVoice();
+        voice.volume.linearRampToValueAtTime(volume, "+0.1");
         voice.triggerAttack(note, undefined, 1);
       }
-    } else {
-      voice.volume.value = 0; // Reset volume for next use.
-      voice.triggerRelease();
     }
   }
 
-  getAudioNode(): Polyphonizer<any> {
-    return this.voices;
+  private createVoice(): Synth {
+    return new Synth().connect(this.output);
   }
 
+  getAudioNode(): ToneAudioNode {
+    return this.output;
+  }
 }
