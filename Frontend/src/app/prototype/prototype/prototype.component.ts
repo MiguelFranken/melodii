@@ -12,6 +12,7 @@ import { Chain, HelpOverlayService, Overlay, OverlayElements } from '../../share
 import { GeneratorCommunicationService } from '../../generator/library/generator-communication.service';
 import { NotYetImplementedService } from '../../not-yet-implemented.service';
 import { IOSCMessage } from '../../shared/osc/osc-message';
+import { InstrumentName } from '../../generator/library/types';
 
 // TODO MF: Tonal npm package nutzen
 enum ChordQuality {
@@ -47,6 +48,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   public usePingPongDelayOnMaster = false;
   public useReverbOnSnare = false;
   public usePingPongDelayOnSnare = false;
+
+  private useReverbMap: Map<InstrumentName, boolean> = new Map();
+  private usePingPongDelayMap: Map<InstrumentName, boolean> = new Map();
 
   public height = '100%';
 
@@ -137,10 +141,14 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   private isInFoldMode = false;
 
-  @ViewChild(MatMenuTrigger, {static: false})
+  @ViewChild('contextMenuTrigger', {static: false})
   contextMenu: MatMenuTrigger;
 
+  @ViewChild('effectContextMenuTrigger', {static: false})
+  effectContextMenu: MatMenuTrigger;
+
   contextMenuPosition = { x: '0px', y: '0px' };
+  effectContextMenuPosition = { x: '0px', y: '0px' };
 
   private clicked = false;
 
@@ -150,6 +158,12 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     private toppy: Toppy,
     private helpOverlayService: HelpOverlayService,
     private notYetImplementedService: NotYetImplementedService) {
+    this.useReverbMap.set('hihat', false);
+    this.useReverbMap.set('kick', false);
+    this.useReverbMap.set('snare', false);
+    this.usePingPongDelayMap.set('hihat', false);
+    this.usePingPongDelayMap.set('kick', false);
+    this.usePingPongDelayMap.set('snare', false);
   }
 
   //region Velocity
@@ -543,7 +557,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       rowArray.push(kickButton);
     }
 
-    return new Row(rowArray, 'Kick');
+    return new Row(rowArray, 'Kick', 'kick');
   }
 
   private createSnareRow(): Row {
@@ -573,7 +587,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       rowArray.push(snareButton);
     }
 
-    return new Row(rowArray, 'Snare');
+    return new Row(rowArray, 'Snare', 'snare');
   }
 
   private createHihatRow(): Row {
@@ -604,7 +618,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       rowArray.push(hihatButton);
     }
 
-    return new Row(rowArray, 'Hihat');
+    return new Row(rowArray, 'HiHat', 'hihat');
   }
 
   private createMatrixDrums() {
@@ -743,11 +757,12 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     }
   }
 
+  //region Context Menu
   //region Context Menu For Row Buttons
   /**
    * A long press activates the context menu with further setting options for an entry in the matrix.
    */
-  onLongPress(event: MouseEvent, button: RowButton) {
+  onLongPressRowButton(event: MouseEvent, button: RowButton) {
     event.preventDefault();
 
     if (button.isActive) {
@@ -757,13 +772,13 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       this.contextMenu.openMenu();
     }
 
-    this.logger.info('Performed long press on button', button);
+    this.logger.info('Performed long press on row button', button);
   }
 
   /**
    * Opens the context menu of a specific entry of the matrix specified by the row button.
    */
-  onContextMenu(event: MouseEvent, button: RowButton) {
+  onContextMenuRowButton(event: MouseEvent, button: RowButton) {
     event.preventDefault();
 
     if (button.isActive) {
@@ -772,7 +787,31 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       this.contextMenu.menuData = { button };
       this.contextMenu.openMenu();
     }
+
+    this.logger.info('Performed right click on row button', button);
   }
+  //endregion
+
+  //region Context Menu Note Button
+  public onContextMenuNoteButton(event, row: Row) {
+    event.preventDefault();
+
+    const instrument = row.instrument;
+
+    this.effectContextMenuPosition.x = event.clientX + 'px';
+    this.effectContextMenuPosition.y = event.clientY + 'px';
+    this.effectContextMenu.menuData = { instrument };
+    this.effectContextMenu.openMenu();
+
+    this.logger.info('Performed right click on instrument button', row);
+  }
+
+  public onLongPressNoteButton(event, row: Row) {
+    event.preventDefault();
+
+    this.logger.info('Performed long press on instrument button', row);
+  }
+  //endregion
   //endregion
 
   /**
@@ -783,11 +822,65 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   //region Sound Effects
+  public isReverbUsed(instrument: InstrumentName) {
+    return this.useReverbMap.get(instrument);
+  }
+
+  public isPingPongDelayUsed(instrument: InstrumentName) {
+    return this.usePingPongDelayMap.get(instrument);
+  }
+
+  public addReverb(event, instrument: InstrumentName) {
+    event.stopPropagation();
+    // event.preventDefault();
+    const oscMessage: IOSCMessage = {
+      address: '/effect/instrument/reverb',
+      args: [
+        { type: 's', value: instrument },
+        { type: 'i', value: this.isReverbUsed(instrument) ? 0 : 1 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.useReverbMap.set(instrument, !this.isReverbUsed(instrument));
+    this.logger.debug(`Switched reverb effect on instrument '${instrument}'`);
+  }
+
+  public addPingPongDelay(event, instrument: InstrumentName) {
+    event.stopPropagation();
+    // event.preventDefault();
+    const oscMessage: IOSCMessage = {
+      address: '/effect/instrument/pingpongdelay',
+      args: [
+        { type: 's', value: instrument },
+        { type: 'i', value: this.isPingPongDelayUsed(instrument) ? 0 : 1 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.usePingPongDelayMap.set(instrument, !this.isPingPongDelayUsed(instrument));
+    this.logger.debug(`Switched pingpongdelay effect on instrument '${instrument}'`);
+  }
+
   public switchReverbOnMaster() {
     this.useReverbOnMaster = !this.useReverbOnMaster;
 
     const oscMessage: IOSCMessage = {
-      address: '/effect/reverb',
+      address: '/effect/master/reverb',
       args: [
         { type: 'i', value: this.useReverbOnMaster ? 1 : 0 }
       ],
@@ -808,7 +901,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.usePingPongDelayOnMaster = !this.usePingPongDelayOnMaster;
 
     const oscMessage: IOSCMessage = {
-      address: '/effect/pingpongdelay',
+      address: '/effect/master/pingpongdelay',
       args: [
         { type: 'i', value: this.usePingPongDelayOnMaster ? 1 : 0 }
       ],

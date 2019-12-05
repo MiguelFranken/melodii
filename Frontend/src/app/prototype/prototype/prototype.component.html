@@ -52,7 +52,18 @@
             [class.minHeightRowNotExpanded]="!row.isExpanded"
             fxFlex
     >
-      <button (click)="switchRowExpansionMode(row)" mat-button class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="showRowNames">
+      <button
+              (click)="switchRowExpansionMode(row)"
+              mat-button
+              class="row-card"
+              fxFlex
+              fxLayout="column"
+              fxLayoutAlign="center center"
+              *ngIf="showRowNames"
+              longPress
+              (contextmenu)="onContextMenuNoteButton($event, row)"
+              (longPress)="onLongPressNoteButton($event, row)"
+      >
         <span>{{row.name}}</span>
       </button>
       <!-- Row Button -->
@@ -65,8 +76,8 @@
               fxLayoutAlign="end stretch"
               (click)="switchRowButtonActivationStatus($event, button)"
               longPress
-              (contextmenu)="onContextMenu($event, button)"
-              (longPress)="onLongPress($event, button)"
+              (contextmenu)="onContextMenuRowButton($event, button)"
+              (longPress)="onLongPressRowButton($event, button)"
               style="position: relative;"
               [ngStyle]="{'background-color': button.isActive ? 'rgba(0,0,0,' + ((0.3-0.15)/1*(button.velocity-1)+0.3) +')' : 'rgba(0,0,0,.1)'}"
               #rowButtonElement
@@ -100,7 +111,14 @@
 <div style="visibility: hidden; position: fixed"
      [style.left]="contextMenuPosition.x"
      [style.top]="contextMenuPosition.y"
-     [matMenuTriggerFor]="contextMenu">
+     [matMenuTriggerFor]="contextMenu"
+      #contextMenuTrigger="matMenuTrigger">
+</div>
+<div style="visibility: hidden; position: fixed"
+     [style.left]="effectContextMenuPosition.x"
+     [style.top]="effectContextMenuPosition.y"
+     [matMenuTriggerFor]="effectContextMenu"
+     #effectContextMenuTrigger="matMenuTrigger">
 </div>
 <mat-menu #contextMenu="matMenu">
   <ng-template matMenuContent let-button="button">
@@ -114,6 +132,13 @@
         <button mat-menu-item (click)="decreaseVelocity($event, button)"><mat-icon>keyboard_arrow_down</mat-icon> Decrease</button>
         </ng-template>
     </mat-menu>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #effectContextMenu="matMenu">
+  <ng-template matMenuContent let-instrument="instrument">
+    <button mat-menu-item (click)="addReverb($event, instrument)" [class.off]="!isReverbUsed(instrument)">Reverb</button>
+    <button mat-menu-item (click)="addPingPongDelay($event, instrument)" [class.off]="!isPingPongDelayUsed(instrument)">Ping Pong Delay</button>
   </ng-template>
 </mat-menu>
 <!--endregion-->
@@ -155,7 +180,7 @@
                 fxFlex
                 (click)="setChordProgression(); toppy.close()"
         >
-          Chord Progression
+          Piano Chords
         </button>
         <button
                 mat-button
