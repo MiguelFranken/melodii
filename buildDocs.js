@@ -37,6 +37,10 @@ const TABLE_COL_END = "</th>" + NEW_LINE;
 const DETAILS_START = "<details><p>" + NEW_LINE2;
 const DETAILS_END = "</p></details>";
 
+/**
+ * TODO evtl mit templates ? und typescript
+ */
+
 
 /**
  * TODO

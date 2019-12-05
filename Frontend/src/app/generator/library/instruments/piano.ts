@@ -1,16 +1,11 @@
 import { Logger } from '@upe/logger';
 import { Duration, Note, Velocity } from '../types';
-import { Polyphonizer } from '../polyphonizer';
-import { Sampler, Synth } from 'tone';
+import { Sampler, Synth, PolySynth } from 'tone';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 
 export class Piano implements IMCPInstrument {
 
   private static baseUrl = 'assets/samples/piano/';
-
-  private readonly voices = new Polyphonizer(() => new Synth().toDestination());
-
-  public name: MCPInstrumentName = 'piano';
 
   private logger: Logger = new Logger({ name: 'Piano Instrument', flags: ['music'] });
 
@@ -104,11 +99,7 @@ export class Piano implements IMCPInstrument {
 
   private sampler: Sampler;
 
-  constructor(name?: MCPInstrumentName) {
-    if (name) {
-      this.name = name;
-    }
-
+  constructor(public readonly name: MCPInstrumentName = 'piano') {
     this.sampler = new Sampler({
       attack: 0,
       release: 1.5,
@@ -130,20 +121,17 @@ export class Piano implements IMCPInstrument {
 
   public trigger(note: Note, velocity: Velocity) {
     console.log(`Trigger with note${note} and velocity ${velocity}.`);
-    const voice = this.voices.getVoice(note);
-    voice.triggerAttack(note, undefined, velocity);
+    this.sampler.triggerAttack(note, undefined, velocity);
   }
 
   public triggerRelease(note: Note, duration: Duration, velocity: Velocity) {
     this.logger.info(`TriggerRelease with note ${note} and velocity ${velocity}.`);
-    const voice = this.voices.getVoice(note);
-    voice.triggerAttackRelease(note, duration, undefined, velocity);
+    this.sampler.triggerAttackRelease(note, duration, undefined, velocity);
   }
 
   public release(note: Note) {
     console.log(`Release with note ${note}.`);
-    const voice = this.voices.getVoice(note);
-    voice.triggerRelease();
+    this.sampler.triggerRelease(note);
   }
 
 }
