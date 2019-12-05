@@ -59,6 +59,8 @@ There are several you can send these messages.
 ## Mat
 *To be implemented.*
 
+# Development
+If you are interested in having a closer look at our code, or run the services on your machine, refer to the [DEVELOPMENT.md](./DEVELOPMENT.md).
 
 [matrix]: http://mcp.miguel-franken.com
 [tone generator]: http://mcp.miguel-franken.com/generator
