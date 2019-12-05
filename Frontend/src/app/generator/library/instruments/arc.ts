@@ -35,8 +35,8 @@ export class Arc implements IMCPInstrument {
     }
   }
 
-  getAudioNode(): Polyphonizer<any> {
-    return this.voices;
+  getAudioNode() {
+    return null;
   }
 
 }

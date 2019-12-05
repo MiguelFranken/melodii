@@ -9,6 +9,7 @@ import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Piano } from './instruments/piano';
 import { EffectChain } from './effect-chain';
 import { InstrumentName, MeterName, IMCPEffect, MCPEffectIdentifier } from './types';
+import { Effect } from 'tone/build/esm/effect/Effect';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class MusicService {
   private static METER_SMOOTHING_FACTOR = 0.95;
 
   private instruments: Map<InstrumentName, IMCPInstrument> = new Map();
+  private effectChains: Map<InstrumentName, EffectChain> = new Map();
 
   private meters: Map<MeterName, Meter> = new Map();
 
@@ -31,22 +33,53 @@ export class MusicService {
     // Logger.MuteType(LogType.DEBUG);
 
     // create instances of all our instruments
-    this.instruments.set('playnote-synth', new PlayNoteSynth()); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
+    // this.instruments.set('playnote-synth', new PlayNoteSynth()); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
     this.instruments.set('kick', new DrumsKick());
     this.instruments.set('snare', new DrumsSnare());
     this.instruments.set('piano', new Piano());
     this.instruments.set('hihat', new DrumsHiHat());
 
-    // wires all the signals correctly for sound output
-    this.connectAllInstrumentsToGain();
+    // for all instruments: instrument -> instrument effect chain
+    this.createEffectChainsForAllInstruments();
 
-    // all instruments -> master effect chain -> destination (aka speakers)
-    this.masterEffectChain = new EffectChain('master', this.gain, Destination);
+    // for all instruments: instrument effect chain -> master gain
+    this.connectAllInstrumentEffectChainsToGain();
 
-    this.createMasterMeter();
+    // for all effect chains: instrument effect chain -> instrument meter
     this.createMetersForAllInstruments();
 
+    // master gain -> master effect chain -> destination (aka speakers)
+    this.masterEffectChain = new EffectChain('master', this.gain, Destination);
+
+    // master gain -> master meter
+    this.createMasterMeter();
+
     this.logger.info('Initialized successfully');
+  }
+
+  public createEffect(effectName: MCPEffectIdentifier) {
+    if (effectName === 'reverb') {
+      return this.getReverbEffect();
+    } else {
+      return this.getPingPongDelayEffect();
+    }
+  }
+
+  public addEffect(instrumentName: InstrumentName, effectName: MCPEffectIdentifier) {
+    const effectChain = this.effectChains.get(instrumentName);
+    if (!effectChain) {
+      this.logger.error('addEffect');
+    }
+    const effect: IMCPEffect = this.createEffect(effectName);
+    effectChain.pushEffect(effect);
+  }
+
+  public deleteEffect(instrumentName: InstrumentName, effectName: MCPEffectIdentifier) {
+    const effectChain = this.effectChains.get(instrumentName);
+    if (!effectChain) {
+      this.logger.error('deleteEffect');
+    }
+    effectChain.deleteEffectByID(effectName);
   }
 
   public getReverbEffect(): IMCPEffect {
@@ -84,15 +117,22 @@ export class MusicService {
     this.masterEffectChain.pushEffect(this.getReverbEffect());
   }
 
+  private createEffectChainsForAllInstruments() {
+    this.instruments.forEach((instrument: IMCPInstrument, name: InstrumentName) => {
+      const effectChain = new EffectChain(name, instrument.getAudioNode());
+      this.effectChains.set(name, effectChain);
+    });
+  }
+
   /**
    * Connects all signal outputs of the instruments to the input of the gain node.
    */
-  private connectAllInstrumentsToGain() {
-    this.instruments.forEach((instrument: IMCPInstrument) => {
-      instrument.getAudioNode().connect(this.gain);
+  private connectAllInstrumentEffectChainsToGain() {
+    this.effectChains.forEach((effectChain: EffectChain) => {
+      effectChain.getOutputNode().connect(this.gain);
     });
 
-    this.logger.info(`Connected all ${this.instruments.size} instruments to gain node`);
+    this.logger.info(`Connected all ${this.effectChains.size} instrument effect chains to master gain node`);
   }
 
   /**
@@ -117,13 +157,13 @@ export class MusicService {
    * method the instruments are also "wired" to this meter to make the measurement really possible.
    */
   private createMetersForAllInstruments() {
-    this.instruments.forEach((instrument: IMCPInstrument, name: InstrumentName) => {
+    this.effectChains.forEach((effectChain: EffectChain, name: InstrumentName) => {
       const meterLeft = new Meter(MusicService.METER_SMOOTHING_FACTOR);
       const meterRight = new Meter(MusicService.METER_SMOOTHING_FACTOR);
       const split = new Split(2);
       this.meters.set(name + "-left", meterLeft);
       this.meters.set(name + "-right", meterRight);
-      instrument.getAudioNode().connect(split);
+      effectChain.getOutputNode().connect(split);
       split.connect(meterLeft, 0); // 0 -> Left
       split.connect(meterRight, 1); // 1 -> Right
     });

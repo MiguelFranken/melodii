@@ -18,8 +18,8 @@ export class PlayNoteSynth implements IMCPInstrument {
     }
   }
 
-  public getAudioNode(): Polyphonizer<any> {
-    return this.voices;
+  public getAudioNode(): null {
+    return null;
   }
 
   public trigger(note: Note, velocity: Velocity) {

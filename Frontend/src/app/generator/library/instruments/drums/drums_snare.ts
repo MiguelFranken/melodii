@@ -14,8 +14,6 @@ export class DrumsSnare implements IMCPInstrument {
 
   private logger: Logger = new Logger({ name: 'DrumsSnare Instrument', flags: ['music'] });
 
-  private effectChain: EffectChain;
-
   private readonly outputNode: ToneAudioNode;
 
   private readonly sampler: Sampler;
@@ -39,7 +37,7 @@ export class DrumsSnare implements IMCPInstrument {
     this.sampler.connect(merger, 0, 0); // routing the mono signal to the left channel of the merger
     this.sampler.connect(merger, 0, 1); // routing the mono signal to the right channel of the merger
 
-    this.effectChain = new EffectChain(this.name, merger, this.outputNode);
+    merger.connect(this.outputNode);
   }
 
   public getAudioNode() {
@@ -49,38 +47,6 @@ export class DrumsSnare implements IMCPInstrument {
   public play(duration: Duration = "8n", velocity: Velocity) {
     this.logger.info(`play snare with duration ${duration} and velocity ${velocity}`);
     this.sampler.triggerAttackRelease("C2", duration, undefined, velocity);
-  }
-
-  public addReverb() {
-    const toneEffect = new Reverb();
-    toneEffect.generate();
-    const reverb: IMCPEffect = {
-      id: 'reverb',
-      effect: toneEffect
-    };
-    reverb.effect.wet.value = 0.5;
-    this.effectChain.pushEffect(reverb);
-    this.logger.debug('Added reverb effect');
-  }
-
-  public deleteReverb() {
-    this.effectChain.deleteEffectByID('reverb');
-    this.logger.debug('Deleted reverb effect');
-  }
-
-  public addPingPongDelay() {
-    const pingPongDelay: IMCPEffect = {
-      id: 'pingpongdelay',
-      effect: new PingPongDelay('4n', 0.2)
-    };
-    pingPongDelay.effect.wet.value = 0.5;
-    this.effectChain.pushEffect(pingPongDelay);
-    this.logger.debug('Added pingpongdelay effect');
-  }
-
-  public deletePingPongDelay() {
-    this.effectChain.deleteEffectByID('pingpongdelay');
-    this.logger.debug('Deleted pingpongdelay effect');
   }
 
 }

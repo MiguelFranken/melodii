@@ -46,53 +46,6 @@ export class DrumsController {
 
     /**
      * @apiGroup Drums
-     * @apiName Start/Stop reverb
-     * @apiDesc Based on the arg starts or stops the reverb effect on the snare
-     * @apiPath /snare/effect/reverb
-     * @apiArgs i,boolean Expects a boolean as integer to start = 1 or stop = 0
-     */
-    @OnMessage('/snare/effect/reverb')
-    public reverb(@Message() msg: IOSCMessage) {
-        try {
-            const bool = TypeChecker.ValidEffectBoolArg(msg.args[0]);
-            if (bool) {
-                this.snareInstrument.addReverb();
-            } else {
-                this.snareInstrument.deleteReverb();
-            }
-        } catch (e) {
-            if (e instanceof OSCError) {
-                e.print(this.logger);
-            }
-        }
-    }
-
-    /**
-     * @apiGroup Drums
-     * @apiName Start/Stop pingpongdelay
-     * @apiDesc Based on the arg starts or stops the pingpongdelay effect on the snare
-     * @apiPath /snare/effect/pingpongdelay
-     * @apiArgs i,boolean Expects a boolean as integer to start = 1 or stop = 0
-     */
-    @OnMessage('/snare/effect/pingpongdelay')
-    public pingpongdelay(@Message() msg: IOSCMessage) {
-        try {
-            const bool = TypeChecker.ValidEffectBoolArg(msg.args[0]);
-            if (bool) {
-                this.snareInstrument.addPingPongDelay();
-            } else {
-                this.snareInstrument.deletePingPongDelay();
-            }
-        } catch (e) {
-            if (e instanceof OSCError) {
-                e.print(this.logger);
-            }
-        }
-
-    }
-
-    /**
-     * @apiGroup Drums
      * @apiName Play Snare
      * @apiDesc Plays the basedrum (kick) from the kick sampler
      * @apiPath /kick
@@ -137,7 +90,5 @@ export class DrumsController {
             }
         }
     }
-
-
 
 }

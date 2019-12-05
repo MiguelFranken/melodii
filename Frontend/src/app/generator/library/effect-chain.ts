@@ -1,4 +1,4 @@
-import { ToneAudioNode } from 'tone';
+import { Gain, ToneAudioNode } from 'tone';
 import { IMCPEffect, MCPEffectIdentifier } from './types';
 import { Logger } from '@upe/logger';
 
@@ -10,19 +10,25 @@ export class EffectChain {
 
   private effects: IMCPEffect[] = [];
 
+  private readonly outputNode: ToneAudioNode = new Gain();
+
   /**
    * @param id An unique identifier for an effect chain
    * @param inputNode Input signal that flows into this effect chain
    * @param outputNode TODO
    */
-  constructor(private id: EffectChainIdentifier, private inputNode: ToneAudioNode, private outputNode: ToneAudioNode) {
+  constructor(private id: EffectChainIdentifier, private inputNode: ToneAudioNode, outputNode?: ToneAudioNode) {
+    if (outputNode) {
+      this.outputNode = outputNode;
+    }
+
     this.logger = new Logger({ name: `EffectChain ${id}`, flags: ['effect-chain'] });
     this.inputNode.connect(this.outputNode);
   }
 
   //region Public Methods
-  public getSize() {
-    return this.effects.length;
+  public getOutputNode() {
+    return this.outputNode;
   }
 
   /**
