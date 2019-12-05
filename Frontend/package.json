@@ -7,6 +7,7 @@
     "build:master": "ng build --configuration=master",
     "build:dev": "ng build --configuration=dev",
     "build:local": "ng build",
+    "watch": "ng serve --port 4200",
     "test": "ng test",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix=true"
