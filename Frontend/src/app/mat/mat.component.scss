@@ -1,0 +1,55 @@
+@import "src/scss/variables";
+
+.item {
+  background-color: $mcp-black-3;
+  margin: 10px;
+  border-radius: 3px;
+  color: $mcp-white-1;
+  font-weight: 600;
+  font-size: 25px;
+
+  div {
+    height: 100%;
+  }
+
+  small {
+    margin-top: 15px;
+    margin-left: 1px;
+    font-size: 12px;
+  }
+}
+
+.spacer {
+  margin: 10px;
+}
+
+.draggable-source--is-dragging {
+  background-color: $mcp-black-5;
+}
+
+.container {
+  padding: 10px;
+  height: 100%;
+}
+
+* {
+  outline: 0;
+}
+
+@keyframes mirror-animation {
+  0%   { opacity: 0.2; width: 0; height: 0; margin: 175px }
+  100% { opacity: 1; width: 350px; height: 300px; margin: 10px;}
+}
+
+.draggable-mirror {
+  width: 350px;
+  height: 300px;
+  margin: 10px !important;
+  -webkit-box-shadow: 3px 3px 12px -8px rgba(56, 56, 56, 1);
+  -moz-box-shadow: 3px 3px 12px -8px rgba(56, 56, 56, 1);
+  box-shadow: 3px 3px 12px -8px rgba(56, 56, 56, 1);
+  background-color: $mcp-green-2;
+  z-index: 100;
+  animation-duration: 0.13s;
+  animation-name: mirror-animation;
+}
