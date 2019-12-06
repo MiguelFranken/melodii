@@ -224,18 +224,18 @@
 
 <ng-template #effectMenuTemplate let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
-    <div fxLayout="column" fxLayoutGap="2px">
-      <div fxLayout fxLayoutGap="2px">
-        <button
-                mat-button
-                class="overlay-button"
-                fxFlex
-                (click)="switchReverbOnMaster()"
-                [class.off]="!useReverbOnMaster"
-        >
-          Reverb (Master)
-        </button>
-      </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchReverbOnMaster()"
+              [class.off]="!useReverbOnMaster"
+      >
+        Reverb (Master)
+      </button>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
       <button
               mat-button
               class="overlay-button"
