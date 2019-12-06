@@ -7,6 +7,7 @@ import { IMCPInstrument } from './mcp-instrument';
 import { DrumsHiHat, DrumsKick, DrumsSnare } from './instruments/drums';
 import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Piano } from './instruments/piano';
+import { Volume } from 'tone';
 import { EffectChain } from './effect-chain';
 import { InstrumentName, MeterName, IMCPEffect, MCPEffectIdentifier } from './types';
 import { Effect } from 'tone/build/esm/effect/Effect';
@@ -24,10 +25,19 @@ export class MusicService {
   private meters: Map<MeterName, Meter> = new Map();
 
   private gain = new Gain();
+  private volume = new Volume(-12);
 
   private masterEffectChain: EffectChain;
 
   private logger: Logger = new Logger({ name: 'Music' });
+
+  public setMasterVolume(dB: number) {
+    this.volume.volume.value = dB;
+  }
+
+  public getMasterVolume() {
+    return this.volume.volume.value;
+  }
 
   constructor() {
     // Logger.MuteType(LogType.DEBUG);
@@ -48,8 +58,11 @@ export class MusicService {
     // for all effect chains: instrument effect chain -> instrument meter
     this.createMetersForAllInstruments();
 
-    // master gain -> master effect chain -> destination (aka speakers)
-    this.masterEffectChain = new EffectChain('master', this.gain, Destination);
+    // master gain -> master effect chain -> volume node
+    this.masterEffectChain = new EffectChain('master', this.gain, this.volume);
+
+    // volume node -> destination (aka speakers)
+    this.volume.connect(Destination);
 
     // master gain -> master meter
     this.createMasterMeter();

@@ -6,6 +6,7 @@ import { LogComponent } from './generator/log/log.component';
 import { BoxComponent } from './box/box.component';
 import { ArcComponent } from './arc/arc.component';
 import { MatComponent } from './mat/mat.component';
+import { MixerComponent } from './mixer/mixer.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: 'arc',
     component: ArcComponent,
+  },
+  {
+    path: 'mixer',
+    component: MixerComponent,
   },
   {
     path: 'mat',
