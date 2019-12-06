@@ -141,6 +141,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   private isInFoldMode = false;
 
+  //region Context Menu Attributes
   @ViewChild('contextMenuTrigger', {static: false})
   contextMenu: MatMenuTrigger;
 
@@ -149,6 +150,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   contextMenuPosition = { x: '0px', y: '0px' };
   effectContextMenuPosition = { x: '0px', y: '0px' };
+  //endregion
 
   private clicked = false;
 
@@ -757,7 +759,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     }
   }
 
-  //region Context Menu
+  //region Context Menu Methods
   //region Context Menu For Row Buttons
   /**
    * A long press activates the context menu with further setting options for an entry in the matrix.
@@ -808,6 +810,13 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   public onLongPressNoteButton(event, row: Row) {
     event.preventDefault();
+
+    const instrument = row.instrument;
+
+    this.effectContextMenuPosition.x = event.pageX + 'px';
+    this.effectContextMenuPosition.y = event.pageY + 'px';
+    this.effectContextMenu.menuData = { instrument };
+    this.effectContextMenu.openMenu();
 
     this.logger.info('Performed long press on instrument button', row);
   }
