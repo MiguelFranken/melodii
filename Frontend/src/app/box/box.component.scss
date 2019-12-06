@@ -38,10 +38,17 @@
   outline: 0;
 }
 
+@keyframes mirror-animation {
+  0%   { opacity: 0.2; width: 0; height: 0px; margin: 137px }
+  100% { opacity: 1; width: 275px; height: 275px; margin: 10px;}
+}
+
 .draggable-mirror {
   -webkit-box-shadow: 3px 3px 12px -8px rgba(56,56,56,1);
   -moz-box-shadow: 3px 3px 12px -8px rgba(56,56,56,1);
   box-shadow: 3px 3px 12px -8px rgba(56,56,56,1);
   background-color: $mcp-green-2;
   z-index: 100;
+  animation-duration: 0.16s;
+  animation-name: mirror-animation;
 }
