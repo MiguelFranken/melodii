@@ -1,5 +1,5 @@
 # Getting started
-You need [Node.js].
+You need [Node.js] (at least 12.13.0).
 
 Install all the dependencies with
 ```
