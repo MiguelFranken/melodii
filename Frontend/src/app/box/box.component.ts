@@ -38,6 +38,9 @@ export class BoxComponent implements OnInit {
   ngOnInit() {
     const swappable = new Swappable(this.block.nativeElement, {
       draggable: '.item',
+      mirror: {
+        appendTo: 'body'
+      }
     });
 
     swappable.on('swappable:swapped', (event) => {

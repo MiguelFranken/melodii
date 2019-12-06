@@ -3,10 +3,9 @@
 .item {
   background-color: $mcp-black-3;
   margin: 10px;
-  height: 275px;
-  width: 275px;
   border-radius: 3px;
   color: $mcp-white-1;
+  font-weight: 600;
   font-size: 25px;
 
   div {
@@ -15,14 +14,13 @@
 
   small {
     margin-top: 15px;
+    margin-left: 1px;
     font-size: 12px;
   }
 }
 
 .spacer {
   margin: 10px;
-  height: 275px;
-  width: 275px;
 }
 
 .draggable-source--is-dragging {
@@ -39,16 +37,19 @@
 }
 
 @keyframes mirror-animation {
-  0%   { opacity: 0.2; width: 0; height: 0px; margin: 137px }
-  100% { opacity: 1; width: 275px; height: 275px; margin: 10px;}
+  0%   { opacity: 0.2; width: 0; height: 0; margin: 160px }
+  100% { opacity: 1; width: 320px; height: 255px; margin: 10px;}
 }
 
 .draggable-mirror {
-  -webkit-box-shadow: 3px 3px 12px -8px rgba(56,56,56,1);
-  -moz-box-shadow: 3px 3px 12px -8px rgba(56,56,56,1);
-  box-shadow: 3px 3px 12px -8px rgba(56,56,56,1);
+  width: 320px;
+  height: 255px;
+  margin: 10px !important;
+  -webkit-box-shadow: 3px 3px 12px -8px rgba(56, 56, 56, 1);
+  -moz-box-shadow: 3px 3px 12px -8px rgba(56, 56, 56, 1);
+  box-shadow: 3px 3px 12px -8px rgba(56, 56, 56, 1);
   background-color: $mcp-green-2;
   z-index: 100;
-  animation-duration: 0.16s;
+  animation-duration: 0.13s;
   animation-name: mirror-animation;
 }
