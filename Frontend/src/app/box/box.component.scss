@@ -28,7 +28,7 @@
 }
 
 .container {
-  padding: 50px;
+  padding: 10px;
   height: 100%;
 }
 
@@ -37,13 +37,13 @@
 }
 
 @keyframes mirror-animation {
-  0%   { opacity: 0.2; width: 0; height: 0; margin: 160px }
-  100% { opacity: 1; width: 320px; height: 255px; margin: 10px;}
+  0%   { opacity: 0.2; width: 0; height: 0; margin: 175px }
+  100% { opacity: 1; width: 350px; height: 300px; margin: 10px;}
 }
 
 .draggable-mirror {
-  width: 320px;
-  height: 255px;
+  width: 350px;
+  height: 300px;
   margin: 10px !important;
   -webkit-box-shadow: 3px 3px 12px -8px rgba(56, 56, 56, 1);
   -moz-box-shadow: 3px 3px 12px -8px rgba(56, 56, 56, 1);
