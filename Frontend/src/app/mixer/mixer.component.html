@@ -1,0 +1,14 @@
+<div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+  <mat-slider
+          class="example-margin"
+          max="0"
+          min="-45"
+          step="1"
+          thumbLabel="dB"
+          [(value)]="masterVolume"
+          (input)="input($event)"
+          vertical="true">
+  </mat-slider>
+  <span class="name">Master</span>
+</div>
+
