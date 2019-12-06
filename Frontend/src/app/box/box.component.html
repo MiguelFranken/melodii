@@ -1,34 +1,41 @@
-<div class="container">
+<div class="container" fxLayout="column" fxLayoutGap="20px">
+
+  <div>
+    <span>Order (From the bottom left to the top. From there to the right. Right down is the last element.)</span>
+    <ul>
+      <span *ngFor="let str of data">{{ str }} </span>
+    </ul>
+  </div>
 
   <div #block>
     <div fxLayout="column" style="width: 100%;">
       <div fxLayout fxLayoutGap="10px">
         <div class="item">
-          <div fxLayout fxLayoutAlign="center center">
-            C
+          <div fxLayout fxLayoutAlign="center center" id="1">
+            {{getNote(1)}}
           </div>
         </div>
         <div class="item">
-          <div fxLayout fxLayoutAlign="center center">
-            D
+          <div fxLayout fxLayoutAlign="center center" id="2">
+            {{getNote(2)}}
           </div>
         </div>
         <div class="item">
-          <div fxLayout fxLayoutAlign="center center">
-            E
+          <div fxLayout fxLayoutAlign="center center" id="3">
+            {{getNote(3)}}
           </div>
         </div>
       </div>
       <div fxLayout fxLayoutGap="10px">
         <div class="item">
-          <div fxLayout fxLayoutAlign="center center">
-            F
+          <div fxLayout fxLayoutAlign="center center" id="0">
+            {{getNote(0)}}
           </div>
         </div>
         <div class="spacer"></div>
         <div class="item">
-          <div fxLayout fxLayoutAlign="center center">
-            G
+          <div fxLayout fxLayoutAlign="center center" id="4">
+            {{getNote(4)}}
           </div>
         </div>
       </div>
