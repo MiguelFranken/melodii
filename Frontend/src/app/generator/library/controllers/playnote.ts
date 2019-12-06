@@ -1,56 +1,77 @@
-import { Controller, Message, OnMessage } from '../decorator/decorators';
-import { IOSCMessage } from '../osc/osc-message';
+import { Controller, Message, OnMessage } from "../decorator/decorators";
+import { IOSCMessage } from "../osc/osc-message";
 import { MusicService } from '../music.service';
+import { PlayNoteSynth } from '../instruments/playnote_synth';
+import { OSCError } from '../error';
+import { TypeChecker } from '../type-checker';
+import { Logger } from '@upe/logger';
 
 @Controller('/play_note')
 export class PlayNoteController {
 
+  private logger: Logger = new Logger({ name: 'PlayNoteController', flags: ['controller'] });
+
+  private synth: PlayNoteSynth;
+
   constructor(private music: MusicService) {
+    this.synth = music.getInstrument('playnote-synth') as PlayNoteSynth;
   }
 
   @OnMessage()
-  public receivedMessage(@Message() message: IOSCMessage) {
-    const { args } = message;
-    const note = args[0].value.toString();
+  public receivedMessage(@Message() msg: IOSCMessage) {
+    try {
+      const note = TypeChecker.ValidNoteArg(msg.args[0]);
+      //TODO add to decorator
+      const duration = TypeChecker.ValidDurationArg(msg.args[1]);
+      const velocity = TypeChecker.ValidVelocityArg(msg.args[2]);
 
-    // velocity should be in normal range ([0,1])
-    let velocity = 0.1;
-    if (args.length > 1 && args[1].type === 'f' &&
-      args[1].value >= 0 && args[1].value <= 1) {
-      velocity = parseFloat(args[1].value.toString());
-    }
-
-    // volume is measured in dB
-    let volume = 0;
-    if (args.length > 2 && args[2].type === 'i') {
-      volume = parseInt(args[2].value.toString());
-      if (isNaN(volume)) {
-        volume = 0;
+      this.synth.triggerRelease(note, duration, velocity);
+    } catch (e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
       }
     }
-    this.music.playNote(note, velocity, volume);
   }
 
-  @OnMessage('/start')
-  public receivedMessageStart(@Message() message: IOSCMessage) {
-    const { args } = message;
-    const note = args[0].value.toString();
+  @OnMessage('/trigger')
+  public receivedMessageStart(@Message() msg: IOSCMessage) {
+    try {
+      const note = TypeChecker.ValidNoteArg(msg.args[0]);
+      const velocity = TypeChecker.ValidVelocityArg(msg.args[1]);
 
-    let volume: number;
-    if (args.length === 2 && args[1].type === 'i') {
-      volume = parseInt(args[1].value.toString());
-    } else if (args.length === 3 && args[2].type === 'i') {
-      volume = parseInt(args[2].value.toString());
-    } else {
-      volume = 1;
+      this.synth.trigger(note, velocity);
+    } catch (e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
+      }
     }
+  }
 
-    this.music.startLongNote(note, volume);
+  @OnMessage('/detune')
+  public detune(@Message() msg: IOSCMessage) {
+    try {
+      const note = TypeChecker.ValidNoteArg(msg.args[0]);
+      const cents = TypeChecker.ValidCentsArg(msg.args[1]);
+
+      this.synth.detune(note, cents);
+    } catch (e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
+      }
+    }
   }
 
   @OnMessage('/stop')
-  public receivedMessageStop(@Message() message: IOSCMessage) {
-    this.music.stopLongNote();
+  public receivedMessageStop(@Message() msg: IOSCMessage) {
+    try {
+      const note = TypeChecker.ValidNoteArg(msg.args[0]);
+
+      this.synth.release(note);
+    } catch (e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
+      }
+    }
   }
 
 }

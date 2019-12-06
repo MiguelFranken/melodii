@@ -4,7 +4,7 @@ import { Observable, timer } from 'rxjs';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Logger } from '@upe/logger';
 import { GeneratorCommunicationService } from '../../../generator/library/generator-communication.service';
-import { SocketServer } from '../../../generator/library/socket-server';
+import { SocketServer } from '../../../generator/library/socket/socket-server';
 import { LogService } from '../../../generator/log/log.service';
 import { NotYetImplementedService } from '../../../not-yet-implemented.service';
 

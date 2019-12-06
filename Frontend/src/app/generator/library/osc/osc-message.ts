@@ -1,4 +1,4 @@
-import { IOSCArgs, IOSCInfo } from './osc-types';
+import { IOSCArg, IOSCInfo } from './osc-types';
 
 export interface IOSCMessage {
 
@@ -17,7 +17,7 @@ export interface IOSCMessage {
    * and http://opensoundcontrol.org/spec-1_0-examples#OSCaddress
    */
   address: string;
-  args: IOSCArgs[];
+  args: IOSCArg[];
   info: IOSCInfo;
 
 }

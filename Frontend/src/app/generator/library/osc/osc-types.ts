@@ -1,7 +1,7 @@
 export type OSCTypeTag = "i" | "f" | "s" | "b"; // int32, float32, OSC-string, OSC-blob
 
 // see http://opensoundcontrol.org/spec-1_0
-export interface IOSCArgs {
+export interface IOSCArg {
   type: OSCTypeTag; // OSC Type Tag String
 
   // TODO: Not only number or strings!
@@ -20,5 +20,5 @@ export interface IOSCInfo {
 
 export interface IOSCRawMessage {
   address: string; // URL-style address path
-  args: IOSCArgs[]; // Raw or type-annotated OSC arguments
+  args: IOSCArg[]; // Raw or type-annotated OSC arguments
 }

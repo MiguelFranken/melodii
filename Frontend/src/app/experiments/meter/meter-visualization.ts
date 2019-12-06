@@ -9,9 +9,11 @@ export class MeterVisualization {
 
   private currentVolume: IVolume;
 
-  private dpi = window.devicePixelRatio;
-
-  constructor(private meter: Meter, private canvas: HTMLCanvasElement, private ctx: CanvasRenderingContext2D) {
+  constructor(
+      private meterLeft: Meter,
+      private meterRight: Meter,
+      private canvas: HTMLCanvasElement,
+      private ctx: CanvasRenderingContext2D) {
     const ratio =  Math.max(window.devicePixelRatio || 1, 1);
     const w = 80 * ratio;
     const h = 400 * ratio;
@@ -42,25 +44,27 @@ export class MeterVisualization {
     ctx.restore();
   }
 
-  private static clamp(value, min, max) {
+  private static Clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
   }
 
-  private static normalize(value, r1, r2) {
+  private static Normalize(value, r1, r2) {
     return (value - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
+  }
+
+  private static GetNormalizedMeterValue(meter: Meter): number {
+    let meterValue = meter.getValue();
+    meterValue = MeterVisualization.Clamp(meterValue, -80, -10);
+    meterValue = MeterVisualization.Normalize( meterValue, [ -80, -10 ], [ 0, 100 ] );
+    return meterValue;
   }
 
   public animate() {
     requestAnimationFrame(this.animate.bind(this));
 
-    let meterValue = this.meter.getValue();
-    meterValue = MeterVisualization.clamp(meterValue, -100, -10);
-    meterValue = MeterVisualization.normalize( meterValue, [ -100, -10 ], [ 0, 100 ] );
-
-    // TODO: Stereo
     const volume: IVolume = {
-      left: meterValue,
-      right: meterValue
+      left: MeterVisualization.GetNormalizedMeterValue(this.meterLeft),
+      right: MeterVisualization.GetNormalizedMeterValue(this.meterRight)
     };
     this.updateData(volume);
     this.clear();

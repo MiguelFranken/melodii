@@ -2,7 +2,7 @@ import { MetadataBuilder } from './metadata-builder/metadata-builder';
 import { ActionMetadata } from './metadata/action-metadata';
 import { ControllerMetadata } from './metadata/controller-metadata';
 import { ParamTypes } from './metadata/types/param-types';
-import { Event } from '../socket-event';
+import { Event } from '../socket/socket-event';
 import { IOSCMessage } from '../osc/osc-message';
 import { Logger } from '@upe/logger';
 import { GeneratorCommunicationService } from '../generator-communication.service';

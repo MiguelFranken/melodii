@@ -2,20 +2,44 @@ const path = require('path');
 const fs = require('fs');
 const readline = require('readline');
 const EventEmitter = require('events');
-const src_path = "Generator/src/music/controllers";
+const controller_path = "Frontend/src/app/generator/library/controllers";
+const path_arr = [controller_path];
 const test_path = "testfolder";
-const input_path = path.join(__dirname, test_path);
+const input_path = path.join(__dirname, controller_path);
 const output_path = __dirname + '/API.md';
+
 const COMMENT_START = '/**';
 const COMMENT_END = '*/';
-const COMMENT_LINE = '*';
+const NEW_LINE = '\n';
+const NEW_LINE2 = NEW_LINE + NEW_LINE;
+const TITLE1_CHAR = '# ';
+const TITLE2_CHAR = '## ';
+const TILTE3_CHAR = '### ';
+const CODE_CHAR = '```';
 
-class MyEmitter extends EventEmitter { }
+const TITLE = "# API" + NEW_LINE2;
+const DESC = "This file lists all possible osc-messages which the server can handle." + NEW_LINE2;
+const PATH_START = "Path:" + NEW_LINE + CODE_CHAR + NEW_LINE;
+const PATH_END = NEW_LINE + CODE_CHAR + NEW_LINE;
+const ARGUMENTS_START = "Arguments:" + NEW_LINE + CODE_CHAR + NEW_LINE;
+const ARGUMENTS_END = NEW_LINE + CODE_CHAR + NEW_LINE2;
 
-const myEmitter = new MyEmitter();
-myEmitter.on('createMarkdown', () => {
+const HEADER = TITLE + DESC;
 
-});
+const TABLE_START = '<table style="width:100%;text-align:left;">' + NEW_LINE;
+const TABLE_END = '</table>' + NEW_LINE2 + NEW_LINE;
+const TABLE_ROW_START = '<tr style="vertical-align:top;">' + NEW_LINE;
+const TABLE_ROW_END = "</tr>" + NEW_LINE;
+const TABLE_COL_START = "<th>";
+const TABLE_COL1_START = '<th style="width:15%">';
+const TABLE_COL2_START = '<th style="width:30%">';
+const TABLE_COL_END = "</th>" + NEW_LINE;
+const DETAILS_START = "<details><p>" + NEW_LINE2;
+const DETAILS_END = "</p></details>";
+
+/**
+ * TODO evtl mit templates ? und typescript
+ */
 
 
 /**
@@ -40,6 +64,16 @@ async function readDir() {
 }
 
 async function filesHandler(file) {
+
+    function groupExists(str, arr) {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] == str) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     const fileStream = fs.createReadStream(input_path + '/' + file);
     const rl = readline.createInterface({
         input: fileStream,
@@ -52,7 +86,7 @@ async function filesHandler(file) {
     for await (const line of rl) {
         if (line.indexOf(COMMENT_START) != -1) {
             found_comment = true;
-            obj = {};            
+            obj = {};
             obj.apiArgs = [];
         } else if (line.indexOf(COMMENT_END) != -1) {
             found_comment = false;
@@ -66,13 +100,13 @@ async function filesHandler(file) {
                 var rest = str.substring(index + 1, str.length);
                 switch (apiword) {
                     case 'apiName':
-                        let a = splitString(rest, 2);
-                        obj.apiName = a[0];
-                        obj.apiDesc = a[1];
+                        obj.apiName = rest
                         break;
                     case 'apiGroup':
                         obj.apiGroup = rest;
-                        groups.push(obj.apiGroup);
+                        if (!groupExists(obj.apiGroup, groups)) {
+                            groups.push(obj.apiGroup);
+                        }
                         break;
                     case 'apiPath':
                         obj.apiPath = rest;
@@ -82,7 +116,7 @@ async function filesHandler(file) {
                         break;
                     case 'apiArgs':
                         rest = splitString(rest, 2);
-                        obj.apiArgs.push({value: rest[0], desc: rest[1]});
+                        obj.apiArgs.push({ value: rest[0], desc: rest[1] });
                         break;
                     default:
                         continue;
@@ -110,46 +144,54 @@ function splitString(str, splits) {
 }
 
 function createMarkdownFile() {
-    const title = "# API\n\n";
-    const desc = "This file lists all possible osc-messages which the server can handle.\n\n";
-
-    var data = title + desc;
-
-    groups.forEach(group => {
-        let str = "## " + group + "\n";
-        str += "\n";
-        str += "### ";
-        objarr.forEach(element => {
-            if (element.apiGroup == group) {
-                str += element.apiName + "\n";
-                str += "<details><summary>";
-                str += element.apiDesc;
-                str += "</summary>\n";
-                str += "<p>\n\n";
-                str += "```\n" + element.apiPath + "\n```\n";
-                str += "Arguments: \n";
-                str += "```\n" + "[" + "\n";
-                console.log(element.apiArgs);
-                element.apiArgs.forEach(e => {
-                    str += "    " + "{ " + e.value + " }," + "  // " + e.desc + "\n";
-                });
-                str += "]" + "\n```\n\n";
-                str += "</p>\n"                
-                str += "</details>\n\n";
-                
-            }
+    function addDetails(element) {
+        let details = "";
+        details += DETAILS_START;
+        details += PATH_START + element.apiPath + PATH_END;
+        details += ARGUMENTS_START + "[" + NEW_LINE;
+        element.apiArgs.forEach(e => {
+            details += "    " + "{ " + e.value + " }," + "  // " + e.desc + "\n";
         });
-        data += str;
-    });
+        details += "]" + ARGUMENTS_END
+        details += DETAILS_END;
+        return details;
+    }
 
-    fs.writeFileSync(output_path, data);
-}
 
-function groupExists(group) {
-    groups.forEach(element => {
-        if (element == group) return true;
-    });
-    return false;
+    console.log(groups);
+
+    var wStream = fs.createWriteStream(output_path);
+    wStream.write(HEADER);
+    
+
+    for (let i = 0; i < groups.length; i++) {
+        let str = "";
+        str += TITLE2_CHAR + groups[i] + NEW_LINE2;
+        str += TABLE_START;
+        str += TABLE_ROW_START;
+        str += TABLE_COL1_START + "Title" + TABLE_COL_END;
+        str += TABLE_COL2_START + "Description" + TABLE_COL_END;
+        str += TABLE_COL_START + TABLE_COL_END;
+        str += TABLE_ROW_END;
+
+        for (let j = 0; j < objarr.length; j++) {
+            if (objarr[j].apiGroup == groups[i]) {
+                str += TABLE_ROW_START;
+                str += TABLE_COL_START + objarr[j].apiName + TABLE_COL_END;
+                str += TABLE_COL_START + objarr[j].apiDesc + TABLE_COL_END;
+                str += TABLE_COL_START;
+                str += addDetails(objarr[j]);
+                str += TABLE_COL_END;
+                str += TABLE_ROW_END;
+            }
+        }
+
+        str += TABLE_END;
+        wStream.write(str);
+    };
+
+    wStream.end();
+
 }
 
 main();

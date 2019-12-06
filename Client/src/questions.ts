@@ -3,12 +3,12 @@ import text from './visual_strings';
 export default [
     { // 0
         type: 'input',
-        name: 'oscpath',
+        name: 'oscPath',
         message: text.msg_path,
     },
     { // 1
         type: 'input',
-        name: 'oscargs',
+        name: 'oscArgs',
         message: text.msg_args,
     },
     { // 2
@@ -36,29 +36,30 @@ export default [
     },
     { // 5
         type: 'list',
-        name: 'asksettings',
+        name: 'askSettings',
         message: text.msg_settings_menu,
         choices: [
             text.CHANGE_PATH,
             text.CHANGE_ARGS,
             text.CHANGE_ADDRESS,
             text.CHANGE_PORT,
+            text.SEND_LATENCY_TEST,
             text.BACK,
         ],
     },
     { // 6
         type: 'list',
-        name: 'askdrums',
+        name: 'askDrums',
         message: text.msg_menu_drums,
         choices: [
-            text.START_DRUMLOOP,
-            text.STOP_DRUMLOOP,
+            text.START_DRUM_LOOP,
+            text.STOP_DRUM_LOOP,
             text.BACK,
         ],
     },
     { // 7
         type: 'confirm',
-        name: 'anotherarg',
+        name: 'anotherArg',
         message: text.msg_another_args,
         default: true,
     },

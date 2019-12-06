@@ -1,123 +1,205 @@
-import * as Tone from 'tone';
-import { SampleLibrary } from './sampleLibrary';
 import { Logger } from '@upe/logger';
-import { NoiseSynth } from 'tone';
-import { Gain } from 'tone';
-import { Meter } from 'tone';
+import { Destination, Gain, JCReverb, Meter, PingPongDelay, Reverb, Split } from 'tone';
 import { Injectable } from '@angular/core';
+import { IMCPInstrument } from './mcp-instrument';
+
+// Instruments
+import { DrumsHiHat, DrumsKick, DrumsSnare } from './instruments/drums';
+import { PlayNoteSynth } from './instruments/playnote_synth';
+import { Piano } from './instruments/piano';
+import { EffectChain } from './effect-chain';
+import { InstrumentName, MeterName, IMCPEffect, MCPEffectIdentifier } from './types';
+import { Effect } from 'tone/build/esm/effect/Effect';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MusicService {
 
-  private instruments: { [k: string]: any } = {};
-  private sampleLibrary = new SampleLibrary();
+  private static METER_SMOOTHING_FACTOR = 0.95;
 
-  private gain = new Gain(0.4);
+  private instruments: Map<InstrumentName, IMCPInstrument> = new Map();
+  private effectChains: Map<InstrumentName, EffectChain> = new Map();
 
-  // meters
-  public masterMeter = new Meter(0.9);
-  public pianoMeter = new Meter(0.9);
-  public kickMeter = new Meter(0.9);
-  public snareMeter = new Meter(0.9);
-  public hihatMeter = new Meter(0.9);
+  private meters: Map<MeterName, Meter> = new Map();
+
+  private gain = new Gain();
+
+  private masterEffectChain: EffectChain;
 
   private logger: Logger = new Logger({ name: 'Music' });
 
   constructor() {
-    this.instruments.synth = new Tone.Synth();
-    this.instruments.drum_kick = this.sampleLibrary.getKickSampler(
-      () => this.logger.debug('drum kick buffered'),
-    );
-    this.instruments.drum_snare = this.sampleLibrary.getSnareSampler(
-      () => this.logger.debug('drum snare buffered'),
-    );
-    this.instruments.piano = this.sampleLibrary.getPianoSampler(
-      () => this.logger.debug('piano buffered'),
-    );
-    this.instruments.hihat = this.sampleLibrary.getHiHatSynth();
-    this.instruments.longNote = this.sampleLibrary.getLongNoteSynth();
+    // Logger.MuteType(LogType.DEBUG);
 
-    // Connect to gain
-    this.instruments.synth.connect(this.gain);
-    this.instruments.drum_kick.connect(this.gain);
-    this.instruments.drum_snare.connect(this.gain);
-    this.instruments.piano.connect(this.gain);
-    this.instruments.hihat.connect(this.gain);
-    this.instruments.longNote.connect(this.gain);
+    // create instances of all our instruments
+    // this.instruments.set('playnote-synth', new PlayNoteSynth()); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
+    this.instruments.set('kick', new DrumsKick());
+    this.instruments.set('snare', new DrumsSnare());
+    this.instruments.set('piano', new Piano());
+    this.instruments.set('hihat', new DrumsHiHat());
 
-    // Connect to meter
-    this.instruments.synth.connect(this.masterMeter);
-    this.instruments.drum_kick.connect(this.masterMeter);
-    this.instruments.drum_kick.connect(this.kickMeter);
-    this.instruments.drum_snare.connect(this.masterMeter);
-    this.instruments.drum_snare.connect(this.snareMeter);
-    this.instruments.piano.connect(this.masterMeter);
-    this.instruments.piano.connect(this.pianoMeter);
-    this.instruments.hihat.connect(this.masterMeter);
-    this.instruments.hihat.connect(this.hihatMeter);
-    this.instruments.longNote.connect(this.masterMeter);
+    // for all instruments: instrument -> instrument effect chain
+    this.createEffectChainsForAllInstruments();
 
-    // Connect to master output
-    this.gain.toDestination();
+    // for all instruments: instrument effect chain -> master gain
+    this.connectAllInstrumentEffectChainsToGain();
+
+    // for all effect chains: instrument effect chain -> instrument meter
+    this.createMetersForAllInstruments();
+
+    // master gain -> master effect chain -> destination (aka speakers)
+    this.masterEffectChain = new EffectChain('master', this.gain, Destination);
+
+    // master gain -> master meter
+    this.createMasterMeter();
 
     this.logger.info('Initialized successfully');
   }
 
-  /**
-   * Plays a single note
-   * @param note "C4", "D2", "A2", ...
-   * @param velocity Between 0 and 1
-   * @param volume TODO
-   */
-  public playNote(note: string, velocity: number, volume: number): void {
-    this.logger.info(`Play sound ${note}, ${velocity}, ${volume}.`);
-    const { synth } = this.instruments;
-    synth.volume.value = volume;
-    synth.triggerAttackRelease(note, velocity);
-  }
-
-  /**
-   * Plays a single note on piano sampler
-   * @param note "C4", "D2", "A2", ...
-   */
-  public pianoPlayNote(note: string): void {
-    this.logger.info(`Play sound ${note}.`);
-    this.instruments.piano.triggerAttackRelease(note, '8n');
-  }
-
-  /**
-   * plays the drums
-   * @param instrument which part of the drums should be played
-   */
-  public playDrums(instrument: string): void {
-    switch (instrument) {
-      case 'kick': this.instruments.drum_kick.triggerAttack('C2'); break;
-      case 'snare': this.instruments.drum_snare.triggerAttack('C2'); break;
-      case 'hihat':
-        const synth = this.instruments.hihat as NoiseSynth;
-        synth.triggerAttack();
-        break;
+  public createEffect(effectName: MCPEffectIdentifier) {
+    if (effectName === 'reverb') {
+      return this.getReverbEffect();
+    } else {
+      return this.getPingPongDelayEffect();
     }
   }
 
-  /**
-   * Starts the attack of a single note
-   * @param note "C4", "D2", "A2", ...
-   */
-  public startLongNote(note: string, volume: number): void {
-    const { longNote } = this.instruments;
-    longNote.volume.value = volume;
-    longNote.triggerAttack(note);
+  public addEffect(instrumentName: InstrumentName, effectName: MCPEffectIdentifier) {
+    const effectChain = this.effectChains.get(instrumentName);
+    if (!effectChain) {
+      this.logger.error('addEffect');
+    }
+    const effect: IMCPEffect = this.createEffect(effectName);
+    effectChain.pushEffect(effect);
+  }
+
+  public deleteEffect(instrumentName: InstrumentName, effectName: MCPEffectIdentifier) {
+    const effectChain = this.effectChains.get(instrumentName);
+    if (!effectChain) {
+      this.logger.error('deleteEffect');
+    }
+    effectChain.deleteEffectByID(effectName);
+  }
+
+  public getReverbEffect(): IMCPEffect {
+    const toneEffect = new Reverb({
+      decay : 1.7,
+      preDelay : 0.01
+    });
+    toneEffect.wet.value = 0.27;
+    toneEffect.generate();
+    const reverb: IMCPEffect = {
+      id: 'reverb',
+      effect: toneEffect
+    };
+    return reverb;
+  }
+
+  public getPingPongDelayEffect(): IMCPEffect {
+    const pingPongDelay: IMCPEffect = {
+      id: 'pingpongdelay',
+      effect: new PingPongDelay('4n', 0.2)
+    };
+    pingPongDelay.effect.wet.value = 0.5;
+    return pingPongDelay;
+  }
+
+  public deleteEffectFromMasterEffectChain(effectID: MCPEffectIdentifier) {
+    this.masterEffectChain.deleteEffectByID(effectID);
+  }
+
+  public addPingPongDelayToMasterEffectChain() {
+    this.masterEffectChain.pushEffect(this.getPingPongDelayEffect());
+  }
+
+  public addReverbEffectToMasterEffectChain() {
+    this.masterEffectChain.pushEffect(this.getReverbEffect());
+  }
+
+  private createEffectChainsForAllInstruments() {
+    this.instruments.forEach((instrument: IMCPInstrument, name: InstrumentName) => {
+      const effectChain = new EffectChain(name, instrument.getAudioNode());
+      this.effectChains.set(name, effectChain);
+    });
   }
 
   /**
-   * Releases the holded single note
-   * @param note "C4", "D2", "A2", ...
+   * Connects all signal outputs of the instruments to the input of the gain node.
    */
-  public stopLongNote(): void {
-    this.instruments.longNote.triggerRelease();
+  private connectAllInstrumentEffectChainsToGain() {
+    this.effectChains.forEach((effectChain: EffectChain) => {
+      effectChain.getOutputNode().connect(this.gain);
+    });
+
+    this.logger.info(`Connected all ${this.effectChains.size} instrument effect chains to master gain node`);
+  }
+
+  /**
+   * Creates a master meter so that the total volume can be measured.
+   */
+  private createMasterMeter() {
+    const meterLeft: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+    const meterRight: Meter = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+    const split = new Split(2);
+    Destination.connect(split);
+    split.connect(meterLeft, 0);
+    split.connect(meterRight, 1);
+    this.meters.set("master-left", meterLeft);
+    this.meters.set("master-right", meterRight);
+
+    this.logger.info(`Created master meter`);
+  }
+
+  /**
+   * Creates meters for each instrument so that the volume of each instrument
+   * can also be measured independently of the other instruments. With this
+   * method the instruments are also "wired" to this meter to make the measurement really possible.
+   */
+  private createMetersForAllInstruments() {
+    this.effectChains.forEach((effectChain: EffectChain, name: InstrumentName) => {
+      const meterLeft = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+      const meterRight = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+      const split = new Split(2);
+      this.meters.set(name + "-left", meterLeft);
+      this.meters.set(name + "-right", meterRight);
+      effectChain.getOutputNode().connect(split);
+      split.connect(meterLeft, 0); // 0 -> Left
+      split.connect(meterRight, 1); // 1 -> Right
+    });
+
+    this.logger.info(`Created meters for all ${this.instruments.size} instruments and connected instruments to it`, this.meters);
+  }
+
+  /**
+   * Returns the meter associated with the given name.
+   * @param name Unique name of the meter
+   */
+  public getMeter(name: MeterName): Meter {
+    if (!this.meters.has(name)) {
+      this.logger.error(`Cannot find meter with name '${name}'`); // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
+    }
+    return this.meters.get(name) as Meter;
+  }
+
+  /**
+   * Returns the meter associated with the given name.
+   *
+   * At the moment the names are still quite useless.
+   * But later it should also be possible to have multiple instances of an MCP instrument.
+   * These can then be given different names for identification.
+   */
+  public getInstrument(name: InstrumentName): IMCPInstrument {
+    if (!this.instruments.has(name)) {
+      // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
+      this.logger.error(`Cannot find instrument with name '${name}'`);
+    }
+    return this.instruments.get(name);
+  }
+
+  // Wird im Moment nicht genutzt. So oder ähnlich wird das aber demnächst im Frontend gebraucht
+  public getAllInstrumentNames(): InstrumentName[] {
+    return Array.from(this.instruments.keys());
   }
 
 }

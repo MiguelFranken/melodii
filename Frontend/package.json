@@ -8,7 +8,8 @@
     "build:dev": "ng build --configuration=dev",
     "build:local": "ng build",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix=true"
   },
   "private": true,
   "dependencies": {

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { SocketServer } from './library/socket-server';
+import { SocketServer } from './library/socket/socket-server';
 import { CONTROLLERS } from './library/controllers';
 import { environment } from '../../environments/environment';
+import { container } from './library/decorator/container';
 
 @Component({
   selector: 'mcp-generator',
-  templateUrl: './generator.component.html',
-  styleUrls: ['./generator.component.scss']
+  template: '',
 })
 export class GeneratorComponent implements OnInit {
 
