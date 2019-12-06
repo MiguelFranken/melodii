@@ -66,7 +66,7 @@ export class OSCClient {
     }
 
     public async send(path: string, args: IOSCArgs[]) {
-        
+
         let counter = 0;
         if (!this.portReady) {
             do  {
@@ -78,7 +78,7 @@ export class OSCClient {
                 }
             } while (!this.portReady);
         }
-        
+
 
         this.udpClient.send(
             {
@@ -92,10 +92,10 @@ export class OSCClient {
     }
 
     public sendLatencyTest() {
-        let str = Date.now().toString();
-        let arg: IOSCArgs = {
+        const str = Date.now().toString();
+        const arg: IOSCArgs = {
             type: "s", value: str,
-        }
+        };
         this.send('/latency', [arg]);
     }
 
