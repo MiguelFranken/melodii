@@ -1,0 +1,32 @@
+.item {
+  background-color: lightblue;
+  //padding: 10px;
+  margin: 10px;
+  height: 275px;
+  width: 275px;
+
+  div {
+    height: 100%;
+  }
+}
+
+.spacer {
+  //background-color: green;
+  //padding: 10px;
+  margin: 10px;
+  height: 275px;
+  width: 275px;
+}
+
+.draggable-source--is-dragging {
+  opacity: 0.5;
+}
+
+.container {
+  padding: 50px;
+  height: 100%;
+}
+
+* {
+  outline: 0;
+}
