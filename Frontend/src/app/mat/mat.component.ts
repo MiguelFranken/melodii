@@ -38,7 +38,8 @@ export class MatComponent implements OnInit {
     const swappable = new Swappable(this.block.nativeElement, {
       draggable: '.item',
       mirror: {
-        appendTo: 'body'
+        appendTo: 'body',
+        constrainDimensions: true,
       }
     });
 
