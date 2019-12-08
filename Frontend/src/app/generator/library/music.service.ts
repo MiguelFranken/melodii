@@ -49,14 +49,7 @@ export class MusicService {
     this.instruments.set('piano', new Piano());
     this.instruments.set('hihat', new DrumsHiHat());
 
-    // for all instruments: instrument -> instrument effect chain
-    this.createEffectChainsForAllInstruments();
-
-    // for all instruments: instrument effect chain -> master gain
-    this.connectAllInstrumentEffectChainsToGain();
-
-    // for all effect chains: instrument effect chain -> instrument meter
-    this.createMetersForAllInstruments();
+    this.instruments.forEach((instrument, name) => this.addInstrument(instrument, name));
 
     // master gain -> master effect chain -> volume node
     this.masterEffectChain = new EffectChain('master', this.gain, this.volume);
@@ -97,8 +90,8 @@ export class MusicService {
 
   public getReverbEffect(): IMCPEffect {
     const toneEffect = new Reverb({
-      decay : 1.7,
-      preDelay : 0.01
+      decay: 1.7,
+      preDelay: 0.01
     });
     toneEffect.wet.value = 0.27;
     toneEffect.generate();
@@ -130,22 +123,13 @@ export class MusicService {
     this.masterEffectChain.pushEffect(this.getReverbEffect());
   }
 
-  private createEffectChainsForAllInstruments() {
-    this.instruments.forEach((instrument: IMCPInstrument, name: InstrumentName) => {
-      const effectChain = new EffectChain(name, instrument.getAudioNode());
-      this.effectChains.set(name, effectChain);
-    });
-  }
+  public addInstrument(instrument: IMCPInstrument, instrumentName: InstrumentName) {
+    console.warn(`Creating ${instrumentName}.`);
+    const effectChain = new EffectChain(instrumentName, instrument.getAudioNode());
+    effectChain.getOutputNode().connect(this.gain);
+    this.effectChains.set(instrumentName, effectChain);
 
-  /**
-   * Connects all signal outputs of the instruments to the input of the gain node.
-   */
-  private connectAllInstrumentEffectChainsToGain() {
-    this.effectChains.forEach((effectChain: EffectChain) => {
-      effectChain.getOutputNode().connect(this.gain);
-    });
-
-    this.logger.info(`Connected all ${this.effectChains.size} instrument effect chains to master gain node`);
+    this.createMeter(effectChain, instrumentName);
   }
 
   /**
@@ -165,23 +149,19 @@ export class MusicService {
   }
 
   /**
-   * Creates meters for each instrument so that the volume of each instrument
+   * Creates a meter for the instrument so that the volume of each instrument
    * can also be measured independently of the other instruments. With this
-   * method the instruments are also "wired" to this meter to make the measurement really possible.
+   * method the instrument is also "wired" to this meter to make the measurement really possible.
    */
-  private createMetersForAllInstruments() {
-    this.effectChains.forEach((effectChain: EffectChain, name: InstrumentName) => {
-      const meterLeft = new Meter(MusicService.METER_SMOOTHING_FACTOR);
-      const meterRight = new Meter(MusicService.METER_SMOOTHING_FACTOR);
-      const split = new Split(2);
-      this.meters.set(name + "-left", meterLeft);
-      this.meters.set(name + "-right", meterRight);
-      effectChain.getOutputNode().connect(split);
-      split.connect(meterLeft, 0); // 0 -> Left
-      split.connect(meterRight, 1); // 1 -> Right
-    });
-
-    this.logger.info(`Created meters for all ${this.instruments.size} instruments and connected instruments to it`, this.meters);
+  private createMeter(effectChain: EffectChain, instrumentName: InstrumentName) {
+    const meterLeft = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+    const meterRight = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+    const split = new Split(2);
+    this.meters.set(instrumentName + "-left", meterLeft);
+    this.meters.set(instrumentName + "-right", meterRight);
+    effectChain.getOutputNode().connect(split);
+    split.connect(meterLeft, 0); // 0 -> Left
+    split.connect(meterRight, 1); // 1 -> Right
   }
 
   /**
