@@ -6,7 +6,7 @@ import { DefaultMap } from '../defaultMap';
 
 export class Box implements IMCPInstrument {
 
-  private readonly voices = new DefaultMap(this.createVoice);
+  private readonly voices = new DefaultMap(() => this.createVoice());
   private readonly output = new Merge();
 
   private readonly logger: Logger = new Logger({ name: 'Box Instrument', flags: ['music'] });
