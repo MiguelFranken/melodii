@@ -34,8 +34,8 @@
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="previousMatrix()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="nextMatrix()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="clearMatrix()">Clear</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()">Load Preset</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()" >Save Preset</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="openPresetMenu()" #presetButton>Presets</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()" >Metronom</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchVelocity()" #velocityButtonElement>{{showVelocity ? 'Hide' : 'Show'}} Velocity</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
@@ -52,7 +52,18 @@
             [class.minHeightRowNotExpanded]="!row.isExpanded"
             fxFlex
     >
-      <button (click)="switchRowExpansionMode(row)" mat-button class="row-card" fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="showRowNames">
+      <button
+              (click)="switchRowExpansionMode(row)"
+              mat-button
+              class="row-card"
+              fxFlex
+              fxLayout="column"
+              fxLayoutAlign="center center"
+              *ngIf="showRowNames"
+              longPress
+              (contextmenu)="onContextMenuNoteButton($event, row)"
+              (longPress)="onLongPressNoteButton($event, row)"
+      >
         <span>{{row.name}}</span>
       </button>
       <!-- Row Button -->
@@ -65,8 +76,8 @@
               fxLayoutAlign="end stretch"
               (click)="switchRowButtonActivationStatus($event, button)"
               longPress
-              (contextmenu)="onContextMenu($event, button)"
-              (longPress)="onLongPress($event, button)"
+              (contextmenu)="onContextMenuRowButton($event, button)"
+              (longPress)="onLongPressRowButton($event, button)"
               style="position: relative;"
               [ngStyle]="{'background-color': button.isActive ? 'rgba(0,0,0,' + ((0.3-0.15)/1*(button.velocity-1)+0.3) +')' : 'rgba(0,0,0,.1)'}"
               #rowButtonElement
@@ -100,7 +111,14 @@
 <div style="visibility: hidden; position: fixed"
      [style.left]="contextMenuPosition.x"
      [style.top]="contextMenuPosition.y"
-     [matMenuTriggerFor]="contextMenu">
+     [matMenuTriggerFor]="contextMenu"
+      #contextMenuTrigger="matMenuTrigger">
+</div>
+<div style="visibility: hidden; position: fixed"
+     [style.left]="effectContextMenuPosition.x"
+     [style.top]="effectContextMenuPosition.y"
+     [matMenuTriggerFor]="effectContextMenu"
+     #effectContextMenuTrigger="matMenuTrigger">
 </div>
 <mat-menu #contextMenu="matMenu">
   <ng-template matMenuContent let-button="button">
@@ -114,6 +132,13 @@
         <button mat-menu-item (click)="decreaseVelocity($event, button)"><mat-icon>keyboard_arrow_down</mat-icon> Decrease</button>
         </ng-template>
     </mat-menu>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #effectContextMenu="matMenu">
+  <ng-template matMenuContent let-instrument="instrument">
+    <button mat-menu-item (click)="addReverb($event, instrument)" [class.off]="!isReverbUsed(instrument)">Reverb</button>
+    <button mat-menu-item (click)="addPingPongDelay($event, instrument)" [class.off]="!isPingPongDelayUsed(instrument)">Ping Pong Delay</button>
   </ng-template>
 </mat-menu>
 <!--endregion-->
@@ -145,7 +170,31 @@
   </div>
 </ng-template>
 
-<!-- Overlays -->
+<ng-template #presetMenuTemplate let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout="column" fxLayoutGap="2px">
+      <div fxLayout fxLayoutGap="2px">
+        <button
+                mat-button
+                class="overlay-button"
+                fxFlex
+                (click)="setChordProgression(); toppy.close()"
+        >
+          Piano Chords
+        </button>
+        <button
+                mat-button
+                class="overlay-button"
+                fxFlex
+                (click)="setDrumBeat(); toppy.close()"
+        >
+          Drum Beat
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <ng-template #helpMenuTemplate let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
     <div fxLayout="column" fxLayoutGap="2px">
@@ -175,18 +224,18 @@
 
 <ng-template #effectMenuTemplate let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
-    <div fxLayout="column" fxLayoutGap="2px">
-      <div fxLayout fxLayoutGap="2px">
-        <button
-                mat-button
-                class="overlay-button"
-                fxFlex
-                (click)="switchReverbOnMaster()"
-                [class.off]="!useReverbOnMaster"
-        >
-          Reverb (Master)
-        </button>
-      </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchReverbOnMaster()"
+              [class.off]="!useReverbOnMaster"
+      >
+        Reverb (Master)
+      </button>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
       <button
               mat-button
               class="overlay-button"
@@ -195,24 +244,6 @@
               [class.off]="!usePingPongDelayOnMaster"
       >
         PingPongDelay (Master)
-      </button>
-      <button
-              mat-button
-              class="overlay-button"
-              fxFlex
-              (click)="switchReverbOnSnare()"
-              [class.off]="!useReverbOnSnare"
-      >
-        Reverb (Snare)
-      </button>
-      <button
-              mat-button
-              class="overlay-button"
-              fxFlex
-              (click)="switchPingPongDelayOnSnare()"
-              [class.off]="!usePingPongDelayOnSnare"
-      >
-        PingPongDelay (Snare)
       </button>
     </div>
   </div>

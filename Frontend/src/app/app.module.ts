@@ -11,6 +11,7 @@ import { ArcModule } from './arc/arc.module';
 import { BoxModule } from './box/box.module';
 import { MatModule } from './mat/mat.module';
 import { ExperimentsModule } from './experiments/experiments.module';
+import { MixerModule } from './mixer/mixer.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ExperimentsModule } from './experiments/experiments.module';
     DashboardModule,
     PrototypeModule,
     GeneratorModule,
+    MixerModule,
     ArcModule,
     BoxModule,
     MatModule,

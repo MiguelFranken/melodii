@@ -6,7 +6,7 @@ import { DefaultMap } from '../defaultMap';
 
 export class Box implements IMCPInstrument {
 
-  private readonly voices = new DefaultMap(this.createVoice);
+  private readonly voices = new DefaultMap(() => this.createVoice());
   private readonly output = new Merge();
 
   private readonly logger: Logger = new Logger({ name: 'Box Instrument', flags: ['music'] });
@@ -23,9 +23,10 @@ export class Box implements IMCPInstrument {
   public detune(note: Note, cents: Cents) {
     this.logger.info(`Detune with note ${note} and cents ${cents}.`);
     const voice = this.voices.get(note);
-    // A Cent is one hundredth semitone. That makes an octave 1200 cents, and an octave is a doubling of frequency.
-    const frequency = Frequency(note).toFrequency() * (2 * cents / 1200);
-    voice.setNote(frequency);
+    const baseFrequency = Frequency(note).toFrequency();
+    const frequencyChange = baseFrequency * (2 * cents / 1200);
+    const finalFrequency = baseFrequency + frequencyChange;
+    voice.setNote(finalFrequency);
   }
 
   public release(note: Note) {

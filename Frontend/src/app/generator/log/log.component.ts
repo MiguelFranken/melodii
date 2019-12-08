@@ -6,14 +6,15 @@ import { LogService } from './log.service';
   templateUrl: './log.component.html',
   styleUrls: ['./log.component.scss']
 })
-export class LogComponent implements OnInit {
-
-  public messages: string[] = [];
+export class LogComponent {
 
   constructor(private log: LogService) { }
 
-  ngOnInit(): void {
-    this.messages = this.log.getMessages();
+  messagesToDisplay() {
+    return this.log.getMessages();
   }
 
+  messagesOmitted() {
+    return this.log.messagesOmitted();
+  }
 }

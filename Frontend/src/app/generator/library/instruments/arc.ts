@@ -28,7 +28,8 @@ export class Arc implements IMCPInstrument {
     } else { // Key not found in this.voices.
       if (strength > 0) {
         const voice = this.createVoice();
-        voice.volume.linearRampToValueAtTime(volume, "+0.1");
+        this.voices.set(note, voice);
+        voice.volume.value = volume;
         voice.triggerAttack(note, undefined, 1);
       }
     }

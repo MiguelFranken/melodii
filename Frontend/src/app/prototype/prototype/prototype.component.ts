@@ -12,6 +12,13 @@ import { Chain, HelpOverlayService, Overlay, OverlayElements } from '../../share
 import { GeneratorCommunicationService } from '../../generator/library/generator-communication.service';
 import { NotYetImplementedService } from '../../not-yet-implemented.service';
 import { IOSCMessage } from '../../shared/osc/osc-message';
+import { InstrumentName } from '../../generator/library/types';
+
+// TODO MF: Tonal npm package nutzen
+enum ChordQuality {
+  MAJOR,
+  MINOR
+}
 
 const NOTES_MAJOR_C = [
   'C',
@@ -42,6 +49,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   public useReverbOnSnare = false;
   public usePingPongDelayOnSnare = false;
 
+  private useReverbMap: Map<InstrumentName, boolean> = new Map();
+  private usePingPongDelayMap: Map<InstrumentName, boolean> = new Map();
+
   public height = '100%';
 
   private matrixCollection: Matrix[] = [];
@@ -57,7 +67,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   private msPerBeat: number = 1000 * 0.5 * (60 / DEFAULT_BPM); // TODO MF: different default
 
-  public temp = 0;
+  public currentPlayedColumnIndex = 0;
 
   private playSubscription: Subscription;
 
@@ -88,6 +98,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   @ViewChild('helpButton', { static: false, read: ElementRef })
   helpButtonElement: ElementRef;
 
+  @ViewChild('presetButton', { static: false, read: ElementRef })
+  presetButtonElement: ElementRef;
+
   @ViewChild('effectButton', { static: false, read: ElementRef })
   effectButtonElement: ElementRef;
 
@@ -102,6 +115,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   @ViewChild('helpMenuTemplate', { static: true })
   helpMenuTemplate: TemplateRef<any>;
 
+  @ViewChild('presetMenuTemplate', { static: true })
+  presetMenuTemplate: TemplateRef<any>;
+
   @ViewChild('effectMenuTemplate', { static: true })
   effectMenuTemplate: TemplateRef<any>;
 
@@ -114,9 +130,10 @@ export class PrototypeComponent implements OnInit, OnDestroy {
    * Overlay used to select the current instrument,
    * i.e. selection of on of the available matrices
    */
-  private instrumentSelectionOverlay;
+  private instrumentSelectionOverlay: Overlay;
   private helpMenuOverlay: Overlay;
   private effectMenuOverlay: Overlay;
+  private presetMenuOverlay: Overlay;
   //endregion
   //endregion
 
@@ -124,10 +141,16 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   private isInFoldMode = false;
 
-  @ViewChild(MatMenuTrigger, {static: false})
+  //region Context Menu Attributes
+  @ViewChild('contextMenuTrigger', {static: false})
   contextMenu: MatMenuTrigger;
 
+  @ViewChild('effectContextMenuTrigger', {static: false})
+  effectContextMenu: MatMenuTrigger;
+
   contextMenuPosition = { x: '0px', y: '0px' };
+  effectContextMenuPosition = { x: '0px', y: '0px' };
+  //endregion
 
   private clicked = false;
 
@@ -137,6 +160,12 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     private toppy: Toppy,
     private helpOverlayService: HelpOverlayService,
     private notYetImplementedService: NotYetImplementedService) {
+    this.useReverbMap.set('hihat', false);
+    this.useReverbMap.set('kick', false);
+    this.useReverbMap.set('snare', false);
+    this.usePingPongDelayMap.set('hihat', false);
+    this.usePingPongDelayMap.set('kick', false);
+    this.usePingPongDelayMap.set('snare', false);
   }
 
   //region Velocity
@@ -219,6 +248,11 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.helpOverlayService.triggerChain('tutorial');
   }
 
+  public openPresetMenu() {
+    this.initPresetMenuOverlay();
+    this.presetMenuOverlay.open();
+  }
+
   private initEffectMenuOverlay() {
     const position = new RelativePosition({
       placement: OutsidePlacement.BOTTOM_LEFT,
@@ -251,6 +285,23 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       .create();
 
     this.logger.info('Initialized help menu overlay');
+  }
+
+  private initPresetMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.presetButtonElement.nativeElement
+    });
+
+    this.presetMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.presetMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized preset menu overlay');
   }
   //endregion
 
@@ -287,6 +338,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
   //endregion
 
+  //region Tutorial chain
   private addElements() {
     const subject: BehaviorSubject<OverlayElements[]> = this.helpOverlayService.getSubject();
     this.helpOverlayService.getOutputObservable().subscribe(() => {
@@ -371,6 +423,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     };
     this.helpOverlayService.addChain(chain);
   }
+  //endregion
 
   ngOnInit() {
     this.addElements();
@@ -426,6 +479,14 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   public nextMatrix() {
     this.matrixCollectionIndex = (this.matrixCollectionIndex + 1) % this.matrixCollection.length;
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+
+    for (const row of this.matrix.rows) {
+    //   row.buttons[this.currentPlayedColumnIndex].isPlayed = true;
+      row.buttons.forEach((button: RowButton, columnIndex: number) => {
+        button.isPlayed = columnIndex === this.currentPlayedColumnIndex;
+      });
+    }
+
     this.logger.info('Switched to next matrix', this.matrix);
   }
 
@@ -498,7 +559,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       rowArray.push(kickButton);
     }
 
-    return new Row(rowArray, 'Kick');
+    return new Row(rowArray, 'Kick', 'kick');
   }
 
   private createSnareRow(): Row {
@@ -528,7 +589,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       rowArray.push(snareButton);
     }
 
-    return new Row(rowArray, 'Snare');
+    return new Row(rowArray, 'Snare', 'snare');
   }
 
   private createHihatRow(): Row {
@@ -559,7 +620,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       rowArray.push(hihatButton);
     }
 
-    return new Row(rowArray, 'Hihat');
+    return new Row(rowArray, 'HiHat', 'hihat');
   }
 
   private createMatrixDrums() {
@@ -630,11 +691,11 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       this.playSubscription.unsubscribe();
 
       for (const rows of this.matrix.rows) {
-        const oldButton: RowButton = rows.buttons[this.temp];
+        const oldButton: RowButton = rows.buttons[this.currentPlayedColumnIndex];
         oldButton.isPlayed = false;
       }
 
-      this.temp = 0;
+      this.currentPlayedColumnIndex = 0;
     }
   }
 
@@ -655,23 +716,35 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     }
 
     this.playSubscription = this.interval.subscribe(_ => {
-      const newTemp = (this.temp + 1) % NUMBER_OF_COLUMNS;
+      const nextPlayedColumnIndex = (this.currentPlayedColumnIndex + 1) % NUMBER_OF_COLUMNS;
 
-      for (const rows of this.matrix.rows) {
-        const oldButton: RowButton = rows.buttons[this.temp];
-        oldButton.isPlayed = false;
+      this.showLights();
+      this.play(nextPlayedColumnIndex);
 
-        const newButton: RowButton = rows.buttons[(this.temp + 1) % NUMBER_OF_COLUMNS];
+      this.currentPlayedColumnIndex = nextPlayedColumnIndex;
+    });
+
+    this.subject.next(this.msPerBeat);
+  }
+
+  private play(columnIndex: number) {
+    for (const matrix of this.matrixCollection) {
+      for (const rows of matrix.rows) {
+        const newButton: RowButton = rows.buttons[columnIndex];
         newButton.isPlayed = true;
 
         if (newButton.isActive) {
           this.communicationService.sendMessage(newButton.oscMessage);
         }
       }
-      this.temp = newTemp;
-    });
+    }
+  }
 
-    this.subject.next(this.msPerBeat);
+  private showLights() {
+    for (const rows of this.matrix.rows) {
+      const oldButton: RowButton = rows.buttons[this.currentPlayedColumnIndex];
+      oldButton.isPlayed = false;
+    }
   }
 
   /**
@@ -686,11 +759,12 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     }
   }
 
+  //region Context Menu Methods
   //region Context Menu For Row Buttons
   /**
    * A long press activates the context menu with further setting options for an entry in the matrix.
    */
-  onLongPress(event: MouseEvent, button: RowButton) {
+  onLongPressRowButton(event: MouseEvent, button: RowButton) {
     event.preventDefault();
 
     if (button.isActive) {
@@ -700,13 +774,13 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       this.contextMenu.openMenu();
     }
 
-    this.logger.info('Performed long press on button', button);
+    this.logger.info('Performed long press on row button', button);
   }
 
   /**
    * Opens the context menu of a specific entry of the matrix specified by the row button.
    */
-  onContextMenu(event: MouseEvent, button: RowButton) {
+  onContextMenuRowButton(event: MouseEvent, button: RowButton) {
     event.preventDefault();
 
     if (button.isActive) {
@@ -715,7 +789,38 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       this.contextMenu.menuData = { button };
       this.contextMenu.openMenu();
     }
+
+    this.logger.info('Performed right click on row button', button);
   }
+  //endregion
+
+  //region Context Menu Note Button
+  public onContextMenuNoteButton(event, row: Row) {
+    event.preventDefault();
+
+    const instrument = row.instrument;
+
+    this.effectContextMenuPosition.x = event.clientX + 'px';
+    this.effectContextMenuPosition.y = event.clientY + 'px';
+    this.effectContextMenu.menuData = { instrument };
+    this.effectContextMenu.openMenu();
+
+    this.logger.info('Performed right click on instrument button', row);
+  }
+
+  public onLongPressNoteButton(event, row: Row) {
+    event.preventDefault();
+
+    const instrument = row.instrument;
+
+    this.effectContextMenuPosition.x = event.pageX + 'px';
+    this.effectContextMenuPosition.y = event.pageY + 'px';
+    this.effectContextMenu.menuData = { instrument };
+    this.effectContextMenu.openMenu();
+
+    this.logger.info('Performed long press on instrument button', row);
+  }
+  //endregion
   //endregion
 
   /**
@@ -726,11 +831,65 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   //region Sound Effects
+  public isReverbUsed(instrument: InstrumentName) {
+    return this.useReverbMap.get(instrument);
+  }
+
+  public isPingPongDelayUsed(instrument: InstrumentName) {
+    return this.usePingPongDelayMap.get(instrument);
+  }
+
+  public addReverb(event, instrument: InstrumentName) {
+    event.stopPropagation();
+    // event.preventDefault();
+    const oscMessage: IOSCMessage = {
+      address: '/effect/instrument/reverb',
+      args: [
+        { type: 's', value: instrument },
+        { type: 'i', value: this.isReverbUsed(instrument) ? 0 : 1 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.useReverbMap.set(instrument, !this.isReverbUsed(instrument));
+    this.logger.debug(`Switched reverb effect on instrument '${instrument}'`);
+  }
+
+  public addPingPongDelay(event, instrument: InstrumentName) {
+    event.stopPropagation();
+    // event.preventDefault();
+    const oscMessage: IOSCMessage = {
+      address: '/effect/instrument/pingpongdelay',
+      args: [
+        { type: 's', value: instrument },
+        { type: 'i', value: this.isPingPongDelayUsed(instrument) ? 0 : 1 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.usePingPongDelayMap.set(instrument, !this.isPingPongDelayUsed(instrument));
+    this.logger.debug(`Switched pingpongdelay effect on instrument '${instrument}'`);
+  }
+
   public switchReverbOnMaster() {
     this.useReverbOnMaster = !this.useReverbOnMaster;
 
     const oscMessage: IOSCMessage = {
-      address: '/effect/reverb',
+      address: '/effect/master/reverb',
       args: [
         { type: 'i', value: this.useReverbOnMaster ? 1 : 0 }
       ],
@@ -751,7 +910,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.usePingPongDelayOnMaster = !this.usePingPongDelayOnMaster;
 
     const oscMessage: IOSCMessage = {
-      address: '/effect/pingpongdelay',
+      address: '/effect/master/pingpongdelay',
       args: [
         { type: 'i', value: this.usePingPongDelayOnMaster ? 1 : 0 }
       ],
@@ -767,47 +926,64 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
     this.logger.debug('Switched PingPongDelay on master');
   }
+  //endregion
 
-  public switchReverbOnSnare() {
-    this.useReverbOnSnare = !this.useReverbOnSnare;
-
-    const oscMessage: IOSCMessage = {
-      address: '/drums/snare/effect/reverb',
-      args: [
-        { type: 'i', value: this.useReverbOnSnare ? 1 : 0 }
-      ],
-      info: {
-        address: '/play_note',
-        family: 'IPv4',
-        port: 80,
-        size: 1,
-      }
-    };
-
-    this.communicationService.sendMessage(oscMessage);
-
-    this.logger.debug('Switched reverb effect on snare');
+  //region Presets
+  private getChord(rootNote: string, octave: number, quality: ChordQuality) {
+    const rootIndex = NOTES_MAJOR_C.findIndex((note: string) => note === rootNote);
+    const third = NOTES_MAJOR_C[(rootIndex + 2) % 7];
+    const fifth = NOTES_MAJOR_C[(rootIndex + 4) % 7];
+    return [
+      `${rootNote}${octave}`,
+      `${third}${octave}`,
+      `${fifth}${octave}`,
+    ];
   }
 
-  public switchPingPongDelayOnSnare() {
-    this.usePingPongDelayOnSnare = !this.usePingPongDelayOnSnare;
+  private setNote(note: string, columnIndex: number) {
+    const rowIndex = this.matrixCollection[1].rows.findIndex((row: Row) => row.name === note);
+    if (rowIndex >= 0) {
+      this.matrixCollection[1].rows[rowIndex].buttons[columnIndex].isActive = true;
+    } else {
+      this.logger.error('Note not found in matrix');
+    }
+  }
 
-    const oscMessage: IOSCMessage = {
-      address: '/drums/snare/effect/pingpongdelay',
-      args: [
-        { type: 'i', value: this.usePingPongDelayOnSnare ? 1 : 0 }
-      ],
-      info: {
-        address: '/play_note',
-        family: 'IPv4',
-        port: 80,
-        size: 1,
-      }
-    };
+  public setChordProgression() {
+    const tonic = this.getChord('C', 2, ChordQuality.MAJOR);
+    const subdominant = this.getChord('F', 2, ChordQuality.MAJOR);
+    const dominant = this.getChord('G', 2, ChordQuality.MAJOR);
 
-    this.communicationService.sendMessage(oscMessage);
+    const tonicColumn = 0;
+    const subdominantColumn = 4;
+    const dominantColumn = 6;
 
-    this.logger.debug('Switched PingPongDelay on snare');
+    tonic.forEach((note) => {
+      this.setNote(note, tonicColumn);
+    });
+
+    subdominant.forEach((note) => {
+      this.setNote(note, subdominantColumn);
+    });
+
+    dominant.forEach((note) => {
+      this.setNote(note, dominantColumn);
+    });
+  }
+
+  public setDrumBeat() {
+    // kick
+    this.matrixCollection[0].rows[0].buttons[0].isActive = true;
+    this.matrixCollection[0].rows[0].buttons[4].isActive = true;
+
+    // snare
+    this.matrixCollection[0].rows[2].buttons[2].isActive = true;
+    this.matrixCollection[0].rows[2].buttons[6].isActive = true;
+
+    // hihat
+    for (let columnIndex = 0; columnIndex < NUMBER_OF_COLUMNS; columnIndex++) {
+      this.matrixCollection[0].rows[1].buttons[columnIndex].isActive = true;
+    }
   }
   //endregion
 
