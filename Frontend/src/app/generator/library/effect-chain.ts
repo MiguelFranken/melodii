@@ -15,7 +15,11 @@ export class EffectChain {
    * @param inputNode Input signal that flows into this effect chain
    * @param outputNode TODO
    */
-  constructor(private id: EffectChainIdentifier, private inputNode: ToneAudioNode, private readonly outputNode: ToneAudioNode = new Gain()) {
+  constructor(
+    private id: EffectChainIdentifier,
+    private inputNode: ToneAudioNode,
+    private readonly outputNode: ToneAudioNode = new Gain()
+  ) {
     this.logger = new Logger({ name: `EffectChain ${id}`, flags: ['effect-chain'] });
     this.inputNode.connect(this.outputNode);
   }
