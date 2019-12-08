@@ -124,7 +124,7 @@
             function move(clientX) {
                 if (x_start) {
                     const x_diff = clientX - x_start;
-                    const cents = x_diff * 10;
+                    const cents = x_diff;
                     detune(my_id, cents);
                 }
             }
