@@ -1,0 +1,43 @@
+<div class="container" fxLayout="column" fxLayoutGap="20px">
+
+  <div #block fxFlex>
+    <div fxLayout="column" fxLayoutAlign="stretch stretch" style="width: 100%; height: 100%;">
+      <!-- row 1 -->
+      <div fxLayout fxLayoutGap="10px" fxFlex>
+        <div class="item" fxFlex>
+          <div fxLayout fxLayoutAlign="center center" id="1">
+            {{getNote(1)}}<small>3</small>
+          </div>
+        </div>
+        <div class="item" fxFlex>
+          <div fxLayout fxLayoutAlign="center center" id="2">
+            {{getNote(2)}}<small>3</small>
+          </div>
+        </div>
+        <div class="item" fxFlex>
+          <div fxLayout fxLayoutAlign="center center" id="3">
+            {{getNote(3)}}<small>3</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- row 2 -->
+      <div fxLayout fxLayoutGap="10px" fxFlex>
+        <div class="item" fxFlex>
+          <div fxLayout fxLayoutAlign="center center" id="0">
+            {{getNote(0)}}<small>3</small>
+          </div>
+        </div>
+
+        <div class="spacer" fxFlex></div>
+
+        <div class="item" fxFlex>
+          <div fxLayout fxLayoutAlign="center center" id="4">
+            {{getNote(4)}}<small>3</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
