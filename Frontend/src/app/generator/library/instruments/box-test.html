@@ -51,7 +51,7 @@
             socket.on('connect_timeout', () => indicator.innerText = "The connection timed out.");
         }
 
-        const OSC_MESSAGE = 3;
+        const OSC_MESSAGE = 'redirect-osc-message';
 
         function trigger(note, velocity) {
             console.log(`Trigger ${note}.`);
