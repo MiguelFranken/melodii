@@ -2,13 +2,16 @@ import { Controller, Message, OnMessage } from '../decorator/decorators';
 import { IOSCMessage } from '../osc/osc-message';
 import { Box } from '../instruments/box';
 import { Logger } from '@upe/logger';
+import { MusicService } from '../music.service';
 
 @Controller('/box')
 export class BoxController {
 
     private logger: Logger = new Logger({ name: 'BoxController', flags: ['music'] });
 
-    constructor(private box: Box) { }
+    constructor(music: MusicService, private box: Box) {
+        music.addInstrument(box, "Box");
+    }
 
     @OnMessage('/trigger')
     public trigger(@Message() message: IOSCMessage) {
