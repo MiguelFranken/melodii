@@ -29,6 +29,7 @@ export class PlayNoteController {
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
       }
     }
   }
@@ -43,6 +44,7 @@ export class PlayNoteController {
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
       }
     }
   }
@@ -57,6 +59,7 @@ export class PlayNoteController {
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
       }
     }
   }
@@ -70,6 +73,7 @@ export class PlayNoteController {
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
       }
     }
   }

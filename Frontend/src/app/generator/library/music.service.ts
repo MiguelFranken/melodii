@@ -5,12 +5,11 @@ import { IMCPInstrument } from './mcp-instrument';
 
 // Instruments
 import { DrumsHiHat, DrumsKick, DrumsSnare } from './instruments/drums';
-import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Piano } from './instruments/piano';
 import { Volume } from 'tone';
 import { EffectChain } from './effect-chain';
 import { InstrumentName, MeterName, IMCPEffect, MCPEffectIdentifier } from './types';
-import { Effect } from 'tone/build/esm/effect/Effect';
+import { LogService } from '../log/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -39,11 +38,14 @@ export class MusicService {
     return this.volume.volume.value;
   }
 
-  constructor() {
+  public getLogService(): LogService {
+    return this.logService;
+  }
+
+  constructor(private logService: LogService) {
     // Logger.MuteType(LogType.DEBUG);
 
     // create instances of all our instruments
-    // this.instruments.set('playnote-synth', new PlayNoteSynth()); // TODO MF: Polyphonizer sollte von Tone's Instrument Klasse erben
     this.instruments.set('kick', new DrumsKick());
     this.instruments.set('snare', new DrumsSnare());
     this.instruments.set('piano', new Piano());

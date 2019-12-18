@@ -1,9 +1,9 @@
 <div fxLayout="column" style="padding: 2px; height: 100%" fxLayoutGap="2px">
   <div class="container" fxLayout="column" fxLayoutGap="5px" fxFlex>
-    <h1>Messages received:</h1>
+    <h1>Messages Log</h1>
     <div *ngFor="let item of messagesToDisplay()" fxLayout fxLayoutGap="10px">
       <div class="index">{{item.index}}</div>
-      <span fxLayout="column" fxLayoutAlign="center">{{item.message}}</span>
+      <div fxLayout="column" fxLayoutAlign="center" [innerHTML]="item.message | safeHTML"></div>
     </div>
     <div *ngIf="messagesOmitted()">
       Older messages were omitted for performance reasons.
@@ -12,3 +12,4 @@
       No messages received yet.
     </div>
   </div>
+</div>
