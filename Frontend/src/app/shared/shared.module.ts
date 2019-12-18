@@ -6,6 +6,7 @@ import { LayoutModule } from "./layout/layout.module";
 import { LongPressDirective } from "./directives/long-press.directive";
 import { ToppyModule } from 'toppy';
 import { HelpOverlayComponent } from './help-overlay/help-overlay.component';
+import { SafeHTMLPipe } from './pipes/safe-html.pipe';
 
 const modules = [
   MaterialModule,
@@ -16,6 +17,7 @@ const modules = [
   declarations: [
     LongPressDirective,
     HelpOverlayComponent,
+    SafeHTMLPipe
   ],
   imports: [
     CommonModule,
@@ -26,6 +28,7 @@ const modules = [
   exports: [
     modules,
     FlexLayoutModule,
+    SafeHTMLPipe,
     LongPressDirective
   ],
   entryComponents: [

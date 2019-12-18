@@ -35,5 +35,9 @@ export class LogService {
     this.receiveEvent.emit();
   }
 
+  public addErrorMessage(message: string) {
+    this.addMessage(`<b style="color: #FF8269">${message}</b>`);
+  }
+
   constructor() { }
 }
