@@ -25,7 +25,7 @@ export class MusicService {
   private meters: Map<MeterName, Meter> = new Map();
 
   private gain = new Gain();
-  private volume = new Volume(-12);
+  private volume = new Volume(0);
 
   private masterEffectChain: EffectChain;
 
