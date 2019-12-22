@@ -26,6 +26,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.3",
     "socket.io": "^2.3.0",
+    "wrtc": "^0.4.1",
     "ws": "^7.1.2"
   },
   "devDependencies": {

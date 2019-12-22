@@ -19,5 +19,6 @@ export interface IOSCMessage {
   address: string;
   args: IOSCArgs[];
   info: IOSCInfo;
+  timeStart?: number[];
 
 }

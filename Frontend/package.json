@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "ng serve --port 4200",
+    "start:aot": "ng serve --port 4200 --aot",
     "start:iPad": "ng serve --host 0.0.0.0 --port 4200 --disable-host-check --disableHostCheck",
     "build:master": "ng build --configuration=master",
     "build:dev": "ng build --configuration=dev",
@@ -36,6 +37,7 @@
     "tone": "^14.4.84",
     "toppy": "^2.3.4",
     "tslib": "^1.9.0",
+    "wrtc": "^0.4.2",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
@@ -48,6 +50,7 @@
     "@types/node": "^8.9.5",
     "@types/socket.io": "^2.1.4",
     "@types/socket.io-client": "^1.4.32",
+    "@types/webrtc": "0.0.25",
     "codelyzer": "^5.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",

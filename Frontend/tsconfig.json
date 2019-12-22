@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "types": ["node"],
+    "types": ["node", "webrtc"],
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,

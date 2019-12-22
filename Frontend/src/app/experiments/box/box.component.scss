@@ -1,0 +1,20 @@
+@import "src/scss/variables";
+
+.key {
+  padding-top: 10px;
+  color: $mcp-white-1;
+  font-size: 15px;
+  font-weight: bolder;
+  background: linear-gradient($mcp-black-1, hsl(0, 0%, 75%) 100%);
+  user-select: none;
+}
+
+.container {
+  height: 100%;
+  padding: 10px;
+}
+
+button {
+  border: 0;
+  outline: none;
+}

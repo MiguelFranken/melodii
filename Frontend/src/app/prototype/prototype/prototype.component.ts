@@ -46,8 +46,6 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   public useReverbOnMaster = false;
   public usePingPongDelayOnMaster = false;
-  public useReverbOnSnare = false;
-  public usePingPongDelayOnSnare = false;
 
   private useReverbMap: Map<InstrumentName, boolean> = new Map();
   private usePingPongDelayMap: Map<InstrumentName, boolean> = new Map();
