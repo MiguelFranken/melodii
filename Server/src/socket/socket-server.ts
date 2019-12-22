@@ -76,7 +76,7 @@ export class SocketServer {
    * @param action An action sent from the frontend
    * @param callback Callback lister method executed when socket receives a message with the specified action
    */
-  public onAction(action: Action, callback: (msg: IOSCMessage) => void) {
+  public onAction(action: Action, callback: (msg: any/*IOSCMessage | RTCSessionDescription*/) => void) {
     this.io.on(Event.CONNECT, (socket: socketIo.Socket) => {
       const fn = (msg: IOSCMessage) => {
         Logger.Info(`[${this.socketName}] Received action '${action}' from frontend with message '${JSON.stringify(msg)}'`);

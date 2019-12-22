@@ -5,6 +5,7 @@ import { PianoController } from './piano';
 import { BoxController } from './box';
 import { ArcController } from './arc';
 import { EffectsController } from './effects';
+import { LatencyController } from './latency';
 
 // add your controllers here
 // controllers get registered automatically
@@ -15,5 +16,6 @@ export const CONTROLLERS = [
   PianoController,
   BoxController,
   ArcController,
-  EffectsController
+  EffectsController,
+  LatencyController
 ];

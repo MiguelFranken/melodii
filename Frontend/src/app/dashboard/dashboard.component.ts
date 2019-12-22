@@ -10,18 +10,9 @@ import { IOSCMessage } from '../shared/osc/osc-message';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private socketService: SocketService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.initIoConnection();
-  }
-
-  private initIoConnection(): void {
-    this.socketService.initSocket();
-
-    this.socketService.onEvent(Event.OSC_MESSAGE)
-      .subscribe((msg: IOSCMessage) => {
-      });
   }
 
 }

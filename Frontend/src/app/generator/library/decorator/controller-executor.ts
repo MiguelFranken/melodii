@@ -2,11 +2,11 @@ import { MetadataBuilder } from './metadata-builder/metadata-builder';
 import { ActionMetadata } from './metadata/action-metadata';
 import { ControllerMetadata } from './metadata/controller-metadata';
 import { ParamTypes } from './metadata/types/param-types';
-import { Event } from '../socket/socket-event';
 import { IOSCMessage } from '../osc/osc-message';
 import { Logger } from '@upe/logger';
 import { GeneratorCommunicationService } from '../generator-communication.service';
-import { filter, map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
+import { rtcSubject } from "../../webrtc";
 
 export class ControllerExecutor {
 
@@ -14,12 +14,26 @@ export class ControllerExecutor {
 
   private metadataBuilder: MetadataBuilder;
 
-  constructor(private socket: SocketIOClient.Socket, private directCommunicationService: GeneratorCommunicationService) {
+  constructor(private directCommunicationService: GeneratorCommunicationService) {
     this.metadataBuilder = new MetadataBuilder();
   }
 
   public execute(controllerClasses?: Function[]) {
     this.registerControllers(controllerClasses);
+  }
+
+  private addTime(rawMsg: string): IOSCMessage | undefined {
+    if (rawMsg !== '') {
+      const msg: IOSCMessage = JSON.parse(rawMsg);
+      if (msg.timeStart != null) {
+        msg.timeStart.push(performance.now());
+        return msg;
+      } else {
+        return msg;
+      }
+    }
+
+    return undefined;
   }
 
   /**
@@ -34,8 +48,12 @@ export class ControllerExecutor {
     this.logger.info(`Registered ${controllersWithoutNamespaces.length} controllers without namespaces`);
 
     //region register controllers without namespaces
-    this.socket.on(Event.OSC_MESSAGE,
-      (msg: IOSCMessage) => this.handleConnection(controllersWithoutNamespaces, msg));
+    rtcSubject.subscribe((rawMsg: string) => {
+      const msg = this.addTime(rawMsg);
+      if (msg) {
+        this.handleConnection(controllersWithoutNamespaces, msg);
+      }
+    });
     //endregion
 
     // register controllers with namespaces
@@ -74,7 +92,12 @@ export class ControllerExecutor {
       };
 
       this.directCommunicationService.getObservable().pipe(filter(msg => !!msg)).subscribe(handlerWithNamespace);
-      this.socket.on(Event.OSC_MESSAGE, handlerWithNamespace);
+      rtcSubject.subscribe((rawMsg: string) => {
+        const msg = this.addTime(rawMsg);
+        if (msg) {
+          handlerWithNamespace(msg);
+        }
+      });
     });
 
     return this;

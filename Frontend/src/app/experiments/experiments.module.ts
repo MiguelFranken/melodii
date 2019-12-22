@@ -6,16 +6,21 @@ import { SharedModule } from '../shared/shared.module';
 import { FlexModule } from '@angular/flex-layout';
 import { ExperimentsRoutingModule } from './experiments-routing.module';
 import { FrequencyComponent } from './frequency/frequency.component';
+import { FormsModule } from '@angular/forms';
+import { LatencyComponent } from './latency/latency.component';
+import { ArcComponent } from './arc/arc.component';
+import { BoxComponent } from './box/box.component';
 
 
 
 @NgModule({
-  declarations: [MeterComponent, ExperimentsComponent, FrequencyComponent],
+  declarations: [MeterComponent, ExperimentsComponent, FrequencyComponent, LatencyComponent, ArcComponent, BoxComponent],
   imports: [
     CommonModule,
     SharedModule,
     FlexModule,
-    ExperimentsRoutingModule
+    ExperimentsRoutingModule,
+    FormsModule
   ],
 })
 export class ExperimentsModule { }
