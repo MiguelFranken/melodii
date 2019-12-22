@@ -185,7 +185,7 @@ package:dev:server:
   tags:
     - docker
   only:
-    - master
+    - dev
 
 deploy:dev:
   image: node:12.13
