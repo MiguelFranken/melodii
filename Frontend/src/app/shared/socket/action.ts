@@ -1,3 +1,5 @@
 export enum Action {
-  REDIRECT_OSC_MESSAGE = "redirect-osc-message"
+  REDIRECT_OSC_MESSAGE = "redirect-osc-message",
+  RTC_OFFER = "rtc-offer",
+  NEW_ICE_CANDIDATE = "new-ice-candidate"
 }

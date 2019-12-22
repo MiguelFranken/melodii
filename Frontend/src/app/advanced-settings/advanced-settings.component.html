@@ -1,0 +1,16 @@
+<div fxLayout fxLayoutGap="20px" class="container">
+  <div fxFlex="50" fxLayout fxLayoutGap="2px" class="container">
+    <mat-form-field fxFlex="70" class="ip-input-field" fxLayout="column" fxLayoutAlign="center">
+      <input matInput placeholder="Address of OSC Server" [(ngModel)]="oscWebSocketAddress">
+    </mat-form-field>
+    <button
+            mat-button
+            class="overlay-button"
+            fxFlex="30"
+            (click)="saveOSCWebSocketAddress()"
+    >
+      <mat-icon class="action-icon">save</mat-icon>
+    </button>
+  </div>
+  <div fxFlex="50"></div>
+</div>

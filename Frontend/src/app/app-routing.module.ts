@@ -7,6 +7,7 @@ import { BoxComponent } from './box/box.component';
 import { ArcComponent } from './arc/arc.component';
 import { MatComponent } from './mat/mat.component';
 import { MixerComponent } from './mixer/mixer.component';
+import { AdvancedSettingsComponent } from "./advanced-settings/advanced-settings.component";
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'prototype',
     component: PrototypeComponent,
+  },
+  {
+    path: 'advanced-settings',
+    component: AdvancedSettingsComponent,
   },
   {
     path: 'log',

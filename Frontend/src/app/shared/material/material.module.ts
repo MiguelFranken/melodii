@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
+  MatFormFieldModule, MatInputModule,
   MatProgressBarModule, MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
@@ -17,7 +18,9 @@ const modules = [
   MatButtonModule,
   MatListModule,
   MatMenuModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatFormFieldModule,
+  MatInputModule
 ];
 
 @NgModule({

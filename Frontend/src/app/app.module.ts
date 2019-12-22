@@ -12,10 +12,13 @@ import { BoxModule } from './box/box.module';
 import { MatModule } from './mat/mat.module';
 import { ExperimentsModule } from './experiments/experiments.module';
 import { MixerModule } from './mixer/mixer.module';
+import { AdvancedSettingsComponent } from './advanced-settings/advanced-settings.component';
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AdvancedSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,8 @@ import { MixerModule } from './mixer/mixer.module';
     ArcModule,
     BoxModule,
     MatModule,
-    ExperimentsModule
+    ExperimentsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

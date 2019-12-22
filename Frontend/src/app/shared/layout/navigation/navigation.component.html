@@ -28,7 +28,7 @@
               class="overlay-button"
               fxFlex
               (click)="switchSound()"
-      >Sound <span [class.off]="hasSound">On</span>/<span [class.off]="!hasSound">Off</span>
+      >Sound <span [class.off]="!hasSound">On</span>/<span [class.off]="hasSound">Off</span>
       </button>
     </div>
     <div fxLayout fxLayoutGap="2px">
@@ -36,15 +36,8 @@
               mat-button
               class="overlay-button"
               fxFlex
-              (click)="switchGenerator()"
-              >Generator <span [class.off]="useGenerator">On</span>/<span [class.off]="!useGenerator">Off</span>
-      </button>
-      <button
-              mat-button
-              class="overlay-button"
-              fxFlex
               (click)="switchDirectCommunication()"
-              >Direct Communication <span [class.off]="useDirectCommunication">On</span>/<span [class.off]="!useDirectCommunication">Off</span>
+              >Direct Communication <span [class.off]="!useDirectCommunication">On</span>/<span [class.off]="useDirectCommunication">Off</span>
       </button>
     </div>
     <div fxLayout fxLayoutGap="2px">
@@ -53,7 +46,18 @@
               class="overlay-button"
               fxFlex
               (click)="switchMessageIndicator()"
-      ><span [class.off]="showMessageIndicator">Show</span>/<span [class.off]="!showMessageIndicator">Hide</span> Message Indicator
+      ><span [class.off]="!showMessageIndicator">Show</span>/<span [class.off]="showMessageIndicator">Hide</span> Message Indicator
+      </button>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              routerLink="advanced-settings"
+              (click)="toppy.close()"
+      >
+        Advanced Settings
       </button>
     </div>
   </div>

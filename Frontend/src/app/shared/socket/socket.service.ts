@@ -12,32 +12,50 @@ export class SocketService {
 
   private logger: Logger = new Logger({ name: 'Socket Prototype', flags: ['service'] });
 
-  private socket;
+  private socket: SocketIOClient.Socket;
 
-  public initSocket(): void {
-    this.logger.info(`Establishing websocket connection (${environment.SERVER_URL})`);
-    this.socket = socketIo(environment.SERVER_URL);
+  private socketAddress = environment.SERVER_URL;
 
-    this.onEvent(Event.CONNECT)
-      .subscribe(() => {
+  public initSocket(): Observable<any> {
+    this.logger.info(`Establishing websocket connection (${this.socketAddress})`);
+    this.socket = socketIo(this.socketAddress);
+
+    const connected: Observable<any> = this.onEvent(Event.CONNECT);
+    connected.subscribe(() => {
         // Todo: Snackbar
-        this.logger.info(`Established websocket connection (${environment.SERVER_URL})`);
+        this.logger.info(`Established websocket connection (${this.socketAddress})`);
       });
 
     this.onEvent(Event.DISCONNECT)
       .subscribe(() => {
         // Todo: Snackbar
-        this.logger.info(`Disconnected websocket connection (${environment.SERVER_URL})`);
+        this.logger.info(`Disconnected websocket connection (${this.socketAddress})`);
       });
 
     this.onEvent(Event.CONNECT_FAILED)
       .subscribe(() => {
-        this.logger.error(`Could not connect to the web socket (${environment.SERVER_URL})`);
+        this.logger.error(`Could not connect to the web socket (${this.socketAddress})`);
       });
+
+    return connected;
+  }
+
+  public closeSocket() {
+    if (this.socket) {
+      this.socket.close();
+    } else {
+      this.logger.error("Cannot close as socket connection wasn't established yet");
+    }
+  }
+
+  // TODO: Test if address is well-formed and valid
+  public setAddress(address: string) {
+    this.logger.info(`Set WebSocket address to ${address}`);
+    this.socketAddress = address;
   }
 
   public send(action: Action, message: any) {
-    this.logger.info(`Emitting message on socket (${environment.SERVER_URL}):`, action, message);
+    this.logger.info(`Emitting message on socket (${this.socketAddress}):`, action, message);
     this.socket.emit(action, message);
   }
 
@@ -64,4 +82,5 @@ export class SocketService {
       });
     });
   }
+
 }
