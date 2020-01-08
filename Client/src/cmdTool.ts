@@ -118,7 +118,7 @@ export default class CmdTool {
                     type, value,
                 };
                 if (ft) {
-                    this.settings.args.pop();
+                    this.settings.args = [];
                 }
                 this.settings.args.push(arg);
                 this.addAnotherArg();
