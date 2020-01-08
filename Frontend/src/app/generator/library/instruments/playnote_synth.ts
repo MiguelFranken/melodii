@@ -6,7 +6,7 @@ import { InstrumentName } from '../types';
 import { DefaultMap } from '../defaultMap';
 
 export class PlayNoteSynth implements IMCPInstrument {
-  private readonly voices = new DefaultMap(this.createVoice);
+  private readonly voices = new DefaultMap(() => this.createVoice());
   private readonly output = new Merge();
 
   private logger: Logger = new Logger({ name: 'PlayNoteSynth Instrument', flags: ['music'] });
