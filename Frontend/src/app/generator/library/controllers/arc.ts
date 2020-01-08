@@ -15,6 +15,14 @@ export class ArcController {
     music.addInstrument(arc, "Arc");
   }
 
+  /**
+   * @apiGroup Arc
+   * @apiName Set
+   * @apiDesc Sets the volume of the note
+   * @apiPath /arc/set
+   * @apiArgs s,note Expects a note as string
+   * @apiArgs f,strength Expects the strength in [0, 1] of the note as a float
+   */
   @OnMessage('/set')
   public trigger(@Message() message: IOSCMessage) {
     try {

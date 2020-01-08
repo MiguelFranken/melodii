@@ -15,14 +15,22 @@ export class MatController {
     music.addInstrument(mat, "Mat");
   }
 
+  /**
+   * @apiGroup Mat
+   * @apiName Play a note
+   * @apiDesc Plays a note for a fixed duration
+   * @apiPath /mat/play
+   * @apiArgs i,buttonIndex Expects a button index as integer
+   * @apiArgs f,velocity Expects the velocity [0,1] of the note as float
+   */
   @OnMessage('/play')
   public play(@Message() message: IOSCMessage) {
     try {
-      const noteIndex = TypeChecker.ValidIndexArg(this.mat.mapping.length, message.args[0]);
+      const buttonIndex = TypeChecker.ValidIndexArg(this.mat.mapping.length, message.args[0]);
       const velocity = TypeChecker.ValidVelocityArg(message.args[1]);
 
-      this.mat.play(noteIndex, velocity);
-      this.logger.info('Trigger', { noteIndex, velocity });
+      this.mat.play(buttonIndex, velocity);
+      this.logger.info('Trigger', { noteIndex: buttonIndex, velocity });
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
@@ -31,6 +39,14 @@ export class MatController {
     }
   }
 
+  /**
+   * @apiGroup Mat
+   * @apiName Swap two button's notes
+   * @apiDesc Swaps the notes that are assigned to the buttons with the provided indices
+   * @apiPath /mat/swap
+   * @apiArgs i,buttonIndex Expects a button index as integer
+   * @apiArgs i,buttonIndex Expects a button index as integer
+   */
   @OnMessage('/swap')
   public swap(@Message() message: IOSCMessage) {
     try {
