@@ -15,6 +15,14 @@ export class BoxController {
     music.addInstrument(box, "Box");
   }
 
+  /**
+   * @apiGroup Box
+   * @apiName Start playing a note
+   * @apiDesc Triggers a note to start playing
+   * @apiPath /box/trigger
+   * @apiArgs s,note Expects a note as string
+   * @apiArgs f,velocity Expects the velocity [0,1] of the note as float
+   */
   @OnMessage('/trigger')
   public trigger(@Message() message: IOSCMessage) {
     try {
@@ -31,6 +39,14 @@ export class BoxController {
     }
   }
 
+  /**
+   * @apiGroup Box
+   * @apiName Detune a note
+   * @apiDesc Shift the pitch of a note
+   * @apiPath /box/detune
+   * @apiArgs s,note Expects a note as string
+   * @apiArgs i,cents Expects the pitch-shift in cents as integer
+   */
   @OnMessage('/detune')
   public detune(@Message() message: IOSCMessage) {
     try {
@@ -38,7 +54,7 @@ export class BoxController {
       const cents = TypeChecker.ValidCentsArg(message.args[1]);
 
       this.box.detune(note, cents);
-      this.logger.info('Detune', {note, cents});
+      this.logger.info('Detune', { note, cents });
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
@@ -47,6 +63,13 @@ export class BoxController {
     }
   }
 
+  /**
+   * @apiGroup Box
+   * @apiName Stop playing a note
+   * @apiDesc Release a note to stop playing it
+   * @apiPath /box/release
+   * @apiArgs s,note Expects a note as string
+   */
   @OnMessage('/release')
   public release(@Message() message: IOSCMessage) {
     try {

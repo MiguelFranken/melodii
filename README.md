@@ -27,37 +27,7 @@ There are several you can send these messages.
   });
   ```
 
-## Arc
-- `/arc/set <note> <strength>`
-  - `<note>` is a note name like `"C4"` or `"Db5"`.
-  - `<strength>` is the loudness of the note like `0.2` or `1` (from the closed interval [0, 1]).
-
-  Sets the loudness of the note.
-  
-  To fade a note, send many messages setting the note with increasing strength. To stop a note, set its strength to 0.
-
-## Box
-- `/box/trigger <note> <velocity>`
-  - `<note>` is a note name like `"C4"` or `"Db5"`.
-  - `<velocity>` is the loudness of the note like `0.2` or `1` (from the closed interval [0, 1]).
-
-  Starts playing the note.
-
-  Note that this method only starts a note. It will keep playing until you send a `/box/release` message for that note.
-
-- `/box/release <note>`
-  - `<note>` is a note name like `"C4"` or `"Db5"`.
-
-  Stops playing a note.
-
-- `/box/detune <note> <cents>`
-  - `<note>` is a note name like `"C4"` or `"Db5"`.
-  - `<cents>` determines how much to shift the pitch, measured in cents. A cent is a hundredth of a semitone, so an octave is 1200 cents.
-
-  Sets the pitch shift of the note.
-
-## Mat
-*To be implemented.*
+The messages for your instruments are documented in the [`API.md`](./API.md).
 
 # Development
 If you are interested in having a closer look at our code, or run the services on your machine, refer to the [DEVELOPMENT.md](./DEVELOPMENT.md).

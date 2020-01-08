@@ -32,7 +32,6 @@ export class TypeChecker {
     if (type !== "f") {
       throw new OSCError("MCPx0002", "Velocity has invalid type. Expected float type, i.e. 'f'.", arg);
     } else if (!String(parsed).match(TypeChecker.Regex.Velocity)) {
-      // velocity should be in normal range ([0,1])
       throw new OSCError("MCPx0003", "Velocity value is not in normal range ([0,1])", arg);
     } else if (isNaN(parsed)) {
       throw new OSCError("MCPx0004", "Velocity value matches not the right type", arg);
@@ -49,16 +48,10 @@ export class TypeChecker {
     return value;
   }
 
-  public static ValidCentsArg(arg: IOSCArg) {
-    // TODO
-    // return value;
-    return arg.value as number;
-  }
 
   public static ValidEffectBoolArg(arg: IOSCArg): boolean {
     const { type, value } = arg;
     const parsed = Number(value);
-    // TODO: update error code if the other functions use 0007
     if (type !== "i") {
       throw new OSCError("MCPx0007", "EffectBoolArg has invalid type. Expected integer type, i.e. 'i'.", arg);
     } else if (isNaN(parsed)) {
@@ -69,4 +62,30 @@ export class TypeChecker {
     return !!parsed;
   }
 
+  public static ValidIndexArg(size: number, arg: IOSCArg) {
+    const { type, value } = arg;
+    if (type !== "i") {
+      throw new OSCError("MCPx000A", "Index has invalid type. Expected integer type, i. e. 'i'.", arg);
+    } else if (!Number.isInteger(value as number)) {
+      throw new OSCError("MCPx000B", "Index value is not an integer", arg);
+    }
+
+    const index = value as number;
+    if (index >= size) {
+      throw new OSCError("MCPx000C", `Index value out of bounds. It cannot be greater than ${size}.`, arg);
+    }
+
+    return index;
+  }
+
+  public static ValidCentsArg(arg: IOSCArg) {
+    const { type, value } = arg;
+    if (type !== "i") {
+      throw new OSCError("MCPx000D", "Cents has invalid type. Expected integer type, i. e. 'i'.", arg);
+    } else if (!Number.isInteger(value as number)) {
+      throw new OSCError("MCPx000E", "Cents value is not an integer", arg);
+    }
+
+    return Number(value);
+  }
 }

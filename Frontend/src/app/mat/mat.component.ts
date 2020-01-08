@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Swappable } from '@shopify/draggable';
+import { GeneratorCommunicationService } from '../generator/library/generator-communication.service';
 
 @Component({
   selector: 'mcp-mat',
@@ -8,31 +9,39 @@ import { Swappable } from '@shopify/draggable';
 })
 export class MatComponent implements OnInit {
 
-  public data = ["C", "D", "E", "F", "G"];
-  public orderedIDs = [0, 1, 2, 3, 4];
+  private mapping = new Map([
+    [0, 0],
+    [1, 1],
+    [2, 2],
+    [3, 3],
+    [4, 4]
+  ]);
 
   @ViewChild('block', { static: true })
   block: ElementRef<HTMLElement>;
 
-  private sourceId: number | null;
-  private targetId: number | null;
+  private swapInfo: { firstId: number, secondId: number } | null;
 
-  private static Swap(array, sourceID, targetID) {
-    const b = array[sourceID];
-    array[sourceID] = array[targetID];
-    array[targetID] = b;
+  private swap(firstId, secondId) {
+    const firstIndex = this.mapping.get(firstId);
+    const secondIndex = this.mapping.get(secondId);
+
+    this.communicationService.sendMessage({
+      address: "/mat/swap",
+      args: [
+        { type: "i", value: firstIndex },
+        { type: "i", value: secondIndex }
+      ],
+      info: null
+    });
+
+    // Swappable swaps the elements including their id,
+    // so we need to keep track of where each element is.
+    this.mapping.set(firstId, secondIndex);
+    this.mapping.set(secondId, firstIndex);
   }
 
-  constructor() { }
-
-  private getDataIndexFromId(id: number) {
-    return this.orderedIDs.findIndex((i) => i === +id);
-  }
-
-  getNote(id: number): string {
-    const dataIndex = this.getDataIndexFromId(id);
-    return this.data[dataIndex];
-  }
+  constructor(private communicationService: GeneratorCommunicationService) { }
 
   ngOnInit() {
     const swappable = new Swappable(this.block.nativeElement, {
@@ -44,16 +53,16 @@ export class MatComponent implements OnInit {
     });
 
     swappable.on('swappable:swapped', (event) => {
-      this.sourceId = +event.data.dragEvent.data.source.firstElementChild.id;
-      this.targetId = +event.data.dragEvent.data.over.firstElementChild.id;
+      this.swapInfo = {
+        firstId: Number(event.data.dragEvent.data.source.firstElementChild.id),
+        secondId: Number(event.data.dragEvent.data.over.firstElementChild.id),
+      };
     });
 
     swappable.on('drag:stop', (event) => {
-      if (this.sourceId != null && this.targetId != null) {
-        MatComponent.Swap(this.data, this.getDataIndexFromId(this.sourceId), this.getDataIndexFromId(this.targetId));
-        MatComponent.Swap(this.orderedIDs, this.getDataIndexFromId(this.sourceId), this.getDataIndexFromId(this.targetId));
-        this.targetId = null;
-        this.sourceId = null;
+      if (this.swapInfo) {
+        this.swap(this.swapInfo.firstId, this.swapInfo.secondId);
+        this.swapInfo = null;
 
         // TODO MF: Create OSC Message(s) for the changes and send them to the OSC Server
       }
