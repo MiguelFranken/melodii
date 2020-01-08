@@ -6,14 +6,14 @@ This file lists all possible osc-messages which the server can handle.
 
 <table style="width:100%;text-align:left;">
 <tr style="vertical-align:top;">
-<th style="width:15%">Title</th>
-<th style="width:30%">Description</th>
-<th></th>
+<td style="width:15%">Title</td>
+<td style="width:30%">Description</td>
+<td></td>
 </tr>
 <tr style="vertical-align:top;">
-<th>Set</th>
-<th>Sets the volume of the note</th>
-<th><details><p>
+<td>Set</td>
+<td>Sets the volume of the note</td>
+<td><details><p>
 
 Path:
 ```
@@ -27,7 +27,7 @@ Arguments:
 ]
 ```
 
-</p></details></th>
+</p></details></td>
 </tr>
 </table>
 
@@ -36,14 +36,14 @@ Arguments:
 
 <table style="width:100%;text-align:left;">
 <tr style="vertical-align:top;">
-<th style="width:15%">Title</th>
-<th style="width:30%">Description</th>
-<th></th>
+<td style="width:15%">Title</td>
+<td style="width:30%">Description</td>
+<td></td>
 </tr>
 <tr style="vertical-align:top;">
-<th>Start playing a note</th>
-<th>Triggers a note to start playing</th>
-<th><details><p>
+<td>Start playing a note</td>
+<td>Triggers a note to start playing</td>
+<td><details><p>
 
 Path:
 ```
@@ -57,12 +57,12 @@ Arguments:
 ]
 ```
 
-</p></details></th>
+</p></details></td>
 </tr>
 <tr style="vertical-align:top;">
-<th>Detune a note</th>
-<th>Shift the pitch of a note</th>
-<th><details><p>
+<td>Detune a note</td>
+<td>Shift the pitch of a note</td>
+<td><details><p>
 
 Path:
 ```
@@ -76,12 +76,12 @@ Arguments:
 ]
 ```
 
-</p></details></th>
+</p></details></td>
 </tr>
 <tr style="vertical-align:top;">
-<th>Stop playing a note</th>
-<th>Release a note to stop playing it</th>
-<th><details><p>
+<td>Stop playing a note</td>
+<td>Release a note to stop playing it</td>
+<td><details><p>
 
 Path:
 ```
@@ -94,7 +94,7 @@ Arguments:
 ]
 ```
 
-</p></details></th>
+</p></details></td>
 </tr>
 </table>
 
@@ -103,14 +103,14 @@ Arguments:
 
 <table style="width:100%;text-align:left;">
 <tr style="vertical-align:top;">
-<th style="width:15%">Title</th>
-<th style="width:30%">Description</th>
-<th></th>
+<td style="width:15%">Title</td>
+<td style="width:30%">Description</td>
+<td></td>
 </tr>
 <tr style="vertical-align:top;">
-<th>Play Snare</th>
-<th>Plays the snare from the snare sampler</th>
-<th><details><p>
+<td>Play Snare</td>
+<td>Plays the snare from the snare sampler</td>
+<td><details><p>
 
 Path:
 ```
@@ -124,12 +124,12 @@ Arguments:
 ]
 ```
 
-</p></details></th>
+</p></details></td>
 </tr>
 <tr style="vertical-align:top;">
-<th>Play Snare</th>
-<th>Plays the basedrum (kick) from the kick sampler</th>
-<th><details><p>
+<td>Play Snare</td>
+<td>Plays the basedrum (kick) from the kick sampler</td>
+<td><details><p>
 
 Path:
 ```
@@ -143,12 +143,12 @@ Arguments:
 ]
 ```
 
-</p></details></th>
+</p></details></td>
 </tr>
 <tr style="vertical-align:top;">
-<th>Play HiHat</th>
-<th>Plays the HiHat from the hihat synth</th>
-<th><details><p>
+<td>Play HiHat</td>
+<td>Plays the HiHat from the hihat synth</td>
+<td><details><p>
 
 Path:
 ```
@@ -162,7 +162,7 @@ Arguments:
 ]
 ```
 
-</p></details></th>
+</p></details></td>
 </tr>
 </table>
 
@@ -171,14 +171,14 @@ Arguments:
 
 <table style="width:100%;text-align:left;">
 <tr style="vertical-align:top;">
-<th style="width:15%">Title</th>
-<th style="width:30%">Description</th>
-<th></th>
+<td style="width:15%">Title</td>
+<td style="width:30%">Description</td>
+<td></td>
 </tr>
 <tr style="vertical-align:top;">
-<th>Play a note</th>
-<th>Plays a note for a fixed duration</th>
-<th><details><p>
+<td>Play a note</td>
+<td>Plays a note for a fixed duration</td>
+<td><details><p>
 
 Path:
 ```
@@ -192,12 +192,12 @@ Arguments:
 ]
 ```
 
-</p></details></th>
+</p></details></td>
 </tr>
 <tr style="vertical-align:top;">
-<th>Swap two button's notes</th>
-<th>Swaps the notes that are assigned to the buttons with the provided indices</th>
-<th><details><p>
+<td>Swap two button's notes</td>
+<td>Swaps the notes that are assigned to the buttons with the provided indices</td>
+<td><details><p>
 
 Path:
 ```
@@ -211,7 +211,7 @@ Arguments:
 ]
 ```
 
-</p></details></th>
+</p></details></td>
 </tr>
 </table>
 
@@ -220,14 +220,14 @@ Arguments:
 
 <table style="width:100%;text-align:left;">
 <tr style="vertical-align:top;">
-<th style="width:15%">Title</th>
-<th style="width:30%">Description</th>
-<th></th>
+<td style="width:15%">Title</td>
+<td style="width:30%">Description</td>
+<td></td>
 </tr>
 <tr style="vertical-align:top;">
-<th>Play Note</th>
-<th>Plays a note from the piano sampler</th>
-<th><details><p>
+<td>Play Note</td>
+<td>Plays a note from the piano sampler</td>
+<td><details><p>
 
 Path:
 ```
@@ -242,7 +242,7 @@ Arguments:
 ]
 ```
 
-</p></details></th>
+</p></details></td>
 </tr>
 </table>
 

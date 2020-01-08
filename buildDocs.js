@@ -30,10 +30,10 @@ const TABLE_START = '<table style="width:100%;text-align:left;">' + NEW_LINE;
 const TABLE_END = '</table>' + NEW_LINE2 + NEW_LINE;
 const TABLE_ROW_START = '<tr style="vertical-align:top;">' + NEW_LINE;
 const TABLE_ROW_END = "</tr>" + NEW_LINE;
-const TABLE_COL_START = "<th>";
-const TABLE_COL1_START = '<th style="width:15%">';
-const TABLE_COL2_START = '<th style="width:30%">';
-const TABLE_COL_END = "</th>" + NEW_LINE;
+const TABLE_COL_START = "<td>";
+const TABLE_COL1_START = '<td style="width:15%">';
+const TABLE_COL2_START = '<td style="width:30%">';
+const TABLE_COL_END = "</td>" + NEW_LINE;
 const DETAILS_START = "<details><p>" + NEW_LINE2;
 const DETAILS_END = "</p></details>";
 
@@ -162,7 +162,7 @@ function createMarkdownFile() {
 
     var wStream = fs.createWriteStream(output_path);
     wStream.write(HEADER);
-    
+
 
     for (let i = 0; i < groups.length; i++) {
         let str = "";
