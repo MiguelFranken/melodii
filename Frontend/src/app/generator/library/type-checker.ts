@@ -69,4 +69,20 @@ export class TypeChecker {
     return !!parsed;
   }
 
+  public static ValidIndexArg(size: number, arg: IOSCArg) {
+    const { type, value } = arg;
+    if (type !== "i") {
+      throw new OSCError("MCPx000A", "Index has invalid type. Expected integer type, i. e. 'i'.", arg);
+    } else if (!Number.isInteger(value as number)) {
+      throw new OSCError("MCPx000B", "Index value is not an integer", arg);
+    }
+
+    const index = value as number;
+    if (index >= size) {
+      throw new OSCError("MCPx000C", `Index value out of bounds. It cannot be greater than ${size}.`, arg);
+    }
+
+    return index;
+  }
+
 }
