@@ -249,9 +249,6 @@ export default class CmdTool {
                         return this.changePath();
                     case text.CHANGE_ARGS:
                         return this.changeArgs(true);
-                    case text.SEND_LATENCY_TEST:
-                        this.cli.sendLatencyTest();
-                        return this.settingsMenu();
                     case text.BACK:
                         return this.menu();
                     default:

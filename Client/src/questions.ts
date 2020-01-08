@@ -43,7 +43,6 @@ export default [
             text.CHANGE_ARGS,
             text.CHANGE_ADDRESS,
             text.CHANGE_PORT,
-            text.SEND_LATENCY_TEST,
             text.BACK,
         ],
     },
