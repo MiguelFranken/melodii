@@ -26,10 +26,10 @@ export class Mat implements IMCPInstrument {
    * Requires `noteIndex` to be in bounds of this.mapping.
    */
   public play(noteIndex: number, velocity: Velocity) {
-    this.logger.info(`Trigger with note_index ${noteIndex} and velocity ${velocity}.`);
     const note = this.mapping[noteIndex];
+    this.logger.info(`Trigger with note_index ${noteIndex} (${note}) and velocity ${velocity}.`);
     const voice = this.voices.get(note);
-    voice.triggerAttackRelease(note, "8n", undefined, velocity);
+    voice.triggerAttackRelease(note, 1, undefined, velocity);
   }
 
   /**
