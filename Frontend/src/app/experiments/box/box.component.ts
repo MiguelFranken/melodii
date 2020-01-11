@@ -14,6 +14,8 @@ export class BoxComponent implements OnInit {
   private clientX;
   private xStart;
 
+  public pitchShift = 0;
+
   private static relativeHeight(offsetY, targetOffsetHeight) {
     const topZero = Math.min(1, Math.max(0, offsetY / targetOffsetHeight));
     const bottomZero = 1 - topZero;
@@ -45,19 +47,6 @@ export class BoxComponent implements OnInit {
         this.start(height, t.clientX, myID);
       });
 
-      el.addEventListener("mousemove", (event) => {
-        event.preventDefault();
-        this.logger.info("Mousemove");
-        this.move(event.clientX, myID);
-      });
-
-      el.addEventListener("touchmove", (event) => {
-        event.preventDefault();
-        const t = event.changedTouches[0];
-        const clientX = t.clientX;
-        this.move(clientX, myID);
-      });
-
       el.addEventListener("mouseup", (event) => {
         event.preventDefault();
         this.logger.info("Mouseup");
@@ -81,29 +70,18 @@ export class BoxComponent implements OnInit {
         { type: "s", value: note },
         { type: "f", value: velocity }
       ],
-      info: {
-        address: '/play_note',
-        family: 'IPv4',
-        port: 80,
-        size: 1,
-      },
+      info: null,
     });
   }
 
-  private detune(note, cents) {
-    this.logger.info(`Detune ${note}.`);
+  private detune(cents) {
+    this.logger.info(`Detune.`);
     this.communicationService.sendMessage({
       address: "/box/detune",
       args: [
-        { type: "s", value: note },
         { type: "i", value: cents }
       ],
-      info: {
-        address: '/play_note',
-        family: 'IPv4',
-        port: 80,
-        size: 1,
-      }
+      info: null
     });
   }
 
@@ -114,12 +92,7 @@ export class BoxComponent implements OnInit {
       args: [
         { type: "s", value: note }
       ],
-      info: {
-        address: '/play_note',
-        family: 'IPv4',
-        port: 80,
-        size: 1,
-      }
+      info: null
     });
   }
 
@@ -134,11 +107,9 @@ export class BoxComponent implements OnInit {
     this.trigger(myID, velocity);
   }
 
-  private move(clientX, myID) {
-    if (this.xStart) {
-      const xDiff = clientX - this.xStart;
-      this.detune(myID, xDiff);
-    }
+  public pitchChanged(event) {
+    this.pitchShift = event.value;
+    this.detune(this.pitchShift);
   }
 
 }

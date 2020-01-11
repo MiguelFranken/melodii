@@ -41,20 +41,18 @@ export class BoxController {
 
   /**
    * @apiGroup Box
-   * @apiName Detune a note
-   * @apiDesc Shift the pitch of a note
+   * @apiName Detune the Box
+   * @apiDesc Shift the pitch of all notes
    * @apiPath /box/detune
-   * @apiArgs s,note Expects a note as string
    * @apiArgs i,cents Expects the pitch-shift in cents as integer
    */
   @OnMessage('/detune')
   public detune(@Message() message: IOSCMessage) {
     try {
-      const note = TypeChecker.ValidNoteArg(message.args[0]);
-      const cents = TypeChecker.ValidCentsArg(message.args[1]);
+      const cents = TypeChecker.ValidCentsArg(message.args[0]);
 
-      this.box.detune(note, cents);
-      this.logger.info('Detune', { note, cents });
+      this.box.detune(cents);
+      this.logger.info('Detune', { cents });
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);

@@ -1,4 +1,7 @@
 <div fxLayout="column" fxLayoutAlign="stretch" class="container">
+  <mat-slider class="example-margin" min="-150" max="150" step="1" thumbLabel="Cents" [value]="pitchShift"
+    (input)="pitchChanged($event)">
+  </mat-slider>
   <div fxFlex fxLayout fxLayoutGap="10px">
     <div fxFlex fxLayout fxLayoutAlign="center" id="c4" class="key">C4</div>
     <div fxFlex fxLayout fxLayoutAlign="center" id="d4" class="key">D4</div>
