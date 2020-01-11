@@ -47,6 +47,19 @@ export class BoxComponent implements OnInit {
         this.start(height, t.clientX, myID);
       });
 
+      el.addEventListener("mouseleave", (event) => {
+        event.preventDefault();
+        this.logger.info("Mouseleave");
+        this.stop(myID);
+      });
+
+      el.addEventListener("touchleave", (event) => {
+        event.preventDefault();
+        this.logger.info("Touchleave");
+        event.preventDefault();
+        this.stop(myID);
+      });
+
       el.addEventListener("mouseup", (event) => {
         event.preventDefault();
         this.logger.info("Mouseup");
