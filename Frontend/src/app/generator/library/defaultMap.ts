@@ -28,4 +28,8 @@ export class DefaultMap<K, V> {
   public delete(key: K): boolean {
     return this.map.delete(key);
   }
+
+  public forEach(mapping: (value: V, key: K, map: DefaultMap<K, V>) => void) {
+    return this.map.forEach((v, k) => mapping(v, k, this));
+  }
 }

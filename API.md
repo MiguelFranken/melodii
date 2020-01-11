@@ -60,8 +60,8 @@ Arguments:
 </p></details></td>
 </tr>
 <tr style="vertical-align:top;">
-<td>Detune a note</td>
-<td>Shift the pitch of a note</td>
+<td>Detune the Box</td>
+<td>Shift the pitch of all notes</td>
 <td><details><p>
 
 Path:
@@ -71,7 +71,6 @@ Path:
 Arguments:
 ```
 [
-    { s,note },  // Expects a note as string
     { i,cents },  // Expects the pitch-shift in cents as integer
 ]
 ```

@@ -6,8 +6,10 @@ import { DefaultMap } from '../defaultMap';
 
 export class Box implements IMCPInstrument {
 
-  private readonly voices = new DefaultMap(() => this.createVoice());
+  private readonly voices: DefaultMap<Note, Synth> = new DefaultMap(() => this.createVoice());
   private readonly output = new Merge();
+
+  private pitchShift = 0;
 
   private readonly logger: Logger = new Logger({ name: 'Box Instrument', flags: ['music'] });
 
@@ -17,16 +19,28 @@ export class Box implements IMCPInstrument {
   public trigger(note: Note, velocity: Velocity) {
     this.logger.info(`Trigger with note ${note} and velocity ${velocity}.`);
     const voice = this.voices.get(note);
-    voice.triggerAttack(note, undefined, velocity);
+    const frequency = this.addPitchShift(note, this.pitchShift);
+    voice.triggerAttack(frequency, undefined, velocity);
   }
 
-  public detune(note: Note, cents: Cents) {
-    this.logger.info(`Detune with note ${note} and cents ${cents}.`);
-    const voice = this.voices.get(note);
-    const baseFrequency = Frequency(note).toFrequency();
+  public detune(cents: Cents) {
+    this.logger.info(`Detune with cents ${cents}.`);
+    this.pitchShift = cents;
+    this.voices.forEach((voice, note) => {
+      const frequency = this.addPitchShift(note, this.pitchShift);
+      voice.setNote(frequency);
+    });
+  }
+
+  private frequencyFromNote(note: Note): number {
+    return Frequency(note).toFrequency();
+  }
+
+  private addPitchShift(note: Note, cents: number): number {
+    const baseFrequency = this.frequencyFromNote(note);
     const frequencyChange = baseFrequency * (2 * cents / 1200);
     const finalFrequency = baseFrequency + frequencyChange;
-    voice.setNote(finalFrequency);
+    return finalFrequency;
   }
 
   public release(note: Note) {
@@ -36,7 +50,7 @@ export class Box implements IMCPInstrument {
   }
 
   private createVoice(): Synth {
-    return new Synth().connect(this.output);
+    return new Synth({ detune: this.pitchShift }).connect(this.output);
   }
 
   public getAudioNode() {
