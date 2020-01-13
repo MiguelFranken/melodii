@@ -8,6 +8,7 @@ import { ArcComponent } from './arc/arc.component';
 import { MatComponent } from './mat/mat.component';
 import { MixerComponent } from './mixer/mixer.component';
 import { AdvancedSettingsComponent } from "./advanced-settings/advanced-settings.component";
+import { ContextComponent } from "./context/context.component";
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'prototype',
     component: PrototypeComponent,
+  },
+  {
+    path: 'context',
+    component: ContextComponent,
   },
   {
     path: 'advanced-settings',

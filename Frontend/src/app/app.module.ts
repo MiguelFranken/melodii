@@ -14,11 +14,13 @@ import { ExperimentsModule } from './experiments/experiments.module';
 import { MixerModule } from './mixer/mixer.module';
 import { AdvancedSettingsComponent } from './advanced-settings/advanced-settings.component';
 import { FormsModule } from "@angular/forms";
+import { ContextComponent } from './context/context.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdvancedSettingsComponent
+    AdvancedSettingsComponent,
+    ContextComponent
   ],
   imports: [
     BrowserModule,
