@@ -80,8 +80,6 @@ export class Mat implements IMCPInstrument {
     this.degrees[first] = this.degrees[second];
     this.degrees[second] = tempDegree;
 
-    console.log(this.degrees);
-
     this.setNotes();
   }
 
@@ -98,13 +96,9 @@ export class Mat implements IMCPInstrument {
 
   public setNotes() {
     const notes = Scale.notes(this.rootNote + this.octave, this.scale);
-    console.log(notes);
+    notes.push(this.rootNote + (this.octave + 1));
     this.mapping.forEach((degree, index) => { // scale degree relative to the tonic
-      if (index === 7) {
-        this.notes[7] = this.rootNote + (this.octave + 1);
-      } else {
-        this.notes[index] = notes[degree];
-      }
+      this.notes[index] = notes[degree];
     });
     this.logger.info('Set Notes', this.notes);
   }
