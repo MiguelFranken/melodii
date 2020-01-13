@@ -39,7 +39,6 @@ export default class CmdTool {
             this.settings.address,
             this.settings.port,
         );
-        //console.log("constructor: first time: " + this.ft);
     }
 
     private static validString(str: string, r: RegExp): boolean {

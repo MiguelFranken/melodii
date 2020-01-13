@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {
   MatFormFieldModule, MatInputModule,
-  MatProgressBarModule, MatSnackBarModule,
+  MatProgressBarModule, MatSelectModule, MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
 import { MatIconModule } from "@angular/material/icon";
@@ -20,7 +20,8 @@ const modules = [
   MatMenuModule,
   MatSnackBarModule,
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatSelectModule
 ];
 
 @NgModule({
