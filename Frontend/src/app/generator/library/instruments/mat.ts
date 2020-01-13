@@ -63,6 +63,7 @@ export class Mat implements IMCPInstrument {
     const temp = this.mapping[first];
     this.mapping[first] = this.mapping[second];
     this.mapping[second] = temp;
+    console.log(this.mapping);
     this.setNotes();
   }
 

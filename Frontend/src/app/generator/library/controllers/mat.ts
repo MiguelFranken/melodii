@@ -12,8 +12,10 @@ export class MatController {
 
   private logger: Logger = new Logger({ name: 'MatController', flags: ['music'] });
 
-  constructor(private music: MusicService, private mat: Mat) {
-    music.addInstrument(mat, "Mat");
+  private mat: Mat;
+
+  constructor(private music: MusicService) {
+    this.mat = music.getInstrument("mat") as Mat;
   }
 
   /**

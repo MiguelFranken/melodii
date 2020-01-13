@@ -1,6 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Swappable } from '@shopify/draggable';
 import { GeneratorCommunicationService } from '../generator/library/generator-communication.service';
+import { Note } from '../generator/library/types';
+import { Mat, Octave } from '../generator/library/instruments/mat';
+import { MusicService } from '../generator/library/music.service';
 
 @Component({
   selector: 'mcp-mat',
@@ -14,8 +17,16 @@ export class MatComponent implements OnInit {
     [1, 1],
     [2, 2],
     [3, 3],
-    [4, 4]
+    [4, 4],
+    [5, 5],
+    [6, 6],
+    [7, 7],
   ]);
+
+  private mat: Mat;
+
+  public notes: Note[] = [];
+  public octaves: Octave[] = [];
 
   @ViewChild('block', { static: true })
   block: ElementRef<HTMLElement>;
@@ -41,9 +52,12 @@ export class MatComponent implements OnInit {
     this.mapping.set(secondId, firstIndex);
   }
 
-  constructor(private communicationService: GeneratorCommunicationService) { }
+  constructor(private communicationService: GeneratorCommunicationService, private musicService: MusicService) { }
 
   ngOnInit() {
+    this.mat = this.musicService.getInstrument('mat') as Mat;
+    this.setNotes();
+
     const swappable = new Swappable(this.block.nativeElement, {
       draggable: '.item',
       mirror: {
@@ -61,12 +75,18 @@ export class MatComponent implements OnInit {
 
     swappable.on('drag:stop', (event) => {
       if (this.swapInfo) {
-        this.swap(this.swapInfo.firstId, this.swapInfo.secondId);
+        console.log(this.swapInfo);
+        this.swap(this.swapInfo.firstId - 1, this.swapInfo.secondId - 1);
         this.swapInfo = null;
-
-        // TODO MF: Create OSC Message(s) for the changes and send them to the OSC Server
       }
     });
+  }
+
+  private setNotes() {
+    setTimeout(() => {
+      this.notes = this.mat.notes.map((note) => note.substr(0, note.length - 1));
+      this.octaves = this.mat.notes.map((note) => +note.substr(note.length - 1, note.length) as Octave);
+    }, 100);
   }
 
 }

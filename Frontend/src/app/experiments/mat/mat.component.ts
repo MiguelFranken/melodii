@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Logger } from '@upe/logger';
 import { GeneratorCommunicationService } from '../../generator/library/generator-communication.service';
-import { ButtonIndex } from '../../generator/library/instruments/mat';
+import { ButtonIndex, Mat, Octave } from '../../generator/library/instruments/mat';
+import { MusicService } from '../../generator/library/music.service';
+import { Note } from '../../generator/library/types';
 
 @Component({
   selector: 'mcp-mat',
@@ -15,6 +17,11 @@ export class MatComponent implements OnInit, AfterViewInit {
   public octave = "3";
   public scale = 'major';
   public rootNote = 'C';
+
+  private mat: Mat;
+
+  public notes: Note[] = [];
+  public octaves: Octave[] = [];
 
   @ViewChild('button0', {static: true})
   private button0: ElementRef<HTMLElement>;
@@ -42,9 +49,11 @@ export class MatComponent implements OnInit, AfterViewInit {
 
   private buttons: ElementRef<HTMLElement>[];
 
-  constructor(private communicationService: GeneratorCommunicationService) { }
+  constructor(private communicationService: GeneratorCommunicationService, private musicService: MusicService) { }
 
   ngOnInit() {
+    this.mat = this.musicService.getInstrument('mat') as Mat;
+    this.setNotes();
   }
 
   ngAfterViewInit(): void {
@@ -69,6 +78,13 @@ export class MatComponent implements OnInit, AfterViewInit {
         this.release(index);
       });
     });
+  }
+
+  private setNotes() {
+    setTimeout(() => {
+      this.notes = this.mat.notes.map((note) => note.substr(0, note.length - 1));
+      this.octaves = this.mat.notes.map((note) => +note.substr(note.length - 1, note.length) as Octave);
+    }, 100);
   }
 
   private trigger(index: ButtonIndex) {
@@ -101,6 +117,8 @@ export class MatComponent implements OnInit, AfterViewInit {
       ],
       info: null
     });
+
+    this.setNotes();
   }
 
   public changeRootNote() {
@@ -112,6 +130,8 @@ export class MatComponent implements OnInit, AfterViewInit {
       ],
       info: null
     });
+
+    this.setNotes();
   }
 
   public changeScale() {
@@ -123,6 +143,8 @@ export class MatComponent implements OnInit, AfterViewInit {
       ],
       info: null
     });
+
+    this.setNotes();
   }
 
 }
