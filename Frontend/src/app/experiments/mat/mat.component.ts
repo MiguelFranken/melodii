@@ -22,6 +22,7 @@ export class MatComponent implements OnInit, AfterViewInit {
 
   public notes: Note[] = [];
   public octaves: Octave[] = [];
+  public degrees: string[] = [];
 
   @ViewChild('button0', {static: true})
   private button0: ElementRef<HTMLElement>;
@@ -84,6 +85,7 @@ export class MatComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.notes = this.mat.notes.map((note) => note.substr(0, note.length - 1));
       this.octaves = this.mat.notes.map((note) => +note.substr(note.length - 1, note.length) as Octave);
+      this.degrees = this.mat.degrees;
     }, 100);
   }
 

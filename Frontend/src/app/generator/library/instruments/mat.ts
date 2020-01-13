@@ -9,6 +9,7 @@ import { Scale } from 'tonal';
 export type ButtonIndex = number;
 export type Octave = 1 | 2 | 3 | 4 | 5;
 export type ScaleName = "major" | "minor";
+export type Degree = "I" | "II" | "III" | "IV" | "V" | "VI" | "VII";
 
 export class Mat implements IMCPInstrument {
 
@@ -19,6 +20,7 @@ export class Mat implements IMCPInstrument {
   private scale: ScaleName = 'major';
 
   public notes: Note[] = [];
+  public degrees: Degree[] = [];
 
   private mapping = [0, 1, 2, 3, 4, 5, 6, 7];
 
@@ -29,6 +31,16 @@ export class Mat implements IMCPInstrument {
 
   constructor(public readonly name: MCPInstrumentName = "Mat") {
     this.setNotes();
+    this.degrees = [
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "I"
+    ];
   }
 
   /**
@@ -63,7 +75,13 @@ export class Mat implements IMCPInstrument {
     const temp = this.mapping[first];
     this.mapping[first] = this.mapping[second];
     this.mapping[second] = temp;
-    console.log(this.mapping);
+
+    const tempDegree = this.degrees[first];
+    this.degrees[first] = this.degrees[second];
+    this.degrees[second] = tempDegree;
+
+    console.log(this.degrees);
+
     this.setNotes();
   }
 

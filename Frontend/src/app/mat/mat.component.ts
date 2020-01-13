@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Swappable } from '@shopify/draggable';
 import { GeneratorCommunicationService } from '../generator/library/generator-communication.service';
 import { Note } from '../generator/library/types';
-import { Mat, Octave } from '../generator/library/instruments/mat';
+import { Degree, Mat, Octave } from '../generator/library/instruments/mat';
 import { MusicService } from '../generator/library/music.service';
 
 @Component({
@@ -27,6 +27,7 @@ export class MatComponent implements OnInit {
 
   public notes: Note[] = [];
   public octaves: Octave[] = [];
+  public degrees: Degree[] = [];
 
   @ViewChild('block', { static: true })
   block: ElementRef<HTMLElement>;
@@ -86,6 +87,7 @@ export class MatComponent implements OnInit {
     setTimeout(() => {
       this.notes = this.mat.notes.map((note) => note.substr(0, note.length - 1));
       this.octaves = this.mat.notes.map((note) => +note.substr(note.length - 1, note.length) as Octave);
+      this.degrees = [...this.mat.degrees];
     }, 100);
   }
 
