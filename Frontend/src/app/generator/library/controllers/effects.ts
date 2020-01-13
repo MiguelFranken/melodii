@@ -202,4 +202,16 @@ export class EffectsController {
     }
   }
 
+  @OnMessage('/master/threebandeq')
+  public EQMaster(@Message() message: IOSCMessage) {
+    this.logger.info('EQ', message);
+
+    if (message.args[0].value === 0) {
+      this.musicService.deleteEffectFromMasterEffectChain('threebandeq');
+      this.logger.info('Removed pingpongdelay effect from master effect chain');
+    } else {
+      this.musicService.addThreeBandEQToMasterEffectChain();
+      this.logger.info('Added pingpongdelay effect from master effect chain');
+    }
+  }
 }

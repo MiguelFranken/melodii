@@ -6,7 +6,7 @@ import { IMCPInstrument } from './mcp-instrument';
 // Instruments
 import { DrumsHiHat, DrumsKick, DrumsSnare } from './instruments/drums';
 import { Piano } from './instruments/piano';
-import { Volume } from 'tone';
+import { Volume, EQ3 } from 'tone';
 import { EffectChain } from './effect-chain';
 import { InstrumentName, MeterName, IMCPEffect, MCPEffectIdentifier } from './types';
 import { LogService } from '../log/log.service';
@@ -72,6 +72,8 @@ export class MusicService {
   public createEffect(effectName: MCPEffectIdentifier) {
     if (effectName === 'reverb') {
       return this.getReverbEffect();
+    } else if (effectName === 'threebandeq') {
+      return this.getThreeBandEQEffect();
     } else {
       return this.getPingPongDelayEffect();
     }
@@ -117,6 +119,14 @@ export class MusicService {
     return pingPongDelay;
   }
 
+  public getThreeBandEQEffect(): IMCPEffect {
+    const threeBandEffect: IMCPEffect = {
+      id: 'threebandeq',
+      effect: new EQ3(-10, 3, -20)
+    }
+    return threeBandEffect;
+  }
+
   public deleteEffectFromMasterEffectChain(effectID: MCPEffectIdentifier) {
     this.masterEffectChain.deleteEffectByID(effectID);
   }
@@ -127,6 +137,10 @@ export class MusicService {
 
   public addReverbEffectToMasterEffectChain() {
     this.masterEffectChain.pushEffect(this.getReverbEffect());
+  }
+
+  public addThreeBandEQToMasterEffectChain() {
+    this.masterEffectChain.pushEffect(this.getThreeBandEQEffect());
   }
 
   public getMasterEffect(id: MCPEffectIdentifier): IMCPEffect | null {
