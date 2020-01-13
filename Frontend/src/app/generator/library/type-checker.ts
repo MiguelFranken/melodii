@@ -1,11 +1,13 @@
 import { IOSCArg, OSCTypeTag } from './osc/osc-types';
 import { OSCError } from './error';
 import { Cents, Duration, Note, Velocity } from './types';
+import { Octave, ScaleName } from './instruments/mat';
 
 export class TypeChecker {
 
   private static Regex = {
     Note: /^[A-G][b#]?[0-9]$/,
+    NoteWithoutOctave: /^[A-G][b#]?$/,
     Velocity: /^1$|^0$|^0.[0-9]+$/,
     Duration: /^$/,
     Cents: /^$/,
@@ -24,6 +26,28 @@ export class TypeChecker {
       throw new OSCError("MCPx0001", "Note has invalid value");
     }
     return parsed;
+  }
+
+  public static ValidNoteWithoutOctaveArg(arg: IOSCArg) {
+    const { type, value } = arg;
+    const parsed = String(value);
+    if (type !== "s") {
+      throw new OSCError("MCPx0000", "Note has invalid type. Expected string type, i.e. 's'.");
+    } else if (!parsed.match(TypeChecker.Regex.NoteWithoutOctave)) {
+      throw new OSCError("MCPx0001", "Note has invalid value");
+    }
+    return parsed;
+  }
+
+  public static ValidScaleArg(arg: IOSCArg) {
+    const { type, value } = arg;
+    const parsed = String(value);
+    if (type !== "s") {
+      throw new OSCError("MCPx0000", "Argument has invalid type. Expected string type, i.e. 's'.");
+    } else if (value !== "major" && value !== "minor") {
+      throw new OSCError("MCPx0001", "Argument value must be 'major' or 'minor'");
+    }
+    return parsed as ScaleName;
   }
 
   public static ValidVelocityArg(arg: IOSCArg) {
@@ -76,6 +100,22 @@ export class TypeChecker {
     }
 
     return index;
+  }
+
+  public static ValidOctaveArg(arg: IOSCArg): Octave {
+    const { type, value } = arg;
+    if (type !== "i") {
+      throw new OSCError("MCPx000A", "Index has invalid type. Expected integer type, i. e. 'i'.", arg);
+    } else if (!Number.isInteger(value as number)) {
+      throw new OSCError("MCPx000B", "Index value is not an integer", arg);
+    }
+
+    const index = value as number;
+    if (index > 5 || index < 1) {
+      throw new OSCError("MCPx000C", `Index value out of bounds. It must be between 1 and 5.`, arg);
+    }
+
+    return index as Octave;
   }
 
   public static ValidCentsArg(arg: IOSCArg) {

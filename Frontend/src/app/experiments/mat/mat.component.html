@@ -1,0 +1,104 @@
+<div class="container" fxLayout="column">
+
+  <div fxLayout fxLayoutGap="20px" style="padding-left: 10px; padding-top: 10px;">
+    <mat-form-field fxFlex="10">
+      <mat-label>Octave</mat-label>
+      <mat-select [(value)]="octave" (selectionChange)="changeOctave()">
+        <mat-option value="1">1</mat-option>
+        <mat-option value="2">2</mat-option>
+        <mat-option value="3">3</mat-option>
+        <mat-option value="4">4</mat-option>
+        <mat-option value="5">5</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="10">
+      <mat-label>Root Note</mat-label>
+      <mat-select [(value)]="rootNote" (selectionChange)="changeRootNote()">
+        <mat-option value="C">C</mat-option>
+        <mat-option value="D">D</mat-option>
+        <mat-option value="E">E</mat-option>
+        <mat-option value="F">F</mat-option>
+        <mat-option value="G">G</mat-option>
+        <mat-option value="A">A</mat-option>
+        <mat-option value="B">B</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="10">
+      <mat-label>Scale</mat-label>
+      <mat-select [(value)]="scale" (selectionChange)="changeScale()">
+        <mat-option value="major">Major</mat-option>
+        <mat-option value="minor">Minor</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div fxFlex>
+    <div fxLayout="column" fxLayoutAlign="stretch stretch" style="width: 100%; height: 100%;">
+      <!-- row 1 -->
+      <div fxLayout fxLayoutGap="10px" fxFlex>
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="0" #button0>
+            <span>C<small>3</small></span>
+            <span class="degree">I</span>
+          </div>
+        </div>
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="1" #button1>
+            <span>D<small>3</small></span>
+            <span class="degree">II</span>
+          </div>
+        </div>
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="2" #button2>
+            <span>E<small>3</small></span>
+            <span class="degree">III</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- row 2 -->
+      <div fxLayout fxLayoutGap="10px" fxFlex>
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="3" #button3>
+            <span>F<small>3</small></span>
+            <span class="degree">IV</span>
+          </div>
+        </div>
+
+        <div class="spacer" fxFlex></div>
+
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="4" #button4>
+            <span>G<small>3</small></span>
+            <span class="degree">V</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div fxLayout fxLayoutGap="10px" fxFlex>
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="5" #button5>
+            <span>A<small>3</small></span>
+            <span class="degree">VI</span>
+          </div>
+        </div>
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="6" #button6>
+            <span>B<small>3</small></span>
+            <span class="degree">VII</span>
+          </div>
+        </div>
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="7" #button7>
+            <span>C<small>4</small></span>
+            <span class="degree">I</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

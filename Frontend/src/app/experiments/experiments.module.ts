@@ -10,11 +10,12 @@ import { FormsModule } from '@angular/forms';
 import { LatencyComponent } from './latency/latency.component';
 import { ArcComponent } from './arc/arc.component';
 import { BoxComponent } from './box/box.component';
+import { MatComponent } from './mat/mat.component';
 
 
 
 @NgModule({
-  declarations: [MeterComponent, ExperimentsComponent, FrequencyComponent, LatencyComponent, ArcComponent, BoxComponent],
+  declarations: [MeterComponent, ExperimentsComponent, FrequencyComponent, LatencyComponent, ArcComponent, BoxComponent, MatComponent],
   imports: [
     CommonModule,
     SharedModule,
