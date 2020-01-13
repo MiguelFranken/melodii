@@ -194,6 +194,97 @@ Arguments:
 </p></details></td>
 </tr>
 <tr style="vertical-align:top;">
+<td>Start playing a note</td>
+<td>Triggers a note to start playing</td>
+<td><details><p>
+
+Path:
+```
+/mat/trigger
+```
+Arguments:
+```
+[
+    { i,index },  // Expects an index between 0 and 7 as integer
+    { f,velocity },  // Expects the velocity [0,1] of the note as float
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Stop playing a note</td>
+<td>Release a note to stop playing it</td>
+<td><details><p>
+
+Path:
+```
+/mat/release
+```
+Arguments:
+```
+[
+    { i,index },  // Expects an index between 0 and 7 as integer
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Octave change</td>
+<td>Changes the octave of all the playable notes</td>
+<td><details><p>
+
+Path:
+```
+/mat/change_octave
+```
+Arguments:
+```
+[
+    { i,octave },  // Expects a octave as integer value between 1 and 5
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Root note change</td>
+<td>Changes the root note of the scale</td>
+<td><details><p>
+
+Path:
+```
+/mat/change_root
+```
+Arguments:
+```
+[
+    { s,note },  // Expects a note without octave (e.g. 'C' or 'Db') as string
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Scale change</td>
+<td>Changes the scale</td>
+<td><details><p>
+
+Path:
+```
+/mat/change_scale
+```
+Arguments:
+```
+[
+    { s,scale },  // Expects the scale as string (e.g. 'major' or 'minor')
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
 <td>Swap two button's notes</td>
 <td>Swaps the notes that are assigned to the buttons with the provided indices</td>
 <td><details><p>
