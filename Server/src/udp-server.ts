@@ -46,7 +46,7 @@ export class UdpServer {
     this.udp.bind(this.port, "0.0.0.0");
 
     this.udp.on('error', (error) => {
-      console.error(`Error in UDP server: ${error}`);
+      Logger.Err(`Error in UDP server: ${error}`);
     });
   }
 

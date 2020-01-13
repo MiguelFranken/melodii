@@ -128,7 +128,7 @@ export class MusicService {
   }
 
   public addInstrument(instrument: IMCPInstrument, instrumentName: InstrumentName) {
-    console.warn(`Creating ${instrumentName}.`);
+    this.logger.info(`Creating instrument ${instrumentName}.`);
     const effectChain = new EffectChain(instrumentName, instrument.getAudioNode());
     effectChain.getOutputNode().connect(this.gain);
     this.effectChains.set(instrumentName, effectChain);

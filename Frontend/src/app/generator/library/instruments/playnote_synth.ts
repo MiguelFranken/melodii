@@ -15,7 +15,7 @@ export class PlayNoteSynth implements IMCPInstrument {
   }
 
   public trigger(note: Note, velocity: Velocity) {
-    console.log(`Trigger with note${note} and velocity ${velocity}.`);
+    this.logger.info(`Trigger with note${note} and velocity ${velocity}.`);
     const voice = this.voices.get(note);
     voice.triggerAttack(note, undefined, velocity);
   }
@@ -37,7 +37,7 @@ export class PlayNoteSynth implements IMCPInstrument {
   }
 
   public release(note: Note) {
-    console.log(`Release with note ${note}.`);
+    this.logger.info(`Release with note ${note}.`);
     const voice = this.voices.get(note);
     voice.triggerRelease();
   }

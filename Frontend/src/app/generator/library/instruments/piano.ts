@@ -120,7 +120,7 @@ export class Piano implements IMCPInstrument {
   }
 
   public trigger(note: Note, velocity: Velocity) {
-    console.log(`Trigger with note${note} and velocity ${velocity}.`);
+    this.logger.info(`Trigger with note${note} and velocity ${velocity}.`);
     this.sampler.triggerAttack(note, undefined, velocity);
   }
 
@@ -130,7 +130,7 @@ export class Piano implements IMCPInstrument {
   }
 
   public release(note: Note) {
-    console.log(`Release with note ${note}.`);
+    this.logger.info(`Release with note ${note}.`);
     this.sampler.triggerRelease(note);
   }
 

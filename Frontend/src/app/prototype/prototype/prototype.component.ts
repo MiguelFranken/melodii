@@ -242,7 +242,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   public showTutorial() {
-    console.log('Show tutorial');
+    this.logger.info('Show tutorial');
     this.helpOverlayService.triggerChain('tutorial');
   }
 
