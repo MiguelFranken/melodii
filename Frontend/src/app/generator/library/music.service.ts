@@ -11,6 +11,7 @@ import { EffectChain } from './effect-chain';
 import { InstrumentName, MeterName, IMCPEffect, MCPEffectIdentifier } from './types';
 import { LogService } from '../log/log.service';
 import { PlayNoteSynth } from './instruments/playnote_synth';
+import { Mat } from './instruments/mat';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +52,8 @@ export class MusicService {
     this.instruments.set('snare', new DrumsSnare());
     this.instruments.set('piano', new Piano());
     this.instruments.set('hihat', new DrumsHiHat());
-    this.instruments.set('playnote-synth', new PlayNoteSynth);
+    this.instruments.set('playnote-synth', new PlayNoteSynth());
+    this.instruments.set('mat', new Mat());
 
     this.instruments.forEach((instrument, name) => this.addInstrument(instrument, name));
 
