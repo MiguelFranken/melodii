@@ -1,25 +1,70 @@
 <div class="container" fxLayout="column" fxLayoutGap="20px">
 
+  <div fxLayout fxLayoutGap="20px" style="padding-left: 10px; padding-top: 10px;" style="padding: 10px;">
+    <mat-form-field fxFlex="10">
+      <mat-label>Octave</mat-label>
+      <mat-select [(value)]="octave" (selectionChange)="changeOctave()">
+        <mat-option value="1">1</mat-option>
+        <mat-option value="2">2</mat-option>
+        <mat-option value="3">3</mat-option>
+        <mat-option value="4">4</mat-option>
+        <mat-option value="5">5</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="10">
+      <mat-label>Root Note</mat-label>
+      <mat-select [(value)]="rootNote" (selectionChange)="changeRootNote()">
+        <mat-option value="C">C</mat-option>
+        <mat-option value="D">D</mat-option>
+        <mat-option value="E">E</mat-option>
+        <mat-option value="F">F</mat-option>
+        <mat-option value="G">G</mat-option>
+        <mat-option value="A">A</mat-option>
+        <mat-option value="B">B</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="10">
+      <mat-label>Scale</mat-label>
+      <mat-select [(value)]="scale" (selectionChange)="changeScale()">
+        <mat-option value="major">Major</mat-option>
+        <mat-option value="minor">Minor</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout fxLayoutGap="20px" style="padding: 10px">
+    <button mat-raised-button (click)="onSwapNotesButtonPressed()">
+      <mat-icon class="action-icon" *ngIf="!editMode">add</mat-icon>
+      <mat-icon class="action-icon" *ngIf="editMode">remove</mat-icon>
+      <span>Swap Notes</span>
+    </button>
+    <button mat-raised-button (click)="onSwapNotesButtonPressed()">
+      <span>Reset</span>
+    </button>
+  </div>
+
   <div #block fxFlex>
     <div fxLayout="column" fxLayoutAlign="stretch stretch" style="width: 100%; height: 100%;">
       <!-- row 1 -->
       <div fxLayout fxLayoutGap="10px" fxFlex>
         <div class="item" fxFlex>
-          <div fxLayout="column" fxLayoutAlign="center center" id="1">
-            <span>{{notes[0]}}<small>{{octaves[0]}}</small></span>
-            <span class="degree">{{degrees[0]}}</span>
+          <div fxLayout="column" fxLayoutAlign="center center" id="1" #button0>
+            <span>{{notes[getIndex(0)]}}<small>{{octaves[getIndex(0)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(0)]}}</span>
           </div>
         </div>
         <div class="item" fxFlex>
-          <div fxLayout="column" fxLayoutAlign="center center" id="2">
-            <span>{{notes[1]}}<small>{{octaves[1]}}</small></span>
-            <span class="degree">{{degrees[1]}}</span>
+          <div fxLayout="column" fxLayoutAlign="center center" id="2" #button1>
+            <span>{{notes[getIndex(1)]}}<small>{{octaves[getIndex(1)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(1)]}}</span>
           </div>
         </div>
         <div class="item" fxFlex>
-          <div fxLayout="column" fxLayoutAlign="center center" id="3">
-            <span>{{notes[2]}}<small>{{octaves[2]}}</small></span>
-            <span class="degree">{{degrees[2]}}</span>
+          <div fxLayout="column" fxLayoutAlign="center center" id="3" #button2>
+            <span>{{notes[getIndex(2)]}}<small>{{octaves[getIndex(2)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(2)]}}</span>
           </div>
         </div>
       </div>
@@ -27,18 +72,18 @@
       <!-- row 2 -->
       <div fxLayout fxLayoutGap="10px" fxFlex>
         <div class="item" fxFlex>
-          <div fxLayout="column" fxLayoutAlign="center center" id="4">
-            <span>{{notes[3]}}<small>{{octaves[3]}}</small></span>
-            <span class="degree">{{degrees[3]}}</span>
+          <div fxLayout="column" fxLayoutAlign="center center" id="4" #button3>
+            <span>{{notes[getIndex(3)]}}<small>{{octaves[getIndex(3)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(3)]}}</span>
           </div>
         </div>
 
         <div class="spacer" fxFlex></div>
 
         <div class="item" fxFlex>
-          <div fxLayout="column" fxLayoutAlign="center center" id="5">
-            <span>{{notes[4]}}<small>{{octaves[4]}}</small></span>
-            <span class="degree">{{degrees[4]}}</span>
+          <div fxLayout="column" fxLayoutAlign="center center" id="5" #button4>
+            <span>{{notes[getIndex(4)]}}<small>{{octaves[getIndex(4)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(4)]}}</span>
           </div>
         </div>
       </div>
@@ -46,21 +91,21 @@
       <!-- Row 3 -->
       <div fxLayout fxLayoutGap="10px" fxFlex>
         <div class="item" fxFlex>
-          <div fxLayout="column" fxLayoutAlign="center center" id="6">
-            <span>{{notes[5]}}<small>{{octaves[5]}}</small></span>
-            <span class="degree">{{degrees[5]}}</span>
+          <div fxLayout="column" fxLayoutAlign="center center" id="6" #button5>
+            <span>{{notes[getIndex(5)]}}<small>{{octaves[getIndex(5)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(5)]}}</span>
           </div>
         </div>
         <div class="item" fxFlex>
-          <div fxLayout="column" fxLayoutAlign="center center" id="7">
-            <span>{{notes[6]}}<small>{{octaves[6]}}</small></span>
-            <span class="degree">{{degrees[6]}}</span>
+          <div fxLayout="column" fxLayoutAlign="center center" id="7" #button6>
+            <span>{{notes[getIndex(6)]}}<small>{{octaves[getIndex(6)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(6)]}}</span>
           </div>
         </div>
         <div class="item" fxFlex>
-          <div fxLayout="column" fxLayoutAlign="center center" id="8">
-            <span>{{notes[7]}}<small>{{octaves[7]}}</small></span>
-            <span class="degree">{{degrees[7]}}</span>
+          <div fxLayout="column" fxLayoutAlign="center center" id="8" #button7>
+            <span>{{notes[getIndex(7)]}}<small>{{octaves[getIndex(7)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(7)]}}</span>
           </div>
         </div>
       </div>

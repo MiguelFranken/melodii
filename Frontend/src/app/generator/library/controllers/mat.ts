@@ -160,7 +160,7 @@ export class MatController {
       const second = TypeChecker.ValidIndexArg(this.mat.notes.length, message.args[1]);
 
       this.mat.swapMapping(first, second);
-      this.logger.info('Trigger', { first, second });
+      this.logger.info('Swap', { first, second });
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);

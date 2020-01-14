@@ -57,6 +57,10 @@
   animation-duration: 0.15s;
   animation-timing-function: ease-in-out;
   animation-name: mirror-animation;
+
+  .degree {
+    color: rgba(255,255,255,0.2);
+  }
 }
 
 .degree {
