@@ -1,10 +1,12 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Swappable } from '@shopify/draggable';
 import { GeneratorCommunicationService } from '../generator/library/generator-communication.service';
 import { Note } from '../generator/library/types';
 import { ButtonIndex, Degree, Mat, Octave } from '../generator/library/instruments/mat';
 import { MusicService } from '../generator/library/music.service';
 import { Logger } from '@upe/logger';
+import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
+import { Overlay } from '../shared/help-overlay/help-overlay.service';
 
 @Component({
   selector: 'mcp-mat',
@@ -12,6 +14,42 @@ import { Logger } from '@upe/logger';
   styleUrls: ['./mat.component.scss']
 })
 export class MatComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('octaveButton', { static: true, read: ElementRef })
+  octaveButtonElement: ElementRef;
+
+  @ViewChild('rootNoteButton', { static: true, read: ElementRef })
+  rootNoteButtonElement: ElementRef;
+
+  @ViewChild('scaleButton', { static: true, read: ElementRef })
+  scaleButtonElement: ElementRef;
+
+  @ViewChild('chordsButton', { static: true, read: ElementRef })
+  chordsButtonElement: ElementRef;
+
+  @ViewChild('effectsButton', { static: true, read: ElementRef })
+  effectsButtonElement: ElementRef;
+
+  @ViewChild('octaveMenuTemplate', { static: true })
+  octaveMenuTemplate: TemplateRef<any>;
+
+  @ViewChild('rootNoteMenuTemplate', { static: true })
+  rootNoteMenuTemplate: TemplateRef<any>;
+
+  @ViewChild('effectMenuTemplate', { static: true })
+  effectMenuTemplate: TemplateRef<any>;
+
+  @ViewChild('scaleMenuTemplate', { static: true })
+  scaleMenuTemplate: TemplateRef<any>;
+
+  @ViewChild('chordsMenuTemplate', { static: true })
+  chordsMenuTemplate: TemplateRef<any>;
+
+  private octaveMenuOverlay: Overlay;
+  private rootNoteMenuOverlay: Overlay;
+  private scaleMenuOverlay: Overlay;
+  private chordsMenuOverlay: Overlay;
+  private effectsMenuOverlay: Overlay;
 
   private logger: Logger = new Logger({ name: 'Mat Component' });
 
@@ -130,7 +168,10 @@ export class MatComponent implements OnInit, AfterViewInit {
     this.setNotes();
   }
 
-  constructor(private communicationService: GeneratorCommunicationService, private musicService: MusicService) { }
+  constructor(
+    private communicationService: GeneratorCommunicationService,
+    private musicService: MusicService,
+    private toppy: Toppy) { }
 
   ngOnInit() {
     this.mat = this.musicService.getInstrument('mat') as Mat;
@@ -188,14 +229,6 @@ export class MatComponent implements OnInit, AfterViewInit {
       .map(([k]) => k);
     return test[0];
   }
-
-  // private setNotes() {
-  //   setTimeout(() => {
-  //     this.notes = this.mat.notes.map((note) => note.substr(0, note.length - 1));
-  //     this.octaves = this.mat.notes.map((note) => +note.substr(note.length - 1, note.length) as Octave);
-  //     this.degrees = this.mat.degrees;
-  //   }, 100);
-  // }
 
   private trigger(index: ButtonIndex) {
     this.logger.info("found mapping", this.mapping.get(index));
@@ -257,6 +290,124 @@ export class MatComponent implements OnInit, AfterViewInit {
     });
 
     this.setNotes();
+  }
+
+  private initOctaveMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.octaveButtonElement.nativeElement
+    });
+
+    this.octaveMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.octaveMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+
+  public showOctaveMenu() {
+    this.initOctaveMenuOverlay();
+    this.octaveMenuOverlay.open();
+  }
+
+  private initScaleMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.scaleButtonElement.nativeElement
+    });
+
+    this.scaleMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.scaleMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+
+  public showScaleMenu() {
+    this.initScaleMenuOverlay();
+    this.scaleMenuOverlay.open();
+  }
+
+  private initRootNoteMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.rootNoteButtonElement.nativeElement
+    });
+
+    this.rootNoteMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.rootNoteMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+
+  public showRootNoteMenu() {
+    this.initRootNoteMenuOverlay();
+    this.rootNoteMenuOverlay.open();
+  }
+
+  private initChordsMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.chordsButtonElement.nativeElement
+    });
+
+    this.chordsMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.chordsMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+
+  public showChordsMenu() {
+    this.initChordsMenuOverlay();
+    this.chordsMenuOverlay.open();
+  }
+
+  private initEffectsMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.effectsButtonElement.nativeElement
+    });
+
+    this.effectsMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.effectMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+
+  public showEffectsMenu() {
+    this.initEffectsMenuOverlay();
+    this.effectsMenuOverlay.open();
+  }
+
+  public reset() {
+    // TODO
+  }
+
+  public switchNavigation() {
+    // TODO
   }
 
 }
