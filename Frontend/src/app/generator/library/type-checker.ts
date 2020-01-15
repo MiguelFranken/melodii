@@ -2,6 +2,7 @@ import { IOSCArg, OSCTypeTag } from './osc/osc-types';
 import { OSCError } from './error';
 import { Cents, Duration, Note, Velocity } from './types';
 import { Octave, ScaleName } from './instruments/mat';
+import { Decibels } from "tone/build/esm/core/type/Units";
 
 export class TypeChecker {
 
@@ -83,7 +84,20 @@ export class TypeChecker {
     return value;
   }
 
-  public static ValidEffectBoolArg(arg: IOSCArg): boolean {
+  public static ValidDecibelArg(arg: IOSCArg): Decibels {
+    const { type, value } = arg;
+    const parsed = parseInt(value.toString());
+    if (type !== "i") {
+      throw new OSCError("MCPx0100", "Argument has invalid type. Expected integer type, i.e. 'i'.", arg);
+    } else if (isNaN(parsed)) {
+      throw new OSCError("MCPx0101", "Argument value matches not the right type", arg);
+    } else if (parsed < -20 || parsed > 10) {
+      throw new OSCError("MCPx0102", "Decibel value is not between [-20,10]", arg);
+    }
+    return parsed;
+  }
+
+  public static ValidBoolArg(arg: IOSCArg): boolean {
     const { type, value } = arg;
     const parsed = Number(value);
     if (type !== "i") {

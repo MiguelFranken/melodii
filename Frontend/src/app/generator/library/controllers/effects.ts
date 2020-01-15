@@ -3,8 +3,8 @@ import { IOSCMessage } from '../osc/osc-message';
 import { MusicService } from '../music.service';
 import { Logger } from '@upe/logger';
 import { InstrumentName } from '../types';
-import { TypeChecker } from "../type-checker";
 import { OSCError } from "../error";
+import { TypeChecker } from "../type-checker";
 import { PingPongDelay, Reverb } from "tone";
 
 @Controller('/effect')
@@ -12,7 +12,7 @@ export class EffectsController {
 
   private logger: Logger = new Logger({ name: 'EffectsController', flags: ['music'] });
 
-  constructor(private musicService: MusicService) { }
+  constructor(private musicService: MusicService, private music: MusicService) { }
 
   /**
    * @apiGroup Effects
@@ -204,14 +204,36 @@ export class EffectsController {
 
   @OnMessage('/master/threebandeq')
   public EQMaster(@Message() message: IOSCMessage) {
+  @OnMessage('/master/eq')
+  public equalizerMaster(@Message() message: IOSCMessage) {
     this.logger.info('EQ', message);
 
-    if (message.args[0].value === 0) {
-      this.musicService.deleteEffectFromMasterEffectChain('threebandeq');
-      this.logger.info('Removed pingpongdelay effect from master effect chain');
-    } else {
-      this.musicService.addThreeBandEQToMasterEffectChain();
-      this.logger.info('Added pingpongdelay effect from master effect chain');
+    try {
+      const status = TypeChecker.ValidBoolArg(message.args[0]);
+      if (!status) {
+        this.musicService.deleteEffectFromMasterEffectChain('threebandeq');
+        this.logger.info('Removed pingpongdelay effect from master effect chain');
+      } else {
+        this.musicService.addThreeBandEQToMasterEffectChain();
+        this.logger.info('Added pingpongdelay effect from master effect chain');
+      }
+    } catch(e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
+      }
+    }
+  }
+
+  @OnMessage('/master/eq/change')
+  public changeHighLevelOfEqualizer(@Message() message: IOSCMessage) {
+    try {
+      const duration = TypeChecker.ValidDecibelArg(message.args[0]);
+    } catch(e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
+      }
     }
   }
 }
