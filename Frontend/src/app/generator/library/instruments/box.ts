@@ -49,6 +49,11 @@ export class Box implements IMCPInstrument {
     voice.triggerRelease();
   }
 
+  public setVolume(loudness: number) {
+    this.logger.info(`Set volume with loudness ${loudness}.`);
+    this.output.gain.value = loudness;
+  }
+
   private createVoice(): Synth {
     return new Synth({ detune: this.pitchShift }).connect(this.output);
   }
