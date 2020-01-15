@@ -25,7 +25,7 @@ export class DrumsController {
    * @apiGroup Drums
    * @apiName Play Snare
    * @apiDesc Plays the snare from the snare sampler
-   * @apiPath /snare/play
+   * @apiPath /drums/snare/play
    * @apiArgs i,duration Expects the duration of the snare note as string
    * @apiArgs i,velocity Expects the velocity of the snare note as float
    */
@@ -49,7 +49,7 @@ export class DrumsController {
    * @apiGroup Drums
    * @apiName Play Snare
    * @apiDesc Plays the basedrum (kick) from the kick sampler
-   * @apiPath /kick
+   * @apiPath /drums/kick
    * @apiArgs i,duration Expects the duration of the kick note as string
    * @apiArgs i,velocity Expects the velocity of the kick note as float
    */
@@ -74,7 +74,7 @@ export class DrumsController {
    * @apiGroup Drums
    * @apiName Play HiHat
    * @apiDesc Plays the HiHat from the hihat synth
-   * @apiPath /hihat
+   * @apiPath /drums/hihat
    * @apiArgs i,duration Expects the duration of the hihat note as string
    * @apiArgs i,velocity Expects the velocity of the hihat note as float
    */
