@@ -1,26 +1,151 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Swappable } from '@shopify/draggable';
 import { GeneratorCommunicationService } from '../generator/library/generator-communication.service';
+import { Note } from '../generator/library/types';
+import { ButtonIndex, Degree, Mat, Octave } from '../generator/library/instruments/mat';
+import { MusicService } from '../generator/library/music.service';
+import { Logger } from '@upe/logger';
+import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
+import { Overlay } from '../shared/help-overlay/help-overlay.service';
 
 @Component({
   selector: 'mcp-mat',
   templateUrl: './mat.component.html',
   styleUrls: ['./mat.component.scss']
 })
-export class MatComponent implements OnInit {
+export class MatComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('octaveButton', { static: true, read: ElementRef })
+  octaveButtonElement: ElementRef;
+
+  @ViewChild('rootNoteButton', { static: true, read: ElementRef })
+  rootNoteButtonElement: ElementRef;
+
+  @ViewChild('scaleButton', { static: true, read: ElementRef })
+  scaleButtonElement: ElementRef;
+
+  @ViewChild('chordsButton', { static: true, read: ElementRef })
+  chordsButtonElement: ElementRef;
+
+  @ViewChild('effectsButton', { static: true, read: ElementRef })
+  effectsButtonElement: ElementRef;
+
+  @ViewChild('octaveMenuTemplate', { static: true })
+  octaveMenuTemplate: TemplateRef<any>;
+
+  @ViewChild('rootNoteMenuTemplate', { static: true })
+  rootNoteMenuTemplate: TemplateRef<any>;
+
+  @ViewChild('effectMenuTemplate', { static: true })
+  effectMenuTemplate: TemplateRef<any>;
+
+  @ViewChild('scaleMenuTemplate', { static: true })
+  scaleMenuTemplate: TemplateRef<any>;
+
+  @ViewChild('chordsMenuTemplate', { static: true })
+  chordsMenuTemplate: TemplateRef<any>;
+
+  private octaveMenuOverlay: Overlay;
+  private rootNoteMenuOverlay: Overlay;
+  private scaleMenuOverlay: Overlay;
+  private chordsMenuOverlay: Overlay;
+  private effectsMenuOverlay: Overlay;
+
+  private logger: Logger = new Logger({ name: 'Mat Component' });
+
+  public editMode = false;
 
   private mapping = new Map([
     [0, 0],
     [1, 1],
     [2, 2],
     [3, 3],
-    [4, 4]
+    [4, 4],
+    [5, 5],
+    [6, 6],
+    [7, 7],
   ]);
+
+  private mat: Mat;
+
+  public notes: Note[] = [];
+  public octaves: Octave[] = [];
+  public degrees: Degree[] = [];
+
+  public octave = "3";
+  public scale = 'major';
+  public rootNote = 'C';
 
   @ViewChild('block', { static: true })
   block: ElementRef<HTMLElement>;
 
+  @ViewChild('button0', {static: true})
+  private button0: ElementRef<HTMLElement>;
+
+  @ViewChild('button1', {static: true})
+  private button1: ElementRef<HTMLElement>;
+
+  @ViewChild('button2', {static: true})
+  private button2: ElementRef<HTMLElement>;
+
+  @ViewChild('button3', {static: true})
+  private button3: ElementRef<HTMLElement>;
+
+  @ViewChild('button4', {static: true})
+  private button4: ElementRef<HTMLElement>;
+
+  @ViewChild('button5', {static: true})
+  private button5: ElementRef<HTMLElement>;
+
+  @ViewChild('button6', {static: true})
+  private button6: ElementRef<HTMLElement>;
+
+  @ViewChild('button7', {static: true})
+  private button7: ElementRef<HTMLElement>;
+
+  private buttons: ElementRef<HTMLElement>[];
+
   private swapInfo: { firstId: number, secondId: number } | null;
+
+  ngAfterViewInit(): void {
+    this.buttons = [
+      this.button0,
+      this.button1,
+      this.button2,
+      this.button3,
+      this.button4,
+      this.button5,
+      this.button6,
+      this.button7
+    ];
+
+    this.buttons.forEach((button, index) => {
+      button.nativeElement.addEventListener("mousedown", (event: any) => {
+        if (!this.editMode) {
+          this.logger.info(`Mouse Down Button ${index}`);
+          this.trigger(index);
+        }
+      });
+      button.nativeElement.addEventListener("touchstart", (event: any) => {
+        if (!this.editMode) {
+          this.logger.info(`Mouse Down Button ${index}`);
+          this.trigger(index);
+        }
+      });
+      button.nativeElement.addEventListener("mouseup", (event: any) => {
+        if (!this.editMode) {
+          this.logger.info(`Mouse Up Button ${index}`);
+          this.release(index);
+        }
+      });
+      button.nativeElement.addEventListener("touchend", (event: any) => {
+        if (!this.editMode) {
+          this.logger.info(`Mouse Up Button ${index}`);
+          this.release(index);
+        }
+      });
+    });
+  }
 
   private swap(firstId, secondId) {
     const firstIndex = this.mapping.get(firstId);
@@ -39,16 +164,31 @@ export class MatComponent implements OnInit {
     // so we need to keep track of where each element is.
     this.mapping.set(firstId, secondIndex);
     this.mapping.set(secondId, firstIndex);
+
+    this.setNotes();
   }
 
-  constructor(private communicationService: GeneratorCommunicationService) { }
+  constructor(
+    private communicationService: GeneratorCommunicationService,
+    private musicService: MusicService,
+    private toppy: Toppy) { }
 
   ngOnInit() {
+    this.mat = this.musicService.getInstrument('mat') as Mat;
+    this.setNotes();
+
     const swappable = new Swappable(this.block.nativeElement, {
       draggable: '.item',
       mirror: {
         appendTo: 'body',
         constrainDimensions: true,
+      }
+    });
+
+    swappable.on('swappable:start', (event) => {
+      if (!this.editMode) {
+        swappable.dragging = false;
+        event.cancel();
       }
     });
 
@@ -61,12 +201,213 @@ export class MatComponent implements OnInit {
 
     swappable.on('drag:stop', (event) => {
       if (this.swapInfo) {
-        this.swap(this.swapInfo.firstId, this.swapInfo.secondId);
+        console.log(this.swapInfo);
+        this.swap(this.swapInfo.firstId - 1, this.swapInfo.secondId - 1);
         this.swapInfo = null;
-
-        // TODO MF: Create OSC Message(s) for the changes and send them to the OSC Server
+        this.logger.info("index for button 0", this.getIndex(0));
+        this.logger.info("index for button 1", this.getIndex(1));
       }
     });
+  }
+
+  private setNotes() {
+    setTimeout(() => {
+      this.notes = this.mat.notes.map((note) => note.substr(0, note.length - 1));
+      this.octaves = this.mat.notes.map((note) => +note.substr(note.length - 1, note.length) as Octave);
+      this.degrees = [...this.mat.degrees];
+      this.logger.info('Set notes', this.notes);
+    }, 100);
+  }
+
+  public onSwapNotesButtonPressed() {
+    this.editMode = !this.editMode;
+  }
+
+  public getIndex(key: number) {
+    const test = [...this.mapping.entries()]
+      .filter(({ 1: v }) => v === key)
+      .map(([k]) => k);
+    return test[0];
+  }
+
+  private trigger(index: ButtonIndex) {
+    this.logger.info("found mapping", this.mapping.get(index));
+
+    this.communicationService.sendMessage({
+      address: "/mat/trigger",
+      args: [
+        { type: "i", value: this.mapping.get(index) },
+        { type: "f", value: 1 }
+      ],
+      info: null
+    });
+  }
+
+  private release(index: ButtonIndex) {
+    this.communicationService.sendMessage({
+      address: "/mat/release",
+      args: [
+        { type: "i", value: this.mapping.get(index) }
+      ],
+      info: null
+    });
+  }
+
+  public changeOctave() {
+    this.logger.info(`Change octave ${this.octave}`);
+    this.communicationService.sendMessage({
+      address: "/mat/change_octave",
+      args: [
+        { type: "i", value: +this.octave }
+      ],
+      info: null
+    });
+
+    this.setNotes();
+  }
+
+  public changeRootNote() {
+    this.logger.info(`Change root note ${this.rootNote}`);
+    this.communicationService.sendMessage({
+      address: "/mat/change_root",
+      args: [
+        { type: "s", value: this.rootNote }
+      ],
+      info: null
+    });
+
+    this.setNotes();
+  }
+
+  public changeScale() {
+    this.logger.info(`Change scale ${this.scale}`);
+    this.communicationService.sendMessage({
+      address: "/mat/change_scale",
+      args: [
+        { type: "s", value: this.scale }
+      ],
+      info: null
+    });
+
+    this.setNotes();
+  }
+
+  private initOctaveMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.octaveButtonElement.nativeElement
+    });
+
+    this.octaveMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.octaveMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+
+  public showOctaveMenu() {
+    this.initOctaveMenuOverlay();
+    this.octaveMenuOverlay.open();
+  }
+
+  private initScaleMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.scaleButtonElement.nativeElement
+    });
+
+    this.scaleMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.scaleMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+
+  public showScaleMenu() {
+    this.initScaleMenuOverlay();
+    this.scaleMenuOverlay.open();
+  }
+
+  private initRootNoteMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.rootNoteButtonElement.nativeElement
+    });
+
+    this.rootNoteMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.rootNoteMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+
+  public showRootNoteMenu() {
+    this.initRootNoteMenuOverlay();
+    this.rootNoteMenuOverlay.open();
+  }
+
+  private initChordsMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.chordsButtonElement.nativeElement
+    });
+
+    this.chordsMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.chordsMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+
+  public showChordsMenu() {
+    this.initChordsMenuOverlay();
+    this.chordsMenuOverlay.open();
+  }
+
+  private initEffectsMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.effectsButtonElement.nativeElement
+    });
+
+    this.effectsMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.effectMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized help menu overlay');
+  }
+
+  public showEffectsMenu() {
+    this.initEffectsMenuOverlay();
+    this.effectsMenuOverlay.open();
+  }
+
+  public reset() {
+    // TODO
+  }
+
+  public switchNavigation() {
+    // TODO
   }
 
 }

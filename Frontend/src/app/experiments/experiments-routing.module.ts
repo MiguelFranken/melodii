@@ -6,6 +6,7 @@ import { FrequencyComponent } from './frequency/frequency.component';
 import { LatencyComponent } from './latency/latency.component';
 import { ArcComponent } from './arc/arc.component';
 import { BoxComponent } from './box/box.component';
+import { MatComponent } from './mat/mat.component';
 
 const routes = [
   {
@@ -35,6 +36,11 @@ const routes = [
       {
         path: 'box',
         component: BoxComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'mat',
+        component: MatComponent,
         pathMatch: 'full'
       },
       {

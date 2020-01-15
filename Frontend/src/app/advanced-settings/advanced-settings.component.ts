@@ -11,20 +11,23 @@ import { Logger } from "@upe/logger";
 })
 export class AdvancedSettingsComponent implements OnInit {
 
-  private logger: Logger = new Logger({ name: 'AdvancedSettingsComponent', flags: ['component'] });
-
-  public oscWebSocketAddress = environment.SERVER_URL;
-
   constructor(
     private socketService: SocketService,
     private rtc: WebRTC) { }
 
+  public static OscWebSocketAddress;
+
+  private logger: Logger = new Logger({ name: 'AdvancedSettingsComponent', flags: ['component'] });
+  public address;
+
   ngOnInit() {
+    AdvancedSettingsComponent.OscWebSocketAddress = environment.SERVER_URL;
+    this.address = environment.SERVER_URL;
   }
 
   // TODO: Put that into a separate service used to (re)establish WebRTC connections
   public saveOSCWebSocketAddress() {
-    this.logger.info(this.oscWebSocketAddress);
+    this.logger.info(AdvancedSettingsComponent.OscWebSocketAddress);
 
     // close current WebRTC connection
     this.rtc.disconnect();
@@ -33,7 +36,7 @@ export class AdvancedSettingsComponent implements OnInit {
     this.socketService.closeSocket();
 
     // establish new websocket connection
-    this.socketService.setAddress(this.oscWebSocketAddress);
+    this.socketService.setAddress(AdvancedSettingsComponent.OscWebSocketAddress);
     this.socketService.initSocket().subscribe(() => {
       // After that: establish new WebRTC connection
       this.rtc.init();
@@ -41,6 +44,12 @@ export class AdvancedSettingsComponent implements OnInit {
         this.logger.error("Could not connect over WebRTC with OSC server after address change");
       });
     });
+  }
+
+  public connectToPi() {
+    AdvancedSettingsComponent.OscWebSocketAddress = "http://192.168.4.1:8080/";
+    this.address = AdvancedSettingsComponent.OscWebSocketAddress;
+    this.saveOSCWebSocketAddress();
   }
 
 }
