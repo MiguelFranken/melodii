@@ -11,14 +11,14 @@ import { Logger } from "@upe/logger";
 })
 export class AdvancedSettingsComponent implements OnInit {
 
-  private logger: Logger = new Logger({ name: 'AdvancedSettingsComponent', flags: ['component'] });
-
-  public static OscWebSocketAddress;
-  public address;
-
   constructor(
     private socketService: SocketService,
     private rtc: WebRTC) { }
+
+  public static OscWebSocketAddress;
+
+  private logger: Logger = new Logger({ name: 'AdvancedSettingsComponent', flags: ['component'] });
+  public address;
 
   ngOnInit() {
     AdvancedSettingsComponent.OscWebSocketAddress = environment.SERVER_URL;

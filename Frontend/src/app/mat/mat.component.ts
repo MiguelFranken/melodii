@@ -53,7 +53,7 @@ export class MatComponent implements OnInit, AfterViewInit {
 
   private logger: Logger = new Logger({ name: 'Mat Component' });
 
-  private editMode = false;
+  public editMode = false;
 
   private mapping = new Map([
     [0, 0],
