@@ -1,5 +1,5 @@
 import { Note, Velocity, Cents } from '../types';
-import { Synth, Frequency, Merge } from 'tone';
+import { Synth, Frequency, Gain } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 import { DefaultMap } from '../defaultMap';
@@ -25,7 +25,7 @@ export class Mat implements IMCPInstrument {
   private mapping = [0, 1, 2, 3, 4, 5, 6, 7];
 
   private readonly voices = new DefaultMap(() => this.createVoice());
-  private readonly output = new Merge();
+  private readonly output = new Gain();
 
   private readonly logger: Logger = new Logger({ name: 'Mat Instrument', flags: ['music'] });
 

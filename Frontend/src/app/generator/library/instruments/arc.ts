@@ -1,5 +1,5 @@
 import { Note, Velocity } from '../types';
-import { Synth, ToneAudioNode, Merge, Sampler } from 'tone';
+import { Synth, ToneAudioNode, Gain, Sampler } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 
@@ -8,7 +8,7 @@ export class Arc implements IMCPInstrument {
   private static baseUrl = 'assets/samples/cello/';
 
   private readonly voices: Map<string, Sampler> = new Map();
-  private readonly output = new Merge();
+  private readonly output = new Gain();
 
   private readonly logger: Logger = new Logger({ name: 'Arc Instrument', flags: ['music'] });
 

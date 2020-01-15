@@ -1,5 +1,5 @@
 import { Note, Velocity, Cents } from '../types';
-import { Synth, Frequency, Merge } from 'tone';
+import { Synth, Frequency, Gain } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 import { DefaultMap } from '../defaultMap';
@@ -7,7 +7,7 @@ import { DefaultMap } from '../defaultMap';
 export class Box implements IMCPInstrument {
 
   private readonly voices: DefaultMap<Note, Synth> = new DefaultMap(() => this.createVoice());
-  private readonly output = new Merge();
+  private readonly output = new Gain();
 
   private pitchShift = 0;
 
@@ -47,6 +47,11 @@ export class Box implements IMCPInstrument {
     this.logger.info(`Release with note ${note}.`);
     const voice = this.voices.get(note);
     voice.triggerRelease();
+  }
+
+  public setVolume(loudness: number) {
+    this.logger.info(`Set volume with loudness ${loudness}.`);
+    this.output.gain.value = loudness;
   }
 
   private createVoice(): Synth {
