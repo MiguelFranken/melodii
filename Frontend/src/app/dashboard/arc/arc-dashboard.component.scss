@@ -9,6 +9,11 @@
     background-color: $mcp-black-5;
     border-radius: 0;
     border: 2px solid $mcp-black-1;
+    flex: none;
+  }
+
+  button {
+    flex: 1 !important;
   }
 }
 
