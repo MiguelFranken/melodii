@@ -33,7 +33,7 @@ const NOTES_MAJOR_C = [
 const DEFAULT_BPM = 80;
 
 const NUMBER_OF_COLUMNS = 8;
-const NUMBER_OF_ROWS = 30;
+const NUMBER_OF_ROWS_PIANO_INSTRUMENT = 30;
 
 @Component({
   selector: 'app-prototype',
@@ -50,6 +50,8 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   public useEQLowOnMaster = false;
   public useEQMidOnMaster = false;
   public useEQHighOnMaster = false;
+
+  public isPlaying = false;
 
   private useReverbMap: Map<InstrumentName, boolean> = new Map();
   private usePingPongDelayMap: Map<InstrumentName, boolean> = new Map();
@@ -204,7 +206,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   public switchAllExpanded() {
     this.isInExpandedMode = !this.isInExpandedMode;
-    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+    for (let i = 0; i < this.matrix.rows.length; i++) {
       this.matrix.rows[i].isExpanded = this.isInExpandedMode;
     }
   }
@@ -455,8 +457,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
    * Removes all entries of the currently displayed matrix
    */
   public clearMatrix() {
-    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+    for (let i = 0; i < this.matrix.rows.length; i++) {
       for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
+
         this.matrix.rows[i].buttons[y].isActive = false;
       }
     }
@@ -482,11 +485,12 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.matrixCollectionIndex = (this.matrixCollectionIndex + 1) % this.matrixCollection.length;
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
 
-    for (const row of this.matrix.rows) {
-    //   row.buttons[this.currentPlayedColumnIndex].isPlayed = true;
-      row.buttons.forEach((button: RowButton, columnIndex: number) => {
-        button.isPlayed = columnIndex === this.currentPlayedColumnIndex;
-      });
+    if (this.isPlaying) {
+      for (const row of this.matrix.rows) {
+        row.buttons.forEach((button: RowButton, columnIndex: number) => {
+          button.isPlayed = columnIndex === this.currentPlayedColumnIndex;
+        });
+      }
     }
 
     this.logger.info('Switched to next matrix', this.matrix);
@@ -502,6 +506,15 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       this.matrixCollectionIndex = (this.matrixCollectionIndex - 1) % this.matrixCollection.length;
     }
     this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+
+    if (this.isPlaying) {
+      for (const row of this.matrix.rows) {
+        row.buttons.forEach((button: RowButton, columnIndex: number) => {
+          button.isPlayed = columnIndex === this.currentPlayedColumnIndex;
+        });
+      }
+    }
+
     this.logger.info('Switched to previous matrix', this.matrix);
   }
 
@@ -514,12 +527,12 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   switchFold() {
     if (this.isInFoldMode) {
-      for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+      for (let i = 0; i < this.matrix.rows.length; i++) {
         this.matrix.rows[i].isFolded = false;
       }
       this.isInFoldMode = false;
     } else {
-      for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+      for (let i = 0; i < this.matrix.rows.length; i++) {
         this.matrix.rows[i].isFolded = true;
         for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
           if (this.matrix.rows[i].buttons[y].isActive) {
@@ -639,7 +652,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   //region Piano Matrix
   private createMatrixPiano() {
     const matrix: Matrix = new Matrix();
-    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+    for (let i = 0; i < NUMBER_OF_ROWS_PIANO_INSTRUMENT; i++) {
       const rowArray: RowButton[] = [];
 
       const randomNote = NOTES_MAJOR_C[i % 7];
@@ -689,6 +702,8 @@ export class PrototypeComponent implements OnInit, OnDestroy {
    * Stops to play the notes on the matrix
    */
   public stop() {
+    this.isPlaying = false;
+
     if (this.playSubscription) {
       this.playSubscription.unsubscribe();
 
@@ -707,6 +722,8 @@ export class PrototypeComponent implements OnInit, OnDestroy {
    */
   public start() {
     this.stop();
+
+    this.isPlaying = true;
 
     for (const rows of this.matrix.rows) {
       const oldButton: RowButton = rows.buttons[0];
