@@ -1,0 +1,21 @@
+@import "src/scss/variables";
+
+.container {
+  padding: 8px;
+
+  .dashboard-button {
+    padding: 10px;
+    cursor: pointer;
+    background-color: $mcp-black-5;
+    border-radius: 0;
+    border: 2px solid $mcp-black-1;
+  }
+}
+
+.title {
+  padding-top: 10px;
+}
+
+.off {
+  color: $mcp-white-2 !important;
+}
