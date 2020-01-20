@@ -39,10 +39,10 @@ export class EffectsController {
 
     if (message.args[1].value === 0) {
       this.musicService.deleteEffect(instrument, 'reverb');
-      this.logger.info('Removed reverb effect from master effect chain');
+      this.logger.info(`Removed reverb effect from effect chain of instrument ${instrument}`);
     } else {
       this.musicService.addEffect(instrument, 'reverb');
-      this.logger.info('Added reverb effect from master effect chain');
+      this.logger.info(`Added reverb effect to effect chain of instrument ${instrument}`);
     }
   }
 
@@ -62,10 +62,10 @@ export class EffectsController {
 
     if (message.args[1].value === 0) {
       this.musicService.deleteEffect(instrument, 'pingpongdelay');
-      this.logger.info('Removed pingpongdelay effect from master effect chain');
+      this.logger.info(`Removed pingpongdelay effect from effect chain of instrument ${instrument}`);
     } else {
       this.musicService.addEffect(instrument, 'pingpongdelay');
-      this.logger.info('Added pingpongdelay effect from master effect chain');
+      this.logger.info(`Added pingpongdelay effect to effect chain of instrument ${instrument}`);
     }
   }
 
