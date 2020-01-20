@@ -11,7 +11,7 @@ export default class CmdTool {
     private regex = {
         url: /^[A-za-z0-9-:./]+$/,
         path: /\/[A-Za-z_]+$/,
-        args: /^[isfb]+,[A-Za-z0-9.]+$/,
+        args: /^[isfb]+,-?[A-Za-z0-9.]+$/,
         address: /^[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+$/,
         port: /^[0-9]+$/,
         number: /^[0-9]+$/,
