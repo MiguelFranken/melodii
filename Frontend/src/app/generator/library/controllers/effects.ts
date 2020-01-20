@@ -5,14 +5,14 @@ import { Logger } from '@upe/logger';
 import { InstrumentName } from '../types';
 import { OSCError } from "../error";
 import { TypeChecker } from "../type-checker";
-import { PingPongDelay, Reverb } from "tone";
+import { EQ3, PingPongDelay, Reverb } from "tone";
 
 @Controller('/effect')
 export class EffectsController {
 
   private logger: Logger = new Logger({ name: 'EffectsController', flags: ['music'] });
 
-  constructor(private musicService: MusicService, private music: MusicService) { }
+  constructor(private musicService: MusicService) { }
 
   /**
    * @apiGroup Effects
@@ -202,8 +202,13 @@ export class EffectsController {
     }
   }
 
-  @OnMessage('/master/threebandeq')
-  public EQMaster(@Message() message: IOSCMessage) {
+  /**
+   * @apiGroup Effects
+   * @apiName Switch Master EQ Effect
+   * @apiDesc Adds/removes EQ effect to/from master output
+   * @apiPath /master/eq
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
   @OnMessage('/master/eq')
   public equalizerMaster(@Message() message: IOSCMessage) {
     this.logger.info('EQ', message);
@@ -212,28 +217,92 @@ export class EffectsController {
       const status = TypeChecker.ValidBoolArg(message.args[0]);
       if (!status) {
         this.musicService.deleteEffectFromMasterEffectChain('threebandeq');
-        this.logger.info('Removed pingpongdelay effect from master effect chain');
+        this.logger.info('Removed equalizer effect from master effect chain');
       } else {
         this.musicService.addThreeBandEQToMasterEffectChain();
-        this.logger.info('Added pingpongdelay effect from master effect chain');
+        this.logger.info('Added equalizer effect from master effect chain');
       }
     } catch(e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
-        e.printFrontend(this.music.getLogService());
+        e.printFrontend(this.musicService.getLogService());
       }
     }
   }
 
-  @OnMessage('/master/eq/change')
+  /**
+   * @apiGroup Effects
+   * @apiName Change High Gain Master
+   * @apiDesc Changes the gain applied to the high of the master output
+   * @apiPath /master/eq/high
+   * @apiArgs f,decibel Expects an integer between [-20,10]
+   */
+  @OnMessage('/master/eq/high')
   public changeHighLevelOfEqualizer(@Message() message: IOSCMessage) {
     try {
-      const duration = TypeChecker.ValidDecibelArg(message.args[0]);
+      const highGain = TypeChecker.ValidDecibelArg(message.args[0]);
+
+      let effectObject = this.musicService.getMasterEffect('threebandeq');
+      let eq = effectObject.effect as EQ3;
+      eq.high.value = highGain;
+
+      this.logger.info('Changed the gain applied to the high of the master output', { highGain: highGain })
     } catch(e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
-        e.printFrontend(this.music.getLogService());
+        e.printFrontend(this.musicService.getLogService());
       }
     }
   }
+
+  /**
+   * @apiGroup Effects
+   * @apiName Change Mid Gain Master
+   * @apiDesc Changes the gain applied to the mid of the master output
+   * @apiPath /master/eq/mid
+   * @apiArgs f,decibel Expects an integer between [-20,10]
+   */
+  @OnMessage('/master/eq/mid')
+  public changeMidLevelOfEqualizer(@Message() message: IOSCMessage) {
+    try {
+      const midGain = TypeChecker.ValidDecibelArg(message.args[0]);
+
+      let effectObject = this.musicService.getMasterEffect('threebandeq');
+      let eq = effectObject.effect as EQ3;
+      eq.mid.value = midGain;
+
+      this.logger.info('Changed the gain applied to the mid of the master output', { midGain: midGain })
+    } catch(e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
+        e.printFrontend(this.musicService.getLogService());
+      }
+    }
+  }
+
+  /**
+   * @apiGroup Effects
+   * @apiName Change Low Gain Master
+   * @apiDesc Changes the gain applied to the low of the master output
+   * @apiPath /master/eq/low
+   * @apiArgs f,decibel Expects an integer between [-20,10]
+   */
+  @OnMessage('/master/eq/low')
+  public changeLowLevelOfEqualizer(@Message() message: IOSCMessage) {
+    try {
+      const lowGain = TypeChecker.ValidDecibelArg(message.args[0]);
+
+      let effectObject = this.musicService.getMasterEffect('threebandeq');
+      let eq = effectObject.effect as EQ3;
+      eq.low.value = lowGain;
+
+      this.logger.info('Changed the gain applied to the low of the master output', { lowGain: lowGain })
+    } catch(e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
+        e.printFrontend(this.musicService.getLogService());
+      }
+    }
+  }
+
 }

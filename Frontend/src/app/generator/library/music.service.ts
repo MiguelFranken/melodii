@@ -123,7 +123,7 @@ export class MusicService {
     const threeBandEffect: IMCPEffect = {
       id: 'threebandeq',
       effect: new EQ3(-10, 3, -20)
-    }
+    };
     return threeBandEffect;
   }
 
