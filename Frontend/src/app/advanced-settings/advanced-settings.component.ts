@@ -27,6 +27,7 @@ export class AdvancedSettingsComponent implements OnInit {
 
   // TODO: Put that into a separate service used to (re)establish WebRTC connections
   public saveOSCWebSocketAddress() {
+    AdvancedSettingsComponent.OscWebSocketAddress = this.address;
     this.logger.info(AdvancedSettingsComponent.OscWebSocketAddress);
 
     // close current WebRTC connection
