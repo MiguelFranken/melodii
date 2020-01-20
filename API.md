@@ -95,6 +95,24 @@ Arguments:
 
 </p></details></td>
 </tr>
+<tr style="vertical-align:top;">
+<td>Set the volume of the Box</td>
+<td>Set the instrument-level volume</td>
+<td><details><p>
+
+Path:
+```
+/box/setVolume
+```
+Arguments:
+```
+[
+    { f,loudness },  // Expects the new loudness [0,1] as float
+]
+```
+
+</p></details></td>
+</tr>
 </table>
 
 
@@ -113,7 +131,7 @@ Arguments:
 
 Path:
 ```
-/snare/play
+/drums/snare/play
 ```
 Arguments:
 ```
@@ -132,7 +150,7 @@ Arguments:
 
 Path:
 ```
-/kick
+/drums/kick
 ```
 Arguments:
 ```
@@ -151,13 +169,242 @@ Arguments:
 
 Path:
 ```
-/hihat
+/drums/hihat
 ```
 Arguments:
 ```
 [
     { i,duration },  // Expects the duration of the hihat note as string
     { i,velocity },  // Expects the velocity of the hihat note as float
+]
+```
+
+</p></details></td>
+</tr>
+</table>
+
+
+## Effects
+
+<table style="width:100%;text-align:left;">
+<tr style="vertical-align:top;">
+<td style="width:15%">Title</td>
+<td style="width:30%">Description</td>
+<td></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Instrument Reverb Effect</td>
+<td>Adds/removes reverb effect for specified instrument</td>
+<td><details><p>
+
+Path:
+```
+/instrument/reverb
+```
+Arguments:
+```
+[
+    { s,name },  // Expects the name of the instrument as string
+    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Instrument PingPongDeleay Effect</td>
+<td>Adds/removes pingpongdelay effect for specified instrument</td>
+<td><details><p>
+
+Path:
+```
+/instrument/pingpongdelay
+```
+Arguments:
+```
+[
+    { s,name },  // Expects the name of the instrument as string
+    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Master Reverb Effect</td>
+<td>Adds/removes reverb effect to/from master output</td>
+<td><details><p>
+
+Path:
+```
+/master/reverb
+```
+Arguments:
+```
+[
+    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Master PingPongDeleay Effect</td>
+<td>Adds/removes pingpongdelay effect to/from master output</td>
+<td><details><p>
+
+Path:
+```
+/master/pingpongdelay
+```
+Arguments:
+```
+[
+    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Change Decay Master Reverb Effect</td>
+<td>Changes the decay of the master reverb effect</td>
+<td><details><p>
+
+Path:
+```
+/master/reverb/decay
+```
+Arguments:
+```
+[
+    { f,seconds },  // Expects seconds as float value
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Change Dry/Wet Master Reverb Effect</td>
+<td>Changes the dry/wet ration of the master reverb effect</td>
+<td><details><p>
+
+Path:
+```
+/master/reverb/wet
+```
+Arguments:
+```
+[
+    { f,ratio },  // Expects the ratio for the wet signal as float value between [0,1]
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Change Delay Time Master PingPongDelay Effect</td>
+<td>Changes the delay time between consecutive echos of the master pingpongdelay effect</td>
+<td><details><p>
+
+Path:
+```
+/master/pingpongdelay/delay
+```
+Arguments:
+```
+[
+    { f,delay },  // Expects the delay in seconds as float value
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Change Feedback Master PingPongDelay Effect</td>
+<td>Changes the amount of the effected signal which is fed back through the master pingpongdelay effect</td>
+<td><details><p>
+
+Path:
+```
+/master/pingpongdelay/feedback
+```
+Arguments:
+```
+[
+    { f,feedback },  // Expects a float value between [0,1]
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Master EQ Effect</td>
+<td>Adds/removes EQ effect to/from master output</td>
+<td><details><p>
+
+Path:
+```
+/master/eq
+```
+Arguments:
+```
+[
+    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Change High Gain Master</td>
+<td>Changes the gain applied to the high of the master output</td>
+<td><details><p>
+
+Path:
+```
+/master/eq/high
+```
+Arguments:
+```
+[
+    { f,decibel },  // Expects an integer between [-20,10]
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Change Mid Gain Master</td>
+<td>Changes the gain applied to the mid of the master output</td>
+<td><details><p>
+
+Path:
+```
+/master/eq/mid
+```
+Arguments:
+```
+[
+    { f,decibel },  // Expects an integer between [-20,10]
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Change Low Gain Master</td>
+<td>Changes the gain applied to the low of the master output</td>
+<td><details><p>
+
+Path:
+```
+/master/eq/low
+```
+Arguments:
+```
+[
+    { f,decibel },  // Expects an integer between [-20,10]
 ]
 ```
 
