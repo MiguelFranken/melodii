@@ -278,7 +278,7 @@ Path:
 Arguments:
 ```
 [
-    { f,seconds },  // Expects seconds as float value
+    { f,seconds },  // Expects seconds (> 0) as float value
 ]
 ```
 
@@ -314,7 +314,7 @@ Path:
 Arguments:
 ```
 [
-    { f,delay },  // Expects the delay in seconds as float value
+    { f,delay },  // Expects the delay in seconds (> 0) as float value
 ]
 ```
 
