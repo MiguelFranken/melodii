@@ -27,7 +27,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Switch Instrument Reverb Effect
    * @apiDesc Adds/removes reverb effect for specified instrument
-   * @apiPath /instrument/reverb
+   * @apiPath /effect/instrument/reverb
    * @apiArgs s,name Expects the name of the instrument as string
    * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
    */
@@ -50,7 +50,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Switch Instrument PingPongDeleay Effect
    * @apiDesc Adds/removes pingpongdelay effect for specified instrument
-   * @apiPath /instrument/pingpongdelay
+   * @apiPath /effect/instrument/pingpongdelay
    * @apiArgs s,name Expects the name of the instrument as string
    * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
    */
@@ -73,7 +73,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Switch Master Reverb Effect
    * @apiDesc Adds/removes reverb effect to/from master output
-   * @apiPath /master/reverb
+   * @apiPath /effect/master/reverb
    * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
    */
   @OnMessage('/master/reverb')
@@ -93,7 +93,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Switch Master PingPongDeleay Effect
    * @apiDesc Adds/removes pingpongdelay effect to/from master output
-   * @apiPath /master/pingpongdelay
+   * @apiPath /effect/master/pingpongdelay
    * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
    */
   @OnMessage('/master/pingpongdelay')
@@ -113,7 +113,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Change Decay Master Reverb Effect
    * @apiDesc Changes the decay of the master reverb effect
-   * @apiPath /master/reverb/decay
+   * @apiPath /effect/master/reverb/decay
    * @apiArgs f,seconds Expects seconds (> 0) as float value
    */
   @OnMessage('/master/reverb/decay')
@@ -136,7 +136,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Change Dry/Wet Master Reverb Effect
    * @apiDesc Changes the dry/wet ration of the master reverb effect
-   * @apiPath /master/reverb/wet
+   * @apiPath /effect/master/reverb/wet
    * @apiArgs f,ratio Expects the ratio for the wet signal as float value between [0,1]
    */
   @OnMessage('/master/reverb/wet')
@@ -159,7 +159,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Change Delay Time Master PingPongDelay Effect
    * @apiDesc Changes the delay time between consecutive echos of the master pingpongdelay effect
-   * @apiPath /master/pingpongdelay/delay
+   * @apiPath /effect/master/pingpongdelay/delay
    * @apiArgs f,delay Expects the delay in seconds (> 0) as float value
    */
   @OnMessage('/master/pingpongdelay/delay')
@@ -181,7 +181,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Change Feedback Master PingPongDelay Effect
    * @apiDesc Changes the amount of the effected signal which is fed back through the master pingpongdelay effect
-   * @apiPath /master/pingpongdelay/feedback
+   * @apiPath /effect/master/pingpongdelay/feedback
    * @apiArgs f,feedback Expects a float value between [0,1]
    */
   @OnMessage('/master/pingpongdelay/feedback')
@@ -203,7 +203,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Switch Master EQ Effect
    * @apiDesc Adds/removes EQ effect to/from master output
-   * @apiPath /master/eq
+   * @apiPath /effect/master/eq
    * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
    */
   @OnMessage('/master/eq')
@@ -228,7 +228,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Change High Gain Master
    * @apiDesc Changes the gain applied to the high of the master output
-   * @apiPath /master/eq/high
+   * @apiPath /effect/master/eq/high
    * @apiArgs f,decibel Expects an integer between [-20,10]
    */
   @OnMessage('/master/eq/high')
@@ -250,7 +250,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Change Mid Gain Master
    * @apiDesc Changes the gain applied to the mid of the master output
-   * @apiPath /master/eq/mid
+   * @apiPath /effect/master/eq/mid
    * @apiArgs f,decibel Expects an integer between [-20,10]
    */
   @OnMessage('/master/eq/mid')
@@ -272,7 +272,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Change Low Gain Master
    * @apiDesc Changes the gain applied to the low of the master output
-   * @apiPath /master/eq/low
+   * @apiPath /effect/master/eq/low
    * @apiArgs f,decibel Expects an integer between [-20,10]
    */
   @OnMessage('/master/eq/low')
@@ -294,7 +294,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Switch Instrument EQ Effect
    * @apiDesc Adds/removes EQ effect for specified instrument
-   * @apiPath /instrument/eq
+   * @apiPath /effect/instrument/eq
    * @apiArgs s,name Expects the name of the instrument as string
    * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
    */
@@ -319,7 +319,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Change High Gain Instrument
    * @apiDesc Changes the gain applied to the high of the output of the specified instrument
-   * @apiPath /instrument/eq/high
+   * @apiPath /effect/instrument/eq/high
    * @apiArgs s,name Expects the name of the instrument as string
    * @apiArgs f,decibel Expects an integer between [-20,10]
    */
@@ -343,7 +343,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Change High Mid Instrument
    * @apiDesc Changes the gain applied to the mid of the output of the specified instrument
-   * @apiPath /instrument/eq/mid
+   * @apiPath /effect/instrument/eq/mid
    * @apiArgs s,name Expects the name of the instrument as string
    * @apiArgs f,decibel Expects an integer between [-20,10]
    */
@@ -367,7 +367,7 @@ export class EffectsController {
    * @apiGroup Effects
    * @apiName Change Low Gain Instrument
    * @apiDesc Changes the gain applied to the low of the output of the specified instrument
-   * @apiPath /instrument/eq/low
+   * @apiPath /effect/instrument/eq/low
    * @apiArgs s,name Expects the name of the instrument as string
    * @apiArgs f,decibel Expects an integer between [-20,10]
    */
