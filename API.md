@@ -199,7 +199,7 @@ Arguments:
 
 Path:
 ```
-/instrument/reverb
+/effect/instrument/reverb
 ```
 Arguments:
 ```
@@ -218,7 +218,7 @@ Arguments:
 
 Path:
 ```
-/instrument/pingpongdelay
+/effect/instrument/pingpongdelay
 ```
 Arguments:
 ```
@@ -237,7 +237,7 @@ Arguments:
 
 Path:
 ```
-/master/reverb
+/effect/master/reverb
 ```
 Arguments:
 ```
@@ -255,7 +255,7 @@ Arguments:
 
 Path:
 ```
-/master/pingpongdelay
+/effect/master/pingpongdelay
 ```
 Arguments:
 ```
@@ -273,7 +273,7 @@ Arguments:
 
 Path:
 ```
-/master/reverb/decay
+/effect/master/reverb/decay
 ```
 Arguments:
 ```
@@ -291,7 +291,7 @@ Arguments:
 
 Path:
 ```
-/master/reverb/wet
+/effect/master/reverb/wet
 ```
 Arguments:
 ```
@@ -309,7 +309,7 @@ Arguments:
 
 Path:
 ```
-/master/pingpongdelay/delay
+/effect/master/pingpongdelay/delay
 ```
 Arguments:
 ```
@@ -327,7 +327,7 @@ Arguments:
 
 Path:
 ```
-/master/pingpongdelay/feedback
+/effect/master/pingpongdelay/feedback
 ```
 Arguments:
 ```
@@ -345,7 +345,7 @@ Arguments:
 
 Path:
 ```
-/master/eq
+/effect/master/eq
 ```
 Arguments:
 ```
@@ -363,7 +363,7 @@ Arguments:
 
 Path:
 ```
-/master/eq/high
+/effect/master/eq/high
 ```
 Arguments:
 ```
@@ -381,7 +381,7 @@ Arguments:
 
 Path:
 ```
-/master/eq/mid
+/effect/master/eq/mid
 ```
 Arguments:
 ```
@@ -399,11 +399,87 @@ Arguments:
 
 Path:
 ```
-/master/eq/low
+/effect/master/eq/low
 ```
 Arguments:
 ```
 [
+    { f,decibel },  // Expects an integer between [-20,10]
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Instrument EQ Effect</td>
+<td>Adds/removes EQ effect for specified instrument</td>
+<td><details><p>
+
+Path:
+```
+/effect/instrument/eq
+```
+Arguments:
+```
+[
+    { s,name },  // Expects the name of the instrument as string
+    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Change High Gain Instrument</td>
+<td>Changes the gain applied to the high of the output of the specified instrument</td>
+<td><details><p>
+
+Path:
+```
+/effect/instrument/eq/high
+```
+Arguments:
+```
+[
+    { s,name },  // Expects the name of the instrument as string
+    { f,decibel },  // Expects an integer between [-20,10]
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Change High Mid Instrument</td>
+<td>Changes the gain applied to the mid of the output of the specified instrument</td>
+<td><details><p>
+
+Path:
+```
+/effect/instrument/eq/mid
+```
+Arguments:
+```
+[
+    { s,name },  // Expects the name of the instrument as string
+    { f,decibel },  // Expects an integer between [-20,10]
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Change Low Gain Instrument</td>
+<td>Changes the gain applied to the low of the output of the specified instrument</td>
+<td><details><p>
+
+Path:
+```
+/effect/instrument/eq/low
+```
+Arguments:
+```
+[
+    { s,name },  // Expects the name of the instrument as string
     { f,decibel },  // Expects an integer between [-20,10]
 ]
 ```
