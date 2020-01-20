@@ -1,6 +1,6 @@
-import { IOSCArg, OSCTypeTag } from './osc/osc-types';
+import { IOSCArg } from './osc/osc-types';
 import { OSCError } from './error';
-import { Cents, Duration, Note, Velocity } from './types';
+import { InstrumentName } from './types';
 import { Octave, ScaleName } from './instruments/mat';
 import { Decibels } from "tone/build/esm/core/type/Units";
 
@@ -108,6 +108,16 @@ export class TypeChecker {
       throw new OSCError("MCPx0102", "Decibel value is not between [-20,10]", arg);
     }
     return parsed;
+  }
+
+  public static ValidInstrumentNameArg(arg: IOSCArg): InstrumentName {
+    const { type, value } = arg;
+    if (type !== "s") {
+      throw new OSCError("MCPx9001", "Argument has invalid type. Expected string type, i.e. 's'.", arg);
+    } else if (typeof value != "string") {
+      throw new OSCError("MCPx9003", "Argument value must be a string", arg);
+    }
+    return value;
   }
 
   public static ValidBoolArg(arg: IOSCArg): boolean {

@@ -33,16 +33,19 @@ export class EffectsController {
    */
   @OnMessage('/instrument/reverb')
   public reverbInstrument(@Message() message: IOSCMessage) {
-    this.logger.info('Reverb', message);
+    try {
+      const instrument: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[1]);
 
-    const instrument: InstrumentName = message.args[0].value as InstrumentName;
-
-    if (message.args[1].value === 0) {
-      this.musicService.deleteEffect(instrument, 'reverb');
-      this.logger.info(`Removed reverb effect from effect chain of instrument ${instrument}`);
-    } else {
-      this.musicService.addEffect(instrument, 'reverb');
-      this.logger.info(`Added reverb effect to effect chain of instrument ${instrument}`);
+      if (!state) {
+        this.musicService.deleteEffect(instrument, 'reverb');
+        this.logger.info(`Removed reverb effect from effect chain of instrument ${instrument}`);
+      } else {
+        this.musicService.addEffect(instrument, 'reverb');
+        this.logger.info(`Added reverb effect to effect chain of instrument ${instrument}`);
+      }
+    } catch(e) {
+      this.printError(e);
     }
   }
 
@@ -56,16 +59,19 @@ export class EffectsController {
    */
   @OnMessage('/instrument/pingpongdelay')
   public pingpongdelayInstrument(@Message() message: IOSCMessage) {
-    this.logger.info('PingPongDelay Instrument', message);
+    try {
+      const instrument: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[1]);
 
-    const instrument: InstrumentName = message.args[0].value as InstrumentName;
-
-    if (message.args[1].value === 0) {
-      this.musicService.deleteEffect(instrument, 'pingpongdelay');
-      this.logger.info(`Removed pingpongdelay effect from effect chain of instrument ${instrument}`);
-    } else {
-      this.musicService.addEffect(instrument, 'pingpongdelay');
-      this.logger.info(`Added pingpongdelay effect to effect chain of instrument ${instrument}`);
+      if (!state) {
+        this.musicService.deleteEffect(instrument, 'pingpongdelay');
+        this.logger.info(`Removed pingpongdelay effect from effect chain of instrument ${instrument}`);
+      } else {
+        this.musicService.addEffect(instrument, 'pingpongdelay');
+        this.logger.info(`Added pingpongdelay effect to effect chain of instrument ${instrument}`);
+      }
+    } catch(e) {
+      this.printError(e);
     }
   }
 
@@ -78,14 +84,18 @@ export class EffectsController {
    */
   @OnMessage('/master/reverb')
   public reverbMaster(@Message() message: IOSCMessage) {
-    this.logger.info('Reverb', message);
+    try {
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[0]);
 
-    if (message.args[0].value === 0) {
-      this.musicService.deleteEffectFromMasterEffectChain('reverb');
-      this.logger.info('Removed reverb effect from master effect chain');
-    } else {
-      this.musicService.addReverbEffectToMasterEffectChain();
-      this.logger.info('Added reverb effect from master effect chain');
+      if (!state) {
+        this.musicService.deleteEffectFromMasterEffectChain('reverb');
+        this.logger.info('Removed reverb effect from master effect chain');
+      } else {
+        this.musicService.addReverbEffectToMasterEffectChain();
+        this.logger.info('Added reverb effect from master effect chain');
+      }
+    } catch(e) {
+      this.printError(e);
     }
   }
 
@@ -98,14 +108,18 @@ export class EffectsController {
    */
   @OnMessage('/master/pingpongdelay')
   public pingPongDelayMaster(@Message() message: IOSCMessage) {
-    this.logger.info('PingPongDelay Master', message);
+    try {
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[0]);
 
-    if (message.args[0].value === 0) {
-      this.musicService.deleteEffectFromMasterEffectChain('pingpongdelay');
-      this.logger.info('Removed pingpongdelay effect from master effect chain');
-    } else {
-      this.musicService.addPingPongDelayToMasterEffectChain();
-      this.logger.info('Added pingpongdelay effect from master effect chain');
+      if (message.args[0].value === 0) {
+        this.musicService.deleteEffectFromMasterEffectChain('pingpongdelay');
+        this.logger.info('Removed pingpongdelay effect from master effect chain');
+      } else {
+        this.musicService.addPingPongDelayToMasterEffectChain();
+        this.logger.info('Added pingpongdelay effect from master effect chain');
+      }
+    } catch(e) {
+      this.printError(e);
     }
   }
 
@@ -147,7 +161,7 @@ export class EffectsController {
       let effectObject = this.musicService.getMasterEffect('reverb');
       let reverb = effectObject.effect as Reverb;
       reverb.wet.value = wet;
-      reverb.generate(); // TODO: Necessary?
+      reverb.generate();
 
       this.logger.info('Change ration of dry/wet of reverb effect on master.', { wet: wet, dry: 1 - wet });
     } catch (e) {
@@ -208,8 +222,6 @@ export class EffectsController {
    */
   @OnMessage('/master/eq')
   public equalizerMaster(@Message() message: IOSCMessage) {
-    this.logger.info('EQ', message);
-
     try {
       const status = TypeChecker.ValidBoolArg(message.args[0]);
       if (!status) {
@@ -302,14 +314,19 @@ export class EffectsController {
   public eqInstrument(@Message() message: IOSCMessage) {
     this.logger.debug('Trying to add EQ to some instrument\'s effect chain', message);
 
-    const instrument: InstrumentName = message.args[0].value as InstrumentName;
+    try {
+      const instrument: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[1]);
 
-    if (message.args[1].value === 0) {
-      this.musicService.deleteEffect(instrument, 'threebandeq');
-      this.logger.info(`Removed eq effect from effect chain of instrument ${instrument}`);
-    } else {
-      this.musicService.addEffect(instrument, 'threebandeq');
-      this.logger.info(`Added eq effect to effect chain of instrument ${instrument}`);
+      if (!state) {
+        this.musicService.deleteEffect(instrument, 'threebandeq');
+        this.logger.info(`Removed eq effect from effect chain of instrument ${instrument}`);
+      } else {
+        this.musicService.addEffect(instrument, 'threebandeq');
+        this.logger.info(`Added eq effect to effect chain of instrument ${instrument}`);
+      }
+    } catch(e) {
+      this.printError(e);
     }
   }
 
@@ -326,7 +343,7 @@ export class EffectsController {
   @OnMessage('/instrument/eq/high')
   public changeHighLevelOfEqualizerInstrument(@Message() message: IOSCMessage) {
     try {
-      const name: InstrumentName = message.args[0].value as InstrumentName; // TODO: Validation
+      const name: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
       const highGain = TypeChecker.ValidDecibelArg(message.args[1]);
 
       let effectObject = this.musicService.getEffect(name,'threebandeq');
@@ -350,7 +367,7 @@ export class EffectsController {
   @OnMessage('/instrument/eq/mid')
   public changeMidLevelOfEqualizerInstrument(@Message() message: IOSCMessage) {
     try {
-      const name: InstrumentName = message.args[0].value as InstrumentName; // TODO: Validation
+      const name: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
       const midGain = TypeChecker.ValidDecibelArg(message.args[1]);
 
       let effectObject = this.musicService.getEffect(name,'threebandeq');
@@ -374,7 +391,7 @@ export class EffectsController {
   @OnMessage('/instrument/eq/low')
   public changeLowLevelOfEqualizerInstrument(@Message() message: IOSCMessage) {
     try {
-      const name: InstrumentName = message.args[0].value as InstrumentName; // TODO: Validation
+      const name: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
       const lowGain = TypeChecker.ValidDecibelArg(message.args[1]);
 
       let effectObject = this.musicService.getEffect(name,'threebandeq');
