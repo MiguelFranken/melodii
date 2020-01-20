@@ -105,12 +105,12 @@ export class EffectsController {
    * @apiName Change Decay Master Reverb Effect
    * @apiDesc Changes the decay of the master reverb effect
    * @apiPath /master/reverb/decay
-   * @apiArgs f,seconds Expects seconds as float value
+   * @apiArgs f,seconds Expects seconds (> 0) as float value
    */
   @OnMessage('/master/reverb/decay')
   public changeReverbDecay(@Message() message: IOSCMessage) {
     try {
-      const decay = TypeChecker.ValidFloatArg(message.args[1]);
+      const decay = TypeChecker.ValidTimeConstantArg(message.args[0]);
 
       let effectObject = this.musicService.getMasterEffect('reverb');
       let reverb = effectObject.effect as Reverb;
@@ -122,6 +122,8 @@ export class EffectsController {
       if (e instanceof OSCError) {
         e.print(this.logger);
         e.printFrontend(this.musicService.getLogService());
+      } else {
+        this.logger.error("error", e);
       }
     }
   }
@@ -136,7 +138,7 @@ export class EffectsController {
   @OnMessage('/master/reverb/wet')
   public changeReverbWet(@Message() message: IOSCMessage) {
     try {
-      const wet = TypeChecker.ValidNormalRangeArg(message.args[1]);
+      const wet = TypeChecker.ValidNormalRangeArg(message.args[0]);
 
       let effectObject = this.musicService.getMasterEffect('reverb');
       let reverb = effectObject.effect as Reverb;
@@ -157,12 +159,12 @@ export class EffectsController {
    * @apiName Change Delay Time Master PingPongDelay Effect
    * @apiDesc Changes the delay time between consecutive echos of the master pingpongdelay effect
    * @apiPath /master/pingpongdelay/delay
-   * @apiArgs f,delay Expects the delay in seconds as float value
+   * @apiArgs f,delay Expects the delay in seconds (> 0) as float value
    */
   @OnMessage('/master/pingpongdelay/delay')
   public changePingPongDelayMasterDelayTime(@Message() message: IOSCMessage) {
     try {
-      const delay = TypeChecker.ValidFloatArg(message.args[1]);
+      const delay = TypeChecker.ValidTimeConstantArg(message.args[0]);
 
       let effectObject = this.musicService.getMasterEffect('pingpongdelay');
       let pingpongdelay = effectObject.effect as PingPongDelay;
@@ -187,7 +189,7 @@ export class EffectsController {
   @OnMessage('/master/pingpongdelay/feedback')
   public changePingPongDelayMasterFeedback(@Message() message: IOSCMessage) {
     try {
-      const feedback = TypeChecker.ValidNormalRangeArg(message.args[1]);
+      const feedback = TypeChecker.ValidNormalRangeArg(message.args[0]);
 
       let effectObject = this.musicService.getMasterEffect('pingpongdelay');
       let pingpongdelay = effectObject.effect as PingPongDelay;

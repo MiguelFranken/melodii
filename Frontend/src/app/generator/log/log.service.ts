@@ -26,18 +26,19 @@ export class LogService {
   }
 
   public addMessage(message: string) {
-    const index = this.messageCounter.toString().padStart(4, "0");
-    this.messages.unshift({ index, message });
-    this.messageCounter++;
-    if (this.messages.length > this.maxMessagesSaved) {
-      this.messages.splice(this.maxMessagesSaved); // Remove extra messages from end of array.
+    if (this.messageCounter != undefined) {
+      const index = this.messageCounter.toString().padStart(4, "0");
+      this.messages.unshift({ index, message });
+      this.messageCounter++;
+      if (this.messages.length > this.maxMessagesSaved) {
+        this.messages.splice(this.maxMessagesSaved); // Remove extra messages from end of array.
+      }
+      this.receiveEvent.emit();
     }
-    this.receiveEvent.emit();
   }
 
   public addErrorMessage(message: string) {
     this.addMessage(`<b style="color: #FF8269">${message}</b>`);
   }
 
-  constructor() { }
 }

@@ -68,9 +68,22 @@ export class TypeChecker {
     const { type, value } = arg;
     const parsed = parseFloat(value.toString());
     if (type !== "f") {
-      throw new OSCError("MCPx0202", "Velocity has invalid type. Expected float type, i.e. 'f'.", arg);
+      throw new OSCError("MCPx0202", "Argument has invalid type. Expected float type, i.e. 'f'.", arg);
     } else if (isNaN(parsed)) {
-      throw new OSCError("MCPx0204", "Velocity value matches not the right type", arg);
+      throw new OSCError("MCPx0204", "Argument value matches not the right type which should be a float", arg);
+    }
+    return parsed;
+  }
+
+  public static ValidTimeConstantArg(arg: IOSCArg) {
+    const { type, value } = arg;
+    const parsed = parseFloat(value.toString());
+    if (type !== "f") {
+      throw new OSCError("MCPx1200", "Argument has invalid type. Expected float type, i.e. 'f'.", arg);
+    } else if (isNaN(parsed)) {
+      throw new OSCError("MCPx1201", "Argument value matches not the right type which should be a float", arg);
+    } else if(parsed <= 0) {
+      throw new OSCError("MCPx1202", "Time constant arguments must be greater than 0", arg);
     }
     return parsed;
   }
