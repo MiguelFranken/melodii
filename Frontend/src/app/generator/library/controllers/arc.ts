@@ -11,8 +11,10 @@ export class ArcController {
 
   private logger: Logger = new Logger({ name: 'ArcController', flags: ['music'] });
 
-  constructor(private music: MusicService, private arc: Arc) {
-    music.addInstrument(arc, "Arc");
+  private arc: Arc;
+
+  constructor(private music: MusicService) {
+    this.arc = music.getInstrument("arc") as Arc;
   }
 
   /**

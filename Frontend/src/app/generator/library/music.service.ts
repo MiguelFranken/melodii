@@ -12,6 +12,8 @@ import { InstrumentName, MeterName, IMCPEffect, MCPEffectIdentifier } from './ty
 import { LogService } from '../log/log.service';
 import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Mat } from './instruments/mat';
+import { Arc } from "./instruments/arc";
+import { Box } from "./instruments/box";
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +56,8 @@ export class MusicService {
     this.instruments.set('hihat', new DrumsHiHat());
     this.instruments.set('playnote-synth', new PlayNoteSynth());
     this.instruments.set('mat', new Mat());
+    this.instruments.set('arc', new Arc());
+    this.instruments.set('box', new Box());
 
     this.instruments.forEach((instrument, name) => this.addInstrument(instrument, name));
 
@@ -94,6 +98,15 @@ export class MusicService {
       this.logger.error('deleteEffect');
     }
     effectChain.deleteEffectByID(effectName);
+  }
+
+  public getEffect(instrumentName: InstrumentName, effectName: MCPEffectIdentifier): IMCPEffect | null {
+    const effectChain = this.effectChains.get(instrumentName);
+    if (!effectChain) {
+      this.logger.error('getEffect');
+      return null;
+    }
+    return effectChain.getEffectByID(effectName);
   }
 
   public getReverbEffect(): IMCPEffect {

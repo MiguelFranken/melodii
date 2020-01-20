@@ -11,8 +11,10 @@ export class BoxController {
 
   private logger: Logger = new Logger({ name: 'BoxController', flags: ['music'] });
 
-  constructor(private music: MusicService, private box: Box) {
-    music.addInstrument(box, "Box");
+  private box: Box;
+
+  constructor(private music: MusicService) {
+    this.box = music.getInstrument("box") as Box;
   }
 
   /**
