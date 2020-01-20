@@ -92,7 +92,7 @@ export class BoxController {
   @OnMessage('/setVolume')
   public setVolume(@Message() message: IOSCMessage) {
     try {
-      const loudness = TypeChecker.ValidVelocityArg(message.args[0]);
+      const loudness = TypeChecker.ValidNormalRangeArg(message.args[0]);
       this.box.setVolume(loudness);
       this.logger.info('Set volume', loudness);
     } catch (e) {
