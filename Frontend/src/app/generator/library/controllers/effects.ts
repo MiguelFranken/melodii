@@ -290,4 +290,101 @@ export class EffectsController {
     }
   }
 
+  /**
+   * @apiGroup Effects
+   * @apiName Switch Instrument EQ Effect
+   * @apiDesc Adds/removes EQ effect for specified instrument
+   * @apiPath /instrument/eq
+   * @apiArgs s,name Expects the name of the instrument as string
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
+  @OnMessage('/instrument/eq')
+  public eqInstrument(@Message() message: IOSCMessage) {
+    this.logger.debug('Trying to add EQ to some instrument\'s effect chain', message);
+
+    const instrument: InstrumentName = message.args[0].value as InstrumentName;
+
+    if (message.args[1].value === 0) {
+      this.musicService.deleteEffect(instrument, 'threebandeq');
+      this.logger.info(`Removed eq effect from effect chain of instrument ${instrument}`);
+    } else {
+      this.musicService.addEffect(instrument, 'threebandeq');
+      this.logger.info(`Added eq effect to effect chain of instrument ${instrument}`);
+    }
+  }
+
+
+
+  /**
+   * @apiGroup Effects
+   * @apiName Change High Gain Instrument
+   * @apiDesc Changes the gain applied to the high of the output of the specified instrument
+   * @apiPath /instrument/eq/high
+   * @apiArgs s,name Expects the name of the instrument as string
+   * @apiArgs f,decibel Expects an integer between [-20,10]
+   */
+  @OnMessage('/instrument/eq/high')
+  public changeHighLevelOfEqualizerInstrument(@Message() message: IOSCMessage) {
+    try {
+      const name: InstrumentName = message.args[0].value as InstrumentName; // TODO: Validation
+      const highGain = TypeChecker.ValidDecibelArg(message.args[1]);
+
+      let effectObject = this.musicService.getEffect(name,'threebandeq');
+      let eq = effectObject.effect as EQ3;
+      eq.high.value = highGain;
+
+      this.logger.info('Changed the gain applied to the high of the master output', { highGain: highGain })
+    } catch(e) {
+      this.printError(e);
+    }
+  }
+
+  /**
+   * @apiGroup Effects
+   * @apiName Change High Mid Instrument
+   * @apiDesc Changes the gain applied to the mid of the output of the specified instrument
+   * @apiPath /instrument/eq/mid
+   * @apiArgs s,name Expects the name of the instrument as string
+   * @apiArgs f,decibel Expects an integer between [-20,10]
+   */
+  @OnMessage('/instrument/eq/mid')
+  public changeMidLevelOfEqualizerInstrument(@Message() message: IOSCMessage) {
+    try {
+      const name: InstrumentName = message.args[0].value as InstrumentName; // TODO: Validation
+      const midGain = TypeChecker.ValidDecibelArg(message.args[1]);
+
+      let effectObject = this.musicService.getEffect(name,'threebandeq');
+      let eq = effectObject.effect as EQ3;
+      eq.mid.value = midGain;
+
+      this.logger.info('Changed the gain applied to the mid of the master output', { midGain: midGain })
+    } catch(e) {
+      this.printError(e);
+    }
+  }
+
+  /**
+   * @apiGroup Effects
+   * @apiName Change Low Gain Instrument
+   * @apiDesc Changes the gain applied to the low of the output of the specified instrument
+   * @apiPath /instrument/eq/low
+   * @apiArgs s,name Expects the name of the instrument as string
+   * @apiArgs f,decibel Expects an integer between [-20,10]
+   */
+  @OnMessage('/instrument/eq/low')
+  public changeLowLevelOfEqualizerInstrument(@Message() message: IOSCMessage) {
+    try {
+      const name: InstrumentName = message.args[0].value as InstrumentName; // TODO: Validation
+      const lowGain = TypeChecker.ValidDecibelArg(message.args[1]);
+
+      let effectObject = this.musicService.getEffect(name,'threebandeq');
+      let eq = effectObject.effect as EQ3;
+      eq.low.value = lowGain;
+
+      this.logger.info('Changed the gain applied to the low of the master output', { lowGain: lowGain })
+    } catch(e) {
+      this.printError(e);
+    }
+  }
+
 }
