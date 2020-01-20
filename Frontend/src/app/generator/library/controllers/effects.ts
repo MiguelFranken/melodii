@@ -3,6 +3,9 @@ import { IOSCMessage } from '../osc/osc-message';
 import { MusicService } from '../music.service';
 import { Logger } from '@upe/logger';
 import { InstrumentName } from '../types';
+import { TypeChecker } from "../type-checker";
+import { OSCError } from "../error";
+import { Reverb } from "tone";
 
 @Controller('/effect')
 export class EffectsController {
@@ -94,6 +97,58 @@ export class EffectsController {
     } else {
       this.musicService.addPingPongDelayToMasterEffectChain();
       this.logger.info('Added pingpongdelay effect from master effect chain');
+    }
+  }
+
+  /**
+   * @apiGroup Effects
+   * @apiName Change Decay Master Reverb Effect
+   * @apiDesc Changes the decay of the master reverb effect
+   * @apiPath /master/reverb/decay
+   * @apiArgs f,seconds Expects seconds as float value
+   */
+  @OnMessage('/master/reverb/decay')
+  public changeReverbDecay(@Message() message: IOSCMessage) {
+    try {
+      const decay = TypeChecker.ValidFloatArg(message.args[1]);
+
+      let effectObject = this.musicService.getMasterEffect('reverb');
+      let reverb = effectObject.effect as Reverb;
+      reverb.decay = decay;
+      reverb.generate();
+
+      this.logger.info('Change decay of reverb effect on master', { decay });
+    } catch (e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
+        e.printFrontend(this.musicService.getLogService());
+      }
+    }
+  }
+
+  /**
+   * @apiGroup Effects
+   * @apiName Change Dry/Wet Master Reverb Effect
+   * @apiDesc Changes the dry/wet ration of the master reverb effect
+   * @apiPath /master/reverb/wet
+   * @apiArgs f,ratio Expects the ratio for the wet signal as float value between [0,1]
+   */
+  @OnMessage('/master/reverb/wet')
+  public changeReverbWet(@Message() message: IOSCMessage) {
+    try {
+      const wet = TypeChecker.ValidNormalRangeArg(message.args[1]);
+
+      let effectObject = this.musicService.getMasterEffect('reverb');
+      let reverb = effectObject.effect as Reverb;
+      reverb.wet.value = wet;
+      reverb.generate(); // TODO: Necessary?
+
+      this.logger.info('Change ration of dry/wet of reverb effect on master.', { wet: wet, dry: 1 - wet });
+    } catch (e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
+        e.printFrontend(this.musicService.getLogService());
+      }
     }
   }
 

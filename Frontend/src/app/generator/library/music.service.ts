@@ -129,6 +129,10 @@ export class MusicService {
     this.masterEffectChain.pushEffect(this.getReverbEffect());
   }
 
+  public getMasterEffect(id: MCPEffectIdentifier): IMCPEffect | null {
+    return this.masterEffectChain.getEffectByID(id);
+  }
+
   public addInstrument(instrument: IMCPInstrument, instrumentName: InstrumentName) {
     this.logger.info(`Creating instrument ${instrumentName}.`);
     const effectChain = new EffectChain(instrumentName, instrument.getAudioNode());

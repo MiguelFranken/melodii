@@ -8,7 +8,7 @@ export class TypeChecker {
   private static Regex = {
     Note: /^[A-G][b#]?[0-9]$/,
     NoteWithoutOctave: /^[A-G][b#]?$/,
-    Velocity: /^1$|^0$|^0.[0-9]+$/,
+    NormalRange: /^1$|^0$|^0.[0-9]+$/,
     Duration: /^$/,
     Cents: /^$/,
     Effectbool: /^0$|^1$/,
@@ -50,15 +50,26 @@ export class TypeChecker {
     return parsed as ScaleName;
   }
 
-  public static ValidVelocityArg(arg: IOSCArg) {
+  public static ValidNormalRangeArg(arg: IOSCArg) {
     const { type, value } = arg;
     const parsed = parseFloat(value.toString());
     if (type !== "f") {
       throw new OSCError("MCPx0002", "Velocity has invalid type. Expected float type, i.e. 'f'.", arg);
-    } else if (!String(parsed).match(TypeChecker.Regex.Velocity)) {
+    } else if (!String(parsed).match(TypeChecker.Regex.NormalRange)) {
       throw new OSCError("MCPx0003", "Velocity value is not in normal range ([0,1])", arg);
     } else if (isNaN(parsed)) {
       throw new OSCError("MCPx0004", "Velocity value matches not the right type", arg);
+    }
+    return parsed;
+  }
+
+  public static ValidFloatArg(arg: IOSCArg) {
+    const { type, value } = arg;
+    const parsed = parseFloat(value.toString());
+    if (type !== "f") {
+      throw new OSCError("MCPx0202", "Velocity has invalid type. Expected float type, i.e. 'f'.", arg);
+    } else if (isNaN(parsed)) {
+      throw new OSCError("MCPx0204", "Velocity value matches not the right type", arg);
     }
     return parsed;
   }
@@ -71,7 +82,6 @@ export class TypeChecker {
     // TODO
     return value;
   }
-
 
   public static ValidEffectBoolArg(arg: IOSCArg): boolean {
     const { type, value } = arg;
@@ -128,4 +138,5 @@ export class TypeChecker {
 
     return Number(value);
   }
+
 }

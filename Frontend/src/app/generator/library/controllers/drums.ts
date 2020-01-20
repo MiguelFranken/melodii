@@ -34,7 +34,7 @@ export class DrumsController {
     try {
       const duration = TypeChecker.ValidDurationArg(msg.args[0]);
       //TODO add postion to decorators
-      const velocity = TypeChecker.ValidVelocityArg(msg.args[1]);
+      const velocity = TypeChecker.ValidNormalRangeArg(msg.args[1]);
 
       this.snareInstrument.play(duration, velocity);
     } catch (e) {
@@ -58,7 +58,7 @@ export class DrumsController {
     try {
       const duration = TypeChecker.ValidDurationArg(msg.args[0]);
       // TODO add position to decorators
-      const velocity = TypeChecker.ValidVelocityArg(msg.args[1]);
+      const velocity = TypeChecker.ValidNormalRangeArg(msg.args[1]);
 
       this.kickInstrument.play(duration, velocity);
     } catch (e) {
@@ -83,7 +83,7 @@ export class DrumsController {
     try {
       const duration = TypeChecker.ValidDurationArg(msg.args[0]);
       // TODO add position to decorators
-      const velocity = TypeChecker.ValidVelocityArg(msg.args[1]);
+      const velocity = TypeChecker.ValidNormalRangeArg(msg.args[1]);
 
       this.hihatInstrument.play(duration, velocity);
     } catch (e) {

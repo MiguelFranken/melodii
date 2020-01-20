@@ -27,7 +27,7 @@ export class BoxController {
   public trigger(@Message() message: IOSCMessage) {
     try {
       const note = TypeChecker.ValidNoteArg(message.args[0]);
-      const velocity = TypeChecker.ValidVelocityArg(message.args[1]);
+      const velocity = TypeChecker.ValidNormalRangeArg(message.args[1]);
 
       this.box.trigger(note, velocity);
       this.logger.info('Trigger', { note, velocity });

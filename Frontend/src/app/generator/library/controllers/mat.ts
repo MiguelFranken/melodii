@@ -31,7 +31,7 @@ export class MatController {
   public play(@Message() message: IOSCMessage) {
     try {
       const buttonIndex = TypeChecker.ValidIndexArg(this.mat.notes.length, message.args[0]);
-      const velocity = TypeChecker.ValidVelocityArg(message.args[1]);
+      const velocity = TypeChecker.ValidNormalRangeArg(message.args[1]);
 
       this.mat.play(buttonIndex, velocity);
       this.logger.info('Trigger', { noteIndex: buttonIndex, velocity });
@@ -55,7 +55,7 @@ export class MatController {
   public trigger(@Message() message: IOSCMessage) {
     try {
       const buttonIndex = TypeChecker.ValidIndexArg(this.mat.notes.length, message.args[0]);
-      const velocity = TypeChecker.ValidVelocityArg(message.args[1]);
+      const velocity = TypeChecker.ValidNormalRangeArg(message.args[1]);
 
       this.mat.trigger(buttonIndex, velocity);
       this.logger.info('Trigger', { buttonIndex, velocity });
