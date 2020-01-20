@@ -11,6 +11,14 @@ export class EffectsController {
 
   constructor(private musicService: MusicService) { }
 
+  /**
+   * @apiGroup Effects
+   * @apiName Switch Instrument Reverb Effect
+   * @apiDesc Adds/removes reverb effect for specified instrument
+   * @apiPath /instrument/reverb
+   * @apiArgs s,name Expects the name of the instrument as string
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
   @OnMessage('/instrument/reverb')
   public reverbInstrument(@Message() message: IOSCMessage) {
     this.logger.info('Reverb', message);
@@ -26,6 +34,14 @@ export class EffectsController {
     }
   }
 
+  /**
+   * @apiGroup Effects
+   * @apiName Switch Instrument PingPongDeleay Effect
+   * @apiDesc Adds/removes pingpongdelay effect for specified instrument
+   * @apiPath /instrument/pingpongdelay
+   * @apiArgs s,name Expects the name of the instrument as string
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
   @OnMessage('/instrument/pingpongdelay')
   public pingpongdelayInstrument(@Message() message: IOSCMessage) {
     this.logger.info('Reverb', message);
@@ -41,6 +57,13 @@ export class EffectsController {
     }
   }
 
+  /**
+   * @apiGroup Effects
+   * @apiName Switch Master Reverb Effect
+   * @apiDesc Adds/removes reverb effect to/from master output
+   * @apiPath /master/reverb
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
   @OnMessage('/master/reverb')
   public reverbMaster(@Message() message: IOSCMessage) {
     this.logger.info('Reverb', message);
@@ -54,6 +77,13 @@ export class EffectsController {
     }
   }
 
+  /**
+   * @apiGroup Effects
+   * @apiName Switch Master PingPongDeleay Effect
+   * @apiDesc Adds/removes pingpongdelay effect to/from master output
+   * @apiPath /master/pingpongdelay
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
   @OnMessage('/master/pingpongdelay')
   public pingPongDelayMaster(@Message() message: IOSCMessage) {
     this.logger.info('PingPongDelay', message);
