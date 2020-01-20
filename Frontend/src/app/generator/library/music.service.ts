@@ -24,9 +24,11 @@ export class MusicService {
 
   private instruments: Map<InstrumentName, IMCPInstrument> = new Map();
   private effectChains: Map<InstrumentName, EffectChain> = new Map();
+  private volumeNodes: Map<InstrumentName, Volume> = new Map();
 
   private meters: Map<MeterName, Meter> = new Map();
 
+  // master gain & master volume
   private gain = new Gain();
   private volume = new Volume(0);
 
@@ -59,6 +61,8 @@ export class MusicService {
     this.instruments.set('arc', new Arc());
     this.instruments.set('box', new Box());
 
+    // for each instrument: instrument -> effect chain -> volume node -> master gain
+    //                                                                -> instrument meter
     this.instruments.forEach((instrument, name) => this.addInstrument(instrument, name));
 
     // master gain -> master effect chain -> volume node
@@ -67,10 +71,18 @@ export class MusicService {
     // volume node -> destination (aka speakers)
     this.volume.connect(Destination);
 
-    // master gain -> master meter
+    // destination (aka speakers) -> master meter
     this.createMasterMeter();
 
     this.logger.info('Initialized successfully');
+  }
+
+  public getVolumeNode(instrumentName: InstrumentName): Volume | undefined {
+    return this.volumeNodes.get(instrumentName)
+  }
+
+  public getMasterVolumeNode(): Volume {
+    return this.volume;
   }
 
   public createEffect(effectName: MCPEffectIdentifier) {
@@ -163,10 +175,13 @@ export class MusicService {
   public addInstrument(instrument: IMCPInstrument, instrumentName: InstrumentName) {
     this.logger.info(`Creating instrument ${instrumentName}.`);
     const effectChain = new EffectChain(instrumentName, instrument.getAudioNode());
-    effectChain.getOutputNode().connect(this.gain);
+    const volumeNode = new Volume(0);
+    this.volumeNodes.set(instrumentName, volumeNode);
+    effectChain.getOutputNode().connect(volumeNode);
+    volumeNode.connect(this.gain);
     this.effectChains.set(instrumentName, effectChain);
 
-    this.createMeter(effectChain, instrumentName);
+    this.createMeter(instrumentName);
   }
 
   /**
@@ -190,13 +205,14 @@ export class MusicService {
    * can also be measured independently of the other instruments. With this
    * method the instrument is also "wired" to this meter to make the measurement really possible.
    */
-  private createMeter(effectChain: EffectChain, instrumentName: InstrumentName) {
+  private createMeter(instrumentName: InstrumentName) {
     const meterLeft = new Meter(MusicService.METER_SMOOTHING_FACTOR);
     const meterRight = new Meter(MusicService.METER_SMOOTHING_FACTOR);
     const split = new Split(2);
     this.meters.set(instrumentName + "-left", meterLeft);
     this.meters.set(instrumentName + "-right", meterRight);
-    effectChain.getOutputNode().connect(split);
+    let volumeNode = this.volumeNodes.get(instrumentName);
+    volumeNode.connect(split);
     split.connect(meterLeft, 0); // 0 -> Left
     split.connect(meterRight, 1); // 1 -> Right
   }
