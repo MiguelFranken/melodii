@@ -257,6 +257,35 @@
         EQ (Master)
       </button>
     </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchEQLowOnMaster()"
+              [class.off]="!useEQLowOnMaster"
+      >
+        L
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchEQMidOnMaster()"
+              [class.off]="!useEQMidOnMaster"
+      >
+        M
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchEQHighOnMaster()"
+              [class.off]="!useEQHighOnMaster"
+      >
+        H
+      </button>
+    </div>
   </div>
 </ng-template>
 <!--endregion-->

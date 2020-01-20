@@ -47,6 +47,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   public useReverbOnMaster = false;
   public usePingPongDelayOnMaster = false;
   public useEQOnMaster = false;
+  public useEQLowOnMaster = false;
+  public useEQMidOnMaster = false;
+  public useEQHighOnMaster = false;
 
   private useReverbMap: Map<InstrumentName, boolean> = new Map();
   private usePingPongDelayMap: Map<InstrumentName, boolean> = new Map();
@@ -929,6 +932,16 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   public switchEQOnMaster() {
     this.useEQOnMaster = !this.useEQOnMaster;
 
+    if (!this.useEQOnMaster) {
+      this.useEQLowOnMaster = false;
+      this.useEQMidOnMaster = false;
+      this.useEQHighOnMaster = false;
+    } else if(!this.useEQLowOnMaster && !this.useEQMidOnMaster && !this.useEQHighOnMaster) {
+      this.useEQLowOnMaster = true;
+      this.useEQMidOnMaster = true;
+      this.useEQHighOnMaster = true;
+    }
+
     const oscMessage: IOSCMessage = {
       address: '/effect/master/eq',
       args: [
@@ -945,6 +958,111 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.communicationService.sendMessage(oscMessage);
 
     this.logger.debug('Switched EQ on master');
+  }
+
+  public switchEQLowOnMaster() {
+    this.useEQLowOnMaster = !this.useEQLowOnMaster;
+
+    if (!this.useEQOnMaster) {
+      this.switchEQOnMaster();
+    }
+
+    this.sendEQLow();
+    this.sendEQMid();
+    this.sendEQHigh();
+
+    this.checkIfEQIsStillActive();
+
+    this.logger.debug('Switched low gain of master');
+  }
+
+  public checkIfEQIsStillActive() {
+    if (!this.useEQLowOnMaster && !this.useEQMidOnMaster && !this.useEQHighOnMaster) {
+      this.switchEQOnMaster();
+    }
+  }
+
+  public sendEQLow() {
+    const oscMessage: IOSCMessage = {
+      address: '/effect/master/eq/low',
+      args: [
+        { type: 'i', value: this.useEQLowOnMaster ? 0 : -10 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+  }
+
+  public sendEQMid() {
+    const oscMessage: IOSCMessage = {
+      address: '/effect/master/eq/mid',
+      args: [
+        { type: 'i', value: this.useEQMidOnMaster ? 0 : -10 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+  }
+
+  public sendEQHigh() {
+    const oscMessage: IOSCMessage = {
+      address: '/effect/master/eq/high',
+      args: [
+        { type: 'i', value: this.useEQHighOnMaster ? 0 : -10 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+  }
+
+  public switchEQMidOnMaster() {
+    this.useEQMidOnMaster = !this.useEQMidOnMaster;
+
+    if (!this.useEQOnMaster) {
+      this.switchEQOnMaster();
+    }
+
+    this.sendEQLow();
+    this.sendEQMid();
+    this.sendEQHigh();
+
+    this.checkIfEQIsStillActive();
+
+    this.logger.debug('Switched mid gain of master');
+  }
+
+  public switchEQHighOnMaster() {
+    this.useEQHighOnMaster = !this.useEQHighOnMaster;
+
+    if (!this.useEQOnMaster) {
+      this.switchEQOnMaster();
+    }
+
+    this.sendEQLow();
+    this.sendEQMid();
+    this.sendEQHigh();
+
+    this.checkIfEQIsStillActive();
+
+    this.logger.debug('Switched high gain of master');
   }
   //endregion
 

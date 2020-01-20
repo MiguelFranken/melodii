@@ -122,7 +122,7 @@ export class MusicService {
   public getThreeBandEQEffect(): IMCPEffect {
     const threeBandEffect: IMCPEffect = {
       id: 'threebandeq',
-      effect: new EQ3(-10, 3, -20)
+      effect: new EQ3(0, 0, 0)
     };
     return threeBandEffect;
   }
