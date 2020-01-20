@@ -46,6 +46,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   public useReverbOnMaster = false;
   public usePingPongDelayOnMaster = false;
+  public useEQOnMaster = false;
 
   private useReverbMap: Map<InstrumentName, boolean> = new Map();
   private usePingPongDelayMap: Map<InstrumentName, boolean> = new Map();
@@ -923,6 +924,27 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.communicationService.sendMessage(oscMessage);
 
     this.logger.debug('Switched PingPongDelay on master');
+  }
+
+  public switchEQOnMaster() {
+    this.useEQOnMaster = !this.useEQOnMaster;
+
+    const oscMessage: IOSCMessage = {
+      address: '/effect/master/eq',
+      args: [
+        { type: 'i', value: this.useEQOnMaster ? 1 : 0 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched EQ on master');
   }
   //endregion
 

@@ -246,6 +246,17 @@
         PingPongDelay (Master)
       </button>
     </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchEQOnMaster()"
+              [class.off]="!useEQOnMaster"
+      >
+        EQ (Master)
+      </button>
+    </div>
   </div>
 </ng-template>
 <!--endregion-->
