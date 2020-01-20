@@ -14,6 +14,15 @@ export class EffectsController {
 
   constructor(private musicService: MusicService) { }
 
+  private printError(e: any) {
+    if (e instanceof OSCError) {
+      e.print(this.logger);
+      e.printFrontend(this.musicService.getLogService());
+    } else {
+      this.logger.error("Unidentifiable error", e);
+    }
+  }
+
   /**
    * @apiGroup Effects
    * @apiName Switch Instrument Reverb Effect
@@ -119,12 +128,7 @@ export class EffectsController {
 
       this.logger.info('Change decay of reverb effect on master', { decay });
     } catch (e) {
-      if (e instanceof OSCError) {
-        e.print(this.logger);
-        e.printFrontend(this.musicService.getLogService());
-      } else {
-        this.logger.error("error", e);
-      }
+      this.printError(e);
     }
   }
 
@@ -147,10 +151,7 @@ export class EffectsController {
 
       this.logger.info('Change ration of dry/wet of reverb effect on master.', { wet: wet, dry: 1 - wet });
     } catch (e) {
-      if (e instanceof OSCError) {
-        e.print(this.logger);
-        e.printFrontend(this.musicService.getLogService());
-      }
+      this.printError(e);
     }
   }
 
@@ -172,10 +173,7 @@ export class EffectsController {
 
       this.logger.info('Change delay of pingpongdelay effect on master', { delay: delay });
     } catch (e) {
-      if (e instanceof OSCError) {
-        e.print(this.logger);
-        e.printFrontend(this.musicService.getLogService());
-      }
+      this.printError(e);
     }
   }
 
@@ -197,10 +195,7 @@ export class EffectsController {
 
       this.logger.info('Change feedback of pingpongdelay effect on master', { feedback: feedback });
     } catch (e) {
-      if (e instanceof OSCError) {
-        e.print(this.logger);
-        e.printFrontend(this.musicService.getLogService());
-      }
+      this.printError(e);
     }
   }
 
@@ -225,10 +220,7 @@ export class EffectsController {
         this.logger.info('Added equalizer effect from master effect chain');
       }
     } catch(e) {
-      if (e instanceof OSCError) {
-        e.print(this.logger);
-        e.printFrontend(this.musicService.getLogService());
-      }
+      this.printError(e);
     }
   }
 
@@ -250,10 +242,7 @@ export class EffectsController {
 
       this.logger.info('Changed the gain applied to the high of the master output', { highGain: highGain })
     } catch(e) {
-      if (e instanceof OSCError) {
-        e.print(this.logger);
-        e.printFrontend(this.musicService.getLogService());
-      }
+      this.printError(e);
     }
   }
 
@@ -275,10 +264,7 @@ export class EffectsController {
 
       this.logger.info('Changed the gain applied to the mid of the master output', { midGain: midGain })
     } catch(e) {
-      if (e instanceof OSCError) {
-        e.print(this.logger);
-        e.printFrontend(this.musicService.getLogService());
-      }
+      this.printError(e);
     }
   }
 
@@ -300,10 +286,7 @@ export class EffectsController {
 
       this.logger.info('Changed the gain applied to the low of the master output', { lowGain: lowGain })
     } catch(e) {
-      if (e instanceof OSCError) {
-        e.print(this.logger);
-        e.printFrontend(this.musicService.getLogService());
-      }
+      this.printError(e);
     }
   }
 
