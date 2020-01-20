@@ -81,4 +81,25 @@ export class BoxController {
       }
     }
   }
+
+  /**
+   * @apiGroup Box
+   * @apiName Set the volume of the Box
+   * @apiDesc Set the instrument-level volume
+   * @apiPath /box/setVolume
+   * @apiArgs f,loudness Expects the new loudness [0,1] as float
+   */
+  @OnMessage('/setVolume')
+  public setVolume(@Message() message: IOSCMessage) {
+    try {
+      const loudness = TypeChecker.ValidVelocityArg(message.args[0]);
+      this.box.setVolume(loudness);
+      this.logger.info('Set volume', loudness);
+    } catch (e) {
+      if (e instanceof OSCError) {
+        e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
+      }
+    }
+  }
 }

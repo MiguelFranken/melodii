@@ -6,26 +6,10 @@
 You can try out the basic system at http://mcp.miguel-franken.com/. On the top right you find the Matrix with which you can quickly create some test sounds. If you send messages from your instrument, you can either look at the message log interface, which is available from the message icon, or you can open the browser's console.
 
 # Instruments
-The following OSC methods are described in a special format, consisting of the address, the type information, and the parameters. For example, `/method/path ,fs 1.23 E5` would send a message to the address `/method/path`. The type information is the part after the comma, where each character represents a type. In the example, there are two parameters, the first has type float (the `f` in `,fs`) and the second has type string (the `s` in `,fs`). Those two parameters are then given, the float is `1.23` and the string is `E5`.
+OSC is a special format, consisting of the address, the type information, and the parameters. For example, `/method/path ,fs 1.23 E5` would send a message to the address `/method/path`. The type information is the part after the comma, where each character represents a type. In the example, there are two parameters, the first has type float (the `f` in `,fs`) and the second has type string (the `s` in `,fs`). Those two parameters are then given, the float is `1.23` and the string is `E5`.
 
-There are several you can send these messages.
-- UDP: Send a UDP message to port `57121`. The message have the OSC format described above, e. g. `/address ,sf D3 0.03`.
-- Websocket: Connect with [Socket.io] (normal websockets do *not* currently work) to port `8080`. Send a message for the event `"redirect-osc-message"` containing JSON of the format:
-  ```
-  socket.emit("redirect-osc-message", {
-      address: "/method/path",
-      args: [
-          {
-              type: "s",
-              value: "D3"
-          },
-          {
-              type: "f",
-              value: 0.03
-          }
-      ]
-  });
-  ```
+You can send these messages over WiFi using the UDP protocol. Send a UDP message to port `57121`. The message have the OSC format described above, e. g. `/address ,sf D3 0.03`.
+
 
 The messages for your instruments are documented in the [`API.md`](./API.md).
 

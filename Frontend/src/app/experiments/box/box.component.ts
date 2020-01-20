@@ -14,6 +14,7 @@ export class BoxComponent implements OnInit {
   private clientX;
   private xStart;
 
+  public volume = 100;
   public pitchShift = 0;
 
   private static relativeHeight(offsetY, targetOffsetHeight) {
@@ -109,6 +110,17 @@ export class BoxComponent implements OnInit {
     });
   }
 
+  private setVolume(loudness) {
+    this.logger.info(`Set volume ${loudness}.`);
+    this.communicationService.sendMessage({
+      address: "/box/setVolume",
+      args: [
+        { type: "f", value: loudness }
+      ],
+      info: null
+    });
+  }
+
   private stop(myID) {
     this.xStart = null;
     this.release(myID);
@@ -125,4 +137,8 @@ export class BoxComponent implements OnInit {
     this.detune(this.pitchShift);
   }
 
+  public volumeChanged(event) {
+    this.volume = event.value;
+    this.setVolume(this.volume / 100);
+  }
 }
