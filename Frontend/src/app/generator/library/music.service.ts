@@ -39,6 +39,10 @@ export class MusicService {
     this.volume.volume.value = dB;
   }
 
+  public setVolume(instrumentName: InstrumentName, dB: number) {
+    this.getVolumeNode(instrumentName).volume.value = dB;
+  }
+
   public getMasterVolume() {
     return this.volume.volume.value;
   }

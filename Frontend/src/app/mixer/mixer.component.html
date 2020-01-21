@@ -1,14 +1,82 @@
-<div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
-  <mat-slider
-          class="example-margin"
-          max="0"
-          min="-45"
-          step="1"
-          thumbLabel="dB"
-          [(value)]="masterVolume"
-          (input)="input($event)"
-          vertical="true">
-  </mat-slider>
-  <span class="name">Master</span>
+<div fxLayout fxLayoutAlign="center" fxLayoutGap="20px">
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <mat-slider
+            class="example-margin"
+            max="0"
+            min="-20"
+            step="1"
+            thumbLabel="dB"
+            [(value)]="masterVolume"
+            (input)="inputMaster($event)"
+            vertical="true">
+    </mat-slider>
+    <span class="name">Master</span>
+  </div>
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <mat-slider
+            class="example-margin"
+            max="0"
+            min="-19"
+            step="1"
+            thumbLabel="dB"
+            [(value)]="matVolume"
+            (input)="inputMat($event)"
+            vertical="true">
+    </mat-slider>
+    <span class="name">The Mat</span>
+  </div>
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <mat-slider
+            class="example-margin"
+            max="0"
+            min="-20"
+            step="1"
+            thumbLabel="dB"
+            [(value)]="arcVolume"
+            (input)="inputArc($event)"
+            vertical="true">
+    </mat-slider>
+    <span class="name">The Arc</span>
+  </div>
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <mat-slider
+            class="example-margin"
+            max="0"
+            min="-20"
+            step="1"
+            thumbLabel="dB"
+            [(value)]="matVolume"
+            (input)="inputMat($event)"
+            vertical="true">
+    </mat-slider>
+    <span class="name">The Mat</span>
+  </div>
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <mat-slider
+            class="example-margin"
+            max="0"
+            min="-20"
+            step="1"
+            thumbLabel="dB"
+            [(value)]="drumsVolume"
+            (input)="inputMaster($event)"
+            vertical="true">
+    </mat-slider>
+    <span class="name">Drums</span>
+  </div>
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <mat-slider
+            class="example-margin"
+            max="0"
+            min="-20"
+            step="1"
+            thumbLabel="dB"
+            [(value)]="celloVolume"
+            (input)="inputCello($event)"
+            vertical="true">
+    </mat-slider>
+    <span class="name">Cello</span>
+  </div>
 </div>
+
 
