@@ -48,7 +48,7 @@ export class AdvancedSettingsComponent implements OnInit {
   }
 
   public connectToPi() {
-    AdvancedSettingsComponent.OscWebSocketAddress = "http://192.168.4.1:8080/";
+    AdvancedSettingsComponent.OscWebSocketAddress = "http://10.0.0.1:8080/";
     this.address = AdvancedSettingsComponent.OscWebSocketAddress;
     this.saveOSCWebSocketAddress();
   }
