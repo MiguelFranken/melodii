@@ -10,80 +10,80 @@ import { MusicService } from "../../generator/library/music.service";
 export class VolumeComponent implements OnInit {
 
   private meterVisualizationMaster: MeterVisualization;
-  private meterVisualizationKick: MeterVisualization;
-  private meterVisualizationSnare: MeterVisualization;
-  private meterVisualizationHihat: MeterVisualization;
+  private meterVisualizationMat: MeterVisualization;
+  private meterVisualizationBox: MeterVisualization;
+  private meterVisualizationArc: MeterVisualization;
 
   @ViewChild('canvasMaster', { static: true })
   cvsMaster: ElementRef<HTMLCanvasElement>;
 
-  @ViewChild('canvasKick', { static: true })
-  cvsKick: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasMat', { static: true })
+  cvsMat: ElementRef<HTMLCanvasElement>;
 
-  @ViewChild('canvasSnare', { static: true })
-  cvsSnare: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasBox', { static: true })
+  cvsBox: ElementRef<HTMLCanvasElement>;
 
-  @ViewChild('canvasHiHat', { static: true })
-  cvsHihat: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasArc', { static: true })
+  cvsArc: ElementRef<HTMLCanvasElement>;
 
   private ctxMaster: CanvasRenderingContext2D;
-  private ctxKick: CanvasRenderingContext2D;
-  private ctxSnare: CanvasRenderingContext2D;
-  private ctxHihat: CanvasRenderingContext2D;
+  private ctxMat: CanvasRenderingContext2D;
+  private ctxBox: CanvasRenderingContext2D;
+  private ctxArc: CanvasRenderingContext2D;
 
   constructor(private musicService: MusicService) {
   }
 
   ngOnInit() {
     this.ctxMaster = this.cvsMaster.nativeElement.getContext('2d');
-    this.ctxKick = this.cvsKick.nativeElement.getContext('2d');
-    this.ctxSnare = this.cvsSnare.nativeElement.getContext('2d');
-    this.ctxHihat = this.cvsHihat.nativeElement.getContext('2d');
+    this.ctxMat = this.cvsMat.nativeElement.getContext('2d');
+    this.ctxBox = this.cvsBox.nativeElement.getContext('2d');
+    this.ctxArc = this.cvsArc.nativeElement.getContext('2d');
 
     this.initMasterMeter();
-    this.initKickMeter();
-    this.initSnareMeter();
-    this.initHihatMeter();
+    this.initMatMeter();
+    this.initBoxMeter();
+    this.initArcMeter();
   }
 
   private initMasterMeter() {
     this.meterVisualizationMaster = new MeterVisualization(
-      this.musicService.getMeter('master-left'),
-      this.musicService.getMeter('master-right'),
+      this.musicService.getMeter('mat-left'),
+      this.musicService.getMeter('mat-right'),
       this.cvsMaster.nativeElement,
       this.ctxMaster
     );
     this.meterVisualizationMaster.animate();
   }
 
-  private initKickMeter() {
-    this.meterVisualizationKick = new MeterVisualization(
-      this.musicService.getMeter('kick-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
-      this.musicService.getMeter('kick-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
-      this.cvsKick.nativeElement,
-      this.ctxKick
+  private initMatMeter() {
+    this.meterVisualizationMat = new MeterVisualization(
+      this.musicService.getMeter('mat-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('mat-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.cvsMat.nativeElement,
+      this.ctxMat
     );
-    this.meterVisualizationKick.animate();
+    this.meterVisualizationMat.animate();
   }
 
-  private initSnareMeter() {
-    this.meterVisualizationSnare = new MeterVisualization(
-      this.musicService.getMeter('snare-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
-      this.musicService.getMeter('snare-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
-      this.cvsSnare.nativeElement,
-      this.ctxSnare
+  private initBoxMeter() {
+    this.meterVisualizationBox = new MeterVisualization(
+      this.musicService.getMeter('box-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('box-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.cvsBox.nativeElement,
+      this.ctxBox
     );
-    this.meterVisualizationSnare.animate();
+    this.meterVisualizationBox.animate();
   }
 
-  private initHihatMeter() {
-    this.meterVisualizationHihat = new MeterVisualization(
-      this.musicService.getMeter('hihat-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
-      this.musicService.getMeter('hihat-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
-      this.cvsHihat.nativeElement,
-      this.ctxHihat
+  private initArcMeter() {
+    this.meterVisualizationArc = new MeterVisualization(
+      this.musicService.getMeter('arc-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('arc-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.cvsArc.nativeElement,
+      this.ctxArc
     );
-    this.meterVisualizationHihat.animate();
+    this.meterVisualizationArc.animate();
   }
 
 }
