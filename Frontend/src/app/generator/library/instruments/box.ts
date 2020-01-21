@@ -3,6 +3,7 @@ import { Frequency, Gain, Synth } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 import { DefaultMap } from '../defaultMap';
+import { convertMonoToStereo } from '../utils';
 
 export class Box implements IMCPInstrument {
 
