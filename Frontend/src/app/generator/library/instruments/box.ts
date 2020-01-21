@@ -56,7 +56,22 @@ export class Box implements IMCPInstrument {
   }
 
   private createVoice(): Synth {
-    return new Synth({ detune: this.pitchShift }).connect(this.output);
+    return new Synth({
+      detune: this.pitchShift,
+      portamento: 0.04,
+      envelope: {
+        attack: 0.19,
+        attackCurve: "step",
+        decay: 0.21,
+        decayCurve: "linear",
+        sustain: 0.3,
+        release: 0.1,
+        releaseCurve: "linear",
+      },
+      oscillator: {
+        type: "fatsine",
+      }
+    }).connect(this.output);
   }
 
   public getAudioNode() {
