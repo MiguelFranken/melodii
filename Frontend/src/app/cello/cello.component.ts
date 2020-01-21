@@ -60,7 +60,7 @@ export class CelloComponent implements OnInit {
     this.logger.info(`Set ${note} to ${strength}.`);
 
     this.communicationService.sendMessage({
-      address: "/arc/set",
+      address: "/cello/set",
       args: [
         { type: "s", value: note },
         { type: "i", value: strength }

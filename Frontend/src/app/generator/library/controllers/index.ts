@@ -8,6 +8,7 @@ import { ArcController } from './arc';
 import { EffectsController } from './effects';
 import { LatencyController } from './latency';
 import { VolumeController } from "./volume";
+import { CelloController } from "./cello";
 
 // add your controllers here
 // controllers get registered automatically
@@ -21,5 +22,6 @@ export const CONTROLLERS = [
   ArcController,
   EffectsController,
   LatencyController,
-  VolumeController
+  VolumeController,
+  CelloController
 ];

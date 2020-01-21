@@ -12,6 +12,7 @@ import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Mat } from './instruments/mat';
 import { Arc } from "./instruments/arc";
 import { Box } from "./instruments/box";
+import { Cello } from "./instruments/cello";
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,7 @@ export class MusicService {
     this.instruments.set('mat', new Mat());
     this.instruments.set('arc', new Arc());
     this.instruments.set('box', new Box());
+    this.instruments.set('cello', new Cello());
 
     // for each instrument: instrument -> effect chain -> volume node -> master gain
     //                                                                -> instrument meter
