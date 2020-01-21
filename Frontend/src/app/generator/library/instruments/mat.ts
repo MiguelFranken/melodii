@@ -4,8 +4,14 @@ import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 import { DefaultMap } from '../defaultMap';
 import deprecated from 'deprecated-decorator';
-import { Scale } from 'tonal';
+import { Chord, Scale } from 'tonal';
 import { convertMonoToStereo } from "../utils";
+
+enum ChordQuality {
+  major,
+  minor,
+  diminished
+}
 
 export type ButtonIndex = number;
 export type Octave = 1 | 2 | 3 | 4 | 5;
@@ -24,6 +30,8 @@ export class Mat implements IMCPInstrument {
   public degrees: Degree[] = [];
 
   private mapping = [0, 1, 2, 3, 4, 5, 6, 7];
+
+  public isInChordMode = false;
 
   private readonly voices = new DefaultMap(() => this.createVoice());
   private readonly output = new Gain();
@@ -57,16 +65,80 @@ export class Mat implements IMCPInstrument {
 
   public trigger(buttonIndex: ButtonIndex, velocity: Velocity) {
     const note = this.notes[buttonIndex];
-    this.logger.info(`Trigger with note ${note} and velocity ${velocity}.`);
-    const voice = this.voices.get(note);
-    voice.triggerAttack(note, undefined, velocity);
+
+    if (this.isInChordMode) {
+      const chordNotes: Note[] = this.getChord(buttonIndex);
+      chordNotes.forEach((note) => {
+        const voice = this.voices.get(note);
+        voice.triggerAttack(note, undefined, velocity);
+      });
+      this.logger.info(`Trigger chord with root note ${note} and velocity ${velocity}. Playing chords: ${this.isInChordMode}`,
+        { chord: chordNotes });
+    } else {
+      const voice = this.voices.get(note);
+      voice.triggerAttack(note, undefined, velocity);
+      this.logger.info(`Trigger with note ${note} and velocity ${velocity}.`);
+    }
   }
 
   public release(buttonIndex: ButtonIndex) {
     const note = this.notes[buttonIndex];
     this.logger.info(`Release with note ${note}.`);
-    const voice = this.voices.get(note);
-    voice.triggerRelease();
+
+    if (this.isInChordMode) {
+      const chordNotes: Note[] = this.getChord(buttonIndex);
+      chordNotes.forEach((note) => {
+        const voice = this.voices.get(note);
+        voice.triggerRelease();
+      });
+    } else {
+      const voice = this.voices.get(note);
+      voice.triggerRelease();
+    }
+  }
+
+  private getChord(buttonIndex: ButtonIndex): Note[] {
+    const note = this.notes[buttonIndex];
+    let noteSuffix = "";
+    const chordQuality = this.getChordQuality(buttonIndex);
+    this.logger.debug("Chord Quality", { quality: chordQuality });
+    if (chordQuality === ChordQuality.minor) {
+      noteSuffix = 'm';
+    } else if (chordQuality === ChordQuality.diminished) {
+      noteSuffix = 'dim';
+    }
+    return Chord.notes(note + noteSuffix);
+  }
+
+  private getChordQuality(buttonIndex: ButtonIndex): ChordQuality {
+    const degree = this.degrees[buttonIndex];
+    if (this.scale === 'major') {
+      switch (degree) {
+        case 'I':
+        case 'IV':
+        case 'V':
+          return ChordQuality.major;
+        case 'II':
+        case 'III':
+        case 'VI':
+          return ChordQuality.minor;
+        case 'VII':
+          return ChordQuality.diminished;
+      }
+    } else {
+      switch (degree) {
+        case 'I':
+        case 'IV':
+        case 'V':
+          return ChordQuality.minor;
+        case 'III':
+        case 'VI':
+        case 'VII':
+          return ChordQuality.major;
+        case 'II':
+          return ChordQuality.diminished;
+      }
+    }
   }
 
   /**

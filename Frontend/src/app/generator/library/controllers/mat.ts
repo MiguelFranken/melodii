@@ -14,8 +14,6 @@ export class MatController {
 
   private mat: Mat;
 
-  private isInChordMode = false;
-
   constructor(private music: MusicService) {
     this.mat = music.getInstrument("mat") as Mat;
   }
@@ -171,11 +169,19 @@ export class MatController {
     }
   }
 
-  @OnMessage('chords')
+  /**
+   * @apiGroup Mat
+   * @apiName Switch Chord Mode
+   * @apiDesc Activates/deactivates chord mode
+   * @apiPath /mat/chords
+   * @apiArgs i,state Expects a boolean that expresses whether chords should be played or not
+   */
+  @OnMessage('/chords')
   public switchChordMode(@Message() message: IOSCMessage) {
     try {
-      this.isInChordMode = TypeChecker.ValidBoolArg(message.args[0]);
-    } catch(e) {
+      this.mat.isInChordMode = TypeChecker.ValidBoolArg(message.args[0]);
+      this.logger.info('Switch chord mode');
+    } catch (e) {
       this.printError(e);
     }
   }
