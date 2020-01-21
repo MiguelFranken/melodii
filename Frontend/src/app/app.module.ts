@@ -7,8 +7,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PrototypeModule } from "./prototype/prototype.module";
 import { GeneratorModule } from './generator/generator.module';
-import { ArcModule } from './arc/arc.module';
-import { BoxModule } from './box/box.module';
+import { CelloModule } from './cello/cello.module';
 import { MatModule } from './mat/mat.module';
 import { ExperimentsModule } from './experiments/experiments.module';
 import { MixerModule } from './mixer/mixer.module';
@@ -31,8 +30,7 @@ import { ContextComponent } from './context/context.component';
     PrototypeModule,
     GeneratorModule,
     MixerModule,
-    ArcModule,
-    BoxModule,
+    CelloModule,
     MatModule,
     ExperimentsModule,
     FormsModule

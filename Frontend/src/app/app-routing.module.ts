@@ -3,8 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { PrototypeComponent } from "./prototype/prototype/prototype.component";
 import { LogComponent } from './generator/log/log.component';
-import { BoxComponent } from './box/box.component';
-import { ArcComponent } from './arc/arc.component';
+import { CelloComponent } from './cello/cello.component';
 import { MatComponent } from './mat/mat.component';
 import { MixerComponent } from './mixer/mixer.component';
 import { AdvancedSettingsComponent } from "./advanced-settings/advanced-settings.component";
@@ -32,12 +31,8 @@ const routes: Routes = [
     component: LogComponent,
   },
   {
-    path: 'box',
-    component: BoxComponent,
-  },
-  {
     path: 'arc',
-    component: ArcComponent,
+    component: CelloComponent,
   },
   {
     path: 'mixer',

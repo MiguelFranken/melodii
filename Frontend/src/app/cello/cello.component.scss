@@ -1,0 +1,25 @@
+@import "src/scss/variables";
+
+* {
+  overflow: hidden;
+}
+
+.keyboard {
+  display: grid;
+  grid-gap: 0.5em;
+  grid-template-columns: repeat(auto-fill, 10em);
+}
+
+.key {
+  padding-top: 10px;
+  color: $mcp-white-1;
+  font-size: 15px;
+  font-weight: bolder;
+  background: linear-gradient($mcp-black-1, hsl(0, 0%, 75%) 100%);
+  user-select: none;
+}
+
+.container {
+  padding: 10px;
+  height: 100%;
+}

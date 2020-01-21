@@ -1,14 +1,12 @@
 import { Logger } from '@upe/logger';
-import { Destination, Gain, JCReverb, Meter, PingPongDelay, Reverb, Split } from 'tone';
+import { Destination, EQ3, Gain, Meter, PingPongDelay, Reverb, Split, Volume } from 'tone';
 import { Injectable } from '@angular/core';
 import { IMCPInstrument } from './mcp-instrument';
-
 // Instruments
 import { DrumsHiHat, DrumsKick, DrumsSnare } from './instruments/drums';
 import { Piano } from './instruments/piano';
-import { Volume, EQ3 } from 'tone';
 import { EffectChain } from './effect-chain';
-import { InstrumentName, MeterName, IMCPEffect, MCPEffectIdentifier } from './types';
+import { IMCPEffect, InstrumentName, MCPEffectIdentifier, MeterName } from './types';
 import { LogService } from '../log/log.service';
 import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Mat } from './instruments/mat';
@@ -128,11 +126,10 @@ export class MusicService {
     });
     toneEffect.wet.value = 0.27;
     toneEffect.generate();
-    const reverb: IMCPEffect = {
+    return {
       id: 'reverb',
       effect: toneEffect
     };
-    return reverb;
   }
 
   public getPingPongDelayEffect(): IMCPEffect {
@@ -145,11 +142,10 @@ export class MusicService {
   }
 
   public getThreeBandEQEffect(): IMCPEffect {
-    const threeBandEffect: IMCPEffect = {
+    return {
       id: 'threebandeq',
       effect: new EQ3(0, 0, 0)
     };
-    return threeBandEffect;
   }
 
   public deleteEffectFromMasterEffectChain(effectID: MCPEffectIdentifier) {
