@@ -206,6 +206,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   public switchAllExpanded() {
     this.isInExpandedMode = !this.isInExpandedMode;
+
     for (let i = 0; i < this.matrix.rows.length; i++) {
       this.matrix.rows[i].isExpanded = this.isInExpandedMode;
     }
@@ -953,7 +954,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       this.useEQLowOnMaster = false;
       this.useEQMidOnMaster = false;
       this.useEQHighOnMaster = false;
-    } else if(!this.useEQLowOnMaster && !this.useEQMidOnMaster && !this.useEQHighOnMaster) {
+    } else if (!this.useEQLowOnMaster && !this.useEQMidOnMaster && !this.useEQHighOnMaster) {
       this.useEQLowOnMaster = true;
       this.useEQMidOnMaster = true;
       this.useEQHighOnMaster = true;

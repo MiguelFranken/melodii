@@ -7,6 +7,7 @@ import { MusicService } from '../generator/library/music.service';
 import { Logger } from '@upe/logger';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Overlay } from '../shared/help-overlay/help-overlay.service';
+import { IOSCMessage } from '../shared/osc/osc-message';
 
 @Component({
   selector: 'mcp-mat',
@@ -50,6 +51,8 @@ export class MatComponent implements OnInit, AfterViewInit {
   private scaleMenuOverlay: Overlay;
   private chordsMenuOverlay: Overlay;
   private effectsMenuOverlay: Overlay;
+
+  public isInChordMode = false;
 
   private logger: Logger = new Logger({ name: 'Mat Component' });
 
@@ -408,6 +411,27 @@ export class MatComponent implements OnInit, AfterViewInit {
 
   public switchNavigation() {
     // TODO
+  }
+
+  public switchChordMode() {
+    this.isInChordMode = !this.isInChordMode;
+
+    const oscMessage: IOSCMessage = {
+      address: '/mat/chords',
+      args: [
+        { type: 'i', value: this.isInChordMode ? 1 : 0 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched chord mode');
   }
 
 }

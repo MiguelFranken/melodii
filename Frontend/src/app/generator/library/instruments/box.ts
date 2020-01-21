@@ -3,6 +3,7 @@ import { Frequency, Gain, Synth } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 import { DefaultMap } from '../defaultMap';
+import { convertMonoToStereo } from '../utils';
 
 export class Box implements IMCPInstrument {
 
@@ -14,6 +15,16 @@ export class Box implements IMCPInstrument {
   private readonly logger: Logger = new Logger({ name: 'Box Instrument', flags: ['music'] });
 
   constructor(public readonly name: MCPInstrumentName = "Box") {
+  }
+
+  private static frequencyFromNote(note: Note): number {
+    return Frequency(note).toFrequency();
+  }
+
+  private static addPitchShift(note: Note, cents: number): number {
+    const baseFrequency = Box.frequencyFromNote(note);
+    const frequencyChange = baseFrequency * (2 * cents / 1200);
+    return baseFrequency + frequencyChange;
   }
 
   public trigger(note: Note, velocity: Velocity) {
@@ -30,16 +41,6 @@ export class Box implements IMCPInstrument {
       const frequency = Box.addPitchShift(note, this.pitchShift);
       voice.setNote(frequency);
     });
-  }
-
-  private static frequencyFromNote(note: Note): number {
-    return Frequency(note).toFrequency();
-  }
-
-  private static addPitchShift(note: Note, cents: number): number {
-    const baseFrequency = Box.frequencyFromNote(note);
-    const frequencyChange = baseFrequency * (2 * cents / 1200);
-    return baseFrequency + frequencyChange;
   }
 
   public release(note: Note) {
@@ -60,4 +61,5 @@ export class Box implements IMCPInstrument {
   public getAudioNode() {
     return convertMonoToStereo(this.output);
   }
+
 }

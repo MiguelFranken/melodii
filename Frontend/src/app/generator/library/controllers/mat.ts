@@ -168,4 +168,31 @@ export class MatController {
       }
     }
   }
+
+  /**
+   * @apiGroup Mat
+   * @apiName Switch Chord Mode
+   * @apiDesc Activates/deactivates chord mode
+   * @apiPath /mat/chords
+   * @apiArgs i,state Expects a boolean that expresses whether chords should be played or not
+   */
+  @OnMessage('/chords')
+  public switchChordMode(@Message() message: IOSCMessage) {
+    try {
+      this.mat.isInChordMode = TypeChecker.ValidBoolArg(message.args[0]);
+      this.logger.info('Switch chord mode');
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
+  private printError(e: any) {
+    if (e instanceof OSCError) {
+      e.print(this.logger);
+      e.printFrontend(this.music.getLogService());
+    } else {
+      this.logger.error("Unidentifiable error", e);
+    }
+  }
+
 }

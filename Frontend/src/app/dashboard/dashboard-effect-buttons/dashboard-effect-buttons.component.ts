@@ -70,7 +70,7 @@ export class DashboardEffectButtonsComponent implements OnInit {
       this.useEQLow = false;
       this.useEQMid = false;
       this.useEQHigh = false;
-    } else if(!this.useEQLow && !this.useEQMid && !this.useEQHigh) {
+    } else if (!this.useEQLow && !this.useEQMid && !this.useEQHigh) {
       this.useEQLow = true;
       this.useEQMid = true;
       this.useEQHigh = true;
