@@ -17,6 +17,16 @@ export class Box implements IMCPInstrument {
   constructor(public readonly name: MCPInstrumentName = "Box") {
   }
 
+  private static frequencyFromNote(note: Note): number {
+    return Frequency(note).toFrequency();
+  }
+
+  private static addPitchShift(note: Note, cents: number): number {
+    const baseFrequency = Box.frequencyFromNote(note);
+    const frequencyChange = baseFrequency * (2 * cents / 1200);
+    return baseFrequency + frequencyChange;
+  }
+
   public trigger(note: Note, velocity: Velocity) {
     this.logger.info(`Trigger with note ${note} and velocity ${velocity}.`);
     const voice = this.voices.get(note);
@@ -31,16 +41,6 @@ export class Box implements IMCPInstrument {
       const frequency = Box.addPitchShift(note, this.pitchShift);
       voice.setNote(frequency);
     });
-  }
-
-  private static frequencyFromNote(note: Note): number {
-    return Frequency(note).toFrequency();
-  }
-
-  private static addPitchShift(note: Note, cents: number): number {
-    const baseFrequency = Box.frequencyFromNote(note);
-    const frequencyChange = baseFrequency * (2 * cents / 1200);
-    return baseFrequency + frequencyChange;
   }
 
   public release(note: Note) {
@@ -61,4 +61,5 @@ export class Box implements IMCPInstrument {
   public getAudioNode() {
     return convertMonoToStereo(this.output);
   }
+
 }
