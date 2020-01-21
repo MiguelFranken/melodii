@@ -492,6 +492,13 @@ export class PrototypeComponent implements OnInit, OnDestroy {
           button.isPlayed = columnIndex === this.currentPlayedColumnIndex;
         });
       }
+    } else {
+      for (const row of this.matrix.rows) {
+        row.buttons.forEach((button: RowButton, columnIndex: number) => {
+          button.isPlayed = false;
+          button.isActive = false;
+        });
+      }
     }
 
     this.logger.info('Switched to next matrix', this.matrix);
@@ -512,6 +519,13 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       for (const row of this.matrix.rows) {
         row.buttons.forEach((button: RowButton, columnIndex: number) => {
           button.isPlayed = columnIndex === this.currentPlayedColumnIndex;
+        });
+      }
+    } else {
+      for (const row of this.matrix.rows) {
+        row.buttons.forEach((button: RowButton, columnIndex: number) => {
+          button.isPlayed = false;
+          button.isActive = false;
         });
       }
     }
