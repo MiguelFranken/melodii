@@ -78,7 +78,7 @@ export class MusicService {
   }
 
   public getVolumeNode(instrumentName: InstrumentName): Volume | undefined {
-    return this.volumeNodes.get(instrumentName)
+    return this.volumeNodes.get(instrumentName);
   }
 
   public getMasterVolumeNode(): Volume {
@@ -209,7 +209,7 @@ export class MusicService {
     const split = new Split(2);
     this.meters.set(instrumentName + "-left", meterLeft);
     this.meters.set(instrumentName + "-right", meterRight);
-    let volumeNode = this.volumeNodes.get(instrumentName);
+    const volumeNode = this.volumeNodes.get(instrumentName);
     volumeNode.connect(split);
     split.connect(meterLeft, 0); // 0 -> Left
     split.connect(meterRight, 1); // 1 -> Right

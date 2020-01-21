@@ -26,7 +26,7 @@ export class LogService {
   }
 
   public addMessage(message: string) {
-    if (this.messageCounter != undefined) {
+    if (this.messageCounter !== undefined) {
       const index = this.messageCounter.toString().padStart(4, "0");
       this.messages.unshift({ index, message });
       this.messageCounter++;

@@ -20,7 +20,7 @@ export class VolumeController {
       const name: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
       const decibel = TypeChecker.ValidDecibelArg(message.args[1]);
 
-      let volumeNode = this.musicService.getVolumeNode(name);
+      const volumeNode = this.musicService.getVolumeNode(name);
       if (!volumeNode) {
         this.logger.error("Cannot find instrument");
       }
@@ -28,7 +28,7 @@ export class VolumeController {
       volumeNode.volume.value = decibel;
 
       this.logger.info(`Changed volume of instrument ${name}`, { volume: decibel });
-    } catch(e) {
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -37,11 +37,11 @@ export class VolumeController {
   public changeVolumeForMaster(@Message() message: IOSCMessage) {
     try {
       const decibel = TypeChecker.ValidDecibelArg(message.args[0]);
-      let volumeNode = this.musicService.getMasterVolumeNode();
+      const volumeNode = this.musicService.getMasterVolumeNode();
       volumeNode.volume.value = decibel;
 
       this.logger.info(`Changed volume of master output`, { volume: decibel });
-    } catch(e) {
+    } catch (e) {
       this.printError(e);
     }
   }

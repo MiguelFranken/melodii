@@ -44,7 +44,7 @@ export class EffectsController {
         this.musicService.addEffect(instrument, 'reverb');
         this.logger.info(`Added reverb effect to effect chain of instrument ${instrument}`);
       }
-    } catch(e) {
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -70,7 +70,7 @@ export class EffectsController {
         this.musicService.addEffect(instrument, 'pingpongdelay');
         this.logger.info(`Added pingpongdelay effect to effect chain of instrument ${instrument}`);
       }
-    } catch(e) {
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -94,7 +94,7 @@ export class EffectsController {
         this.musicService.addReverbEffectToMasterEffectChain();
         this.logger.info('Added reverb effect from master effect chain');
       }
-    } catch(e) {
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -118,7 +118,7 @@ export class EffectsController {
         this.musicService.addPingPongDelayToMasterEffectChain();
         this.logger.info('Added pingpongdelay effect from master effect chain');
       }
-    } catch(e) {
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -135,8 +135,8 @@ export class EffectsController {
     try {
       const decay = TypeChecker.ValidTimeConstantArg(message.args[0]);
 
-      let effectObject = this.musicService.getMasterEffect('reverb');
-      let reverb = effectObject.effect as Reverb;
+      const effectObject = this.musicService.getMasterEffect('reverb');
+      const reverb = effectObject.effect as Reverb;
       reverb.decay = decay;
       reverb.generate();
 
@@ -158,12 +158,12 @@ export class EffectsController {
     try {
       const wet = TypeChecker.ValidNormalRangeArg(message.args[0]);
 
-      let effectObject = this.musicService.getMasterEffect('reverb');
-      let reverb = effectObject.effect as Reverb;
+      const effectObject = this.musicService.getMasterEffect('reverb');
+      const reverb = effectObject.effect as Reverb;
       reverb.wet.value = wet;
       reverb.generate();
 
-      this.logger.info('Change ration of dry/wet of reverb effect on master.', { wet: wet, dry: 1 - wet });
+      this.logger.info('Change ration of dry/wet of reverb effect on master.', { wet, dry: 1 - wet });
     } catch (e) {
       this.printError(e);
     }
@@ -181,11 +181,11 @@ export class EffectsController {
     try {
       const delay = TypeChecker.ValidTimeConstantArg(message.args[0]);
 
-      let effectObject = this.musicService.getMasterEffect('pingpongdelay');
-      let pingpongdelay = effectObject.effect as PingPongDelay;
+      const effectObject = this.musicService.getMasterEffect('pingpongdelay');
+      const pingpongdelay = effectObject.effect as PingPongDelay;
       pingpongdelay.delayTime.value = delay;
 
-      this.logger.info('Change delay of pingpongdelay effect on master', { delay: delay });
+      this.logger.info('Change delay of pingpongdelay effect on master', { delay });
     } catch (e) {
       this.printError(e);
     }
@@ -203,11 +203,11 @@ export class EffectsController {
     try {
       const feedback = TypeChecker.ValidNormalRangeArg(message.args[0]);
 
-      let effectObject = this.musicService.getMasterEffect('pingpongdelay');
-      let pingpongdelay = effectObject.effect as PingPongDelay;
+      const effectObject = this.musicService.getMasterEffect('pingpongdelay');
+      const pingpongdelay = effectObject.effect as PingPongDelay;
       pingpongdelay.feedback.value = feedback;
 
-      this.logger.info('Change feedback of pingpongdelay effect on master', { feedback: feedback });
+      this.logger.info('Change feedback of pingpongdelay effect on master', { feedback });
     } catch (e) {
       this.printError(e);
     }
@@ -231,7 +231,7 @@ export class EffectsController {
         this.musicService.addThreeBandEQToMasterEffectChain();
         this.logger.info('Added equalizer effect from master effect chain');
       }
-    } catch(e) {
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -248,12 +248,12 @@ export class EffectsController {
     try {
       const highGain = TypeChecker.ValidDecibelArg(message.args[0]);
 
-      let effectObject = this.musicService.getMasterEffect('threebandeq');
-      let eq = effectObject.effect as EQ3;
+      const effectObject = this.musicService.getMasterEffect('threebandeq');
+      const eq = effectObject.effect as EQ3;
       eq.high.value = highGain;
 
-      this.logger.info('Changed the gain applied to the high of the master output', { highGain: highGain })
-    } catch(e) {
+      this.logger.info('Changed the gain applied to the high of the master output', { highGain });
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -270,12 +270,12 @@ export class EffectsController {
     try {
       const midGain = TypeChecker.ValidDecibelArg(message.args[0]);
 
-      let effectObject = this.musicService.getMasterEffect('threebandeq');
-      let eq = effectObject.effect as EQ3;
+      const effectObject = this.musicService.getMasterEffect('threebandeq');
+      const eq = effectObject.effect as EQ3;
       eq.mid.value = midGain;
 
-      this.logger.info('Changed the gain applied to the mid of the master output', { midGain: midGain })
-    } catch(e) {
+      this.logger.info('Changed the gain applied to the mid of the master output', { midGain });
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -292,12 +292,12 @@ export class EffectsController {
     try {
       const lowGain = TypeChecker.ValidDecibelArg(message.args[0]);
 
-      let effectObject = this.musicService.getMasterEffect('threebandeq');
-      let eq = effectObject.effect as EQ3;
+      const effectObject = this.musicService.getMasterEffect('threebandeq');
+      const eq = effectObject.effect as EQ3;
       eq.low.value = lowGain;
 
-      this.logger.info('Changed the gain applied to the low of the master output', { lowGain: lowGain })
-    } catch(e) {
+      this.logger.info('Changed the gain applied to the low of the master output', { lowGain });
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -325,7 +325,7 @@ export class EffectsController {
         this.musicService.addEffect(instrument, 'threebandeq');
         this.logger.info(`Added eq effect to effect chain of instrument ${instrument}`);
       }
-    } catch(e) {
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -346,12 +346,12 @@ export class EffectsController {
       const name: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
       const highGain = TypeChecker.ValidDecibelArg(message.args[1]);
 
-      let effectObject = this.musicService.getEffect(name,'threebandeq');
-      let eq = effectObject.effect as EQ3;
+      const effectObject = this.musicService.getEffect(name, 'threebandeq');
+      const eq = effectObject.effect as EQ3;
       eq.high.value = highGain;
 
-      this.logger.info('Changed the gain applied to the high of the master output', { highGain: highGain })
-    } catch(e) {
+      this.logger.info('Changed the gain applied to the high of the master output', { highGain });
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -370,12 +370,12 @@ export class EffectsController {
       const name: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
       const midGain = TypeChecker.ValidDecibelArg(message.args[1]);
 
-      let effectObject = this.musicService.getEffect(name,'threebandeq');
-      let eq = effectObject.effect as EQ3;
+      const effectObject = this.musicService.getEffect(name, 'threebandeq');
+      const eq = effectObject.effect as EQ3;
       eq.mid.value = midGain;
 
-      this.logger.info('Changed the gain applied to the mid of the master output', { midGain: midGain })
-    } catch(e) {
+      this.logger.info('Changed the gain applied to the mid of the master output', { midGain });
+    } catch (e) {
       this.printError(e);
     }
   }
@@ -394,12 +394,12 @@ export class EffectsController {
       const name: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
       const lowGain = TypeChecker.ValidDecibelArg(message.args[1]);
 
-      let effectObject = this.musicService.getEffect(name,'threebandeq');
-      let eq = effectObject.effect as EQ3;
+      const effectObject = this.musicService.getEffect(name, 'threebandeq');
+      const eq = effectObject.effect as EQ3;
       eq.low.value = lowGain;
 
-      this.logger.info('Changed the gain applied to the low of the master output', { lowGain: lowGain })
-    } catch(e) {
+      this.logger.info('Changed the gain applied to the low of the master output', { lowGain });
+    } catch (e) {
       this.printError(e);
     }
   }

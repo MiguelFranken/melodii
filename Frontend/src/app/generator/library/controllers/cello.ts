@@ -33,7 +33,7 @@ export class CelloController {
       const velocity: any = args[1].value; // TODO: Validate velocity
 
       this.cello.set(note, velocity);
-      this.logger.info('Set', { note: note, velocity: velocity });
+      this.logger.info('Set', { note, velocity });
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
