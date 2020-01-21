@@ -14,6 +14,8 @@ export class MatController {
 
   private mat: Mat;
 
+  private isInChordMode = false;
+
   constructor(private music: MusicService) {
     this.mat = music.getInstrument("mat") as Mat;
   }
@@ -168,4 +170,23 @@ export class MatController {
       }
     }
   }
+
+  @OnMessage('chords')
+  public switchChordMode(@Message() message: IOSCMessage) {
+    try {
+      this.isInChordMode = TypeChecker.ValidBoolArg(message.args[0]);
+    } catch(e) {
+      this.printError(e);
+    }
+  }
+
+  private printError(e: any) {
+    if (e instanceof OSCError) {
+      e.print(this.logger);
+      e.printFrontend(this.music.getLogService());
+    } else {
+      this.logger.error("Unidentifiable error", e);
+    }
+  }
+
 }
