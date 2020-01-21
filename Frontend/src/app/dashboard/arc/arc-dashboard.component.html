@@ -1,64 +1,6 @@
 <div style="height: 100%" fxLayout="column" fxLayoutAlign="space-between">
   <h2 fxLayout fxLayoutAlign="center center" class="title">The Arc</h2>
   <div fxFlex fxLayout fxLayoutAlign="center end">
-    <div fxFlex class="container" fxLayout="column" fxLayoutGap="8px">
-      <button
-              mat-button
-              class="dashboard-button"
-              fxFlex
-              (click)="switchReverb()"
-              [class.off]="!useReverb"
-      >
-        Reverb
-      </button>
-      <button
-              mat-button
-              class="dashboard-button"
-              fxFlex
-              (click)="switchPingPongDelay()"
-              [class.off]="!usePingPongDelay"
-      >
-        PingPongDelay
-      </button>
-      <button
-              mat-button
-              class="dashboard-button"
-              fxFlex
-              (click)="switchEQ()"
-              [class.off]="!useEQ"
-      >
-        EQ
-      </button>
-      <div fxLayout fxLayoutGap="8px">
-        <button
-                mat-button
-                class="dashboard-button"
-                fxFlex
-                (click)="switchEQLow()"
-                [class.off]="!useEQLow"
-        >
-          L
-        </button>
-        <button
-                mat-button
-                class="dashboard-button"
-                fxFlex
-                (click)="switchEQMid()"
-                [class.off]="!useEQMid"
-        >
-          M
-        </button>
-        <button
-                mat-button
-                class="dashboard-button"
-                fxFlex
-                (click)="switchEQHigh()"
-                [class.off]="!useEQHigh"
-        >
-          H
-        </button>
-      </div>
-    </div>
+    <mcp-dashboard-effect-buttons fxFlex instrumentName="arc"></mcp-dashboard-effect-buttons>
   </div>
-
 </div>

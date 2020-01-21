@@ -7,6 +7,7 @@ import { ArcDashboardComponent } from './arc/arc-dashboard.component';
 import { BoxDashboardComponent } from './box/box-dashboard.component';
 import { MatDashboardComponent } from './mat/mat-dashboard.component';
 import { VolumeComponent } from './volume/volume.component';
+import { DashboardEffectButtonsComponent } from './dashboard-effect-buttons/dashboard-effect-buttons.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { VolumeComponent } from './volume/volume.component';
     BoxDashboardComponent,
     MatDashboardComponent,
     VolumeComponent,
+    DashboardEffectButtonsComponent,
   ],
   exports: [
     DashboardComponent
