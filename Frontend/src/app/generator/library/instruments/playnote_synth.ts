@@ -2,7 +2,6 @@ import { Note, Velocity, Duration, Cents } from '../types';
 import { Synth, Frequency, Merge } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
-import { InstrumentName } from '../types';
 import { DefaultMap } from '../defaultMap';
 
 export class PlayNoteSynth implements IMCPInstrument {

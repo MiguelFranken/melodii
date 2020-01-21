@@ -1,7 +1,8 @@
 import { Note, Velocity } from '../types';
-import { Synth, ToneAudioNode, Gain, Sampler } from 'tone';
+import { ToneAudioNode, Gain, Sampler } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
+import { convertMonoToStereo } from "../utils";
 
 export class Arc implements IMCPInstrument {
 
@@ -138,6 +139,7 @@ export class Arc implements IMCPInstrument {
   }
 
   getAudioNode(): ToneAudioNode {
-    return this.output;
+    return convertMonoToStereo(this.output);
   }
+
 }

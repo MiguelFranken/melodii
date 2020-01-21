@@ -5,6 +5,7 @@ import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 import { DefaultMap } from '../defaultMap';
 import deprecated from 'deprecated-decorator';
 import { Scale } from 'tonal';
+import { convertMonoToStereo } from "../utils";
 
 export type ButtonIndex = number;
 export type Octave = 1 | 2 | 3 | 4 | 5;
@@ -113,7 +114,7 @@ export class Mat implements IMCPInstrument {
   }
 
   public getAudioNode() {
-    return this.output;
+    return convertMonoToStereo(this.output);
   }
 
 }

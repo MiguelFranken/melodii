@@ -97,7 +97,7 @@ export class Piano implements IMCPInstrument {
     'G#6': 'Gs6.mp3'
   };
 
-  private sampler: Sampler;
+  private readonly sampler: Sampler;
 
   constructor(public readonly name: MCPInstrumentName = 'piano') {
     this.sampler = new Sampler({
