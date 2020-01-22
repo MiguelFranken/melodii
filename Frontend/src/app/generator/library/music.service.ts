@@ -143,7 +143,7 @@ export class MusicService {
 
   public getReverbEffect(): IMCPEffect {
     const toneEffect = new Reverb({
-      decay: 1.7,
+      decay: 2.7,
       preDelay: 0.01
     });
     toneEffect.wet.value = 0.27;
