@@ -5,16 +5,14 @@
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showRootNoteMenu()" fxFlex="calc(11.11% - 2px)" #rootNoteButton>Root Note</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showScaleMenu()" fxFlex="calc(11.11% - 2px)" #scaleButton>Scale</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showChordsMenu()" fxFlex="calc(11.11% - 2px)" #chordsButton>Chords</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="reset()" fxFlex="calc(11.11% - 2px)">Reset</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="onSwapNotesButtonPressed()" fxFlex="calc(11.11% - 2px)">
         <mat-icon *ngIf="!editMode">add</mat-icon>
         <mat-icon *ngIf="editMode">remove</mat-icon>
         <span>Swap Notes</span>
       </button>
-      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)">
-
-      </div>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showEffectsMenu()" fxFlex="calc(11.11% - 2px)" #effectsButton>Effects</button>
+      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
+      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
+      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchNavigation()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">menu</mat-icon></button>
     </div>
   </div>
