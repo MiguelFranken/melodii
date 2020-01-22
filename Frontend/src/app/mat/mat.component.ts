@@ -9,6 +9,7 @@ import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Overlay } from '../shared/help-overlay/help-overlay.service';
 import { IOSCMessage } from '../shared/osc/osc-message';
 import { MatStateService } from "./mat-state.service";
+import { NavigationService } from "../shared/layout/navigation/navigation.service";
 
 @Component({
   selector: 'mcp-mat',
@@ -208,6 +209,7 @@ export class MatComponent implements OnInit, AfterViewInit {
     private communicationService: GeneratorCommunicationService,
     private musicService: MusicService,
     private matStateService: MatStateService,
+    private navigationService: NavigationService,
     private toppy: Toppy) { }
 
   ngOnInit() {
@@ -439,12 +441,8 @@ export class MatComponent implements OnInit, AfterViewInit {
     this.effectsMenuOverlay.open();
   }
 
-  public reset() {
-    // TODO
-  }
-
   public switchNavigation() {
-    // TODO
+    this.navigationService.switchNavigation();
   }
 
   public switchChordMode() {
