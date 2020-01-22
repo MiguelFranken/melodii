@@ -1,19 +1,18 @@
 import { Logger } from '@upe/logger';
-import { Destination, Gain, JCReverb, Meter, PingPongDelay, Reverb, Split } from 'tone';
+import { Destination, EQ3, Gain, Meter, PingPongDelay, Reverb, Split, Volume } from 'tone';
 import { Injectable } from '@angular/core';
 import { IMCPInstrument } from './mcp-instrument';
-
 // Instruments
 import { DrumsHiHat, DrumsKick, DrumsSnare } from './instruments/drums';
 import { Piano } from './instruments/piano';
-import { Volume, EQ3 } from 'tone';
 import { EffectChain } from './effect-chain';
-import { InstrumentName, MeterName, IMCPEffect, MCPEffectIdentifier } from './types';
+import { IMCPEffect, InstrumentName, MCPEffectIdentifier, MeterName } from './types';
 import { LogService } from '../log/log.service';
 import { PlayNoteSynth } from './instruments/playnote_synth';
 import { Mat } from './instruments/mat';
 import { Arc } from "./instruments/arc";
 import { Box } from "./instruments/box";
+import { Cello } from "./instruments/cello";
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +39,10 @@ export class MusicService {
     this.volume.volume.value = dB;
   }
 
+  public setVolume(instrumentName: InstrumentName, dB: number) {
+    this.getVolumeNode(instrumentName).volume.value = dB;
+  }
+
   public getMasterVolume() {
     return this.volume.volume.value;
   }
@@ -60,10 +63,14 @@ export class MusicService {
     this.instruments.set('mat', new Mat());
     this.instruments.set('arc', new Arc());
     this.instruments.set('box', new Box());
+    this.instruments.set('cello', new Cello());
 
     // for each instrument: instrument -> effect chain -> volume node -> master gain
     //                                                                -> instrument meter
     this.instruments.forEach((instrument, name) => this.addInstrument(instrument, name));
+
+    // only for drums (sub)instruments: drum instruments --> drums meter
+    this.createDrumsMeter();
 
     // master gain -> master effect chain -> volume node
     this.masterEffectChain = new EffectChain('master', this.gain, this.volume);
@@ -78,7 +85,7 @@ export class MusicService {
   }
 
   public getVolumeNode(instrumentName: InstrumentName): Volume | undefined {
-    return this.volumeNodes.get(instrumentName)
+    return this.volumeNodes.get(instrumentName);
   }
 
   public getMasterVolumeNode(): Volume {
@@ -93,6 +100,19 @@ export class MusicService {
     } else {
       return this.getPingPongDelayEffect();
     }
+  }
+
+  private createDrumsMeter() {
+    const meterLeft = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+    const meterRight = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+    const split = new Split(2);
+    this.meters.set("drums-left", meterLeft);
+    this.meters.set("drums-right", meterRight);
+    this.getVolumeNode("kick").connect(split);
+    this.getVolumeNode("snare").connect(split);
+    this.getVolumeNode("hihat").connect(split);
+    split.connect(meterLeft, 0); // 0 -> Left
+    split.connect(meterRight, 1); // 1 -> Right
   }
 
   public addEffect(instrumentName: InstrumentName, effectName: MCPEffectIdentifier) {
@@ -123,16 +143,15 @@ export class MusicService {
 
   public getReverbEffect(): IMCPEffect {
     const toneEffect = new Reverb({
-      decay: 1.7,
+      decay: 2.7,
       preDelay: 0.01
     });
     toneEffect.wet.value = 0.27;
     toneEffect.generate();
-    const reverb: IMCPEffect = {
+    return {
       id: 'reverb',
       effect: toneEffect
     };
-    return reverb;
   }
 
   public getPingPongDelayEffect(): IMCPEffect {
@@ -145,11 +164,10 @@ export class MusicService {
   }
 
   public getThreeBandEQEffect(): IMCPEffect {
-    const threeBandEffect: IMCPEffect = {
+    return {
       id: 'threebandeq',
       effect: new EQ3(0, 0, 0)
     };
-    return threeBandEffect;
   }
 
   public deleteEffectFromMasterEffectChain(effectID: MCPEffectIdentifier) {
@@ -211,7 +229,7 @@ export class MusicService {
     const split = new Split(2);
     this.meters.set(instrumentName + "-left", meterLeft);
     this.meters.set(instrumentName + "-right", meterRight);
-    let volumeNode = this.volumeNodes.get(instrumentName);
+    const volumeNode = this.volumeNodes.get(instrumentName);
     volumeNode.connect(split);
     split.connect(meterLeft, 0); // 0 -> Left
     split.connect(meterRight, 1); // 1 -> Right
@@ -226,6 +244,14 @@ export class MusicService {
       this.logger.error(`Cannot find meter with name '${name}'`); // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
     }
     return this.meters.get(name) as Meter;
+  }
+
+  public getDrumsMeterLeft() {
+    return this.meters.get("drums-left") as Meter;
+  }
+
+  public getDrumsMeterRight() {
+    return this.meters.get("drums-right") as Meter;
   }
 
   /**

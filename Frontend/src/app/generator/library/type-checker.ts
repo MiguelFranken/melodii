@@ -82,7 +82,7 @@ export class TypeChecker {
       throw new OSCError("MCPx1200", "Argument has invalid type. Expected float type, i.e. 'f'.", arg);
     } else if (isNaN(parsed)) {
       throw new OSCError("MCPx1201", "Argument value matches not the right type which should be a float", arg);
-    } else if(parsed <= 0) {
+    } else if (parsed <= 0) {
       throw new OSCError("MCPx1202", "Time constant arguments must be greater than 0", arg);
     }
     return parsed;
@@ -104,8 +104,8 @@ export class TypeChecker {
       throw new OSCError("MCPx0100", "Argument has invalid type. Expected integer type, i.e. 'i'.", arg);
     } else if (isNaN(parsed)) {
       throw new OSCError("MCPx0101", "Argument value matches not the right type", arg);
-    } else if (parsed < -20 || parsed > 10) {
-      throw new OSCError("MCPx0102", "Decibel value is not between [-20,10]", arg);
+    } else if (parsed < -40 || parsed > 10) {
+      throw new OSCError("MCPx0102", "Decibel value is not between [-40,10]", arg);
     }
     return parsed;
   }
@@ -114,7 +114,7 @@ export class TypeChecker {
     const { type, value } = arg;
     if (type !== "s") {
       throw new OSCError("MCPx9001", "Argument has invalid type. Expected string type, i.e. 's'.", arg);
-    } else if (typeof value != "string") {
+    } else if (typeof value !== "string") {
       throw new OSCError("MCPx9003", "Argument value must be a string", arg);
     }
     return value;

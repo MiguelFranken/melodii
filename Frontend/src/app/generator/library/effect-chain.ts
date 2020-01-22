@@ -82,7 +82,7 @@ export class EffectChain {
       this.logger.warn(`Cannot get effect with id '${effectID}' as the chain doesn't contain such effect`);
       return null;
     } else {
-      let effect = this.effects[index];
+      const effect = this.effects[index];
       this.logger.debug(`Found effect with id '${effectID}' (effect position ${index})`, effect);
       return effect;
     }

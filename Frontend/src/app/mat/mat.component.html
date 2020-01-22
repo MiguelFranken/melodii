@@ -141,7 +141,17 @@
 
 <ng-template #chordsMenuTemplate let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
-    TODO
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchChordMode()"
+              [class.off]="!isInChordMode"
+      >
+        Switch Mode On/Off
+      </button>
+    </div>
   </div>
 </ng-template>
 

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ArcComponent } from './arc.component';
+import { CelloComponent } from './cello.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [ArcComponent],
+  declarations: [CelloComponent],
   imports: [
     CommonModule,
     SharedModule
   ]
 })
-export class ArcModule { }
+export class CelloModule { }

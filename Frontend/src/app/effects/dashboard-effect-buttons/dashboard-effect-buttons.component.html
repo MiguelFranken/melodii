@@ -4,7 +4,7 @@
           class="dashboard-button"
           fxFlex
           (click)="switchReverb()"
-          [class.off]="!useReverb"
+          [class.dashboard-on]="useReverb"
   >
     Reverb
   </button>
@@ -13,7 +13,7 @@
           class="dashboard-button"
           fxFlex
           (click)="switchPingPongDelay()"
-          [class.off]="!usePingPongDelay"
+          [class.dashboard-on]="usePingPongDelay"
   >
     PingPongDelay
   </button>
@@ -22,7 +22,7 @@
           class="dashboard-button"
           fxFlex
           (click)="switchEQ()"
-          [class.off]="!useEQ"
+          [class.dashboard-on]="useEQ"
   >
     EQ
   </button>
@@ -32,7 +32,7 @@
             class="dashboard-button"
             fxFlex
             (click)="switchEQLow()"
-            [class.off]="!useEQLow"
+            [class.dashboard-on]="useEQLow"
     >
       L
     </button>
@@ -41,7 +41,7 @@
             class="dashboard-button"
             fxFlex
             (click)="switchEQMid()"
-            [class.off]="!useEQMid"
+            [class.dashboard-on]="useEQMid"
     >
       M
     </button>
@@ -50,7 +50,7 @@
             class="dashboard-button"
             fxFlex
             (click)="switchEQHigh()"
-            [class.off]="!useEQHigh"
+            [class.dashboard-on]="useEQHigh"
     >
       H
     </button>

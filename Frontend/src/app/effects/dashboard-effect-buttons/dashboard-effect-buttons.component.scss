@@ -1,22 +1,23 @@
 @import "src/scss/variables";
 
 .container {
-  padding: 8px;
+  padding: 0 8px 8px;
 
   .dashboard-button {
     padding: 10px;
     cursor: pointer;
-    background-color: $mcp-black-5;
+    color: $mcp-white-1 !important;
+    background-color: $mcp-black-3 !important;
     border-radius: 0;
     border: 2px solid $mcp-black-1;
     flex: none;
   }
 
+  .dashboard-on {
+    background-color: $mcp-green-2 !important;
+  }
+
   button {
     flex: 1 !important;
   }
-}
-
-.off {
-  color: $mcp-white-2 !important;
 }

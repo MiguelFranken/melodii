@@ -116,6 +116,36 @@ Arguments:
 </table>
 
 
+## Cello
+
+<table style="width:100%;text-align:left;">
+<tr style="vertical-align:top;">
+<td style="width:15%">Title</td>
+<td style="width:30%">Description</td>
+<td></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Set</td>
+<td>Sets the volume of the note</td>
+<td><details><p>
+
+Path:
+```
+/cello/set
+```
+Arguments:
+```
+[
+    { s,note },  // Expects a note as string
+    { f,velocity },  // Expects the strength in [0, 1] of the note as a float
+]
+```
+
+</p></details></td>
+</tr>
+</table>
+
+
 ## Drums
 
 <table style="width:100%;text-align:left;">
@@ -621,6 +651,24 @@ Arguments:
 [
     { i,buttonIndex },  // Expects a button index as integer
     { i,buttonIndex },  // Expects a button index as integer
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Chord Mode</td>
+<td>Activates/deactivates chord mode</td>
+<td><details><p>
+
+Path:
+```
+/mat/chords
+```
+Arguments:
+```
+[
+    { i,state },  // Expects a boolean that expresses whether chords should be played or not
 ]
 ```
 

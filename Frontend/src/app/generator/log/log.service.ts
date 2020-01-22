@@ -9,7 +9,7 @@ export class LogService {
 
   private receiveEvent: EventEmitter<any> = new EventEmitter();
 
-  private maxMessagesSaved = 100;
+  private maxMessagesSaved = 19;
   private messageCounter = 0;
   private messages: MessageQueue = [];
 
@@ -26,7 +26,7 @@ export class LogService {
   }
 
   public addMessage(message: string) {
-    if (this.messageCounter != undefined) {
+    if (this.messageCounter !== undefined) {
       const index = this.messageCounter.toString().padStart(4, "0");
       this.messages.unshift({ index, message });
       this.messageCounter++;

@@ -78,4 +78,5 @@ export class Box implements IMCPInstrument {
   public getAudioNode() {
     return convertMonoToStereo(this.output);
   }
+
 }

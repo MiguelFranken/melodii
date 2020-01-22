@@ -40,5 +40,5 @@ export type MCPEffectIdentifier = string;
 
 export interface IMCPEffect {
   id: MCPEffectIdentifier;
-  effect: any;// ToneAudioNode<any> | Effect<any>;
+  effect: any; // ToneAudioNode<any> | Effect<any>;
 }

@@ -1,13 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { GeneratorCommunicationService } from '../../generator/library/generator-communication.service';
-import { Logger } from '@upe/logger';
+import { Logger } from "@upe/logger";
+import { GeneratorCommunicationService } from "../generator/library/generator-communication.service";
 
 @Component({
   selector: 'mcp-cello',
-  templateUrl: './arc.component.html',
-  styleUrls: ['./arc.component.scss']
+  templateUrl: './cello.component.html',
+  styleUrls: ['./cello.component.scss']
 })
-export class ArcComponent implements OnInit {
+export class CelloComponent implements OnInit {
 
   private logger: Logger = new Logger({ name: 'Arc Test' });
 
@@ -28,14 +28,14 @@ export class ArcComponent implements OnInit {
       const myID = id;
       const el: any = document.getElementById(id.toLowerCase());
       el.addEventListener("mousemove", (event: any) => {
-        const height = ArcComponent.relativeHeight(event.offsetY, event.target.offsetHeight);
+        const height = CelloComponent.relativeHeight(event.offsetY, event.target.offsetHeight);
         this.start(height, myID);
       });
       el.addEventListener("touchmove", (event: any) => {
         event.preventDefault();
         const t = event.changedTouches[0];
         const offsetY = t.clientY - t.target.offsetTop;
-        const height = ArcComponent.relativeHeight(offsetY, t.target.offsetHeight);
+        const height = CelloComponent.relativeHeight(offsetY, t.target.offsetHeight);
         this.start(height, myID);
       });
 
@@ -49,8 +49,7 @@ export class ArcComponent implements OnInit {
   }
 
   private start(height, myID) {
-    const velocity = height;
-    this.set(myID, velocity);
+    this.set(myID, height);
   }
 
   private stop(myID) {
@@ -61,17 +60,12 @@ export class ArcComponent implements OnInit {
     this.logger.info(`Set ${note} to ${strength}.`);
 
     this.communicationService.sendMessage({
-      address: "/arc/set",
+      address: "/cello/set",
       args: [
         { type: "s", value: note },
         { type: "i", value: strength }
       ],
-      info: {
-        address: '/play_note',
-        family: 'IPv4',
-        port: 80,
-        size: 1,
-      }
+      info: null
     });
   }
 

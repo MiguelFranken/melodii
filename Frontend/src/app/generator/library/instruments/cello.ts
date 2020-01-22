@@ -1,13 +1,17 @@
+import { Note, Velocity } from '../types';
+import { ToneAudioNode, Gain, Sampler } from 'tone';
 import { Logger } from '@upe/logger';
-import { Duration, Note, Velocity } from '../types';
-import { Sampler, Merge, Gain, ToneAudioNode } from 'tone';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
+import { convertMonoToStereo } from "../utils";
 
-export class Piano implements IMCPInstrument {
+export class Cello implements IMCPInstrument {
 
-  private static baseUrl = 'assets/samples/piano/';
+  private static baseUrl = 'assets/samples/cello/';
 
-  private logger: Logger = new Logger({ name: 'Piano Instrument', flags: ['music'] });
+  private readonly voices: Map<string, Sampler> = new Map();
+  private readonly output = new Gain();
+
+  private readonly logger: Logger = new Logger({ name: 'Cello Instrument', flags: ['music'] });
 
   private mappedNotes = {
     'A0': 'A0.mp3',
@@ -97,50 +101,45 @@ export class Piano implements IMCPInstrument {
     'G#6': 'Gs6.mp3'
   };
 
-  private readonly sampler: Sampler;
+  private sampler: Sampler;
 
-  private outputNode = new Gain();
-
-  constructor(public readonly name: MCPInstrumentName = 'piano') {
+  constructor(public readonly name: MCPInstrumentName = "cello") {
     this.sampler = new Sampler({
       attack: 0,
       release: 1.5,
-      baseUrl: Piano.baseUrl,
-      onload: () => this.logger.debug('piano buffered'),
+      baseUrl: Cello.baseUrl,
+      onload: () => this.logger.debug('cello buffered'),
       urls: this.mappedNotes,
     });
-    this.sampler.volume.value = -10;
+  }
 
-    // convert mono sampler into a sampler with stereo signal
-    const merger = new Merge();
-    this.sampler.connect(merger, 0, 0); // routing the mono signal to the left channel of the merger
-    this.sampler.connect(merger, 0, 1); // routing the mono signal to the right channel of the merger
+  public set(note: Note, strength: Velocity) {
+    this.logger.info(`Set with note ${note} and velocity ${strength}.`);
+    const voice = this.voices.get(note);
+    const volume = -40 + strength * 40; // In db.
+    if (voice) {
+      if (strength > 0) {
+        voice.volume.linearRampToValueAtTime(volume, "+0.1");
+      } else {
+        voice.triggerRelease(note, "+0.1");
+        this.voices.delete(note);
+      }
+    } else { // Key not found in this.voices.
+      if (strength > 0) {
+        const voice = this.createVoice();
+        this.voices.set(note, voice);
+        voice.volume.value = volume;
+        voice.triggerAttack(note, undefined, 1);
+      }
+    }
+  }
 
-    merger.connect(this.outputNode);
+  private createVoice(): Sampler {
+    return this.sampler.connect(this.output);
   }
 
   getAudioNode(): ToneAudioNode {
-    return this.outputNode;
-  }
-
-  public play(note: Note, duration: Duration = "8n", velocity: Velocity) {
-    this.logger.info(`Play note ${note} with duration ${duration} and velocity ${velocity}`);
-    this.sampler.triggerAttackRelease(note, duration, undefined, velocity);
-  }
-
-  public trigger(note: Note, velocity: Velocity) {
-    this.logger.info(`Trigger with note${note} and velocity ${velocity}.`);
-    this.sampler.triggerAttack(note, undefined, velocity);
-  }
-
-  public triggerRelease(note: Note, duration: Duration, velocity: Velocity) {
-    this.logger.info(`TriggerRelease with note ${note} and velocity ${velocity}.`);
-    this.sampler.triggerAttackRelease(note, duration, undefined, velocity);
-  }
-
-  public release(note: Note) {
-    this.logger.info(`Release with note ${note}.`);
-    this.sampler.triggerRelease(note);
+    return convertMonoToStereo(this.output);
   }
 
 }
