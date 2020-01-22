@@ -21,6 +21,27 @@ export class EffectStateService {
     this.useEQLow.set('mat', false);
     this.useEQMid.set('mat', false);
     this.useEQHigh.set('mat', false);
+
+    this.useReverb.set('arc', false);
+    this.usePingPongDelay.set('arc', false);
+    this.useEQ.set('arc', false);
+    this.useEQLow.set('arc', false);
+    this.useEQMid.set('arc', false);
+    this.useEQHigh.set('arc', false);
+
+    this.useReverb.set('box', false);
+    this.usePingPongDelay.set('box', false);
+    this.useEQ.set('box', false);
+    this.useEQLow.set('box', false);
+    this.useEQMid.set('box', false);
+    this.useEQHigh.set('box', false);
+
+    this.useReverb.set('master', false);
+    this.usePingPongDelay.set('master', false);
+    this.useEQ.set('master', false);
+    this.useEQLow.set('master', false);
+    this.useEQMid.set('master', false);
+    this.useEQHigh.set('master', false);
   }
 
   public isUsedReverb(instrumentName: InstrumentName): boolean {

@@ -1,8 +1,4 @@
-import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Context, Gain, MembraneSynth, MonoSynth, NoiseSynth, Transport } from 'tone';
-import { IOSCMessage } from "../../shared/osc/osc-message";
-import { GeneratorCommunicationService } from "../../generator/library/generator-communication.service";
-import { Logger } from "@upe/logger";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'mcp-arc-dashboard',

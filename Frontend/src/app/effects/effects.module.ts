@@ -8,6 +8,7 @@ import { BoxDashboardComponent } from './box/box-dashboard.component';
 import { MatDashboardComponent } from './mat/mat-dashboard.component';
 import { VolumeComponent } from './volume/volume.component';
 import { DashboardEffectButtonsComponent } from './dashboard-effect-buttons/dashboard-effect-buttons.component';
+import { MasterComponent } from './master/master.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { DashboardEffectButtonsComponent } from './dashboard-effect-buttons/dash
     MatDashboardComponent,
     VolumeComponent,
     DashboardEffectButtonsComponent,
+    MasterComponent,
   ],
   exports: [
     EffectsComponent
