@@ -54,8 +54,8 @@ export class MeterVisualization {
 
   private static GetNormalizedMeterValue(meter: Meter): number {
     let meterValue = meter.getValue();
-    meterValue = MeterVisualization.Clamp(meterValue, -80, -10);
-    meterValue = MeterVisualization.Normalize( meterValue, [ -80, -10 ], [ 0, 100 ] );
+    meterValue = MeterVisualization.Clamp(meterValue, -50, -10);
+    meterValue = MeterVisualization.Normalize( meterValue, [ -50, -10 ], [ 0, 100 ] );
     return meterValue;
   }
 
