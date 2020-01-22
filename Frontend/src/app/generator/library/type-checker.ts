@@ -104,8 +104,8 @@ export class TypeChecker {
       throw new OSCError("MCPx0100", "Argument has invalid type. Expected integer type, i.e. 'i'.", arg);
     } else if (isNaN(parsed)) {
       throw new OSCError("MCPx0101", "Argument value matches not the right type", arg);
-    } else if (parsed < -20 || parsed > 10) {
-      throw new OSCError("MCPx0102", "Decibel value is not between [-20,10]", arg);
+    } else if (parsed < -40 || parsed > 10) {
+      throw new OSCError("MCPx0102", "Decibel value is not between [-40,10]", arg);
     }
     return parsed;
   }
