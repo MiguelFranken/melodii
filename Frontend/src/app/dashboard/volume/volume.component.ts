@@ -48,8 +48,8 @@ export class VolumeComponent implements OnInit {
 
   private initMasterMeter() {
     this.meterVisualizationMaster = new MeterVisualization(
-      this.musicService.getMeter('mat-left'),
-      this.musicService.getMeter('mat-right'),
+      this.musicService.getMeter('master-left'),
+      this.musicService.getMeter('master-right'),
       this.cvsMaster.nativeElement,
       this.ctxMaster
     );
