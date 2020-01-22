@@ -3,6 +3,7 @@ import { Logger } from "@upe/logger";
 import { GeneratorCommunicationService } from "../../generator/library/generator-communication.service";
 import { IOSCMessage } from "../../shared/osc/osc-message";
 import { InstrumentName } from "../../generator/library/types";
+import { EffectStateService } from './effect-state.service';
 
 @Component({
   selector: 'mcp-dashboard-effect-buttons',
@@ -16,15 +17,55 @@ export class DashboardEffectButtonsComponent implements OnInit {
 
   private logger: Logger = new Logger({ name: 'DashboardEffectButtonsComponent', flags: ['component'] });
 
-  public useReverb = false;
-  public usePingPongDelay = false;
+  get useReverb(): boolean {
+    return this.effectStateService.isUsedReverb(this.instrumentName);
+  }
 
-  public useEQ = false;
-  public useEQLow = false;
-  public useEQMid = false;
-  public useEQHigh = false;
+  set useReverb(value: boolean) {
+    this.effectStateService.setIsUsedReverb(this.instrumentName, value);
+  }
 
-  constructor(private communicationService: GeneratorCommunicationService) { }
+  get usePingPongDelay(): boolean {
+    return this.effectStateService.isUsedPingPongDelay(this.instrumentName);
+  }
+
+  set usePingPongDelay(value: boolean) {
+    this.effectStateService.setIsUsedPingPongDelay(this.instrumentName, value);
+  }
+
+  get useEQ(): boolean {
+    return this.effectStateService.isUsedEQ(this.instrumentName);
+  }
+
+  set useEQ(value: boolean) {
+    this.effectStateService.setIsUsedEQ(this.instrumentName, value);
+  }
+
+  get useEQLow(): boolean {
+    return this.effectStateService.isUsedEQLow(this.instrumentName);
+  }
+
+  set useEQLow(value: boolean) {
+    this.effectStateService.setIsUsedEQLow(this.instrumentName, value);
+  }
+
+  get useEQMid(): boolean {
+    return this.effectStateService.isUsedEQMid(this.instrumentName);
+  }
+
+  set useEQMid(value: boolean) {
+    this.effectStateService.setIsUsedEQMid(this.instrumentName, value);
+  }
+
+  get useEQHigh(): boolean {
+    return this.effectStateService.isUsedEQHigh(this.instrumentName);
+  }
+
+  set useEQHigh(value: boolean) {
+    this.effectStateService.setIsUsedEQHigh(this.instrumentName, value);
+  }
+
+  constructor(private communicationService: GeneratorCommunicationService, public effectStateService: EffectStateService) { }
 
   ngOnInit() {
   }
