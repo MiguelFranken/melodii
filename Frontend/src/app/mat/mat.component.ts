@@ -8,6 +8,7 @@ import { Logger } from '@upe/logger';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Overlay } from '../shared/help-overlay/help-overlay.service';
 import { IOSCMessage } from '../shared/osc/osc-message';
+import { MatStateService } from "./mat-state.service";
 
 @Component({
   selector: 'mcp-mat',
@@ -52,11 +53,23 @@ export class MatComponent implements OnInit, AfterViewInit {
   private chordsMenuOverlay: Overlay;
   private effectsMenuOverlay: Overlay;
 
-  public isInChordMode = false;
+  get isInChordMode(): boolean {
+    return this.matStateService.getIsInChordMode();
+  }
+
+  set isInChordMode(value: boolean) {
+    this.matStateService.setIsInChordMode(value);
+  }
 
   private logger: Logger = new Logger({ name: 'Mat Component' });
 
-  public editMode = false;
+  get editMode(): boolean {
+    return this.matStateService.getIsInEditMode();
+  }
+
+  set editMode(value: boolean) {
+    this.matStateService.setIsInEditMode(value);
+  }
 
   private mapping = new Map([
     [0, 0],
@@ -75,9 +88,29 @@ export class MatComponent implements OnInit, AfterViewInit {
   public octaves: Octave[] = [];
   public degrees: Degree[] = [];
 
-  public octave = "3";
-  public scale = 'major';
-  public rootNote = 'C';
+  get octave() {
+    return this.matStateService.getCurrentOctave();
+  }
+
+  set octave(value) {
+    this.matStateService.setCurrentOctave(value);
+  }
+
+  get scale() {
+    return this.matStateService.getCurrentScale();
+  }
+
+  set scale(value) {
+    this.matStateService.setCurrentScale(value);
+  }
+
+  get rootNote() {
+    return this.matStateService.getCurrentRootNote();
+  }
+
+  set rootNote(value) {
+    this.matStateService.setCurrentRootNote(value);
+  }
 
   @ViewChild('block', { static: true })
   block: ElementRef<HTMLElement>;
@@ -174,6 +207,7 @@ export class MatComponent implements OnInit, AfterViewInit {
   constructor(
     private communicationService: GeneratorCommunicationService,
     private musicService: MusicService,
+    private matStateService: MatStateService,
     private toppy: Toppy) { }
 
   ngOnInit() {
