@@ -69,7 +69,7 @@ export class Box implements IMCPInstrument {
         releaseCurve: "linear",
       },
       oscillator: {
-        type: "custom",
+        type: "custom" as any,
         partials: [1, 0.5]
       }
     }).connect(this.output);
