@@ -1,22 +1,42 @@
-<div class="container" fxLayout="column" fxLayoutGap="20px">
+<div class="container" fxLayout="column">
+  <div class="menu" fxLayout fxFlex="10">
+    <div fxFill fxLayout fxLayoutGap="2px">
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showOctaveMenu()" fxFlex="calc(11.11% - 2px)" #octaveButton>Octave</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showRootNoteMenu()" fxFlex="calc(11.11% - 2px)" #rootNoteButton>Root Note</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showScaleMenu()" fxFlex="calc(11.11% - 2px)" #scaleButton>Scale</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showChordsMenu()" fxFlex="calc(11.11% - 2px)" #chordsButton>Chords</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="onSwapNotesButtonPressed()" fxFlex="calc(11.11% - 2px)">
+        <mat-icon *ngIf="!editMode">add</mat-icon>
+        <mat-icon *ngIf="editMode">remove</mat-icon>
+        <span>Swap Notes</span>
+      </button>
+      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
+      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
+      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchNavigation()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">menu</mat-icon></button>
+    </div>
+  </div>
 
   <div #block fxFlex>
-    <div fxLayout="column" fxLayoutAlign="stretch stretch" style="width: 100%; height: 100%;">
+    <div fxLayout="column" fxLayoutAlign="stretch stretch" style="width: 100%; height: 100%; padding: 10px;">
       <!-- row 1 -->
       <div fxLayout fxLayoutGap="10px" fxFlex>
         <div class="item" fxFlex>
-          <div fxLayout fxLayoutAlign="center center" id="1">
-            {{getNote(1)}}<small>3</small>
+          <div fxLayout="column" fxLayoutAlign="center center" id="1" #button0>
+            <span>{{notes[getIndex(0)]}}<small>{{octaves[getIndex(0)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(0)]}}</span>
           </div>
         </div>
         <div class="item" fxFlex>
-          <div fxLayout fxLayoutAlign="center center" id="2">
-            {{getNote(2)}}<small>3</small>
+          <div fxLayout="column" fxLayoutAlign="center center" id="2" #button1>
+            <span>{{notes[getIndex(1)]}}<small>{{octaves[getIndex(1)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(1)]}}</span>
           </div>
         </div>
         <div class="item" fxFlex>
-          <div fxLayout fxLayoutAlign="center center" id="3">
-            {{getNote(3)}}<small>3</small>
+          <div fxLayout="column" fxLayoutAlign="center center" id="3" #button2>
+            <span>{{notes[getIndex(2)]}}<small>{{octaves[getIndex(2)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(2)]}}</span>
           </div>
         </div>
       </div>
@@ -24,20 +44,140 @@
       <!-- row 2 -->
       <div fxLayout fxLayoutGap="10px" fxFlex>
         <div class="item" fxFlex>
-          <div fxLayout fxLayoutAlign="center center" id="0">
-            {{getNote(0)}}<small>3</small>
+          <div fxLayout="column" fxLayoutAlign="center center" id="4" #button3>
+            <span>{{notes[getIndex(3)]}}<small>{{octaves[getIndex(3)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(3)]}}</span>
           </div>
         </div>
 
         <div class="spacer" fxFlex></div>
 
         <div class="item" fxFlex>
-          <div fxLayout fxLayoutAlign="center center" id="4">
-            {{getNote(4)}}<small>3</small>
+          <div fxLayout="column" fxLayoutAlign="center center" id="5" #button4>
+            <span>{{notes[getIndex(4)]}}<small>{{octaves[getIndex(4)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(4)]}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div fxLayout fxLayoutGap="10px" fxFlex>
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="6" #button5>
+            <span>{{notes[getIndex(5)]}}<small>{{octaves[getIndex(5)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(5)]}}</span>
+          </div>
+        </div>
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="7" #button6>
+            <span>{{notes[getIndex(6)]}}<small>{{octaves[getIndex(6)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(6)]}}</span>
+          </div>
+        </div>
+        <div class="item" fxFlex>
+          <div fxLayout="column" fxLayoutAlign="center center" id="8" #button7>
+            <span>{{notes[getIndex(7)]}}<small>{{octaves[getIndex(7)]}}</small></span>
+            <span class="degree">{{degrees[getIndex(7)]}}</span>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
+
+
+<!--region Templates-->
+<ng-template #octaveMenuTemplate let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout fxLayoutAlign="center">
+      <div class="overlay-info" fxFlex fxLayout fxLayoutAlign="center center">
+        {{ octave }}
+      </div>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="decreaseOctave()"
+      >
+        <mat-icon>remove</mat-icon>
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="increaseOctave()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #rootNoteMenuTemplate let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout fxLayoutAlign="center center" class="overlay-input-container">
+      <mat-form-field fxFlex>
+        <mat-label>Root Note</mat-label>
+        <mat-select [(value)]="rootNote" (selectionChange)="changeRootNote()">
+          <mat-option value="C">C</mat-option>
+          <mat-option value="D">D</mat-option>
+          <mat-option value="E">E</mat-option>
+          <mat-option value="F">F</mat-option>
+          <mat-option value="G">G</mat-option>
+          <mat-option value="A">A</mat-option>
+          <mat-option value="B">B</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #scaleMenuTemplate let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchToMajorScale()"
+              [class.off]="scale != 'major'"
+      >
+        Major
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchToMinorScale()"
+              [class.off]="scale != 'minor'"
+      >
+        Minor
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #chordsMenuTemplate let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchChordMode()"
+              [class.off]="!isInChordMode"
+      >
+        Switch Mode On/Off
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #effectMenuTemplate let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    TODO
+  </div>
+</ng-template>
+<!--endregion-->

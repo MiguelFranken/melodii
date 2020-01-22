@@ -11,7 +11,7 @@ export default class CmdTool {
     private regex = {
         url: /^[A-za-z0-9-:./]+$/,
         path: /\/[A-Za-z_]+$/,
-        args: /^[isfb]+,[A-Za-z0-9.]+$/,
+        args: /^[isfb]+,-?[A-Za-z0-9.]+$/,
         address: /^[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+$/,
         port: /^[0-9]+$/,
         number: /^[0-9]+$/,
@@ -39,7 +39,6 @@ export default class CmdTool {
             this.settings.address,
             this.settings.port,
         );
-        console.log("constructor: first time: " + this.ft);
     }
 
     private static validString(str: string, r: RegExp): boolean {
@@ -118,7 +117,7 @@ export default class CmdTool {
                     type, value,
                 };
                 if (ft) {
-                    this.settings.args.pop();
+                    this.settings.args = [];
                 }
                 this.settings.args.push(arg);
                 this.addAnotherArg();
@@ -249,9 +248,6 @@ export default class CmdTool {
                         return this.changePath();
                     case text.CHANGE_ARGS:
                         return this.changeArgs(true);
-                    case text.SEND_LATENCY_TEST:
-                        this.cli.sendLatencyTest();
-                        return this.settingsMenu();
                     case text.BACK:
                         return this.menu();
                     default:

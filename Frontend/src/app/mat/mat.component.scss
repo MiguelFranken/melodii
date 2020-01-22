@@ -28,7 +28,7 @@
 }
 
 .container {
-  padding: 10px;
+  padding: 2px;
   height: 100%;
 }
 
@@ -57,4 +57,92 @@
   animation-duration: 0.15s;
   animation-timing-function: ease-in-out;
   animation-name: mirror-animation;
+
+  .degree {
+    color: rgba(255,255,255,0.2);
+  }
+}
+
+.degree {
+  margin-top: 20px;
+  color: $mcp-black-5
+}
+
+.action-button {
+  padding: 10px;
+  cursor: pointer;
+  background-color: $mcp-black-2;
+  border-radius: 0;
+}
+.action-button:hover {
+  background-color: $mcp-black-2-hover;
+}
+.spacer-menu {
+  padding: 10px;
+  background-color: $mcp-black-2;
+  border-radius: 0;
+}
+
+.menu {
+  color: $mcp-white-1;
+  min-height: 55px;
+}
+
+.action-icon {
+  transform: scale(2);
+}
+
+$overlay-margin-top: 12px;
+
+.overlay {
+  margin-top: $overlay-margin-top;
+  background-color: $mcp-black-1;
+  padding: 2px;
+  position: relative;
+  min-width: 20vw;
+
+  .overlay-button {
+    padding: 10px;
+    cursor: pointer;
+    background-color: $mcp-black-5;
+    border-radius: 0;
+    color: $mcp-white-1;
+  }
+
+  .overlay-info {
+    padding: 10px;
+    background-color: $mcp-black-5;
+    border-radius: 0;
+    color: $mcp-white-1;
+    height: 55px;
+  }
+}
+
+.overlay:after, .overlay:before {
+  bottom: 99%;
+  left: 10%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.overlay:after {
+  border-color: rgba(0, 0, 0, 0);
+  border-bottom-color: $mcp-black-1;
+  border-width: 10px;
+  margin-left: -10px;
+}
+
+.off {
+  color: $mcp-white-2 !important;
+}
+
+.overlay-input-container {
+  padding: 30px 10px 10px;
+  cursor: pointer;
+  background-color: $mcp-black-5;
+  border-radius: 0;
 }

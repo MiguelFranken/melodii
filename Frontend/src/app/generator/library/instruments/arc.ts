@@ -1,13 +1,13 @@
 import { Note, Velocity } from '../types';
-import { isVoiceActive } from '../utils';
-import { Synth, ToneAudioNode, Merge } from 'tone';
+import { ToneAudioNode, Gain, Synth } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
-import { DefaultMap } from '../defaultMap';
+import { convertMonoToStereo } from "../utils";
 
 export class Arc implements IMCPInstrument {
+
   private readonly voices: Map<string, Synth> = new Map();
-  private readonly output = new Merge();
+  private readonly output = new Gain();
 
   private readonly logger: Logger = new Logger({ name: 'Arc Instrument', flags: ['music'] });
 
@@ -40,6 +40,7 @@ export class Arc implements IMCPInstrument {
   }
 
   getAudioNode(): ToneAudioNode {
-    return this.output;
+    return convertMonoToStereo(this.output);
   }
+
 }

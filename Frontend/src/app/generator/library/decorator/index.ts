@@ -10,12 +10,12 @@ export class ControllerHandler {
     this.container = new Container();
   }
 
-  public addControllers(socket: SocketIOClient.Socket, controllers: Function[] | string[]) {
-    this.createExecutor(socket, controllers);
+  public addControllers(controllers: Function[] | string[]) {
+    this.createExecutor(controllers);
   }
 
-  public createExecutor(socket: SocketIOClient.Socket, controllers: Function[] | string[]) {
-    const executor = new ControllerExecutor(socket, this.directCommunicationService);
+  public createExecutor(controllers: Function[] | string[]) {
+    const executor = new ControllerExecutor(this.directCommunicationService);
 
     // get controller classes
     let controllerClasses: Function[];

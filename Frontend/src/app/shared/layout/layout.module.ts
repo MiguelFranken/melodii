@@ -4,6 +4,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { RouterModule } from "@angular/router";
 import { MaterialModule } from "../material/material.module";
 import { FlexModule } from "@angular/flex-layout";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { FlexModule } from "@angular/flex-layout";
     CommonModule,
     RouterModule,
     MaterialModule,
-    FlexModule
+    FlexModule,
+    FormsModule
   ]
 })
 export class LayoutModule { }

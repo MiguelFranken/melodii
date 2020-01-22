@@ -4,7 +4,9 @@
   "scripts": {
     "install": "lerna bootstrap",
     "start": "concurrently -n Server,Frontend \"(cd Server && npm run start)\" \"(cd Frontend && npm run start)\"",
-    "watch": "concurrently -n Server,Frontend \"(cd Server && npm run watch)\" \"(cd Frontend && npm run watch)\""
+    "watch": "concurrently -n Server,Frontend \"(cd Server && npm run watch)\" \"(cd Frontend && npm run watch)\"",
+    "deploy:local": "./local-deploy.sh",
+    "build:docs": "node buildDocs.js"
   },
   "devDependencies": {
     "concurrently": "^5.0.0",

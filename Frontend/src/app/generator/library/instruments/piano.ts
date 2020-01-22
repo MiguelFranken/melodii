@@ -1,6 +1,6 @@
 import { Logger } from '@upe/logger';
 import { Duration, Note, Velocity } from '../types';
-import { Sampler, Synth, PolySynth } from 'tone';
+import { Sampler, Merge, Gain, ToneAudioNode } from 'tone';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 
 export class Piano implements IMCPInstrument {
@@ -97,7 +97,9 @@ export class Piano implements IMCPInstrument {
     'G#6': 'Gs6.mp3'
   };
 
-  private sampler: Sampler;
+  private readonly sampler: Sampler;
+
+  private outputNode = new Gain();
 
   constructor(public readonly name: MCPInstrumentName = 'piano') {
     this.sampler = new Sampler({
@@ -107,11 +109,18 @@ export class Piano implements IMCPInstrument {
       onload: () => this.logger.debug('piano buffered'),
       urls: this.mappedNotes,
     });
-    this.sampler.volume.value = -15;
+    this.sampler.volume.value = -10;
+
+    // convert mono sampler into a sampler with stereo signal
+    const merger = new Merge();
+    this.sampler.connect(merger, 0, 0); // routing the mono signal to the left channel of the merger
+    this.sampler.connect(merger, 0, 1); // routing the mono signal to the right channel of the merger
+
+    merger.connect(this.outputNode);
   }
 
-  getAudioNode(): Sampler {
-    return this.sampler;
+  getAudioNode(): ToneAudioNode {
+    return this.outputNode;
   }
 
   public play(note: Note, duration: Duration = "8n", velocity: Velocity) {
@@ -120,7 +129,7 @@ export class Piano implements IMCPInstrument {
   }
 
   public trigger(note: Note, velocity: Velocity) {
-    console.log(`Trigger with note${note} and velocity ${velocity}.`);
+    this.logger.info(`Trigger with note${note} and velocity ${velocity}.`);
     this.sampler.triggerAttack(note, undefined, velocity);
   }
 
@@ -130,7 +139,7 @@ export class Piano implements IMCPInstrument {
   }
 
   public release(note: Note) {
-    console.log(`Release with note ${note}.`);
+    this.logger.info(`Release with note ${note}.`);
     this.sampler.triggerRelease(note);
   }
 

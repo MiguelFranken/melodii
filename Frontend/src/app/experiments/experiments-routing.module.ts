@@ -3,6 +3,10 @@ import { MeterComponent } from './meter/meter.component';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { FrequencyComponent } from './frequency/frequency.component';
+import { LatencyComponent } from './latency/latency.component';
+import { ArcComponent } from './arc/arc.component';
+import { BoxComponent } from './box/box.component';
+import { MatComponent } from './mat/mat.component';
 
 const routes = [
   {
@@ -15,8 +19,28 @@ const routes = [
         pathMatch: 'full'
       },
       {
+        path: 'latency',
+        component: LatencyComponent,
+        pathMatch: 'full'
+      },
+      {
         path: 'frequency',
         component: FrequencyComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'arc',
+        component: ArcComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'box',
+        component: BoxComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'mat',
+        component: MatComponent,
         pathMatch: 'full'
       },
       {

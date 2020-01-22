@@ -1,33 +1,43 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from "./dashboard/dashboard.component";
 import { PrototypeComponent } from "./prototype/prototype/prototype.component";
 import { LogComponent } from './generator/log/log.component';
-import { BoxComponent } from './box/box.component';
-import { ArcComponent } from './arc/arc.component';
+import { CelloComponent } from './cello/cello.component';
 import { MatComponent } from './mat/mat.component';
 import { MixerComponent } from './mixer/mixer.component';
+import { AdvancedSettingsComponent } from "./advanced-settings/advanced-settings.component";
+import { ContextComponent } from "./context/context.component";
+import { EffectsComponent } from './effects/effects.component';
+import { StartComponent } from './start/start.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent,
+    component: StartComponent,
+  },
+  {
+    path: 'effects',
+    component: EffectsComponent
   },
   {
     path: 'prototype',
     component: PrototypeComponent,
   },
   {
+    path: 'context',
+    component: ContextComponent,
+  },
+  {
+    path: 'advanced-settings',
+    component: AdvancedSettingsComponent,
+  },
+  {
     path: 'log',
     component: LogComponent,
   },
   {
-    path: 'box',
-    component: BoxComponent,
-  },
-  {
     path: 'arc',
-    component: ArcComponent,
+    component: CelloComponent,
   },
   {
     path: 'mixer',

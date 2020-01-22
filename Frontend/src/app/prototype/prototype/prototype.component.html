@@ -29,14 +29,14 @@
   <div class="menu" fxLayout fxFlex="5">
     <div fxFill fxLayout fxLayoutGap="2px">
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="openInstrumentSelectionMenu()" #el>
-        {{matrix.name}}
+        {{getMatrix().name}}
       </button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="previousMatrix()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="nextMatrix()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="clearMatrix()">Clear</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="openPresetMenu()" #presetButton>Presets</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()" >Metronom</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchVelocity()" #velocityButtonElement>{{showVelocity ? 'Hide' : 'Show'}} Velocity</button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="switchVelocity()" #velocityButtonElement>{{getShowVelocity ? 'Hide' : 'Show'}} Velocity</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()"><mat-icon class="action-icon">keyboard_arrow_left</mat-icon></button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex (click)="notYetImplemented()"><mat-icon class="action-icon">keyboard_arrow_right</mat-icon></button>
     </div>
@@ -83,7 +83,7 @@
               #rowButtonElement
       >
         <!-- Velocity Slider -->
-        <div class="velocity-slider" *ngIf="button.isActive && showVelocity" fxLayout #sliderElement>
+        <div class="velocity-slider" *ngIf="button.isActive && getShowVelocity()" fxLayout #sliderElement>
           <mat-slider fxFlex style="height: 25px" (click)="onTapOnVelocitySlider()" (input)="setVelocity($event, button)" [value]="button.velocity" min="0" max="1" step="0.001"></mat-slider>
         </div>
       </a>
@@ -153,13 +153,13 @@
               class="overlay-button"
               fxFlex
               (click)="switchMatrix(matrix, index); toppy.close()"
-              *ngFor="let matrix of matrixCollection; let index = index">{{matrix.name}}
+              *ngFor="let matrix of getMatrixCollection(); let index = index">{{matrix.name}}
       </button>
     </div>
     <div fxLayout>
       <button mat-button class="overlay-button" fxFlex (click)="switchAllExpanded()">
-        <ng-container *ngIf="isInExpandedMode;then shrinkIconTemplate else expandIconTemplate"></ng-container>
-        {{isInExpandedMode ? 'Shrink' : 'Expand'}} all rows
+        <ng-container *ngIf="getIsInExpandedMode();then shrinkIconTemplate else expandIconTemplate"></ng-container>
+        {{getIsInExpandedMode() ? 'Shrink' : 'Expand'}} all rows
       </button>
 
       <!--region Arrow Templates-->
@@ -230,7 +230,7 @@
               class="overlay-button"
               fxFlex
               (click)="switchReverbOnMaster()"
-              [class.off]="!useReverbOnMaster"
+              [class.off]="!useReverbOnMaster()"
       >
         Reverb (Master)
       </button>
@@ -241,9 +241,49 @@
               class="overlay-button"
               fxFlex
               (click)="switchPingPongDelayOnMaster()"
-              [class.off]="!usePingPongDelayOnMaster"
+              [class.off]="!usePingPongDelayOnMaster()"
       >
         PingPongDelay (Master)
+      </button>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchEQOnMaster()"
+              [class.off]="!useEQOnMaster()"
+      >
+        EQ (Master)
+      </button>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchEQLowOnMaster()"
+              [class.off]="!useEQLowOnMaster()"
+      >
+        L
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchEQMidOnMaster()"
+              [class.off]="!useEQMidOnMaster()"
+      >
+        M
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchEQHighOnMaster()"
+              [class.off]="!useEQHighOnMaster()"
+      >
+        H
       </button>
     </div>
   </div>

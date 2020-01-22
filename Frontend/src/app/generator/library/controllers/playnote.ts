@@ -23,12 +23,13 @@ export class PlayNoteController {
       const note = TypeChecker.ValidNoteArg(msg.args[0]);
       //TODO add to decorator
       const duration = TypeChecker.ValidDurationArg(msg.args[1]);
-      const velocity = TypeChecker.ValidVelocityArg(msg.args[2]);
+      const velocity = TypeChecker.ValidNormalRangeArg(msg.args[2]);
 
       this.synth.triggerRelease(note, duration, velocity);
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
       }
     }
   }
@@ -37,12 +38,13 @@ export class PlayNoteController {
   public receivedMessageStart(@Message() msg: IOSCMessage) {
     try {
       const note = TypeChecker.ValidNoteArg(msg.args[0]);
-      const velocity = TypeChecker.ValidVelocityArg(msg.args[1]);
+      const velocity = TypeChecker.ValidNormalRangeArg(msg.args[1]);
 
       this.synth.trigger(note, velocity);
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
       }
     }
   }
@@ -57,6 +59,7 @@ export class PlayNoteController {
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
       }
     }
   }
@@ -70,6 +73,7 @@ export class PlayNoteController {
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
       }
     }
   }

@@ -9,11 +9,11 @@
 
     <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(5.555% - 2px)" (click)="openSoundMenu()" #el><mat-icon class="action-icon">settings</mat-icon></button>
     <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(5.555% - 2px)" routerLink="log"><mat-icon class="action-icon">message</mat-icon></button>
-    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/experiments">Experiments</button>
-    <div fxFlex="calc(11.12% - 2px)"></div><!-- spacer -->
+<!--    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/experiments">Experiments</button>-->
+    <div fxFlex="calc(22.23% - 2px)"></div><!-- spacer -->
+    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/effects">Effects</button>
     <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/mixer">Mixer</button>
-    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/arc">Arc</button>
-    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/box">Box</button>
+    <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/arc">Cello</button>
     <button routerLinkActive="active-link" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)" routerLink="/mat">Mat</button>
     <button routerLinkActive="active-link" routerLink="/prototype" mat-button class="action-button" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.11% - 2px)">Matrix</button>
   </div>
@@ -28,7 +28,7 @@
               class="overlay-button"
               fxFlex
               (click)="switchSound()"
-      >Sound <span [class.off]="hasSound">On</span>/<span [class.off]="!hasSound">Off</span>
+      >Sound <span [class.off]="!hasSound">On</span>/<span [class.off]="hasSound">Off</span>
       </button>
     </div>
     <div fxLayout fxLayoutGap="2px">
@@ -36,15 +36,8 @@
               mat-button
               class="overlay-button"
               fxFlex
-              (click)="switchGenerator()"
-              >Generator <span [class.off]="useGenerator">On</span>/<span [class.off]="!useGenerator">Off</span>
-      </button>
-      <button
-              mat-button
-              class="overlay-button"
-              fxFlex
               (click)="switchDirectCommunication()"
-              >Direct Communication <span [class.off]="useDirectCommunication">On</span>/<span [class.off]="!useDirectCommunication">Off</span>
+              >Direct Communication <span [class.off]="!useDirectCommunication">On</span>/<span [class.off]="useDirectCommunication">Off</span>
       </button>
     </div>
     <div fxLayout fxLayoutGap="2px">
@@ -53,7 +46,29 @@
               class="overlay-button"
               fxFlex
               (click)="switchMessageIndicator()"
-      ><span [class.off]="showMessageIndicator">Show</span>/<span [class.off]="!showMessageIndicator">Hide</span> Message Indicator
+      ><span [class.off]="!showMessageIndicator">Show</span>/<span [class.off]="showMessageIndicator">Hide</span> Message Indicator
+      </button>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              routerLink="advanced-settings"
+              (click)="toppy.close()"
+      >
+        Advanced Settings
+      </button>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              routerLink="experiments"
+              (click)="toppy.close()"
+      >
+        Experiments
       </button>
     </div>
   </div>
