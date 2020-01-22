@@ -53,7 +53,7 @@ let msPerBeat: number = 1000 * 0.5 * (60 / DEFAULT_BPM); // TODO MF: different d
 let currentPlayedColumnIndex = 0;
 let isInExpandedMode = true;
 let isInFoldMode = false;
-let subject = new Subject();
+const subject = new Subject();
 let _interval;
 let playSubscription: Subscription;
 
@@ -236,9 +236,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   public switchAllExpanded() {
     isInExpandedMode = !isInExpandedMode;
 
-    for (let i = 0; i < matrix.rows.length; i++) {
-      matrix.rows[i].isExpanded = isInExpandedMode;
-    }
+    matrix.rows.forEach((row) => {
+      row.isExpanded = isInExpandedMode;
+    });
   }
   //endregion
 
@@ -488,12 +488,11 @@ export class PrototypeComponent implements OnInit, OnDestroy {
    * Removes all entries of the currently displayed matrix
    */
   public clearMatrix() {
-    for (let i = 0; i < matrix.rows.length; i++) {
-      for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-
-        matrix.rows[i].buttons[y].isActive = false;
-      }
-    }
+    matrix.rows.forEach((row) => {
+      row.buttons.forEach((button) => {
+        button.isActive = false;
+      });
+    });
   }
 
   public hasActivatedButton(): boolean {
@@ -572,19 +571,20 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   switchFold() {
     if (isInFoldMode) {
-      for (let i = 0; i < matrix.rows.length; i++) {
-        matrix.rows[i].isFolded = false;
-      }
+      matrix.rows.forEach((row) => {
+        row.isFolded = false;
+      });
       isInFoldMode = false;
     } else {
-      for (let i = 0; i < matrix.rows.length; i++) {
-        matrix.rows[i].isFolded = true;
-        for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-          if (matrix.rows[i].buttons[y].isActive) {
-            matrix.rows[i].isFolded = false;
+      matrix.rows.forEach((row) => {
+        row.isFolded = true;
+
+        row.buttons.forEach((button) => {
+          if (button.isActive) {
+            row.isFolded = false;
           }
-        }
-      }
+        });
+      });
       isInFoldMode = true;
     }
   }
