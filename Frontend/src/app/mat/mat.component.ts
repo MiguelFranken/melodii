@@ -301,16 +301,7 @@ export class MatComponent implements OnInit, AfterViewInit {
     }
 
     this.octave = `${newOctave}`;
-
-    this.communicationService.sendMessage({
-      address: "/mat/change_octave",
-      args: [
-        { type: "i", value: newOctave }
-      ],
-      info: null
-    });
-
-    this.setNotes();
+    this.changeOctave();
   }
 
   public decreaseOctave() {
@@ -322,16 +313,7 @@ export class MatComponent implements OnInit, AfterViewInit {
     }
 
     this.octave = `${newOctave}`;
-
-    this.communicationService.sendMessage({
-      address: "/mat/change_octave",
-      args: [
-        { type: "i", value: newOctave }
-      ],
-      info: null
-    });
-
-    this.setNotes();
+    this.changeOctave();
   }
 
   public changeOctave() {
@@ -358,6 +340,16 @@ export class MatComponent implements OnInit, AfterViewInit {
     });
 
     this.setNotes();
+  }
+
+  public switchToMajorScale() {
+    this.scale = "major";
+    this.changeScale();
+  }
+
+  public switchToMinorScale() {
+    this.scale = "minor";
+    this.changeScale();
   }
 
   public changeScale() {
