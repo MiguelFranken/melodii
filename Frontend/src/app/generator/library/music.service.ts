@@ -69,6 +69,9 @@ export class MusicService {
     //                                                                -> instrument meter
     this.instruments.forEach((instrument, name) => this.addInstrument(instrument, name));
 
+    // only for drums (sub)instruments: drum instruments --> drums meter
+    this.createDrumsMeter();
+
     // master gain -> master effect chain -> volume node
     this.masterEffectChain = new EffectChain('master', this.gain, this.volume);
 
@@ -97,6 +100,19 @@ export class MusicService {
     } else {
       return this.getPingPongDelayEffect();
     }
+  }
+
+  private createDrumsMeter() {
+    const meterLeft = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+    const meterRight = new Meter(MusicService.METER_SMOOTHING_FACTOR);
+    const split = new Split(2);
+    this.meters.set("drums-left", meterLeft);
+    this.meters.set("drums-right", meterRight);
+    this.getVolumeNode("kick").connect(split);
+    this.getVolumeNode("snare").connect(split);
+    this.getVolumeNode("hihat").connect(split);
+    split.connect(meterLeft, 0); // 0 -> Left
+    split.connect(meterRight, 1); // 1 -> Right
   }
 
   public addEffect(instrumentName: InstrumentName, effectName: MCPEffectIdentifier) {
@@ -228,6 +244,14 @@ export class MusicService {
       this.logger.error(`Cannot find meter with name '${name}'`); // TODO MF: Errors in eine Klasse packen samt Error.Code und Stack-Trace
     }
     return this.meters.get(name) as Meter;
+  }
+
+  public getDrumsMeterLeft() {
+    return this.meters.get("drums-left") as Meter;
+  }
+
+  public getDrumsMeterRight() {
+    return this.meters.get("drums-right") as Meter;
   }
 
   /**
