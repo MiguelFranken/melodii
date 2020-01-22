@@ -20,21 +20,20 @@ export class MixerComponent implements OnInit {
 
   constructor(private musicService: MusicService, private communicationService: GeneratorCommunicationService) { }
 
+  private static getVolume(node: Volume): number {
+    return node.volume.value;
+  }
+
   ngOnInit() {
     this.masterVolume = this.musicService.getMasterVolume();
     this.arcVolume = MixerComponent.getVolume(this.musicService.getVolumeNode('arc'));
     this.boxVolume = MixerComponent.getVolume(this.musicService.getVolumeNode('box'));
     this.matVolume = MixerComponent.getVolume(this.musicService.getVolumeNode('mat'));
     this.celloVolume = MixerComponent.getVolume(this.musicService.getVolumeNode('cello'));
-  }
-
-  private static getVolume(node: Volume): number {
-    return node.volume.value;
+    this.drumsVolume = MixerComponent.getVolume(this.musicService.getVolumeNode('kick'));
   }
 
   public inputMaster(event) {
-    // this.musicService.setMasterVolume(event.value);
-
     const oscMessage: IOSCMessage = {
       address: '/volume/master',
       args: [
@@ -47,8 +46,6 @@ export class MixerComponent implements OnInit {
   }
 
   public inputMat(event) {
-    // this.musicService.setVolume('mat', event.value);
-
     const oscMessage: IOSCMessage = {
       address: '/volume/instrument',
       args: [
@@ -67,8 +64,6 @@ export class MixerComponent implements OnInit {
   }
 
   public inputArc(event) {
-    // this.musicService.setVolume('arc', event.value);
-
     const oscMessage: IOSCMessage = {
       address: '/volume/instrument',
       args: [
@@ -87,8 +82,6 @@ export class MixerComponent implements OnInit {
   }
 
   public inputBox(event) {
-    // this.musicService.setVolume('box', event.value);
-
     const oscMessage: IOSCMessage = {
       address: '/volume/instrument',
       args: [
@@ -107,12 +100,60 @@ export class MixerComponent implements OnInit {
   }
 
   public inputCello(event) {
-    // this.musicService.setVolume('cello', event.value);
-
     const oscMessage: IOSCMessage = {
       address: '/volume/instrument',
       args: [
         { type: 's', value: 'cello' },
+        { type: 'i', value: event.value }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+  }
+
+  public inputDrums(event) {
+    let oscMessage: IOSCMessage = {
+      address: '/volume/instrument',
+      args: [
+        { type: 's', value: 'kick' },
+        { type: 'i', value: event.value }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    oscMessage = {
+      address: '/volume/instrument',
+      args: [
+        { type: 's', value: 'snare' },
+        { type: 'i', value: event.value }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    oscMessage = {
+      address: '/volume/instrument',
+      args: [
+        { type: 's', value: 'hihat' },
         { type: 'i', value: event.value }
       ],
       info: {
