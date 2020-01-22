@@ -89,18 +89,41 @@
 <!--region Templates-->
 <ng-template #octaveMenuTemplate let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
-    <div fxLayout fxLayoutAlign="center center" class="overlay-input-container">
-      <mat-form-field fxFlex>
-        <mat-label>Octave</mat-label>
-        <mat-select [(value)]="octave" (selectionChange)="changeOctave()">
-          <mat-option value="1">1</mat-option>
-          <mat-option value="2">2</mat-option>
-          <mat-option value="3">3</mat-option>
-          <mat-option value="4">4</mat-option>
-          <mat-option value="5">5</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div fxLayout fxLayoutAlign="center">
+      <div class="overlay-info" fxFlex fxLayout fxLayoutAlign="center center">
+        {{ octave }}
+      </div>
     </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="decreaseOctave()"
+      >
+        <mat-icon>remove</mat-icon>
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="increaseOctave()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+<!--    <div fxLayout fxLayoutAlign="center center" class="overlay-input-container">-->
+<!--      <mat-form-field fxFlex>-->
+<!--        <mat-label>Octave</mat-label>-->
+<!--        <mat-select [(value)]="octave" (selectionChange)="changeOctave()">-->
+<!--          <mat-option value="1">1</mat-option>-->
+<!--          <mat-option value="2">2</mat-option>-->
+<!--          <mat-option value="3">3</mat-option>-->
+<!--          <mat-option value="4">4</mat-option>-->
+<!--          <mat-option value="5">5</mat-option>-->
+<!--        </mat-select>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
   </div>
 </ng-template>
 

@@ -292,6 +292,48 @@ export class MatComponent implements OnInit, AfterViewInit {
     });
   }
 
+  public increaseOctave() {
+    this.logger.info(`Increase octave ${this.octave}`);
+
+    let newOctave = +this.octave;
+    if (newOctave < 5) {
+      newOctave = newOctave + 1;
+    }
+
+    this.octave = `${newOctave}`;
+
+    this.communicationService.sendMessage({
+      address: "/mat/change_octave",
+      args: [
+        { type: "i", value: newOctave }
+      ],
+      info: null
+    });
+
+    this.setNotes();
+  }
+
+  public decreaseOctave() {
+    this.logger.info(`Decrease octave ${this.octave}`);
+
+    let newOctave = +this.octave;
+    if (newOctave > 1) {
+      newOctave = newOctave - 1;
+    }
+
+    this.octave = `${newOctave}`;
+
+    this.communicationService.sendMessage({
+      address: "/mat/change_octave",
+      args: [
+        { type: "i", value: newOctave }
+      ],
+      info: null
+    });
+
+    this.setNotes();
+  }
+
   public changeOctave() {
     this.logger.info(`Change octave ${this.octave}`);
     this.communicationService.sendMessage({

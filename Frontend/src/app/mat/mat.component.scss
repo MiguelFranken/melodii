@@ -108,6 +108,14 @@ $overlay-margin-top: 12px;
     border-radius: 0;
     color: $mcp-white-1;
   }
+
+  .overlay-info {
+    padding: 10px;
+    background-color: $mcp-black-5;
+    border-radius: 0;
+    color: $mcp-white-1;
+    height: 55px;
+  }
 }
 
 .overlay:after, .overlay:before {
