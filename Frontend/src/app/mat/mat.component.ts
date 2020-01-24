@@ -263,10 +263,7 @@ export class MatComponent implements OnInit, AfterViewInit {
   }
 
   public getIndex(key: number) {
-    const test = [...this.mapping.entries()]
-      .filter(({ 1: v }) => v === key)
-      .map(([k]) => k);
-    return test[0];
+    return this.mapping.get(key);
   }
 
   private trigger(index: ButtonIndex) {
