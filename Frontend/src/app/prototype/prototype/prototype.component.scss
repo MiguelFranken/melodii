@@ -186,6 +186,12 @@ $overlay-margin-top: 12px;
   pointer-events: none;
 }
 
+.spacer-menu {
+  padding: 10px;
+  background-color: $mcp-black-2;
+  border-radius: 0;
+}
+
 .overlay:after {
   border-color: rgba(0, 0, 0, 0);
   border-bottom-color: $mcp-black-1;
@@ -195,5 +201,9 @@ $overlay-margin-top: 12px;
 
 .off {
   color: $mcp-white-2 !important;
+}
+
+.on {
+  background-color: $mcp-green-2 !important;
 }
 

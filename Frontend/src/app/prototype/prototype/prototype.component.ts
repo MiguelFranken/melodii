@@ -66,6 +66,10 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   public showRowNames = true;
 
+  get velocity() {
+    return showVelocity;
+  }
+
   private logger: Logger = new Logger({ name: 'PrototypeComponent', flags: ['component'] });
 
   public height = '100%';
@@ -366,8 +370,8 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.instrumentSelectionOverlay.open();
   }
 
-  public switchMatrix(matrix: Matrix, index: number) {
-    matrix = matrix;
+  public switchMatrix(matrixHTML: Matrix, index: number) {
+    matrix = matrixHTML;
     matrixCollectionIndex = index;
   }
   //endregion
