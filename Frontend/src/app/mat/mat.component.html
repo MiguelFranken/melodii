@@ -5,9 +5,7 @@
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showRootNoteMenu()" fxFlex="calc(11.11% - 2px)" #rootNoteButton>Root Note</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showScaleMenu()" fxFlex="calc(11.11% - 2px)" #scaleButton>Scale</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showChordsMenu()" fxFlex="calc(11.11% - 2px)" #chordsButton>Chords</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="onSwapNotesButtonPressed()" fxFlex="calc(11.11% - 2px)">
-        <mat-icon *ngIf="!editMode">add</mat-icon>
-        <mat-icon *ngIf="editMode">remove</mat-icon>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="onSwapNotesButtonPressed()" fxFlex="calc(11.11% - 2px)" [class.on]="editMode">
         <span>Swap Notes</span>
       </button>
       <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
@@ -100,6 +98,8 @@
               class="overlay-button"
               fxFlex
               (click)="decreaseOctave()"
+              [disabled]="+octave == 1"
+              [class.off]="+octave == 1"
       >
         <mat-icon>remove</mat-icon>
       </button>
@@ -108,6 +108,8 @@
               class="overlay-button"
               fxFlex
               (click)="increaseOctave()"
+              [disabled]="+octave == 5"
+              [class.off]="+octave == 5"
       >
         <mat-icon>add</mat-icon>
       </button>
@@ -142,7 +144,7 @@
               class="overlay-button"
               fxFlex
               (click)="switchToMajorScale()"
-              [class.off]="scale != 'major'"
+              [class.on]="scale == 'major'"
       >
         Major
       </button>
@@ -151,7 +153,7 @@
               class="overlay-button"
               fxFlex
               (click)="switchToMinorScale()"
-              [class.off]="scale != 'minor'"
+              [class.on]="scale == 'minor'"
       >
         Minor
       </button>
@@ -167,7 +169,7 @@
               class="overlay-button"
               fxFlex
               (click)="switchChordMode()"
-              [class.off]="!isInChordMode"
+              [class.on]="isInChordMode"
       >
         Switch Mode On/Off
       </button>
