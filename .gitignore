@@ -6,3 +6,4 @@ parent.iml
 .settings
 *.iml
 node_modules
+log/
