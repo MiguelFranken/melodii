@@ -1,5 +1,5 @@
-import { Note, Velocity, Cents } from '../types';
-import { Synth, Frequency, Gain } from 'tone';
+import { Note, Velocity } from '../types';
+import { Synth, Gain, PolySynth } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 import { DefaultMap } from '../defaultMap';
@@ -33,7 +33,7 @@ export class Mat implements IMCPInstrument {
 
   public isInChordMode = false;
 
-  private readonly voices = new DefaultMap(() => this.createVoice());
+  private readonly voices = new DefaultMap<Note, PolySynth>(() => this.createVoice());
   private readonly output = new Gain();
 
   private readonly logger: Logger = new Logger({ name: 'Mat Instrument', flags: ['music'] });
@@ -68,10 +68,8 @@ export class Mat implements IMCPInstrument {
 
     if (this.isInChordMode) {
       const chordNotes: Note[] = this.getChord(buttonIndex);
-      chordNotes.forEach((note) => {
-        const voice = this.voices.get(note);
-        voice.triggerAttack(note, undefined, velocity);
-      });
+      const voice: PolySynth = this.voices.get(note);
+      voice.triggerAttack(chordNotes, undefined, velocity);
       this.logger.info(`Trigger chord with root note ${note} and velocity ${velocity}. Playing chords: ${this.isInChordMode}`,
         { chord: chordNotes });
     } else {
@@ -89,11 +87,11 @@ export class Mat implements IMCPInstrument {
       const chordNotes: Note[] = this.getChord(buttonIndex);
       chordNotes.forEach((note) => {
         const voice = this.voices.get(note);
-        voice.triggerRelease();
+        voice.triggerRelease(chordNotes);
       });
     } else {
       const voice = this.voices.get(note);
-      voice.triggerRelease();
+      voice.triggerRelease(note);
     }
   }
 
@@ -181,8 +179,8 @@ export class Mat implements IMCPInstrument {
     this.setNotes();
   }
 
-  private createVoice(): Synth {
-    return new Synth().connect(this.output);
+  private createVoice(): PolySynth {
+    return new PolySynth<Synth>().connect(this.output);
   }
 
   public getAudioNode() {

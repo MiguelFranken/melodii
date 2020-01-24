@@ -1,30 +1,71 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { InstrumentName } from "../../generator/library/types";
 import { Logger } from "@upe/logger";
 import { GeneratorCommunicationService } from "../../generator/library/generator-communication.service";
+import { EffectStateService } from "../dashboard-effect-buttons/effect-state.service";
 import { IOSCMessage } from "../../shared/osc/osc-message";
-import { InstrumentName } from "../../generator/library/types";
 
 @Component({
-  selector: 'mcp-dashboard-effect-buttons',
-  templateUrl: './dashboard-effect-buttons.component.html',
-  styleUrls: ['./dashboard-effect-buttons.component.scss']
+  selector: 'mcp-master',
+  templateUrl: './master.component.html',
+  styleUrls: ['./master.component.scss']
 })
-export class DashboardEffectButtonsComponent implements OnInit {
+export class MasterComponent implements OnInit {
 
   @Input()
   instrumentName: InstrumentName;
 
   private logger: Logger = new Logger({ name: 'DashboardEffectButtonsComponent', flags: ['component'] });
 
-  public useReverb = false;
-  public usePingPongDelay = false;
+  get useReverb(): boolean {
+    return this.effectStateService.isUsedReverb(this.instrumentName);
+  }
 
-  public useEQ = false;
-  public useEQLow = false;
-  public useEQMid = false;
-  public useEQHigh = false;
+  set useReverb(value: boolean) {
+    this.effectStateService.setIsUsedReverb(this.instrumentName, value);
+  }
 
-  constructor(private communicationService: GeneratorCommunicationService) { }
+  get usePingPongDelay(): boolean {
+    return this.effectStateService.isUsedPingPongDelay(this.instrumentName);
+  }
+
+  set usePingPongDelay(value: boolean) {
+    this.effectStateService.setIsUsedPingPongDelay(this.instrumentName, value);
+  }
+
+  get useEQ(): boolean {
+    return this.effectStateService.isUsedEQ(this.instrumentName);
+  }
+
+  set useEQ(value: boolean) {
+    this.effectStateService.setIsUsedEQ(this.instrumentName, value);
+  }
+
+  get useEQLow(): boolean {
+    return this.effectStateService.isUsedEQLow(this.instrumentName);
+  }
+
+  set useEQLow(value: boolean) {
+    this.effectStateService.setIsUsedEQLow(this.instrumentName, value);
+  }
+
+  get useEQMid(): boolean {
+    return this.effectStateService.isUsedEQMid(this.instrumentName);
+  }
+
+  set useEQMid(value: boolean) {
+    this.effectStateService.setIsUsedEQMid(this.instrumentName, value);
+  }
+
+  get useEQHigh(): boolean {
+    return this.effectStateService.isUsedEQHigh(this.instrumentName);
+  }
+
+  set useEQHigh(value: boolean) {
+    this.effectStateService.setIsUsedEQHigh(this.instrumentName, value);
+  }
+
+  constructor(private communicationService: GeneratorCommunicationService, public effectStateService: EffectStateService) { }
 
   ngOnInit() {
   }
@@ -33,9 +74,8 @@ export class DashboardEffectButtonsComponent implements OnInit {
     this.useReverb = !this.useReverb;
 
     const oscMessage: IOSCMessage = {
-      address: '/effect/instrument/reverb',
+      address: '/effect/master/reverb',
       args: [
-        { type: 's', value: this.instrumentName },
         { type: 'i', value: this.useReverb ? 1 : 0 }
       ],
       info: null
@@ -50,9 +90,8 @@ export class DashboardEffectButtonsComponent implements OnInit {
     this.usePingPongDelay = !this.usePingPongDelay;
 
     const oscMessage: IOSCMessage = {
-      address: '/effect/instrument/pingpongdelay',
+      address: '/effect/master/pingpongdelay',
       args: [
-        { type: 's', value: this.instrumentName },
         { type: 'i', value: this.usePingPongDelay ? 1 : 0 }
       ],
       info: null
@@ -77,9 +116,8 @@ export class DashboardEffectButtonsComponent implements OnInit {
     }
 
     const oscMessage: IOSCMessage = {
-      address: '/effect/instrument/eq',
+      address: '/effect/master/eq',
       args: [
-        { type: 's', value: this.instrumentName },
         { type: 'i', value: this.useEQ ? 1 : 0 }
       ],
       info: null
@@ -114,9 +152,8 @@ export class DashboardEffectButtonsComponent implements OnInit {
 
   public sendEQLow() {
     const oscMessage: IOSCMessage = {
-      address: '/effect/instrument/eq/low',
+      address: '/effect/master/eq/low',
       args: [
-        { type: 's', value: this.instrumentName },
         { type: 'i', value: this.useEQLow ? 0 : -10 }
       ],
       info: {
@@ -132,9 +169,8 @@ export class DashboardEffectButtonsComponent implements OnInit {
 
   public sendEQMid() {
     const oscMessage: IOSCMessage = {
-      address: '/effect/instrument/eq/mid',
+      address: '/effect/master/eq/mid',
       args: [
-        { type: 's', value: this.instrumentName },
         { type: 'i', value: this.useEQMid ? 0 : -10 }
       ],
       info: {
@@ -150,9 +186,8 @@ export class DashboardEffectButtonsComponent implements OnInit {
 
   public sendEQHigh() {
     const oscMessage: IOSCMessage = {
-      address: '/effect/instrument/eq/high',
+      address: '/effect/master/eq/high',
       args: [
-        { type: 's', value: this.instrumentName },
         { type: 'i', value: this.useEQHigh ? 0 : -10 }
       ],
       info: {

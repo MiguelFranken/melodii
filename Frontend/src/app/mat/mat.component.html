@@ -5,16 +5,12 @@
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showRootNoteMenu()" fxFlex="calc(11.11% - 2px)" #rootNoteButton>Root Note</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showScaleMenu()" fxFlex="calc(11.11% - 2px)" #scaleButton>Scale</button>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showChordsMenu()" fxFlex="calc(11.11% - 2px)" #chordsButton>Chords</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="reset()" fxFlex="calc(11.11% - 2px)">Reset</button>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="onSwapNotesButtonPressed()" fxFlex="calc(11.11% - 2px)">
-        <mat-icon *ngIf="!editMode">add</mat-icon>
-        <mat-icon *ngIf="editMode">remove</mat-icon>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="onSwapNotesButtonPressed()" fxFlex="calc(11.11% - 2px)" [class.on]="editMode">
         <span>Swap Notes</span>
       </button>
-      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)">
-
-      </div>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showEffectsMenu()" fxFlex="calc(11.11% - 2px)" #effectsButton>Effects</button>
+      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
+      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
+      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchNavigation()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">menu</mat-icon></button>
     </div>
   </div>
@@ -91,17 +87,32 @@
 <!--region Templates-->
 <ng-template #octaveMenuTemplate let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
-    <div fxLayout fxLayoutAlign="center center" class="overlay-input-container">
-      <mat-form-field fxFlex>
-        <mat-label>Octave</mat-label>
-        <mat-select [(value)]="octave" (selectionChange)="changeOctave()">
-          <mat-option value="1">1</mat-option>
-          <mat-option value="2">2</mat-option>
-          <mat-option value="3">3</mat-option>
-          <mat-option value="4">4</mat-option>
-          <mat-option value="5">5</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div fxLayout fxLayoutAlign="center">
+      <div class="overlay-info" fxFlex fxLayout fxLayoutAlign="center center">
+        {{ octave }}
+      </div>
+    </div>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="decreaseOctave()"
+              [disabled]="+octave == 1"
+              [class.off]="+octave == 1"
+      >
+        <mat-icon>remove</mat-icon>
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="increaseOctave()"
+              [disabled]="+octave == 5"
+              [class.off]="+octave == 5"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
     </div>
   </div>
 </ng-template>
@@ -127,14 +138,25 @@
 
 <ng-template #scaleMenuTemplate let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
-    <div fxLayout fxLayoutAlign="center center" class="overlay-input-container">
-      <mat-form-field fxFlex>
-        <mat-label>Scale</mat-label>
-        <mat-select [(value)]="scale" (selectionChange)="changeScale()">
-          <mat-option value="major">Major</mat-option>
-          <mat-option value="minor">Minor</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchToMajorScale()"
+              [class.on]="scale == 'major'"
+      >
+        Major
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchToMinorScale()"
+              [class.on]="scale == 'minor'"
+      >
+        Minor
+      </button>
     </div>
   </div>
 </ng-template>
@@ -147,7 +169,7 @@
               class="overlay-button"
               fxFlex
               (click)="switchChordMode()"
-              [class.off]="!isInChordMode"
+              [class.on]="isInChordMode"
       >
         Switch Mode On/Off
       </button>

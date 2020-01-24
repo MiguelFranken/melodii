@@ -13,6 +13,9 @@ export class VolumeComponent implements OnInit {
   private meterVisualizationMat: MeterVisualization;
   private meterVisualizationBox: MeterVisualization;
   private meterVisualizationArc: MeterVisualization;
+  private meterVisualizationCello: MeterVisualization;
+  private meterVisualizationDrums: MeterVisualization;
+  private meterVisualizationPiano: MeterVisualization;
 
   @ViewChild('canvasMaster', { static: true })
   cvsMaster: ElementRef<HTMLCanvasElement>;
@@ -26,10 +29,22 @@ export class VolumeComponent implements OnInit {
   @ViewChild('canvasArc', { static: true })
   cvsArc: ElementRef<HTMLCanvasElement>;
 
+  @ViewChild('canvasDrums', { static: true })
+  cvsDrums: ElementRef<HTMLCanvasElement>;
+
+  @ViewChild('canvasCello', { static: true })
+  cvsCello: ElementRef<HTMLCanvasElement>;
+
+  @ViewChild('canvasPiano', { static: true })
+  cvsPiano: ElementRef<HTMLCanvasElement>;
+
   private ctxMaster: CanvasRenderingContext2D;
   private ctxMat: CanvasRenderingContext2D;
   private ctxBox: CanvasRenderingContext2D;
   private ctxArc: CanvasRenderingContext2D;
+  private ctxCello: CanvasRenderingContext2D;
+  private ctxDrums: CanvasRenderingContext2D;
+  private ctxPiano: CanvasRenderingContext2D;
 
   constructor(private musicService: MusicService) {
   }
@@ -39,17 +54,23 @@ export class VolumeComponent implements OnInit {
     this.ctxMat = this.cvsMat.nativeElement.getContext('2d');
     this.ctxBox = this.cvsBox.nativeElement.getContext('2d');
     this.ctxArc = this.cvsArc.nativeElement.getContext('2d');
+    this.ctxCello = this.cvsCello.nativeElement.getContext('2d');
+    this.ctxDrums = this.cvsDrums.nativeElement.getContext('2d');
+    this.ctxPiano = this.cvsPiano.nativeElement.getContext('2d');
 
     this.initMasterMeter();
     this.initMatMeter();
     this.initBoxMeter();
     this.initArcMeter();
+    this.initCelloMeter();
+    this.initDrumsMeter();
+    this.initPianoMeter();
   }
 
   private initMasterMeter() {
     this.meterVisualizationMaster = new MeterVisualization(
-      this.musicService.getMeter('mat-left'),
-      this.musicService.getMeter('mat-right'),
+      this.musicService.getMeter('master-left'),
+      this.musicService.getMeter('master-right'),
       this.cvsMaster.nativeElement,
       this.ctxMaster
     );
@@ -84,6 +105,36 @@ export class VolumeComponent implements OnInit {
       this.ctxArc
     );
     this.meterVisualizationArc.animate();
+  }
+
+  private initDrumsMeter() {
+    this.meterVisualizationDrums = new MeterVisualization(
+      this.musicService.getDrumsMeterLeft(), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getDrumsMeterRight(), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.cvsDrums.nativeElement,
+      this.ctxDrums
+    );
+    this.meterVisualizationDrums.animate();
+  }
+
+  private initPianoMeter() {
+    this.meterVisualizationPiano = new MeterVisualization(
+      this.musicService.getMeter('piano-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('piano-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.cvsPiano.nativeElement,
+      this.ctxPiano
+    );
+    this.meterVisualizationPiano.animate();
+  }
+
+  private initCelloMeter() {
+    this.meterVisualizationCello = new MeterVisualization(
+      this.musicService.getMeter('cello-left'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.musicService.getMeter('cello-right'), // TODO MF: Namen müssen wahrscheinlich angepasst werden
+      this.cvsCello.nativeElement,
+      this.ctxCello
+    );
+    this.meterVisualizationCello.animate();
   }
 
 }

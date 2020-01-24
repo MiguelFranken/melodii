@@ -8,6 +8,8 @@ import { Logger } from '@upe/logger';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Overlay } from '../shared/help-overlay/help-overlay.service';
 import { IOSCMessage } from '../shared/osc/osc-message';
+import { MatStateService } from "./mat-state.service";
+import { NavigationService } from "../shared/layout/navigation/navigation.service";
 
 @Component({
   selector: 'mcp-mat',
@@ -52,11 +54,23 @@ export class MatComponent implements OnInit, AfterViewInit {
   private chordsMenuOverlay: Overlay;
   private effectsMenuOverlay: Overlay;
 
-  public isInChordMode = false;
+  get isInChordMode(): boolean {
+    return this.matStateService.getIsInChordMode();
+  }
+
+  set isInChordMode(value: boolean) {
+    this.matStateService.setIsInChordMode(value);
+  }
 
   private logger: Logger = new Logger({ name: 'Mat Component' });
 
-  public editMode = false;
+  get editMode(): boolean {
+    return this.matStateService.getIsInEditMode();
+  }
+
+  set editMode(value: boolean) {
+    this.matStateService.setIsInEditMode(value);
+  }
 
   private mapping = new Map([
     [0, 0],
@@ -75,9 +89,29 @@ export class MatComponent implements OnInit, AfterViewInit {
   public octaves: Octave[] = [];
   public degrees: Degree[] = [];
 
-  public octave = "3";
-  public scale = 'major';
-  public rootNote = 'C';
+  get octave() {
+    return this.matStateService.getCurrentOctave();
+  }
+
+  set octave(value) {
+    this.matStateService.setCurrentOctave(value);
+  }
+
+  get scale() {
+    return this.matStateService.getCurrentScale();
+  }
+
+  set scale(value) {
+    this.matStateService.setCurrentScale(value);
+  }
+
+  get rootNote() {
+    return this.matStateService.getCurrentRootNote();
+  }
+
+  set rootNote(value) {
+    this.matStateService.setCurrentRootNote(value);
+  }
 
   @ViewChild('block', { static: true })
   block: ElementRef<HTMLElement>;
@@ -174,6 +208,8 @@ export class MatComponent implements OnInit, AfterViewInit {
   constructor(
     private communicationService: GeneratorCommunicationService,
     private musicService: MusicService,
+    private matStateService: MatStateService,
+    private navigationService: NavigationService,
     private toppy: Toppy) { }
 
   ngOnInit() {
@@ -227,10 +263,7 @@ export class MatComponent implements OnInit, AfterViewInit {
   }
 
   public getIndex(key: number) {
-    const test = [...this.mapping.entries()]
-      .filter(({ 1: v }) => v === key)
-      .map(([k]) => k);
-    return test[0];
+    return this.mapping.get(key);
   }
 
   private trigger(index: ButtonIndex) {
@@ -254,6 +287,30 @@ export class MatComponent implements OnInit, AfterViewInit {
       ],
       info: null
     });
+  }
+
+  public increaseOctave() {
+    this.logger.info(`Increase octave ${this.octave}`);
+
+    let newOctave = +this.octave;
+    if (newOctave < 5) {
+      newOctave = newOctave + 1;
+    }
+
+    this.octave = `${newOctave}`;
+    this.changeOctave();
+  }
+
+  public decreaseOctave() {
+    this.logger.info(`Decrease octave ${this.octave}`);
+
+    let newOctave = +this.octave;
+    if (newOctave > 1) {
+      newOctave = newOctave - 1;
+    }
+
+    this.octave = `${newOctave}`;
+    this.changeOctave();
   }
 
   public changeOctave() {
@@ -280,6 +337,16 @@ export class MatComponent implements OnInit, AfterViewInit {
     });
 
     this.setNotes();
+  }
+
+  public switchToMajorScale() {
+    this.scale = "major";
+    this.changeScale();
+  }
+
+  public switchToMinorScale() {
+    this.scale = "minor";
+    this.changeScale();
   }
 
   public changeScale() {
@@ -405,12 +472,8 @@ export class MatComponent implements OnInit, AfterViewInit {
     this.effectsMenuOverlay.open();
   }
 
-  public reset() {
-    // TODO
-  }
-
   public switchNavigation() {
-    // TODO
+    this.navigationService.switchNavigation();
   }
 
   public switchChordMode() {

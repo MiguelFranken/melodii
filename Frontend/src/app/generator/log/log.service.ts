@@ -9,7 +9,7 @@ export class LogService {
 
   private receiveEvent: EventEmitter<any> = new EventEmitter();
 
-  private maxMessagesSaved = 100;
+  private maxMessagesSaved = 19;
   private messageCounter = 0;
   private messages: MessageQueue = [];
 

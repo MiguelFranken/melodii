@@ -3,9 +3,13 @@ import { Frequency, Gain, Synth } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
 import { DefaultMap } from '../defaultMap';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { convertMonoToStereo } from '../utils';
 
 export class Box implements IMCPInstrument {
+
+  constructor(public readonly name: MCPInstrumentName = "Box") {
+  }
 
   private readonly voices: DefaultMap<Note, Synth> = new DefaultMap(() => this.createVoice());
   private readonly output = new Gain();
@@ -13,9 +17,6 @@ export class Box implements IMCPInstrument {
   private pitchShift = 0;
 
   private readonly logger: Logger = new Logger({ name: 'Box Instrument', flags: ['music'] });
-
-  constructor(public readonly name: MCPInstrumentName = "Box") {
-  }
 
   private static frequencyFromNote(note: Note): number {
     return Frequency(note).toFrequency();
@@ -55,7 +56,23 @@ export class Box implements IMCPInstrument {
   }
 
   private createVoice(): Synth {
-    return new Synth({ detune: this.pitchShift }).connect(this.output);
+    return new Synth({
+      detune: this.pitchShift,
+      portamento: 0.04,
+      envelope: {
+        attack: 0.19,
+        attackCurve: "step",
+        decay: 0.21,
+        decayCurve: "linear",
+        sustain: 0.3,
+        release: 0.1,
+        releaseCurve: "linear",
+      },
+      oscillator: {
+        type: "custom" as any,
+        partials: [1, 0.5]
+      }
+    }).connect(this.output);
   }
 
   public getAudioNode() {

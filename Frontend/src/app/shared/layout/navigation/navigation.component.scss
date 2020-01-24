@@ -46,6 +46,10 @@ $overlay-margin-top: 12px;
   color: $mcp-white-2
 }
 
+.on {
+  background-color: $mcp-green-2 !important;
+}
+
 .overlay {
   margin-top: $overlay-margin-top;
   background-color: $mcp-black-1;
@@ -63,7 +67,7 @@ $overlay-margin-top: 12px;
 }
 
 .overlay:after, .overlay:before {
-  bottom: 99%;
+  bottom: 100%;
   left: 5.3%;
   border: solid transparent;
   content: " ";

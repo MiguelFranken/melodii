@@ -2,7 +2,7 @@
   "name": "osc-frontend",
   "version": "0.0.0",
   "scripts": {
-    "start": "ng serve --port 4200",
+    "start": "ng serve --host 0.0.0.0 --port 4200",
     "start:aot": "ng serve --port 4200 --aot",
     "start:iPad": "ng serve --host 0.0.0.0 --port 4200 --disable-host-check --disableHostCheck",
     "build:master": "ng build --configuration=master",
