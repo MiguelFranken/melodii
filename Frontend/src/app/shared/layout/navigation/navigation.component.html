@@ -22,22 +22,24 @@
 <!--region Sound Settings Menu-->
 <ng-template #tpl let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
-    <div fxLayout fxLayoutGap="2px">
-      <button
-              mat-button
-              class="overlay-button"
-              fxFlex
-              (click)="switchSound()"
-      >Sound <span [class.off]="!hasSound">On</span>/<span [class.off]="hasSound">Off</span>
-      </button>
-    </div>
+<!--    <div fxLayout fxLayoutGap="2px">-->
+<!--      <button-->
+<!--              mat-button-->
+<!--              class="overlay-button"-->
+<!--              fxFlex-->
+<!--              (click)="switchSound()"-->
+<!--      >Sound <span [class.off]="!hasSound">On</span>/<span [class.off]="hasSound">Off</span>-->
+<!--      </button>-->
+<!--    </div>-->
     <div fxLayout fxLayoutGap="2px">
       <button
               mat-button
               class="overlay-button"
               fxFlex
               (click)="switchDirectCommunication()"
-              >Direct Communication <span [class.off]="!useDirectCommunication">On</span>/<span [class.off]="useDirectCommunication">Off</span>
+              [class.on]="useDirectCommunication"
+      >
+        Direct Communication
       </button>
     </div>
     <div fxLayout fxLayoutGap="2px">
@@ -46,7 +48,9 @@
               class="overlay-button"
               fxFlex
               (click)="switchMessageIndicator()"
-      ><span [class.off]="!showMessageIndicator">Show</span>/<span [class.off]="showMessageIndicator">Hide</span> Message Indicator
+              [class.on]="showMessageIndicator"
+      >
+        Message Indicator
       </button>
     </div>
     <div fxLayout fxLayoutGap="2px">
@@ -60,17 +64,17 @@
         Advanced Settings
       </button>
     </div>
-    <div fxLayout fxLayoutGap="2px">
-      <button
-              mat-button
-              class="overlay-button"
-              fxFlex
-              routerLink="experiments"
-              (click)="toppy.close()"
-      >
-        Experiments
-      </button>
-    </div>
+<!--    <div fxLayout fxLayoutGap="2px">-->
+<!--      <button-->
+<!--              mat-button-->
+<!--              class="overlay-button"-->
+<!--              fxFlex-->
+<!--              routerLink="experiments"-->
+<!--              (click)="toppy.close()"-->
+<!--      >-->
+<!--        Experiments-->
+<!--      </button>-->
+<!--    </div>-->
   </div>
 </ng-template>
 <!--endregion-->

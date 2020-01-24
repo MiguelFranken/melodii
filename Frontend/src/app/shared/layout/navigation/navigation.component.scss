@@ -46,6 +46,10 @@ $overlay-margin-top: 12px;
   color: $mcp-white-2
 }
 
+.on {
+  background-color: $mcp-green-2 !important;
+}
+
 .overlay {
   margin-top: $overlay-margin-top;
   background-color: $mcp-black-1;
