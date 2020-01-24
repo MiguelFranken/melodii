@@ -207,3 +207,6 @@ $overlay-margin-top: 12px;
   background-color: $mcp-green-2 !important;
 }
 
+::ng-deep .disableAnimation *{
+  transition: none !important;
+}

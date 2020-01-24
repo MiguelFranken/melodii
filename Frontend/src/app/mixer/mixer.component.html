@@ -1,4 +1,4 @@
-<div class="mixer" style="height: 100%; width: 100%; overflow: auto; padding-left: 320px;" fxLayout fxLayoutAlign="center stretch" fxLayoutGap="10px">
+<div class="mixer" style="height: 100%; width: 100%; overflow: auto; padding-left: 320px;" fxLayout fxLayoutAlign="center stretch" fxLayoutGap="10px" [ngClass]="{'disableAnimation':isSliderAnimationDisabled}">
   <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
     <div fxFlex class="velocity-slider">
       <mat-slider

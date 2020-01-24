@@ -76,3 +76,7 @@
 {
   width: 100px !important;
 }
+
+::ng-deep .disableAnimation *{
+  transition: none !important;
+}

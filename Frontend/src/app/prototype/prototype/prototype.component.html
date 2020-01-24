@@ -17,6 +17,7 @@
                 fxFlex
                 (input)="changeBpm($event)"
                 (change)="updateMatrix()"
+                [ngClass]="{'disableAnimation':isAnimationDisabled}"
         >
         </mat-slider>
       </div>

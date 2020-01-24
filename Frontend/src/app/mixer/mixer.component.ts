@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MusicService } from '../generator/library/music.service';
 import { Volume } from "tone";
 import { IOSCMessage } from "../shared/osc/osc-message";
@@ -9,7 +9,9 @@ import { GeneratorCommunicationService } from "../generator/library/generator-co
   templateUrl: './mixer.component.html',
   styleUrls: ['./mixer.component.scss']
 })
-export class MixerComponent implements OnInit {
+export class MixerComponent implements OnInit, AfterViewInit {
+
+  public isSliderAnimationDisabled: boolean = true;
 
   public masterVolume: number;
   public arcVolume: number;
@@ -165,6 +167,12 @@ export class MixerComponent implements OnInit {
     };
 
     this.communicationService.sendMessage(oscMessage);
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.isSliderAnimationDisabled = false;
+    })
   }
 
 }

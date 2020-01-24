@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, interval, Observable, Subject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -62,7 +62,9 @@ let playSubscription: Subscription;
   templateUrl: './prototype.component.html',
   styleUrls: ['./prototype.component.scss']
 })
-export class PrototypeComponent implements OnInit, OnDestroy {
+export class PrototypeComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  public isAnimationDisabled: boolean = true;
 
   public showRowNames = true;
 
@@ -1198,6 +1200,12 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   public notYetImplemented() {
     this.notYetImplementedService.openSnackbar();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.isAnimationDisabled = false;
+    })
   }
 
 }
