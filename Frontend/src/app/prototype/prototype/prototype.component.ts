@@ -484,8 +484,10 @@ export class PrototypeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.debug("_interval", { interval: _interval });
 
     // create matrices
-    this.createMatrixDrums();
-    this.createMatrixPiano();
+    if (matrixCollection.length == 0) {
+      this.createMatrixDrums();
+      this.createMatrixPiano();
+    }
 
     matrix = matrixCollection[matrixCollectionIndex];
   }
@@ -531,7 +533,7 @@ export class PrototypeComponent implements OnInit, OnDestroy, AfterViewInit {
       for (const row of matrix.rows) {
         row.buttons.forEach((button: RowButton, columnIndex: number) => {
           button.isPlayed = false;
-          button.isActive = false;
+          // button.isActive = false;
         });
       }
     }
@@ -560,7 +562,7 @@ export class PrototypeComponent implements OnInit, OnDestroy, AfterViewInit {
       for (const row of matrix.rows) {
         row.buttons.forEach((button: RowButton, columnIndex: number) => {
           button.isPlayed = false;
-          button.isActive = false;
+          // button.isActive = false;
         });
       }
     }
