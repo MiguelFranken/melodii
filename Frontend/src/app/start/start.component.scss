@@ -4,4 +4,14 @@
   font-size: 300px;
   font-weight: bold;
   color: $mcp-black-3;
+  z-index: 2;
+}
+
+.logo-start {
+  position: absolute;
+  width: 90vw;
+  top: 120px;
+  left: 5vw;
+  z-index: 1;
+  opacity: 0.03;
 }
