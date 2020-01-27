@@ -29,6 +29,25 @@ Arguments:
 
 </p></details></td>
 </tr>
+<tr style="vertical-align:top;">
+<td>Activate/deactivate note</td>
+<td>Activates/deactivates a specific note</td>
+<td><details><p>
+
+Path:
+```
+/arc/switch
+```
+Arguments:
+```
+[
+    { s,note },  // Expects a note as string without octave at the end
+    { i,state },  // Expects a boolean as integer
+]
+```
+
+</p></details></td>
+</tr>
 </table>
 
 
