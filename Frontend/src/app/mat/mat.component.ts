@@ -163,7 +163,9 @@ export class MatComponent implements OnInit, AfterViewInit {
           this.trigger(index);
         }
       });
-      button.nativeElement.addEventListener("touchstart", (event: any) => {
+      button.nativeElement.addEventListener("touchstart", (event: TouchEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
         if (!this.editMode) {
           this.logger.info(`Mouse Down Button ${index}`);
           this.trigger(index);
