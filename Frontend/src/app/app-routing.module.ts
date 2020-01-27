@@ -9,6 +9,7 @@ import { AdvancedSettingsComponent } from "./advanced-settings/advanced-settings
 import { ContextComponent } from "./context/context.component";
 import { EffectsComponent } from './effects/effects.component';
 import { StartComponent } from './start/start.component';
+import { ArcComponent } from './arc/arc.component';
 
 const routes: Routes = [
   {
@@ -36,8 +37,12 @@ const routes: Routes = [
     component: LogComponent,
   },
   {
-    path: 'arc',
+    path: 'cello',
     component: CelloComponent,
+  },
+  {
+    path: 'arc',
+    component: ArcComponent,
   },
   {
     path: 'mixer',

@@ -1,0 +1,15 @@
+<div class="arc-container" fxLayout="column" fxLayoutAlign="stretch">
+  <div class="keyboard" fxLayout fxLayoutGap="10px">
+    <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('C')" fxLayout fxLayoutAlign="center" (click)="switchNote('C')">C</div>
+    <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('C#')" fxLayout fxLayoutAlign="center" (click)="switchNote('C#')">C#</div>
+    <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('D')" fxLayout fxLayoutAlign="center" (click)="switchNote('D')">D</div>
+    <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('D#')" fxLayout fxLayoutAlign="center" (click)="switchNote('D#')">D#</div>
+    <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('E')" fxLayout fxLayoutAlign="center" (click)="switchNote('E')">E</div>
+    <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('F')" fxLayout fxLayoutAlign="center" (click)="switchNote('F')">F</div>
+    <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('G')" fxLayout fxLayoutAlign="center" (click)="switchNote('G')">G</div>
+    <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('G#')" fxLayout fxLayoutAlign="center" (click)="switchNote('G#')">G#</div>
+    <div fxFlex="calc(12.5% - 2px)" class="key active" [class.active]="mapping.get('A')" fxLayout fxLayoutAlign="center" (click)="switchNote('A')">A</div>
+    <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('A#')" fxLayout fxLayoutAlign="center" (click)="switchNote('A#')">A#</div>
+    <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('B')" fxLayout fxLayoutAlign="center" (click)="switchNote('B')">B</div>
+  </div>
+</div>
