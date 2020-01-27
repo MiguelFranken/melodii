@@ -14,7 +14,8 @@ export class ArcController {
 
   private arc: Arc;
 
-  public mapping: Map<string, boolean> = new Map();
+  private mapping: Map<string, boolean> = new Map();
+  private useVelocity = true;
 
   constructor(private music: MusicService) {
     this.arc = music.getInstrument("arc") as Arc;
@@ -48,7 +49,12 @@ export class ArcController {
     try {
       const { args } = message;
       const note = TypeChecker.ValidNoteArg(args[0]);
-      const strength: any = args[1].value; // TODO: Validate strength
+      let strength: any;
+      if (this.useVelocity || args[1].value === 0) {
+        strength = args[1].value; // TODO: Validate strength
+      } else {
+        strength = 1;
+      }
 
       if (this.mapping.get(note.substr(0, note.length - 1))) {
         this.arc.set(note, strength);
@@ -65,12 +71,12 @@ export class ArcController {
    * @apiGroup Arc
    * @apiName Activate/deactivate note
    * @apiDesc Activates/deactivates a specific note
-   * @apiPath /arc/switch
+   * @apiPath /arc/switch/velocity
    * @apiArgs s,note Expects a note as string without octave at the end
    * @apiArgs i,state Expects a boolean as integer
    */
-  @OnMessage('/switch')
-  public switch(@Message() message: IOSCMessage) {
+  @OnMessage('/switch/note')
+  public switchNote(@Message() message: IOSCMessage) {
     try {
       const { args } = message;
       const note: Note = TypeChecker.ValidNoteWithoutOctaveArg(args[0]);
@@ -86,6 +92,23 @@ export class ArcController {
       this.mapping.set(note, state);
 
       this.logger.info(`Switched note`, { note, state });
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
+  /**
+   * @apiGroup Arc
+   * @apiName Activate/deactivate velocity
+   * @apiDesc Activates/deactivates whether the arc instrument can send velocity for notes
+   * @apiPath /arc/switch/velocity
+   * @apiArgs i,state Expects a boolean as integer
+   */
+  @OnMessage('/switch/velocity')
+  public switchVelocity(@Message() message: IOSCMessage) {
+    try {
+      const { args } = message;
+      this.useVelocity = TypeChecker.ValidBoolArg(args[0]);
     } catch (e) {
       this.printError(e);
     }

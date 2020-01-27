@@ -1,7 +1,7 @@
 @import "src/scss/variables";
 
 .arc-container {
-  height: 100%;
+  //height: 100%;
   width: calc(100% - 20px);
   overflow: auto;
   padding: 10px 10px 10px 0;
@@ -21,8 +21,33 @@
     background: $mcp-black-2;
     user-select: none;
   }
+}
 
-  .active {
-    background: $mcp-green-2 !important;
-  }
+.active {
+  background: $mcp-green-2 !important;
+}
+
+.action-button {
+  padding: 10px;
+  cursor: pointer;
+  background-color: $mcp-black-2;
+  border-radius: 0;
+}
+.action-button:hover {
+  background-color: $mcp-black-2-hover;
+}
+.spacer-menu {
+  padding: 10px;
+  background-color: $mcp-black-2;
+  border-radius: 0;
+}
+
+.menu {
+  padding: 2px;
+  color: $mcp-white-1;
+  min-height: 55px;
+}
+
+.action-icon {
+  transform: scale(2);
 }

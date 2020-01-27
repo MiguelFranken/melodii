@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Logger } from '@upe/logger';
 import { GeneratorCommunicationService } from '../generator/library/generator-communication.service';
+import { NavigationService } from '../shared/layout/navigation/navigation.service';
 
 @Component({
   selector: 'mcp-arc',
@@ -13,7 +14,10 @@ export class ArcComponent implements OnInit {
 
   public mapping: Map<string, boolean> = new Map();
 
-  constructor(private communicationService: GeneratorCommunicationService) { }
+  public useVelocity = true;
+  public isVelocityReversed = false;
+
+  constructor(private communicationService: GeneratorCommunicationService, private navigationService: NavigationService) { }
 
   ngOnInit() {
     this.mapping.set("C", true);
@@ -36,13 +40,35 @@ export class ArcComponent implements OnInit {
     this.logger.info(`Switched ${note}`, { newState });
 
     this.communicationService.sendMessage({
-      address: "/arc/switch",
+      address: "/arc/switch/note",
       args: [
         { type: "s", value: note },
         { type: "i", value: newState ? 1 : 0 }
       ],
       info: null
     });
+  }
+
+  public switchNavigation() {
+    this.navigationService.switchNavigation();
+  }
+
+  public switchVelocity() {
+    this.useVelocity = !this.useVelocity;
+
+    this.logger.info(`Switched velocity`, { useVelocity: this.useVelocity });
+
+    this.communicationService.sendMessage({
+      address: "/arc/switch/velocity",
+      args: [
+        { type: "i", value: this.useVelocity ? 1 : 0 }
+      ],
+      info: null
+    });
+  }
+
+  public switchReversedVelocity() {
+    this.isVelocityReversed = !this.isVelocityReversed;
   }
 
 }
