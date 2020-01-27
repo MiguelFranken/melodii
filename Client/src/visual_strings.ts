@@ -19,8 +19,9 @@ export default {
     PLAY_NOTE: '(b) play random note',
     PLAY_SONG: '(c) play song',
     PLAY_SONG_BOX: '(d) play song (box)',
-    DRUMS_MENU: '(e) drums menu', // sub menu
-    SETTINGS_MENU: '(f) change settings', // sub menu
+    PLAY_SONG_MAT: '(e) play song (mat)',
+    DRUMS_MENU: '(f) drums menu', // sub menu
+    SETTINGS_MENU: '(g) change settings', // sub menu
 
     // settings menu
     CHANGE_PATH: '(a) change osc path',

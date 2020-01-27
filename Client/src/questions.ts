@@ -30,6 +30,7 @@ export default [
             text.PLAY_NOTE,
             text.PLAY_SONG,
             text.PLAY_SONG_BOX,
+            text.PLAY_SONG_MAT,
             text.DRUMS_MENU,
             text.SETTINGS_MENU,
             text.EXIT,

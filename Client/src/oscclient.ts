@@ -101,12 +101,12 @@ export class OSCClient {
 
     // E2 G2 B2
     public async playAmelie(): Promise<any> {
-        const arrNotes = [
-            "E2", "G2", "B2", "A4",
-            "E4", "A4", "G4", "A4",
-            "D3", "A4", "G4", "A4",
-            "D3", "A4", "G4", "A4",
-        ];
+        // const arrNotes = [
+        //     "E2", "G2", "B2", "A4",
+        //     "E4", "A4", "G4", "A4",
+        //     "D3", "A4", "G4", "A4",
+        //     "D3", "A4", "G4", "A4",
+        // ];
         const arrNotes2 = [
             "E4", "A4", "G4", "A4",
             "E4", "A4", "G4", "A4",
@@ -125,12 +125,12 @@ export class OSCClient {
     }
 
     public async playAmelieBox(): Promise<any> {
-        const arrNotes = [
-            "E2", "G2", "B2", "A4",
-            "E4", "A4", "G4", "A4",
-            "D3", "A4", "G4", "A4",
-            "D3", "A4", "G4", "A4",
-        ];
+        // const arrNotes = [
+        //     "E2", "G2", "B2", "A4",
+        //     "E4", "A4", "G4", "A4",
+        //     "D3", "A4", "G4", "A4",
+        //     "D3", "A4", "G4", "A4",
+        // ];
         const arrNotes2 = [
             "E4", "A4", "G4", "A4",
             "E4", "A4", "G4", "A4",
@@ -148,7 +148,36 @@ export class OSCClient {
             ];
             this.send("/box/trigger", args);
             await this.sleep(150);
-            this.send("/box/release", args);
+            this.send("/box/release", args2);
+            await this.sleep(150);
+        }
+    }
+
+    public async playAmelieMat(): Promise<any> {
+        // const arrNotes = [
+        //     "E2", "G2", "B2", "A4",
+        //     "E4", "A4", "G4", "A4",
+        //     "D3", "A4", "G4", "A4",
+        //     "D3", "A4", "G4", "A4",
+        // ];
+        const arrNotes2 = [
+            1, 4, 3, 4,
+            1, 4, 3, 4,
+            0, 4, 3, 4,
+            0, 4, 3, 4,
+        ];
+        for (let i = 0; i < 4 * 4; i++) {
+            const args: IOSCArgs[] = [
+                {type: "i", value: arrNotes2[i]},
+                // {type: "s", value: "8n"},
+                {type: "f", value: 1},
+            ];
+            const args2: IOSCArgs[] = [
+                {type: "i", value: arrNotes2[i]},
+            ];
+            this.send("/mat/trigger", args);
+            await this.sleep(150);
+            this.send("/mat/release", args2);
             await this.sleep(150);
         }
     }

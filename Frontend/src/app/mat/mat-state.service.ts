@@ -12,6 +12,9 @@ export class MatStateService {
   public scale = 'major';
   public rootNote = 'C';
 
+  public useSynthSound = true;
+  public useSawToothSound = false;
+
   public getIsInChordMode(): boolean {
     return this.isInChordMode;
   }

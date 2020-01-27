@@ -33,7 +33,7 @@ export class Mat implements IMCPInstrument {
 
   public isInChordMode = false;
 
-  private readonly voices = new DefaultMap<Note, PolySynth>(() => this.createVoice());
+  private voices = new DefaultMap<Note, PolySynth>(() => this.createVoice());
   private readonly output = new Gain();
 
   private readonly logger: Logger = new Logger({ name: 'Mat Instrument', flags: ['music'] });
@@ -50,6 +50,22 @@ export class Mat implements IMCPInstrument {
       "VII",
       "I"
     ];
+  }
+
+  public setSynthVoices() {
+    const oldVoices = this.voices;
+    this.voices = new DefaultMap(() => this.createVoice());
+    oldVoices.forEach((voice, note) => {
+      voice.triggerRelease(note);
+    });
+  }
+
+  public setSawToothVoices() {
+    const oldVoices = this.voices;
+    this.voices = new DefaultMap(() => this.createSawToothVoice());
+    oldVoices.forEach((voice, note) => {
+      voice.triggerRelease(note);
+    });
   }
 
   /**
@@ -181,6 +197,23 @@ export class Mat implements IMCPInstrument {
 
   private createVoice(): PolySynth {
     return new PolySynth<Synth>().connect(this.output);
+  }
+
+  private createSawToothVoice() {
+    return new PolySynth<Synth>(Synth, {
+      "oscillator" : {
+        "type" : "fatsawtooth",
+        "count" : 3,
+        "spread" : 30
+      },
+      "envelope" : {
+        "attack" : 0.01,
+        "decay" : 0.1,
+        "sustain" : 0.5,
+        "release" : 0.4,
+        "attackCurve" : "exponential"
+      }
+    }).connect(this.output);
   }
 
   public getAudioNode() {

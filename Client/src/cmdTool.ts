@@ -201,6 +201,11 @@ export default class CmdTool {
         this.menu();
     }
 
+    private playSongMat() {
+        this.cli.playAmelieMat().then().catch();
+        this.menu();
+    }
+
     private playRandomNote() {
         const arg1: IOSCArgs = {
             type: "s", value: "C4",
@@ -236,6 +241,8 @@ export default class CmdTool {
                         return this.playSong();
                     case text.PLAY_SONG_BOX:
                         return this.playSongBox();
+                    case text.PLAY_SONG_MAT:
+                        return this.playSongMat();
                     default:
                         return this.menu();
                 }

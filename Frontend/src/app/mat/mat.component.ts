@@ -21,6 +21,9 @@ export class MatComponent implements OnInit, AfterViewInit {
   @ViewChild('octaveButton', { static: true, read: ElementRef })
   octaveButtonElement: ElementRef;
 
+  @ViewChild('soundButton', { static: true, read: ElementRef })
+  soundButtonElement: ElementRef;
+
   @ViewChild('rootNoteButton', { static: true, read: ElementRef })
   rootNoteButtonElement: ElementRef;
 
@@ -36,6 +39,9 @@ export class MatComponent implements OnInit, AfterViewInit {
   @ViewChild('octaveMenuTemplate', { static: true })
   octaveMenuTemplate: TemplateRef<any>;
 
+  @ViewChild('soundMenuTemplate', { static: true })
+  soundMenuTemplate: TemplateRef<any>;
+
   @ViewChild('rootNoteMenuTemplate', { static: true })
   rootNoteMenuTemplate: TemplateRef<any>;
 
@@ -49,10 +55,27 @@ export class MatComponent implements OnInit, AfterViewInit {
   chordsMenuTemplate: TemplateRef<any>;
 
   private octaveMenuOverlay: Overlay;
+  private soundMenuOverlay: Overlay;
   private rootNoteMenuOverlay: Overlay;
   private scaleMenuOverlay: Overlay;
   private chordsMenuOverlay: Overlay;
   private effectsMenuOverlay: Overlay;
+
+  public get useSynthSound(): boolean {
+    return this.matStateService.useSynthSound;
+  }
+
+  public set useSynthSound(state: boolean) {
+    this.matStateService.useSynthSound = state;
+  }
+
+  public get useSawToothSound(): boolean {
+    return this.matStateService.useSawToothSound;
+  }
+
+  public set useSawToothSound(state: boolean) {
+    this.matStateService.useSawToothSound = state;
+  }
 
   get isInChordMode(): boolean {
     return this.matStateService.getIsInChordMode();
@@ -378,12 +401,34 @@ export class MatComponent implements OnInit, AfterViewInit {
       .content(this.octaveMenuTemplate, { name: 'Johny' })
       .create();
 
-    this.logger.info('Initialized help menu overlay');
+    this.logger.info('Initialized octave menu overlay');
   }
 
   public showOctaveMenu() {
     this.initOctaveMenuOverlay();
     this.octaveMenuOverlay.open();
+  }
+
+  private initSoundMenuOverlay() {
+    const position = new RelativePosition({
+      placement: OutsidePlacement.BOTTOM_LEFT,
+      src: this.soundButtonElement.nativeElement
+    });
+
+    this.soundMenuOverlay = this.toppy
+      .position(position)
+      .config({
+        closeOnDocClick: true
+      })
+      .content(this.soundMenuTemplate, { name: 'Johny' })
+      .create();
+
+    this.logger.info('Initialized sound menu overlay');
+  }
+
+  public showSoundMenu() {
+    this.initSoundMenuOverlay();
+    this.soundMenuOverlay.open();
   }
 
   private initScaleMenuOverlay() {
@@ -400,7 +445,7 @@ export class MatComponent implements OnInit, AfterViewInit {
       .content(this.scaleMenuTemplate, { name: 'Johny' })
       .create();
 
-    this.logger.info('Initialized help menu overlay');
+    this.logger.info('Initialized scale menu overlay');
   }
 
   public showScaleMenu() {
@@ -422,7 +467,7 @@ export class MatComponent implements OnInit, AfterViewInit {
       .content(this.rootNoteMenuTemplate, { name: 'Johny' })
       .create();
 
-    this.logger.info('Initialized help menu overlay');
+    this.logger.info('Initialized root note menu overlay');
   }
 
   public showRootNoteMenu() {
@@ -444,7 +489,7 @@ export class MatComponent implements OnInit, AfterViewInit {
       .content(this.chordsMenuTemplate, { name: 'Johny' })
       .create();
 
-    this.logger.info('Initialized help menu overlay');
+    this.logger.info('Initialized chords menu overlay');
   }
 
   public showChordsMenu() {
@@ -466,7 +511,7 @@ export class MatComponent implements OnInit, AfterViewInit {
       .content(this.effectMenuTemplate, { name: 'Johny' })
       .create();
 
-    this.logger.info('Initialized help menu overlay');
+    this.logger.info('Initialized effects menu overlay');
   }
 
   public showEffectsMenu() {
@@ -497,6 +542,40 @@ export class MatComponent implements OnInit, AfterViewInit {
     this.communicationService.sendMessage(oscMessage);
 
     this.logger.debug('Switched chord mode');
+  }
+
+  public switchToSynthSound() {
+    if (!this.useSynthSound) {
+      this.useSynthSound = true;
+      this.useSawToothSound = false;
+
+      this.communicationService.sendMessage({
+        address: "/mat/switch",
+        args: [
+          { type: "s", value: "synth" },
+        ],
+        info: null
+      });
+
+      this.logger.info('Activating synth sound..');
+    }
+  }
+
+  public switchToSawToothSound() {
+    if (!this.useSawToothSound) {
+      this.useSynthSound = false;
+      this.useSawToothSound = true;
+
+      this.communicationService.sendMessage({
+        address: "/mat/switch",
+        args: [
+          { type: "s", value: "sawtooth" },
+        ],
+        info: null
+      });
+
+      this.logger.info('Activating saw tooth sound..');
+    }
   }
 
 }
