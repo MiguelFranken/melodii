@@ -186,6 +186,22 @@ export class MatController {
     }
   }
 
+  @OnMessage('/switch')
+  public switchSound(@Message() message: IOSCMessage) {
+    try {
+      const soundName: string = message.args[0].value as string; // TODO: Validation
+      if (soundName === "synth") {
+        this.mat.setSynthVoices();
+        this.logger.info('Activated synth sound');
+      } else {
+        this.mat.setSawToothVoices();
+        this.logger.info('Activated saw tooth sound');
+      }
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
   private printError(e: any) {
     if (e instanceof OSCError) {
       e.print(this.logger);

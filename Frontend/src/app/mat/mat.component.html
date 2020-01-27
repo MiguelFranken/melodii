@@ -8,7 +8,7 @@
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="onSwapNotesButtonPressed()" fxFlex="calc(11.11% - 2px)" [class.on]="editMode">
         <span>Swap Notes</span>
       </button>
-      <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="showSoundMenu()" fxFlex="calc(11.11% - 2px)" #soundButton>Sound</button>
       <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
       <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
       <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchNavigation()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">menu</mat-icon></button>
@@ -180,6 +180,31 @@
 <ng-template #effectMenuTemplate let-toppy>
   <div class="overlay" fxLayout="column" fxLayoutGap="2px">
     TODO
+  </div>
+</ng-template>
+
+<ng-template #soundMenuTemplate let-toppy>
+  <div class="overlay" fxLayout="column" fxLayoutGap="2px">
+    <div fxLayout fxLayoutGap="2px">
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchToSynthSound()"
+              [class.on]="useSynthSound"
+      >
+        Synth
+      </button>
+      <button
+              mat-button
+              class="overlay-button"
+              fxFlex
+              (click)="switchToSawToothSound()"
+              [class.on]="useSawToothSound"
+      >
+        Saw Tooth
+      </button>
+    </div>
   </div>
 </ng-template>
 <!--endregion-->

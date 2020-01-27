@@ -1,0 +1,28 @@
+@import "src/scss/variables";
+
+.box-container {
+  padding: 10px;
+  height: 100%;
+
+  * {
+    overflow: hidden;
+  }
+
+  .keyboard {
+    display: grid;
+    grid-gap: 0.5em;
+    grid-template-columns: repeat(auto-fill, 10em);
+  }
+
+  .key {
+    color: $mcp-white-2;
+    font-size: 30px;
+    font-weight: 500;
+    background: $mcp-black-3;
+    user-select: none;
+  }
+
+  .active {
+    background-color: $mcp-green-2 !important;
+  }
+}
