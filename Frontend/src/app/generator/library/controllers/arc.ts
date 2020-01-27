@@ -77,7 +77,11 @@ export class ArcController {
       const state: boolean = TypeChecker.ValidBoolArg(args[1]);
 
       if (!state) {
-        this.arc.set(note, 0);
+        this.arc.set(note + "1", 0);
+        this.arc.set(note + "2", 0);
+        this.arc.set(note + "3", 0);
+        this.arc.set(note + "4", 0);
+        this.arc.set(note + "5", 0);
       }
       this.mapping.set(note, state);
 
