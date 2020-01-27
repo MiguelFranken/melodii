@@ -64,7 +64,7 @@ let playSubscription: Subscription;
 })
 export class PrototypeComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  public isAnimationDisabled: boolean = true;
+  public isAnimationDisabled = true;
 
   public showRowNames = true;
 
@@ -484,7 +484,7 @@ export class PrototypeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.debug("_interval", { interval: _interval });
 
     // create matrices
-    if (matrixCollection.length == 0) {
+    if (matrixCollection.length === 0) {
       this.createMatrixDrums();
       this.createMatrixPiano();
     }
@@ -1207,7 +1207,7 @@ export class PrototypeComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.isAnimationDisabled = false;
-    })
+    });
   }
 
 }

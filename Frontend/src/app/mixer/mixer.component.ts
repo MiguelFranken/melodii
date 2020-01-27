@@ -11,7 +11,7 @@ import { GeneratorCommunicationService } from "../generator/library/generator-co
 })
 export class MixerComponent implements OnInit, AfterViewInit {
 
-  public isSliderAnimationDisabled: boolean = true;
+  public isSliderAnimationDisabled = true;
 
   public masterVolume: number;
   public arcVolume: number;
@@ -172,7 +172,7 @@ export class MixerComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.isSliderAnimationDisabled = false;
-    })
+    });
   }
 
 }
