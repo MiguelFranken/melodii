@@ -16,6 +16,7 @@ export class ArcController {
 
   private mapping: Map<string, boolean> = new Map();
   private useVelocity = true;
+  private isVelocityReversed = false;
 
   constructor(private music: MusicService) {
     this.arc = music.getInstrument("arc") as Arc;
@@ -50,10 +51,18 @@ export class ArcController {
       const { args } = message;
       const note = TypeChecker.ValidNoteArg(args[0]);
       let strength: any;
-      if (this.useVelocity || args[1].value === 0) {
-        strength = args[1].value; // TODO: Validate strength
+      if (args[1].value === 0) {
+        strength = 0;
       } else {
-        strength = 1;
+        if (this.useVelocity) {
+          if (this.isVelocityReversed) {
+            strength = 1 - (args[1].value as number);
+          } else {
+            strength = args[1].value; // TODO: Validate strength
+          }
+        } else {
+          strength = 1;
+        }
       }
 
       if (this.mapping.get(note.substr(0, note.length - 1))) {
@@ -109,6 +118,23 @@ export class ArcController {
     try {
       const { args } = message;
       this.useVelocity = TypeChecker.ValidBoolArg(args[0]);
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
+  /**
+   * @apiGroup Arc
+   * @apiName Activate/deactivate velocity reversed mode
+   * @apiDesc Activates/deactivates whether the sent velocity values are reversed
+   * @apiPath /arc/switch/reversed
+   * @apiArgs i,state Expects a boolean as integer
+   */
+  @OnMessage('/switch/reversed')
+  public switchVelocityReversed(@Message() message: IOSCMessage) {
+    try {
+      const { args } = message;
+      this.isVelocityReversed = TypeChecker.ValidBoolArg(args[0]);
     } catch (e) {
       this.printError(e);
     }

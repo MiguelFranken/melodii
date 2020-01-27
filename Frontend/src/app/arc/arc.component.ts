@@ -69,6 +69,16 @@ export class ArcComponent implements OnInit {
 
   public switchReversedVelocity() {
     this.isVelocityReversed = !this.isVelocityReversed;
+
+    this.logger.info(`Switched velocity reversed mode`, { isVelocityReversed: this.isVelocityReversed });
+
+    this.communicationService.sendMessage({
+      address: "/arc/switch/reversed",
+      args: [
+        { type: "i", value: this.isVelocityReversed ? 1 : 0 }
+      ],
+      info: null
+    });
   }
 
 }
