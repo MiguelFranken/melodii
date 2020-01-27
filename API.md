@@ -36,12 +36,48 @@ Arguments:
 
 Path:
 ```
-/arc/switch
+/arc/switch/velocity
 ```
 Arguments:
 ```
 [
     { s,note },  // Expects a note as string without octave at the end
+    { i,state },  // Expects a boolean as integer
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Activate/deactivate velocity</td>
+<td>Activates/deactivates whether the arc instrument can send velocity for notes</td>
+<td><details><p>
+
+Path:
+```
+/arc/switch/velocity
+```
+Arguments:
+```
+[
+    { i,state },  // Expects a boolean as integer
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Activate/deactivate velocity reversed mode</td>
+<td>Activates/deactivates whether the sent velocity values are reversed</td>
+<td><details><p>
+
+Path:
+```
+/arc/switch/reversed
+```
+Arguments:
+```
+[
     { i,state },  // Expects a boolean as integer
 ]
 ```
