@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Logger } from '@upe/logger';
+import { GeneratorCommunicationService } from '../generator/library/generator-communication.service';
 
 @Component({
   selector: 'mcp-arc',
@@ -7,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ArcComponent implements OnInit {
 
+  private logger: Logger = new Logger({ name: 'Arc Component' });
+
   public mapping: Map<string, boolean> = new Map();
 
-  constructor() { }
+  constructor(private communicationService: GeneratorCommunicationService) { }
 
   ngOnInit() {
     this.mapping.set("C", true);
@@ -26,9 +30,19 @@ export class ArcComponent implements OnInit {
   }
 
   switchNote(note: string) {
-    console.log(`Switch ${note}`);
+    const newState = !this.mapping.get(note);
+    this.mapping.set(note, newState);
 
-    this.mapping.set(note, !this.mapping.get(note));
+    this.logger.info(`Switched ${note}`, { newState });
+
+    this.communicationService.sendMessage({
+      address: "/arc/switch",
+      args: [
+        { type: "s", value: note },
+        { type: "i", value: newState ? 1 : 0 }
+      ],
+      info: null
+    });
   }
 
 }
