@@ -9,7 +9,7 @@ export class Box implements IMCPInstrument {
 
   private readonly logger: Logger = new Logger({ name: 'Box Instrument', flags: ['music'] });
 
-  private voices: DefaultMap<Note, FMSynth | Synth>;
+  private voices: DefaultMap<Note, FMSynth | Synth> = new DefaultMap(() => this.createSynthVoice());
   private readonly output = new Gain();
 
   private pitchShift = 0;
@@ -29,11 +29,19 @@ export class Box implements IMCPInstrument {
   }
 
   public setSynthVoices() {
+    const oldVoices = this.voices;
     this.voices = new DefaultMap(() => this.createSynthVoice());
+    oldVoices.forEach((voice, note) => {
+      voice.triggerRelease();
+    });
   }
 
   public setKalimbaVoices() {
+    const oldVoices = this.voices;
     this.voices = new DefaultMap(() => this.createKalimbaVoice());
+    oldVoices.forEach((voice, note) => {
+      voice.triggerRelease();
+    });
   }
 
   public trigger(note: Note, velocity: Velocity) {
