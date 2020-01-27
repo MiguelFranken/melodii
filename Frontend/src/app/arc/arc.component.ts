@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Logger } from '@upe/logger';
 import { GeneratorCommunicationService } from '../generator/library/generator-communication.service';
 import { NavigationService } from '../shared/layout/navigation/navigation.service';
+import { ArcStateService } from './arc-state.service';
 
 @Component({
   selector: 'mcp-arc',
@@ -12,30 +13,42 @@ export class ArcComponent implements OnInit {
 
   private logger: Logger = new Logger({ name: 'Arc Component' });
 
-  public mapping: Map<string, boolean> = new Map();
+  public get mapping(): Map<string, boolean> {
+    return this.arcStateService.mapping;
+  }
 
-  public useVelocity = true;
-  public isVelocityReversed = false;
+  public setMapping(note: string, state: boolean) {
+    this.arcStateService.mapping.set(note, state);
+    this.logger.info('Global mapping', this.arcStateService.mapping);
+  }
 
-  constructor(private communicationService: GeneratorCommunicationService, private navigationService: NavigationService) { }
+  public get useVelocity(): boolean {
+    return this.arcStateService.useVelocity;
+  }
+
+  public set useVelocity(state: boolean) {
+    this.arcStateService.useVelocity = state;
+  }
+
+  public get isVelocityReversed(): boolean {
+    return this.arcStateService.isVelocityReversed;
+  }
+
+  public set isVelocityReversed(state: boolean) {
+    this.arcStateService.isVelocityReversed = state;
+  }
+
+  constructor(
+    private communicationService: GeneratorCommunicationService,
+    private navigationService: NavigationService,
+    private arcStateService: ArcStateService) { }
 
   ngOnInit() {
-    this.mapping.set("C", true);
-    this.mapping.set("C#", true);
-    this.mapping.set("D", true);
-    this.mapping.set("D#", true);
-    this.mapping.set("E", true);
-    this.mapping.set("F", true);
-    this.mapping.set("G", true);
-    this.mapping.set("G#", true);
-    this.mapping.set("A", true);
-    this.mapping.set("A#", true);
-    this.mapping.set("B", true);
   }
 
   switchNote(note: string) {
     const newState = !this.mapping.get(note);
-    this.mapping.set(note, newState);
+    this.setMapping(note, newState);
 
     this.logger.info(`Switched ${note}`, { newState });
 
