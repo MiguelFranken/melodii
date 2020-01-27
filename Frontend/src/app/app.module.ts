@@ -16,6 +16,7 @@ import { ContextComponent } from './context/context.component';
 import { StartComponent } from './start/start.component';
 import { EffectsModule } from './effects/effects.module';
 import { ArcModule } from './arc/arc.module';
+import { BoxModule } from './box/box.module';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ArcModule } from './arc/arc.module';
     MixerModule,
     CelloModule,
     MatModule,
+    BoxModule,
     ArcModule,
     ExperimentsModule,
     FormsModule

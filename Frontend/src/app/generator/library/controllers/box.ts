@@ -104,4 +104,30 @@ export class BoxController {
       }
     }
   }
+
+  @OnMessage('/switch')
+  public switchSound(@Message() message: IOSCMessage) {
+    try {
+      const soundName: string = message.args[0].value as string; // TODO: Validation
+      if (soundName === "synth") {
+        this.box.setSynthVoices();
+        this.logger.info('Activated synth sound');
+      } else {
+        this.box.setKalimbaVoices();
+        this.logger.info('Activated kalimba sound');
+      }
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
+  private printError(e: any) {
+    if (e instanceof OSCError) {
+      e.print(this.logger);
+      e.printFrontend(this.music.getLogService());
+    } else {
+      this.logger.error("Unidentifiable error", e);
+    }
+  }
+
 }
