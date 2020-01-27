@@ -124,6 +124,35 @@ export class OSCClient {
         }
     }
 
+    public async playAmelieBox(): Promise<any> {
+        const arrNotes = [
+            "E2", "G2", "B2", "A4",
+            "E4", "A4", "G4", "A4",
+            "D3", "A4", "G4", "A4",
+            "D3", "A4", "G4", "A4",
+        ];
+        const arrNotes2 = [
+            "E4", "A4", "G4", "A4",
+            "E4", "A4", "G4", "A4",
+            "D3", "A4", "G4", "A4",
+            "D3", "A4", "G4", "A4",
+        ];
+        for (let i = 0; i < 4 * 4; i++) {
+            const args: IOSCArgs[] = [
+                {type: "s", value: arrNotes2[i].toString()},
+                // {type: "s", value: "8n"},
+                {type: "f", value: 1},
+            ];
+            const args2: IOSCArgs[] = [
+                {type: "s", value: arrNotes2[i].toString()},
+            ];
+            this.send("/box/trigger", args);
+            await this.sleep(150);
+            this.send("/box/release", args);
+            await this.sleep(150);
+        }
+    }
+
     public startDrumLoop() {
         this.drumLoop = true;
         this.playDrumBeat().then().catch(); // nothing to do here because we want the drum beat playing while a boolean is set

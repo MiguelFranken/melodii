@@ -196,6 +196,11 @@ export default class CmdTool {
         this.menu();
     }
 
+    private playSongBox() {
+        this.cli.playAmelieBox().then().catch();
+        this.menu();
+    }
+
     private playRandomNote() {
         const arg1: IOSCArgs = {
             type: "s", value: "C4",
@@ -229,6 +234,8 @@ export default class CmdTool {
                         return this.exitConsole();
                     case text.PLAY_SONG:
                         return this.playSong();
+                    case text.PLAY_SONG_BOX:
+                        return this.playSongBox();
                     default:
                         return this.menu();
                 }

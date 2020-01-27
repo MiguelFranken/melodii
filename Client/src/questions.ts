@@ -29,6 +29,7 @@ export default [
             text.SEND,
             text.PLAY_NOTE,
             text.PLAY_SONG,
+            text.PLAY_SONG_BOX,
             text.DRUMS_MENU,
             text.SETTINGS_MENU,
             text.EXIT,

@@ -18,8 +18,9 @@ export default {
     SEND: '(a) send (again)',
     PLAY_NOTE: '(b) play random note',
     PLAY_SONG: '(c) play song',
-    DRUMS_MENU: '(d) drums menu', // sub menu
-    SETTINGS_MENU: '(e) change settings', // sub menu
+    PLAY_SONG_BOX: '(d) play song (box)',
+    DRUMS_MENU: '(e) drums menu', // sub menu
+    SETTINGS_MENU: '(f) change settings', // sub menu
 
     // settings menu
     CHANGE_PATH: '(a) change osc path',
