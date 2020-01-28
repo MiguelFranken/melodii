@@ -7,3 +7,4 @@ parent.iml
 *.iml
 node_modules
 log/
+chrpm2output.log
