@@ -170,6 +170,7 @@ export class MusicService {
       "feedback": 0.1,
       "spread": 80
     });
+    toneEffect.wet.value = 0.5;
     return {
       id: 'chorus',
       effect: toneEffect
@@ -234,6 +235,10 @@ export class MusicService {
 
   public addPingPongDelayToMasterEffectChain() {
     this.masterEffectChain.pushEffect(this.getPingPongDelayEffect());
+  }
+
+  public addChorusToMasterEffectChain() {
+    this.masterEffectChain.pushEffect(this.getChorusEffect());
   }
 
   public addReverbEffectToMasterEffectChain() {

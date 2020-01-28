@@ -203,6 +203,30 @@ export class EffectsController {
 
   /**
    * @apiGroup Effects
+   * @apiName Switch Master Chorus Effect
+   * @apiDesc Adds/removes chorus effect to/from master output
+   * @apiPath /effect/master/chorus
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
+  @OnMessage('/master/chorus')
+  public chorusMaster(@Message() message: IOSCMessage) {
+    try {
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[0]);
+
+      if (message.args[0].value === 0) {
+        this.musicService.deleteEffectFromMasterEffectChain('chorus');
+        this.logger.info('Removed chorus effect from master effect chain');
+      } else {
+        this.musicService.addChorusToMasterEffectChain();
+        this.logger.info('Added chorus effect from master effect chain');
+      }
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
+  /**
+   * @apiGroup Effects
    * @apiName Change Decay Master Reverb Effect
    * @apiDesc Changes the decay of the master reverb effect
    * @apiPath /effect/master/reverb/decay
