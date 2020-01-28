@@ -1,13 +1,24 @@
 <div fxFlex class="container" fxLayout="column" fxLayoutGap="8px">
-  <button
-          mat-button
-          class="dashboard-button"
-          fxFlex
-          (click)="switchReverb()"
-          [class.dashboard-on]="useReverb"
-  >
-    Reverb
-  </button>
+  <div fxFlex fxLayout fxLayoutGap="8px">
+    <button
+            mat-button
+            class="dashboard-button"
+            fxFlex
+            (click)="switchReverb()"
+            [class.dashboard-on]="useReverb"
+    >
+      Reverb
+    </button>
+    <button
+            mat-button
+            class="dashboard-button"
+            fxFlex
+            (click)="switchAutofilter()"
+            [class.dashboard-on]="useAutofilter"
+    >
+      AutoFilter
+    </button>
+  </div>
   <button
           mat-button
           class="dashboard-button"

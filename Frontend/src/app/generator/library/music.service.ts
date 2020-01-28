@@ -1,7 +1,8 @@
 import { Logger } from '@upe/logger';
-import { Destination, EQ3, Gain, Meter, PingPongDelay, Reverb, Split, Volume } from 'tone';
+import { AutoFilter, Destination, EQ3, Gain, Meter, PingPongDelay, Reverb, Split, Volume } from 'tone';
 import { Injectable } from '@angular/core';
 import { IMCPInstrument } from './mcp-instrument';
+import { Oscillator } from "tone";
 // Instruments
 import { DrumsHiHat, DrumsKick, DrumsSnare } from './instruments/drums';
 import { Piano } from './instruments/piano';
@@ -97,6 +98,8 @@ export class MusicService {
       return this.getReverbEffect();
     } else if (effectName === 'threebandeq') {
       return this.getThreeBandEQEffect();
+    } else if (effectName === 'autofilter') {
+      return this.getAutofilterEffect();
     } else {
       return this.getPingPongDelayEffect();
     }
@@ -150,6 +153,33 @@ export class MusicService {
     toneEffect.generate();
     return {
       id: 'reverb',
+      effect: toneEffect
+    };
+  }
+
+  public getAutofilterEffect(): IMCPEffect {
+    const oscillator = new Oscillator({
+      "volume" : -Infinity,
+      "type" : "square6",
+      "frequency" : "E4"
+    });
+
+    const toneEffect = new AutoFilter({
+      "frequency": 1,
+      "depth": 0.7,
+      filter: {
+        type: "lowpass",
+        rolloff: -12,
+        Q: 0.5
+      }
+    });
+
+    toneEffect.wet.value = 0.7;
+    oscillator.connect(toneEffect).start();
+    toneEffect.start();
+
+    return {
+      id: 'autofilter',
       effect: toneEffect
     };
   }

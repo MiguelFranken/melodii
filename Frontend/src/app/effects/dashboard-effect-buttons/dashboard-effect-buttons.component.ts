@@ -25,6 +25,14 @@ export class DashboardEffectButtonsComponent implements OnInit {
     this.effectStateService.setIsUsedReverb(this.instrumentName, value);
   }
 
+  get useAutofilter(): boolean {
+    return this.effectStateService.isUsedAutofilter(this.instrumentName);
+  }
+
+  set useAutofilter(value: boolean) {
+    this.effectStateService.setIsUsedAutofilter(this.instrumentName, value);
+  }
+
   get usePingPongDelay(): boolean {
     return this.effectStateService.isUsedPingPongDelay(this.instrumentName);
   }
@@ -85,6 +93,23 @@ export class DashboardEffectButtonsComponent implements OnInit {
     this.communicationService.sendMessage(oscMessage);
 
     this.logger.debug('Switched reverb effect');
+  }
+
+  public switchAutofilter() {
+    this.useAutofilter = !this.useAutofilter;
+
+    const oscMessage: IOSCMessage = {
+      address: '/effect/instrument/autofilter',
+      args: [
+        { type: 's', value: this.instrumentName },
+        { type: 'i', value: this.useAutofilter ? 1 : 0 }
+      ],
+      info: null
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched autofilter effect');
   }
 
   public switchPingPongDelay() {
