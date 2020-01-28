@@ -186,6 +186,13 @@ export class MatController {
     }
   }
 
+  /**
+   * @apiGroup Mat
+   * @apiName Switch Sound
+   * @apiDesc Switch the sound of the mat instrument
+   * @apiPath /mat/switch
+   * @apiArgs s,sound Expects either "synth" or "sawtooth" as string argument
+   */
   @OnMessage('/switch')
   public switchSound(@Message() message: IOSCMessage) {
     try {

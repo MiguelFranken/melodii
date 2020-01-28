@@ -105,6 +105,13 @@ export class BoxController {
     }
   }
 
+  /**
+   * @apiGroup Box
+   * @apiName Switch Sound
+   * @apiDesc Switch the sound of the box instrument
+   * @apiPath /box/switch
+   * @apiArgs s,sound Expects either "synth" or "kalimba" as string argument
+   */
   @OnMessage('/switch')
   public switchSound(@Message() message: IOSCMessage) {
     try {
