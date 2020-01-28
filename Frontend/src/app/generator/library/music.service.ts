@@ -1,5 +1,5 @@
 import { Logger } from '@upe/logger';
-import { AutoFilter, Destination, EQ3, Gain, Meter, PingPongDelay, Reverb, Split, Volume } from 'tone';
+import { AutoFilter, AutoWah, Destination, EQ3, Gain, Meter, PingPongDelay, Reverb, Split, Volume } from 'tone';
 import { Injectable } from '@angular/core';
 import { IMCPInstrument } from './mcp-instrument';
 import { Oscillator } from "tone";
@@ -100,6 +100,8 @@ export class MusicService {
       return this.getThreeBandEQEffect();
     } else if (effectName === 'autofilter') {
       return this.getAutofilterEffect();
+    } else if (effectName === 'autowah') {
+      return this.getAutowahEffect();
     } else {
       return this.getPingPongDelayEffect();
     }
@@ -153,6 +155,15 @@ export class MusicService {
     toneEffect.generate();
     return {
       id: 'reverb',
+      effect: toneEffect
+    };
+  }
+
+  public getAutowahEffect(): IMCPEffect {
+    const toneEffect = new AutoWah(50, 6, 0);
+    toneEffect.Q.value = 6;
+    return {
+      id: 'autowah',
       effect: toneEffect
     };
   }

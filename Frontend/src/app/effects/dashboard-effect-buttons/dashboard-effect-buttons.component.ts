@@ -33,6 +33,14 @@ export class DashboardEffectButtonsComponent implements OnInit {
     this.effectStateService.setIsUsedAutofilter(this.instrumentName, value);
   }
 
+  get useAutowah(): boolean {
+    return this.effectStateService.isUsedAutowah(this.instrumentName);
+  }
+
+  set useAutowah(value: boolean) {
+    this.effectStateService.setIsUsedAutowah(this.instrumentName, value);
+  }
+
   get usePingPongDelay(): boolean {
     return this.effectStateService.isUsedPingPongDelay(this.instrumentName);
   }
@@ -110,6 +118,23 @@ export class DashboardEffectButtonsComponent implements OnInit {
     this.communicationService.sendMessage(oscMessage);
 
     this.logger.debug('Switched autofilter effect');
+  }
+
+  public switchAutowah() {
+    this.useAutowah = !this.useAutowah;
+
+    const oscMessage: IOSCMessage = {
+      address: '/effect/instrument/autowah',
+      args: [
+        { type: 's', value: this.instrumentName },
+        { type: 'i', value: this.useAutowah ? 1 : 0 }
+      ],
+      info: null
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched autowah effect');
   }
 
   public switchPingPongDelay() {
