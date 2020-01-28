@@ -7,6 +7,7 @@ import { InstrumentName } from '../../generator/library/types';
 export class EffectStateService {
 
   public useReverb: Map<InstrumentName, boolean> = new Map();
+  public useChorus: Map<InstrumentName, boolean> = new Map();
   public useAutofilter: Map<InstrumentName, boolean> = new Map();
   public useAutowah: Map<InstrumentName, boolean> = new Map();
   public usePingPongDelay: Map<InstrumentName, boolean> = new Map();
@@ -68,6 +69,14 @@ export class EffectStateService {
 
   public setIsUsedAutowah(instrumentName: InstrumentName, value: boolean) {
     this.useAutowah.set(instrumentName, value);
+  }
+
+  public isUsedChorus(instrumentName: InstrumentName): boolean {
+    return this.useChorus.get(instrumentName);
+  }
+
+  public setIsUsedChorus(instrumentName: InstrumentName, value: boolean) {
+    this.useChorus.set(instrumentName, value);
   }
 
   public isUsedPingPongDelay(instrumentName: InstrumentName): boolean {

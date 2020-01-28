@@ -1,5 +1,5 @@
 import { Logger } from '@upe/logger';
-import { AutoFilter, AutoWah, Destination, EQ3, Gain, Meter, PingPongDelay, Reverb, Split, Volume } from 'tone';
+import { AutoFilter, AutoWah, Chorus, Destination, EQ3, Gain, Meter, PingPongDelay, Reverb, Split, Volume } from 'tone';
 import { Injectable } from '@angular/core';
 import { IMCPInstrument } from './mcp-instrument';
 import { Oscillator } from "tone";
@@ -102,6 +102,8 @@ export class MusicService {
       return this.getAutofilterEffect();
     } else if (effectName === 'autowah') {
       return this.getAutowahEffect();
+    } else if (effectName === 'chorus') {
+      return this.getChorusEffect();
     } else {
       return this.getPingPongDelayEffect();
     }
@@ -155,6 +157,21 @@ export class MusicService {
     toneEffect.generate();
     return {
       id: 'reverb',
+      effect: toneEffect
+    };
+  }
+
+  public getChorusEffect(): IMCPEffect {
+    const toneEffect = new Chorus({
+      "frequency": 4,
+      "delayTime": 16,
+      "type": "triangle",
+      "depth": 1,
+      "feedback": 0.1,
+      "spread": 80
+    });
+    return {
+      id: 'chorus',
       effect: toneEffect
     };
   }

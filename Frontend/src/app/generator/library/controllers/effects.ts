@@ -103,6 +103,32 @@ export class EffectsController {
 
   /**
    * @apiGroup Effects
+   * @apiName Switch Instrument chorus Effect
+   * @apiDesc Adds/removes chorus effect for specified instrument
+   * @apiPath /effect/instrument/chorus
+   * @apiArgs s,name Expects the name of the instrument as string
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
+  @OnMessage('/instrument/chorus')
+  public chorusInstrument(@Message() message: IOSCMessage) {
+    try {
+      const instrument: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[1]);
+
+      if (!state) {
+        this.musicService.deleteEffect(instrument, 'chorus');
+        this.logger.info(`Removed chorus effect from effect chain of instrument ${instrument}`);
+      } else {
+        this.musicService.addEffect(instrument, 'chorus');
+        this.logger.info(`Added chorus effect to effect chain of instrument ${instrument}`);
+      }
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
+  /**
+   * @apiGroup Effects
    * @apiName Switch Instrument PingPongDeleay Effect
    * @apiDesc Adds/removes pingpongdelay effect for specified instrument
    * @apiPath /effect/instrument/pingpongdelay
