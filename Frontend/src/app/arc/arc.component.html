@@ -2,30 +2,49 @@
 
   <div class="menu" fxLayout fxFlex="10">
     <div fxFill fxLayout fxLayoutGap="2px">
-      <button mat-button class="action-button" [class.active]="useVelocity" fxLayout fxLayoutAlign="center center" (click)="switchVelocity()" fxFlex="calc(11.11% - 2px)">Velocity</button>
-      <button mat-button class="action-button" [class.active]="isVelocityReversed" fxLayout fxLayoutAlign="center center" (click)="switchReversedVelocity()" fxFlex="calc(22.22% - 2px)">Reversed Velocity</button>
+      <button mat-button class="action-button" [class.active]="useVelocity" fxLayout fxLayoutAlign="center center"
+        (click)="switchVelocity()" fxFlex="calc(11.11% - 2px)">Velocity</button>
+      <button mat-button class="action-button" [class.active]="isVelocityReversed" fxLayout
+        fxLayoutAlign="center center" (click)="switchReversedVelocity()" fxFlex="calc(22.22% - 2px)">Reversed
+        Velocity</button>
       <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
       <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
       <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
       <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
       <div class="spacer-menu" fxLayout fxLayoutAlign="center center" fxFlex="calc(11.12% - 2px)"></div>
-      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchNavigation()" fxFlex="calc(11.11% - 2px)"><mat-icon class="action-icon">menu</mat-icon></button>
+      <button mat-button class="action-button" fxLayout fxLayoutAlign="center center" (click)="switchNavigation()"
+        fxFlex="calc(11.11% - 2px)">
+        <mat-icon class="action-icon">menu</mat-icon>
+      </button>
     </div>
   </div>
 
   <div fxFlex class="arc-container" fxLayout="column" fxLayoutAlign="stretch">
     <div class="keyboard" fxLayout fxLayoutGap="10px">
-      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('C')" fxLayout fxLayoutAlign="center" (click)="switchNote('C')">C</div>
-      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('C#')" fxLayout fxLayoutAlign="center" (click)="switchNote('C#')">C#</div>
-      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('D')" fxLayout fxLayoutAlign="center" (click)="switchNote('D')">D</div>
-      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('D#')" fxLayout fxLayoutAlign="center" (click)="switchNote('D#')">D#</div>
-      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('E')" fxLayout fxLayoutAlign="center" (click)="switchNote('E')">E</div>
-      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('F')" fxLayout fxLayoutAlign="center" (click)="switchNote('F')">F</div>
-      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('G')" fxLayout fxLayoutAlign="center" (click)="switchNote('G')">G</div>
-      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('G#')" fxLayout fxLayoutAlign="center" (click)="switchNote('G#')">G#</div>
-      <div fxFlex="calc(12.5% - 2px)" class="key active" [class.active]="mapping.get('A')" fxLayout fxLayoutAlign="center" (click)="switchNote('A')">A</div>
-      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('A#')" fxLayout fxLayoutAlign="center" (click)="switchNote('A#')">A#</div>
-      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('B')" fxLayout fxLayoutAlign="center" (click)="switchNote('B')">B</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('C')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('C')">C</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('C#')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('C#')">C#</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('D')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('D')">D</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('D#')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('D#')">D#</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('E')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('E')">E</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('F')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('F')">F</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('F#')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('F#')">F#</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('G')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('G')">G</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('G#')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('G#')">G#</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('A')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('A')">A</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('A#')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('A#')">A#</div>
+      <div fxFlex="calc(12.5% - 2px)" class="key" [class.active]="mapping.get('B')" fxLayout fxLayoutAlign="center"
+        (click)="switchNote('B')">B</div>
     </div>
   </div>
 
