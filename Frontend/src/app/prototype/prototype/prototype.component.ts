@@ -636,7 +636,7 @@ export class PrototypeComponent implements OnInit, OnDestroy, AfterViewInit {
     for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
       const snareButton = new RowButton();
       snareButton.setOSCMessage({
-        address: '/drums/snare/play',
+        address: '/drums/snare',
         args: [
           {
             'type': "s",

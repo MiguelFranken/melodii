@@ -25,11 +25,11 @@ export class DrumsController {
    * @apiGroup Drums
    * @apiName Play Snare
    * @apiDesc Plays the snare from the snare sampler
-   * @apiPath /drums/snare/play
+   * @apiPath /drums/snare
    * @apiArgs i,duration Expects the duration of the snare note as string
    * @apiArgs i,velocity Expects the velocity of the snare note as float
    */
-  @OnMessage('/snare/play')
+  @OnMessage('/snare')
   public receivedMsgSnare(@Message() msg: IOSCMessage) {
     try {
       const duration = TypeChecker.ValidDurationArg(msg.args[0]);

@@ -234,7 +234,7 @@ Arguments:
 
 Path:
 ```
-/drums/snare/play
+/drums/snare
 ```
 Arguments:
 ```
