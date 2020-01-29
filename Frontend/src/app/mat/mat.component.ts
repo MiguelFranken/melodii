@@ -139,28 +139,28 @@ export class MatComponent implements OnInit, AfterViewInit {
   @ViewChild('block', { static: true })
   block: ElementRef<HTMLElement>;
 
-  @ViewChild('button0', {static: true})
+  @ViewChild('button0', { static: true })
   private button0: ElementRef<HTMLElement>;
 
-  @ViewChild('button1', {static: true})
+  @ViewChild('button1', { static: true })
   private button1: ElementRef<HTMLElement>;
 
-  @ViewChild('button2', {static: true})
+  @ViewChild('button2', { static: true })
   private button2: ElementRef<HTMLElement>;
 
-  @ViewChild('button3', {static: true})
+  @ViewChild('button3', { static: true })
   private button3: ElementRef<HTMLElement>;
 
-  @ViewChild('button4', {static: true})
+  @ViewChild('button4', { static: true })
   private button4: ElementRef<HTMLElement>;
 
-  @ViewChild('button5', {static: true})
+  @ViewChild('button5', { static: true })
   private button5: ElementRef<HTMLElement>;
 
-  @ViewChild('button6', {static: true})
+  @ViewChild('button6', { static: true })
   private button6: ElementRef<HTMLElement>;
 
-  @ViewChild('button7', {static: true})
+  @ViewChild('button7', { static: true })
   private button7: ElementRef<HTMLElement>;
 
   private buttons: ElementRef<HTMLElement>[];
@@ -190,7 +190,7 @@ export class MatComponent implements OnInit, AfterViewInit {
         event.preventDefault();
         event.stopPropagation();
         if (!this.editMode) {
-          this.logger.info(`Mouse Down Button ${index}`);
+          this.logger.info(`Touch Start Button ${index}`);
           this.trigger(index);
         }
       });
@@ -202,7 +202,19 @@ export class MatComponent implements OnInit, AfterViewInit {
       });
       button.nativeElement.addEventListener("touchend", (event: any) => {
         if (!this.editMode) {
-          this.logger.info(`Mouse Up Button ${index}`);
+          this.logger.info(`Touch End Button ${index}`);
+          this.release(index);
+        }
+      });
+      button.nativeElement.addEventListener("mouseleave", (event: any) => {
+        if (!this.editMode) {
+          this.logger.info(`Mouse Leave Button ${index}`);
+          this.release(index);
+        }
+      });
+      button.nativeElement.addEventListener("touchleave", (event: any) => {
+        if (!this.editMode) {
+          this.logger.info(`Touch Leave Button ${index}`);
           this.release(index);
         }
       });
