@@ -44,7 +44,7 @@ export class Arc implements IMCPInstrument {
         decay: 2,
         decayCurve: "exponential",
         sustain: 1,
-        release: 2.7,
+        release: 0.5,
         releaseCurve: "exponential",
       },
       oscillator: {
