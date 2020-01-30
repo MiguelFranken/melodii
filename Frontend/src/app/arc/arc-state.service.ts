@@ -16,6 +16,7 @@ export class ArcStateService {
     this.mapping.set("D#", true);
     this.mapping.set("E", true);
     this.mapping.set("F", true);
+    this.mapping.set("F#", true);
     this.mapping.set("G", true);
     this.mapping.set("G#", true);
     this.mapping.set("A", true);
