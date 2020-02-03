@@ -1,5 +1,10 @@
-# Getting started
-You need [Node.js] (at least 12.13.0).
+# Development
+The following introduces you to setting up the Mix in general and adding new instruments.
+
+If you want to deploy the project on a Raspberry Pi, read [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+## Getting started
+You need [Node.js] (at least version 12.13.0).
 
 Install all the dependencies with
 ```
@@ -12,60 +17,45 @@ npm run start
 ```
 Look at the console output to determine the URLs that you can connect to.
 
-# Developing
+## Developing
 In development, you might want to have everything running in the background and recompile automatically whenever you save a file. To achieve that, run
 ```
 npm run watch
 ```
 
-## Technologies
+### Technologies
 - The project uses [Tone.js] ([API reference](https://tonejs.github.io/docs/14.4.79/Tone)) for producing sounds.
 - The frontend is written using [Angular].
-- The [Open Sound Control (OSC)](http://opensoundcontrol.org/introduction-osc) protocol is used for networking.
+- The [Open Sound Control (OSC)](http://opensoundcontrol.org/introduction-osc) protocol is used for messages.
 
 [Node.js]: https://nodejs.org/en/
 [Tone.js]: https://tonejs.github.io/
 [Angular]: https://angular.io/
 
-## Creating routing controllers for OSC messages
-Put your OSC controllers into `Frontend/src/app/generator/library/controllers`. See `Frontend/src/app/generator/library/controllers/logger.ts` for an example.
-You must register controllers in `Frontend/src/app/generator/library/controllers/index.ts`.
+### Architecture
+Tone.js runs in the browser. Unfortunately, the browser cannot listen for incoming UDP messages which we use to communicate with the instruments. Therefore, we need to have a server that listens for incoming UDP messages and forwards them to the GUI (or multiple connected GUIs). The GUI will connect to the server over WebRTC. **TODO: Is this true?**
 
-```typescript
-@Controller("/drums")
-export class SliderController {
+## Adding an instrument
+If you want to add an instrument, you first need to create a class that uses Tone.js to produce sounds. Then you can add a controller that can listen for messages and drive the instrument.
 
-  private kickInstrument: DrumsKick;
+### Creating an instrument
+The instruments live in `Frontend/src/app/generator/library/instruments`. Simply create a new file with a class that implements `IMCPInstrument`. You can use the existing instruments as blueprints.
 
-  constructor(private foo: Foo, private music: MusicService) {
-    this.kickInstrument = this.music.getInstrument('kick') as DrumsKick;
-  }
+### Creating a controller
+The controllers are in `Frontend/src/app/generator/library/controllers`.
 
-  @OnMessage('/kick')
-  public receivedMessage(@Message() message: OSCInputMessage) {
-    this.foo.test();
-    this.kickInstrument.play(...);
-  }
+Use the decorators (`@Controller`, `@OnMessage`, `@Message`) to determine which path will be mapped to which method. Inside the method, you can extract the parameters from the OSC message and call the corresponding method on the instrument. The `@Controller` decorator sets the root route for the controller. Each `@OnMessage` defines a subroute which will call the method. The `@Message` decorator is used to simplify handling of OSC messages and is placed before the parameter.
 
-}
+You can use other controllers as a blueprint. Note that the `MusicService` in the constructor will be passed in automatically via a [dependency injection](https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/) mechanism. It makes it easier to have a single music service for everything and access it conveniently.
+
+Do not forget to register your new controller in `Frontend/src/app/generator/library/controllers/index.ts`, or it will not be initialized!
+
+## Documentation
+The API documentation can be found at [API.md](API.md). It is generated automatically from the doc comments with a custom annotation syntax.
+
+To add your controller to the documentation, simply add such comments to your controller. Use the existing controllers as a reference.
+
+You can generate an updated API.md by calling
 ```
-
-### Dependency Injection
-When your controller depends on an another class, you can inject the dependency via [Dependency Injection](https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/).
-You can use Dependency Injection, for example, to get access to the instruments in order to produce sounds.
-You can also inject other classes. You can inject the controller's dependencies by adding them to the class as a constructor parameter. 
-The injection mechanism automatically creates an singleton instance of this class and then makes it available in all controllers that depend on it as a class attribute.
-
-### Decorators
-You must decorate each controller with the `@Controller()` decorator. It takes the namespace as an argument.
-If you do not specify a namespace, all OSC messages will be routed to this controller.
-Additionally, you must register this controller in `Frontend/src/app/generator/library/controllers/index.ts`.
-
-`@OnMessage('/play')` allows you to decorate methods that should get executed when a message has the specified OSC address url after the namespace.
-If you do not specify a url in the decorator, each OSC messages routed to the controller will trigger the execution of the decorated method.
-
-You can get access to the received OSC message by using the `@Message()` decorator. It takes no arguments!
-
-## Deploying
-If you want to deploy the project on a raspberry pi refer to the [DEPLOYMENT.md](./DEPLOYMENT.md)
-
+node ./buildDocs.js
+```
