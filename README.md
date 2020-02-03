@@ -110,3 +110,8 @@ The experiments are early or unpolished tests that still might provide some use.
 - Frequency: Plays a frequency and visualizes the waveform.
 - Arc, Box, Mat: GUIs to test the instruments.
 - Latency: A setup to test the latency of sending and receiving messages between the GUI and the server.
+
+## Hardware
+If you are interested in building the box for the Raspberry Pi, refer to `pibox/`.
+
+We also made an effect controller which is documented in `effectcontroller/`.
