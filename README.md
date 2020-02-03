@@ -1,4 +1,7 @@
-<img src="Documentation/images/logo.png" alt="Logo" height="100px">
+<div align="center">
+
+  <img src="Documentation/images/logo.png" alt="Logo" height="100px">
+</div>
 
 # The Mix
 The Mix receives control messages wirelessly from the instruments and produces sound output. It runs on a separate device that can be connected to quality loudspeakers. Using your phone or tablet, you can connect to the device and open a GUI to control the Mix.
