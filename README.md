@@ -1,10 +1,8 @@
-<center>
-  <img src="Documentation/images/logo.png" alt="Logo" height="150px">
-</center>
+<img src="Documentation/images/logo.png" alt="Logo" height="150px">
 <br/><br/>
 
 <a href="Documentation/gui/GUI.md">
-    <img src="Documentation/images/gui.png" alt="Logo" height="100px">
+    <img src="Documentation/images/gui.png" alt="Logo" height="120px">
 </a>
 
 [GUI](Documentation/gui/GUI.md) | [Effect Controller](Documentation/effectcontroller/EFFECTCONTROLLER.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](Documentation/development/DEVELOPMENT.md)
