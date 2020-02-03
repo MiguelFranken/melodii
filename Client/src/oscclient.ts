@@ -1,10 +1,7 @@
 import osc from 'osc';
-import { IOSCArgs } from './osc/osc-types';
 import dns from 'dns';
+import { IOSCArgs } from './osc/osc-types';
 import { logger, loggerD } from './tools';
-
-
-// just a comment
 
 export class OSCClient {
     private udpClient: any;
@@ -27,12 +24,11 @@ export class OSCClient {
             this.portReady = true;
         });
         loggerD('udpClient initialized successfully');
-
         loggerD('udp port open()');
         this.udpClient = udp;
     }
 
-    public openUDP() {
+    public openUDP(): void {
         this.udpClient.open();
     }
 
@@ -46,7 +42,7 @@ export class OSCClient {
 
     public dnslookup(
         url: string, callback: (err: NodeJS.ErrnoException | null, address: string) => void,
-    ) {
+    ): void {
         let str = url;
         if (str.includes("http://")) {
             str = str.substring(7, str.length);
@@ -65,6 +61,11 @@ export class OSCClient {
         });
     }
 
+    /**
+     * sends the oscmessage if the udp client is ready to the osc server
+     * @param path String
+     * @param args IOSCArgs[]
+     */
     public async send(path: string, args: IOSCArgs[]) {
 
         let counter = 0;
@@ -91,15 +92,6 @@ export class OSCClient {
         return true;
     }
 
-    public sendLatencyTest() {
-        const str = Date.now().toString();
-        const arg: IOSCArgs = {
-            type: "s", value: str,
-        };
-        this.send('/latency', [arg]);
-    }
-
-    // E2 G2 B2
     public async playAmelie(): Promise<any> {
         // const arrNotes = [
         //     "E2", "G2", "B2", "A4",
@@ -125,12 +117,6 @@ export class OSCClient {
     }
 
     public async playAmelieBox(): Promise<any> {
-        // const arrNotes = [
-        //     "E2", "G2", "B2", "A4",
-        //     "E4", "A4", "G4", "A4",
-        //     "D3", "A4", "G4", "A4",
-        //     "D3", "A4", "G4", "A4",
-        // ];
         const arrNotes2 = [
             "E4", "A4", "G4", "A4",
             "E4", "A4", "G4", "A4",
@@ -154,12 +140,6 @@ export class OSCClient {
     }
 
     public async playAmelieMat(): Promise<any> {
-        // const arrNotes = [
-        //     "E2", "G2", "B2", "A4",
-        //     "E4", "A4", "G4", "A4",
-        //     "D3", "A4", "G4", "A4",
-        //     "D3", "A4", "G4", "A4",
-        // ];
         const arrNotes2 = [
             1, 4, 3, 4,
             1, 4, 3, 4,
@@ -192,6 +172,9 @@ export class OSCClient {
     }
 
     private async playDrumBeat() {
+        const kick = "/drums/kick";
+        const hihat = "/drums/hihat";
+        const snare = "/drums/snare";
         const arg1: IOSCArgs = {
             type: "s", value: "8n",
         };
@@ -201,26 +184,26 @@ export class OSCClient {
         const pause = 350;
         const args: IOSCArgs[] = [arg1, arg2];
         while (this.drumLoop) {
-            this.send('/drums/kick', args);
-            this.send('/drums/hihat', args);
+            this.send(kick, args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/hihat', args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/snare', args);
-            this.send('/drums/hihat', args);
+            this.send(snare, args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/hihat', args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/kick', args);
-            this.send('/drums/hihat', args);
+            this.send(kick, args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/kick', args);
-            this.send('/drums/hihat', args);
+            this.send(kick, args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/snare', args);
-            this.send('/drums/hihat', args);
+            this.send(snare, args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/hihat', args);
+            this.send(hihat, args);
             await this.sleep(pause);
         }
     }

@@ -1,5 +1,10 @@
 import text from './visual_strings';
 
+/**
+ * in this file you can find all questions which are asked from inquirer to
+ * the user on the console interface
+ */
+
 export default [
     { // 0
         type: 'input',

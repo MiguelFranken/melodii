@@ -10,3 +10,13 @@ export interface IQuestion {
     choices?: string[]; // type == list : choices is a list of possible selections
     default?: boolean; // type == confirm : default value of input
 }
+
+import { IOSCArgs } from "./osc/osc-types";
+
+export interface ISettings {
+  address: string;
+  url: string;
+  port: number;
+  path: string;
+  args: IOSCArgs[];
+}
