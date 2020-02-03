@@ -7,8 +7,8 @@
 <a href="Documentation/effectcontroller/EFFECT_CONTROLLER.md">
     <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="150px">
 </a>
-<a href="Documentation/gui/GUI.md">
-    <img src="Documentation/images/gui.png" alt="Logo" height="150px">
+<a href="Documentation/picase/picase.md.md">
+    <img src="Documentation/images/box.png" alt="Logo" height="150px">
 </a>
 <a href="Documentation/gui/GUI.md">
     <img src="Documentation/images/gui.png" alt="Logo" height="150px">
