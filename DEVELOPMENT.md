@@ -1,7 +1,7 @@
 # Development
 The following introduces you to setting up the Mix in general and adding new instruments.
 
-If you want to deploy the project on a Raspberry Pi, read [DEPLOYMENT.md](./DEPLOYMENT.md).
+If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 ## Getting started
 You need [Node.js] (at least version 12.13.0).
@@ -12,7 +12,7 @@ npm install
 ```
 
 Then you can start the server and the frontend with
-```7
+```
 npm run start
 ```
 Look at the console output to determine the URLs that you can connect to.
@@ -24,13 +24,24 @@ npm run watch
 ```
 
 ### Technologies
-- The project uses [Tone.js] ([API reference](https://tonejs.github.io/docs/14.4.79/Tone)) for producing sounds.
+- "[TypeScript] is a typed superset of JavaScript that compiles to plain JavaScript"
+- The project uses [Tone.js] ([API reference](https://tonejs.github.io/docs/14.4.79/Tone)) for producing sounds (audio synthesis).
 - The frontend is written using [Angular].
 - The [Open Sound Control (OSC)](http://opensoundcontrol.org/introduction-osc) protocol is used for messages.
+- [WebRTC] for real-time communication between server and GUI
+- [SocketIO] is used to establish a WebRTC between server and GUI (exchanging signaling messages over sockets)
+- [Angular Material] components are used in the GUI
+- [Headless Chromium] is used to start the Chrome browser in a headless environment on the Raspberry Pi
 
 [Node.js]: https://nodejs.org/en/
 [Tone.js]: https://tonejs.github.io/
 [Angular]: https://angular.io/
+[WebRTC]: https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API
+[SocketIO]: https://socket.io/
+[Angular Material]: https://material.angular.io/
+[Headless Chromium]: https://developers.google.com/web/updates/2017/04/headless-chrome
+[TypeScript]: https://www.typescriptlang.org/
+[Raspberry Pi]: https://www.raspberrypi.org/
 
 ### Architecture
 Tone.js runs in the browser. Unfortunately, the browser cannot listen for incoming UDP messages which we use to communicate with the instruments. Therefore, we need to have a server that listens for incoming UDP messages and forwards them to the GUI (or multiple connected GUIs).
