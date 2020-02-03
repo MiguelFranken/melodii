@@ -1,5 +1,5 @@
-/** 
- * in this file are all strings stored which will be shown to the user 
+/**
+ * in this file are all strings stored which will be shown to the user
  */
 
 export default {

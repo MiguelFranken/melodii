@@ -44,7 +44,7 @@ export default class CmdTool {
     /**
      * validates a string with a regular expression
      * purpose: for user input validation
-     * @param str String 
+     * @param str String
      * @param r Regular Expression
      */
     private static validString(str: string, r: RegExp): boolean {
@@ -53,10 +53,10 @@ export default class CmdTool {
 
     /**
      * first function which will be executed from the client
-     * checks if its the first time the client is used and if so 
+     * checks if its the first time the client is used and if so
      * it tries to lookup the online prototype from miguel franken
      * SHOULD BE CHANGED IF NOT USED IN INITIAL PROJECT ENVIRONMENT
-     * 
+     *
      * also it asks the user for an OSC path and OSC args
      */
     public init() {
@@ -80,7 +80,7 @@ export default class CmdTool {
     /**
      * user input:
      * changes the osc path in the settings object
-     * @param ft boolean (first time) 
+     * @param ft boolean (first time)
      */
     private changePath(ft: boolean = false) {
         inquirer.prompt(questions[0])
@@ -114,7 +114,7 @@ export default class CmdTool {
     /**
      * user input:
      * adds another osc argument to the settings object
-     * @param ft boolean (first time) 
+     * @param ft boolean (first time)
      */
     private changeArgs(ft: boolean = false) {
         inquirer.prompt(questions[1])
@@ -155,8 +155,8 @@ export default class CmdTool {
     /**
      * user input:
      * changes the address of the settings object
-     * 
-     * if an url is entered instead of an ip address the client 
+     *
+     * if an url is entered instead of an ip address the client
      * performs a dns lookup
      */
     private changeAddress() {
@@ -348,7 +348,7 @@ export default class CmdTool {
     /**
      * stores the current settings object in a json file IFF the user uses the
      * exit command
-     * 
+     *
      * if he closes the client with ctrl-c then nothing will be stores
      */
     private exitConsole() {

@@ -22,7 +22,7 @@ export class ConfigHandler {
     }
 
     /**
-     * writes the settings object to the json file 
+     * writes the settings object to the json file
      * @param obj Object (Settings object)
      * @param callback (Function) executed if the storing was successful
      */

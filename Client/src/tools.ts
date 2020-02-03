@@ -1,6 +1,6 @@
 /**
  * just the console output wrapped into two functions
- * 
+ *
  * second one if DEBUG is true it gets wrote to the output
  */
 
