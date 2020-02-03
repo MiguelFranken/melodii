@@ -1,4 +1,4 @@
-[README](../../README.md) | [Back](gui.md)
+[README](../../../README.md) | [Back](gui.md)
 
 # Instrument configurations
 ## Mat
