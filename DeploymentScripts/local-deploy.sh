@@ -1,3 +1,4 @@
+# Execute this script in the frontend folder to deploy the frontend on your local machine
 #!/bin/bash
 echo "Deploying locally..."
 docker stop mcp-local

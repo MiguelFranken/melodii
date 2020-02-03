@@ -1,3 +1,5 @@
+# This script is used in the deployment server
+# and is executed for every commit on the master/dev branch
 #!/bin/bash
 if [ "$#" -ne 2 ]
 then
