@@ -1,6 +1,8 @@
 <img src="./logo.png" alt="Logo" height="100px">
+<br/><br/>
 
-[GUI](Documentation/gui/GUI.md) | [Effect Controller](effectcontroller/README.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](DEVELOPMENT.md)
+[GUI](Documentation/gui/gui.md) | [Effect Controller](Documentation/effectcontroller/effectcontroller.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](DEVELOPMENT.md)
+<br/>[Deployment](DEPLOYMENT.md) | [Client](CLIENT.md) | [API Documentation](API.md)
 
 # The Mix
 The Mix receives control messages wirelessly from the instruments and produces sound output. It runs on a separate device that can be connected to quality loudspeakers. Using your phone or tablet, you can connect to the device and open a GUI to control the Mix.
