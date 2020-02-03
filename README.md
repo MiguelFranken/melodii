@@ -2,10 +2,10 @@
 <br/><br/>
 
 <a href="Documentation/gui/GUI.md">
-    <img src="Documentation/images/gui.png" alt="Logo" height="150px">
+    <img src="Documentation/images/gui.png" alt="gui" height="150px">
 </a>
-<a href="Documentation/gui/GUI.md">
-    <img src="Documentation/images/gui.png" alt="Logo" height="150px">
+<a href="Documentation/effectcontroller/EFFECT_CONTROLLER.md">
+    <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="150px">
 </a>
 <a href="Documentation/gui/GUI.md">
     <img src="Documentation/images/gui.png" alt="Logo" height="150px">
@@ -17,7 +17,7 @@
     <img src="Documentation/images/gui.png" alt="Logo" height="150px">
 </a>
 
-[GUI](Documentation/gui/GUI.md) | [Effect Controller](Documentation/effectcontroller/EFFECTCONTROLLER.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](Documentation/development/DEVELOPMENT.md)
+[GUI](Documentation/gui/GUI.md) | [Effect Controller](Documentation/effectcontroller/EFFECT_CONTROLLER.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](Documentation/development/DEVELOPMENT.md)
 <br/>[Deployment](Documentation/DEPLOYMENT.md) | [Client](Documentation/CLIENT.md) | [API Documentation](Documentation/API.md) | [Pi Case](Documentation/picase/picase.md)
 
 # The Mix
