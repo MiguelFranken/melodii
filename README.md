@@ -23,10 +23,6 @@ At the top of the GUI is the navigation panel. It offers the following links:
 - [Mat](#mat), [Arc](#arc), [Box](#box): Configuration controls for the FabBand instruments.
 - [Matrix](#matrix): A simple, looping instrument.
 
-> Be aware that to combat latency the Mix will by default use direct communication. I.e., it will not send messages to the server when you use an instrument through the GUI, but pass the messages directly to the Mix's sound generator. This means that when you connect to the Mix with another device, you will not hear those sounds, because it will not receive them from the server as they are not sent to the server at all.
-> 
-> If you want to hear those sounds in another GUI, you can ask the Mix to send all messages to server by disabling "Direct communication" in the [settings](#settings). Then, other Mix GUIs will receive these messages from the server they are connected to.
-
 ## Local instruments
 The local instruments are built into the Mix and can be used from the GUI. They can be useful to get yourself familiarized with the GUI, since you do not need to connect an instrument to the Mix.
 
@@ -69,3 +65,33 @@ By default, holding your hand closer to the sensor plays it louder. If you want 
 
 ### Box
 The Box simply offers a choice between different synthesizers.
+
+## Effect controls
+### Effects
+This page allows you to control the effects set for each of the instruments as well as the master output.
+
+- Reverb: Makes the sound reverberate like in a cathedral.
+- PingPongDelay: Have the sound echo side-to-side in the left and right speakers.
+- AutoFilter: **TODO**
+- AutoWah: Makes it sound like your holding your mouth over the speaker while saying "Wah".
+- Chorus: **TODO**
+- EQ: Allows you to cut off low (L), medium (M), and high (H) frequencies, by first activating the EQ effect and then disabling chosen frequencies.
+
+In addition to the effects, the bottom right shows the volume meters for each instrument as well as the master channel. This enables you to judge how loud the different instruments are in relation to each other. It can also be useful when a note hangs to determine which instrument is producing the note.
+
+
+### Mixer
+The mixer allows you to set the volume levels of the different instruments and the master channel. Dragging a bar lower will decrease the volume for that instrument.
+
+> Note that changing the volume is also subject to the behavior of [direct communication](#direct-communication). **TODO: Is this true?**
+
+## Settings
+- Direct Communication: Activates and deactivates [direct communication](#direct-communication).
+- Message indicator: Toggles whether the indicator bar at the top left flashes when a new message comes in. **TODO: Does this currently work?**
+- Advanced settings: Takes you to the [advanced settings](#advaned-settings) page.
+- Experiments: Takes you to the [experiments](#experiments) page.
+
+### Direct communication
+Be aware that to combat latency the Mix will by default use direct communication. I.e., it will not send messages to the server when you use an instrument through the GUI, but pass the messages directly to the Mix's sound generator. This means that when you connect to the Mix with another device, you will not hear those sounds, because it will not receive them from the server as they are not sent to the server at all.
+
+If you want to hear those sounds in another GUI, you can ask the Mix to send all messages to server by disabling "Direct communication" in the [settings](#settings). Then, other Mix GUIs will receive these messages from the server they are connected to.
