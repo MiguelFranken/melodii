@@ -1,4 +1,4 @@
-## Experiments
+# Experiments
 ![Latency](images/latency.jpeg)
 
 The experiments are early or unpolished tests that still might provide some use.

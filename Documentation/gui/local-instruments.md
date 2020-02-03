@@ -1,7 +1,7 @@
-## Local instruments
+# Local instruments
 The local instruments are built into the Mix and can be used from the GUI. They can be useful to get yourself familiarized with the GUI, since you do not need to connect an instrument to the Mix.
 
-### Matrix
+## Matrix
 ![Matrix](images/matrix.png)
 
 The simplest place to try out the Mix is the Matrix.
@@ -14,12 +14,12 @@ You can influence the playback speed by dragging the beats per minute (BPM) slid
 
 The right-most "menu"-style button will hide the Mix navigation and bring it back. Use this to immerse yourself in your Matrix of sounds.
 
-#### Switch instrument
+### Switch instrument
 ![Switch](images/switch.jpeg)
 
 You can switch between the drums and the piano by clicking on the arrow buttons in the second menu row, or by clicking the button to their left that shows what instrument is currently selected.
 
-#### Velocity
+### Velocity
 ![Velocity](images/velocity.jpeg)
 
 The velocity basically determines the volume of an individual note. 
@@ -34,7 +34,7 @@ To get an interactive tutorial, activate the velocity tutorial via the correspon
 ![Tutorial4](images/tutorial4.png)
 ![Tutorial5](images/tutorial5.jpeg)
 
-#### Shrinking & Folding
+### Shrinking & Folding
 While the drum instrument at this time has only 3 different percussion elements, the piano instrument has many possible notes that can be selected in the matrix.
 This means that the matrix has more rows that allow input. The user must scroll vertically to see all the rows. 
 
@@ -49,7 +49,7 @@ You can also choose to display only the rows in which a note is played. The fold
 
 ![Effects](images/shrinked-and-folded.jpeg)
 
-### Cello
+## Cello
 ![Cello](images/cello.jpeg)
 
 The cello offers an alternative, local instrument to the Matrix. Use it by hovering over or touching the bars, representing different notes. The higher parts of the bar play the sound more loudly, the lower parts more softly. You can play multiple sounds at the same time (though this is easier with touch than with a single mouse).

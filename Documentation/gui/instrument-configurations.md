@@ -1,5 +1,5 @@
-## Instrument configurations
-### Mat
+# Instrument configurations
+## Mat
 ![Mat](images/mat.jpeg)
 
 The Mat configuration allows you to test the Matrix by pressing on the different buttons.
@@ -10,7 +10,7 @@ You can also rearrange what sounds get played by each button by activating "Swap
 
 To influence the sound of the Mat, you can activate the "Chords" mode. Instead of one note per button, it will play an entire chord when a button is pressed. The chord will match the root note and scale settings. You can also choose between different synthesizers with the "Sound" option.
 
-### Arc
+## Arc
 ![Arc](images/arc.jpeg)
 
 The Arc configuration does not allow to test the instrument. It does however allow configuration of what notes are activated and how the velocity works.
@@ -21,7 +21,7 @@ You can disable whether the instrument reacts to the distance of your hand to th
 
 By default, holding your hand closer to the sensor plays it louder. If you want to have it play quieter the closer you are, you can reverse this behavior with "Reverse Velocity".
 
-### Box
+## Box
 ![Box](images/box.jpeg)
 
 The Box simply offers a choice between different synthesizers.

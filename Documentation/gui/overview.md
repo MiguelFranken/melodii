@@ -1,4 +1,4 @@
-## Overview
+# Overview
 At the top of the GUI is the navigation panel. It offers the following links:
 
 - *Logo*: Link to logo page (default page when first opened). It offers no interactive features.

@@ -1,5 +1,5 @@
-## Effect controls
-### Effects
+# Effect controls
+## Effects
 ![Effects](images/effects.png)
 
 This page allows you to control the effects set for each of the instruments as well as the master output.
@@ -13,7 +13,7 @@ This page allows you to control the effects set for each of the instruments as w
 
 In addition to the effects, the bottom right shows the volume meters for each instrument as well as the master channel. This enables you to judge how loud the different instruments are in relation to each other. It can also be useful when a note hangs to determine which instrument is producing the note.
 
-### Mixer
+## Mixer
 ![Mixer](images/mixer.jpeg)
 
 The mixer allows you to set the volume levels of the different instruments and the master channel. Dragging a bar lower will decrease the volume for that instrument.
