@@ -1,7 +1,7 @@
 # Development
 The following introduces you to setting up the Mix in general and adding new instruments.
 
-If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](./DEPLOYMENT.md).
+If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Documentation/deployment.md).
 
 ## Getting started
 You need [Node.js] (at least version 12.13.0).
@@ -47,7 +47,7 @@ npm run watch
 Tone.js runs in the browser. Unfortunately, the browser cannot listen for incoming UDP messages which we use to communicate with the instruments. Therefore, we need to have a server that listens for incoming UDP messages and forwards them to the GUI (or multiple connected GUIs).
 The GUI will connect to the server over WebRTC. This allows real-time communication between the server and the GUI. A peer-to-peer connection is established between the GUI and the server and messages can potentially be exchanged bidirectionally via UDP (over WebRTC).
 
-![Simplified Architecture](architecture.png "Simplified Architecture")
+![Simplified Architecture](images/architecture.png "Simplified Architecture")
 
 ## Adding an instrument
 If you want to add an instrument, you first need to create a class that uses Tone.js to produce sounds. Then you can add a controller that can listen for messages and drive the instrument.
