@@ -20,6 +20,9 @@
 <a href="Documentation/API.md">
     <img src="Documentation/images/api.png" alt="API documentation" height="250px">
 </a>
+<a href="Documentation/CLIENT.md">
+    <img src="Documentation/images/client.png" alt="Client documentation" height="250px">
+</a>
 
 [GUI](Documentation/gui/GUI.md) | [Effect Controller](Documentation/effectcontroller/EFFECT_CONTROLLER.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](Documentation/development/DEVELOPMENT.md)
 <br/>[Deployment](Documentation/DEPLOYMENT.md) | [Client](Documentation/CLIENT.md) | [API Documentation](Documentation/API.md) | [Pi Case](Documentation/picase/picase.md)
