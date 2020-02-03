@@ -13,8 +13,12 @@
 <a href="Documentation/development/DEVELOPMENT.md">
     <img src="Documentation/images/development.png" alt="development details" height="200px">
 </a>
+<br>
 <a href="Documentation/gui/GUI.md">
     <img src="Documentation/images/process.png" alt="development process" height="200px">
+</a>
+<a href="Documentation/API.md">
+    <img src="Documentation/images/api.png" alt="API documentation" height="200px">
 </a>
 
 [GUI](Documentation/gui/GUI.md) | [Effect Controller](Documentation/effectcontroller/EFFECT_CONTROLLER.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](Documentation/development/DEVELOPMENT.md)
