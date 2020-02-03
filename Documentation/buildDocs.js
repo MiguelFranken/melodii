@@ -5,7 +5,7 @@ const EventEmitter = require('events');
 const controller_path = "../Frontend/src/app/generator/library/controllers";
 const path_arr = [controller_path];
 const input_path = path.join(__dirname, controller_path);
-const output_path = __dirname + '/api.md';
+const output_path = __dirname + '/API.md';
 
 const COMMENT_START = '/**';
 const COMMENT_END = '*/';

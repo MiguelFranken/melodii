@@ -1,7 +1,7 @@
 # Development
 The following introduces you to setting up the Mix in general and adding new instruments.
 
-If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Documentation/deployment.md).
+If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Documentation/DEPLOYMENT.md).
 
 ## Getting started
 You need [Node.js] (at least version 12.13.0).
@@ -65,11 +65,11 @@ You can use other controllers as a blueprint. Note that the `MusicService` in th
 Do not forget to register your new controller in `Frontend/src/app/generator/library/controllers/index.ts`, or it will not be initialized!
 
 ## Documentation
-The API documentation can be found at [API.md](Documentation/api.md). It is generated automatically from the doc comments with a custom annotation syntax.
+The API documentation can be found at [API.md](Documentation/API.md). It is generated automatically from the doc comments with a custom annotation syntax.
 
 To add your controller to the documentation, simply add such comments to your controller. Use the existing controllers as a reference.
 
-You can generate an updated [API.md](Documentation/api.md) by calling
+You can generate an updated [API.md](Documentation/API.md) by calling
 ```
 node ./buildDocs.js
 ```
