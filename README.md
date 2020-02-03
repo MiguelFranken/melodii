@@ -14,10 +14,5 @@ You can also run the Mix on your own machine. Be aware that you might need to mo
 
 A final alternative is to use the version hosted at http://mcp.miguel-franken.com/. Again, you would need to ensure that instruments connect to this instance. But it might be the easiest option to simply try out the [local instruments](#local-instruments).
 
-## Hardware
-If you are interested in building the box for the [Raspberry Pi], refer to `pibox/`.
-
-We also made an effect controller which is documented in `effectcontroller/`.
-
 [Raspberry Pi]: https://www.raspberrypi.org/
 [Pi]: https://www.raspberrypi.org/
