@@ -1,4 +1,4 @@
-[README](../../../README.md) | [Back](gui.md)
+[README](../../../README.md) | [Back](Documentation/gui/GUI.md)
 
 # Settings
 ![Settings](images/settings.jpeg)

@@ -1,7 +1,7 @@
 <img src="Documentation/logo.png" alt="Logo" height="100px">
 <br/><br/>
 
-[GUI](Documentation/gui/gui.md) | [Effect Controller](Documentation/effectcontroller/EFFECTCONTROLLER.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](Documentation/development/DEVELOPMENT.md)
+[GUI](Documentation/gui/GUI.md) | [Effect Controller](Documentation/effectcontroller/EFFECTCONTROLLER.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](Documentation/development/DEVELOPMENT.md)
 <br/>[Deployment](Documentation/DEPLOYMENT.md) | [Client](Documentation/CLIENT.md) | [API Documentation](Documentation/API.md) | [Pi Case](Documentation/picase/picase.md)
 
 # The Mix
