@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="Documentation/images/logo.png" alt="Logo" height="100px">
+  <img src="Documentation/images/logo.png" alt="Logo" height="170px">
 </div>
 
 # The Mix
