@@ -65,11 +65,11 @@ You can use other controllers as a blueprint. Note that the `MusicService` in th
 Do not forget to register your new controller in `Frontend/src/app/generator/library/controllers/index.ts`, or it will not be initialized!
 
 ## Documentation
-The API documentation can be found at [API.md](API.md). It is generated automatically from the doc comments with a custom annotation syntax.
+The API documentation can be found at [API.md](Documentation/api.md). It is generated automatically from the doc comments with a custom annotation syntax.
 
 To add your controller to the documentation, simply add such comments to your controller. Use the existing controllers as a reference.
 
-You can generate an updated [API.md](API.md) by calling
+You can generate an updated [API.md](Documentation/api.md) by calling
 ```
 node ./buildDocs.js
 ```

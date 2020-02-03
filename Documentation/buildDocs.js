@@ -2,10 +2,10 @@ const path = require('path');
 const fs = require('fs');
 const readline = require('readline');
 const EventEmitter = require('events');
-const controller_path = "Frontend/src/app/generator/library/controllers";
+const controller_path = "../Frontend/src/app/generator/library/controllers";
 const path_arr = [controller_path];
 const input_path = path.join(__dirname, controller_path);
-const output_path = __dirname + '/API.md';
+const output_path = __dirname + '/api.md';
 
 const COMMENT_START = '/**';
 const COMMENT_END = '*/';
@@ -35,11 +35,6 @@ const TABLE_COL2_START = '<td style="width:30%">';
 const TABLE_COL_END = "</td>" + NEW_LINE;
 const DETAILS_START = "<details><p>" + NEW_LINE2;
 const DETAILS_END = "</p></details>";
-
-/**
- * TODO evtl mit templates ? und typescript
- */
-
 
 /**
  * TODO
@@ -100,7 +95,7 @@ async function filesHandler(file) {
                 var rest = str.substring(index + 1, str.length);
                 switch (apiword) {
                     case 'apiName':
-                        obj.apiName = rest
+                        obj.apiName = rest;
                         break;
                     case 'apiGroup':
                         obj.apiGroup = rest;
@@ -120,7 +115,7 @@ async function filesHandler(file) {
                         obj.apiArgs.push({ value: rest[0], desc: rest[1] });
                         break;
                     default:
-                        continue;
+
                 }
             }
         }
@@ -176,7 +171,7 @@ function createMarkdownFile() {
         element.apiArgs.forEach(e => {
             details += "    " + "{ " + e.value + " }," + "  // " + e.desc + "\n";
         });
-        details += "]" + ARGUMENTS_END
+        details += "]" + ARGUMENTS_END;
         details += DETAILS_END;
         return details;
     }
@@ -212,7 +207,7 @@ function createMarkdownFile() {
 
         str += TABLE_END;
         wStream.write(str);
-    };
+    }
 
     wStream.end();
 

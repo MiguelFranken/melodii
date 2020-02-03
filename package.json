@@ -6,7 +6,7 @@
     "start": "concurrently -n Server,Frontend \"(cd Server && npm run start)\" \"(cd Frontend && npm run start)\"",
     "watch": "concurrently -n Server,Frontend \"(cd Server && npm run watch)\" \"(cd Frontend && npm run watch)\"",
     "deploy:local": "Scripts/local-deploy.sh",
-    "build:docs": "node buildDocs.js"
+    "build:docs": "node Documentation/buildDocs.js"
   },
   "devDependencies": {
     "concurrently": "^5.0.0",
