@@ -8,6 +8,7 @@ The following programs are reqiured to be installed on the Pi:
 
 - Node.js (we used v12.13.1) with npm (we used v6.13.6)
 - chromium-browser
+- http-server (npm i -g http-server)
 - pm2 (we used v4.2.1), a process manager
 - sox (we used v14.4.2), a music player
 
