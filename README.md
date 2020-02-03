@@ -2,23 +2,23 @@
 <br/><br/>
 
 <a href="Documentation/gui/GUI.md">
-    <img src="Documentation/images/gui.png" alt="gui" height="200px">
+    <img src="Documentation/images/gui.png" alt="gui" height="250px">
 </a>
 <a href="Documentation/effectcontroller/EFFECT_CONTROLLER.md">
-    <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="200px">
+    <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="250px">
 </a>
 <a href="Documentation/picase/picase.md">
-    <img src="Documentation/images/box.png" alt="raspberry pi case" height="200px">
+    <img src="Documentation/images/box.png" alt="raspberry pi case" height="250px">
 </a>
 <a href="Documentation/development/DEVELOPMENT.md">
-    <img src="Documentation/images/development.png" alt="development details" height="200px">
+    <img src="Documentation/images/development.png" alt="development details" height="250px">
 </a>
 <br>
 <a href="Documentation/gui/GUI.md">
-    <img src="Documentation/images/process.png" alt="development process" height="200px">
+    <img src="Documentation/images/process.png" alt="development process" height="250px">
 </a>
 <a href="Documentation/API.md">
-    <img src="Documentation/images/api.png" alt="API documentation" height="200px">
+    <img src="Documentation/images/api.png" alt="API documentation" height="250px">
 </a>
 
 [GUI](Documentation/gui/GUI.md) | [Effect Controller](Documentation/effectcontroller/EFFECT_CONTROLLER.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](Documentation/development/DEVELOPMENT.md)
