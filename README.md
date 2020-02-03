@@ -1,4 +1,6 @@
-<img src="Documentation/images/logo.png" alt="Logo" height="100px">
+<p align="center">
+  <img src="Documentation/images/logo.png" alt="Logo" height="150px">
+</p>
 <br/><br/>
 
 <a href="Documentation/gui/GUI.md">
