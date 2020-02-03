@@ -6,6 +6,8 @@ We used a Raspberry Pi 4 with 4GB of RAM running Raspian Buster. We placed our p
 ## Setup
 The following programs are reqiured to be installed on the Pi:
 
+**TODO: Links**
+
 - Node.js (we used v12.13.1) with npm (we used v6.13.6)
 - chromium-browser
 - pm2 (we used v4.2.1), a process manager
