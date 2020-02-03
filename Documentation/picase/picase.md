@@ -1,4 +1,4 @@
-# README - PI-CASE - building the case for the raspberry pi
+# Building the case for the Raspberry Pi
 
 If you want to build the case for the raspberry pi like we did it the only thing you need is a lasecutter and a bit of wood.
 
