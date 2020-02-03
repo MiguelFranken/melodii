@@ -1,8 +1,26 @@
 <img src="./logo.png" alt="Logo" height="100px">
 
 # The Mix
-
 The Mix receives control messages wirelessly from the instruments and produces sound output. It runs on a separate device that can be connected to quality loudspeakers. Using your phone or tablet, you can connect to the device and open a GUI to control the Mix.
+
+## Table of contents
+- [Getting started](#getting-started)
+- [Overview](#overview)
+- [Local instruments](#local-instruments)
+  * [Matrix](#matrix)
+  * [Cello](#cello)
+- [Instrument configurations](#instrument-configurations)
+  * [Mat](#mat)
+  * [Arc](#arc)
+  * [Box](#box)
+- [Effect controls](#effect-controls)
+  * [Effects](#effects)
+  * [Mixer](#mixer)
+- [Settings](#settings)
+  * [Direct communication](#direct-communication)
+  * [Advanced settings](#advanced-settings)
+- [Experiments](#experiments)
+- [Hardware](#hardware)
 
 ## Getting started
 Typically, the Mix will run on a Raspberry Pi. The Pi will create a WiFi hotspot to which instruments and devices can connect, and set its own IP so that it is easily reachable. Once inside the Pi's network, you can open the GUI by connecting to its IP on a specific port.
@@ -78,7 +96,6 @@ This page allows you to control the effects set for each of the instruments as w
 - EQ: Allows you to cut off low (L), medium (M), and high (H) frequencies, by first activating the EQ effect and then disabling chosen frequencies.
 
 In addition to the effects, the bottom right shows the volume meters for each instrument as well as the master channel. This enables you to judge how loud the different instruments are in relation to each other. It can also be useful when a note hangs to determine which instrument is producing the note.
-
 
 ### Mixer
 The mixer allows you to set the volume levels of the different instruments and the master channel. Dragging a bar lower will decrease the volume for that instrument.
