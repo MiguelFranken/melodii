@@ -1,20 +1,20 @@
-<img src="Documentation/images/logo.png" alt="Logo" height="150px">
+<img src="Documentation/images/logo.png" alt="Logo" height="100px">
 <br/><br/>
 
 <a href="Documentation/gui/GUI.md">
-    <img src="Documentation/images/gui.png" alt="gui" height="150px">
+    <img src="Documentation/images/gui.png" alt="gui" height="200px">
 </a>
 <a href="Documentation/effectcontroller/EFFECT_CONTROLLER.md">
-    <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="150px">
+    <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="200px">
 </a>
 <a href="Documentation/picase/picase.md">
-    <img src="Documentation/images/box.png" alt="raspberry pi case" height="150px">
+    <img src="Documentation/images/box.png" alt="raspberry pi case" height="200px">
 </a>
 <a href="Documentation/development/DEVELOPMENT.md">
-    <img src="Documentation/images/development.png" alt="development details" height="150px">
+    <img src="Documentation/images/development.png" alt="development details" height="200px">
 </a>
 <a href="Documentation/gui/GUI.md">
-    <img src="Documentation/images/process.png" alt="development process" height="150px">
+    <img src="Documentation/images/process.png" alt="development process" height="200px">
 </a>
 
 [GUI](Documentation/gui/GUI.md) | [Effect Controller](Documentation/effectcontroller/EFFECT_CONTROLLER.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](Documentation/development/DEVELOPMENT.md)
