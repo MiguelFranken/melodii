@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, interval, Observable, Subject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -62,9 +62,15 @@ let playSubscription: Subscription;
   templateUrl: './prototype.component.html',
   styleUrls: ['./prototype.component.scss']
 })
-export class PrototypeComponent implements OnInit, OnDestroy {
+export class PrototypeComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  public isAnimationDisabled = true;
 
   public showRowNames = true;
+
+  get velocity() {
+    return showVelocity;
+  }
 
   private logger: Logger = new Logger({ name: 'PrototypeComponent', flags: ['component'] });
 
@@ -366,8 +372,8 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.instrumentSelectionOverlay.open();
   }
 
-  public switchMatrix(matrix: Matrix, index: number) {
-    matrix = matrix;
+  public switchMatrix(matrixHTML: Matrix, index: number) {
+    matrix = matrixHTML;
     matrixCollectionIndex = index;
   }
   //endregion
@@ -478,8 +484,10 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.logger.debug("_interval", { interval: _interval });
 
     // create matrices
-    this.createMatrixDrums();
-    this.createMatrixPiano();
+    if (matrixCollection.length === 0) {
+      this.createMatrixDrums();
+      this.createMatrixPiano();
+    }
 
     matrix = matrixCollection[matrixCollectionIndex];
   }
@@ -525,7 +533,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       for (const row of matrix.rows) {
         row.buttons.forEach((button: RowButton, columnIndex: number) => {
           button.isPlayed = false;
-          button.isActive = false;
+          // button.isActive = false;
         });
       }
     }
@@ -554,7 +562,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       for (const row of matrix.rows) {
         row.buttons.forEach((button: RowButton, columnIndex: number) => {
           button.isPlayed = false;
-          button.isActive = false;
+          // button.isActive = false;
         });
       }
     }
@@ -628,7 +636,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
       const snareButton = new RowButton();
       snareButton.setOSCMessage({
-        address: '/drums/snare/play',
+        address: '/drums/snare',
         args: [
           {
             'type': "s",
@@ -1194,6 +1202,12 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   public notYetImplemented() {
     this.notYetImplementedService.openSnackbar();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.isAnimationDisabled = false;
+    });
   }
 
 }

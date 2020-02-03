@@ -9,6 +9,8 @@ import { AdvancedSettingsComponent } from "./advanced-settings/advanced-settings
 import { ContextComponent } from "./context/context.component";
 import { EffectsComponent } from './effects/effects.component';
 import { StartComponent } from './start/start.component';
+import { ArcComponent } from './arc/arc.component';
+import { BoxComponent } from './box/box.component';
 
 const routes: Routes = [
   {
@@ -36,8 +38,16 @@ const routes: Routes = [
     component: LogComponent,
   },
   {
-    path: 'arc',
+    path: 'cello',
     component: CelloComponent,
+  },
+  {
+    path: 'arc',
+    component: ArcComponent,
+  },
+  {
+    path: 'box',
+    component: BoxComponent,
   },
   {
     path: 'mixer',
@@ -51,8 +61,8 @@ const routes: Routes = [
     path: 'experiments',
     loadChildren: './experiments/experiments.module#ExperimentsModule',
   },
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: '**', redirectTo: 'dashboard' },
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

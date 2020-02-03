@@ -65,3 +65,7 @@ Additionally, you must register this controller in `Frontend/src/app/generator/l
 If you do not specify a url in the decorator, each OSC messages routed to the controller will trigger the execution of the decorated method.
 
 You can get access to the received OSC message by using the `@Message()` decorator. It takes no arguments!
+
+## Deploying
+If you want to deploy the project on a raspberry pi refer to the [DEPLOYMENT.md](./DEPLOYMENT.md)
+

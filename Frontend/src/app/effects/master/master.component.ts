@@ -25,6 +25,14 @@ export class MasterComponent implements OnInit {
     this.effectStateService.setIsUsedReverb(this.instrumentName, value);
   }
 
+  get useChorus(): boolean {
+    return this.effectStateService.isUsedChorus(this.instrumentName);
+  }
+
+  set useChorus(value: boolean) {
+    this.effectStateService.setIsUsedChorus(this.instrumentName, value);
+  }
+
   get usePingPongDelay(): boolean {
     return this.effectStateService.isUsedPingPongDelay(this.instrumentName);
   }
@@ -84,6 +92,22 @@ export class MasterComponent implements OnInit {
     this.communicationService.sendMessage(oscMessage);
 
     this.logger.debug('Switched reverb effect');
+  }
+
+  public switchChorus() {
+    this.useChorus = !this.useChorus;
+
+    const oscMessage: IOSCMessage = {
+      address: '/effect/master/chorus',
+      args: [
+        { type: 'i', value: this.useChorus ? 1 : 0 }
+      ],
+      info: null
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched chorus effect');
   }
 
   public switchPingPongDelay() {

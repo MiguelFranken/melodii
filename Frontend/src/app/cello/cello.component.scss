@@ -11,12 +11,18 @@
 }
 
 .key {
-  padding-top: 10px;
-  color: $mcp-white-1;
-  font-size: 15px;
-  font-weight: bolder;
+  padding-top: 35px;
+  color: $mcp-white-2;
+  font-size: 30px;
+  font-weight: 500;
   background: linear-gradient($mcp-black-1, hsl(0, 0%, 75%) 100%);
   user-select: none;
+
+  small {
+    margin-top: 8px;
+    margin-left: 1px;
+    font-size: 15px;
+  }
 }
 
 .container {

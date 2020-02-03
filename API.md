@@ -29,6 +29,61 @@ Arguments:
 
 </p></details></td>
 </tr>
+<tr style="vertical-align:top;">
+<td>Activate/deactivate note</td>
+<td>Activates/deactivates a specific note</td>
+<td><details><p>
+
+Path:
+```
+/arc/switch/velocity
+```
+Arguments:
+```
+[
+    { s,note },  // Expects a note as string without octave at the end
+    { i,state },  // Expects a boolean as integer
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Activate/deactivate velocity</td>
+<td>Activates/deactivates whether the arc instrument can send velocity for notes</td>
+<td><details><p>
+
+Path:
+```
+/arc/switch/velocity
+```
+Arguments:
+```
+[
+    { i,state },  // Expects a boolean as integer
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Activate/deactivate velocity reversed mode</td>
+<td>Activates/deactivates whether the sent velocity values are reversed</td>
+<td><details><p>
+
+Path:
+```
+/arc/switch/reversed
+```
+Arguments:
+```
+[
+    { i,state },  // Expects a boolean as integer
+]
+```
+
+</p></details></td>
+</tr>
 </table>
 
 
@@ -113,6 +168,24 @@ Arguments:
 
 </p></details></td>
 </tr>
+<tr style="vertical-align:top;">
+<td>Switch Sound</td>
+<td>Switch the sound of the box instrument</td>
+<td><details><p>
+
+Path:
+```
+/box/switch
+```
+Arguments:
+```
+[
+    { s,sound },  // Expects either "synth" or "kalimba" as string argument
+]
+```
+
+</p></details></td>
+</tr>
 </table>
 
 
@@ -161,7 +234,7 @@ Arguments:
 
 Path:
 ```
-/drums/snare/play
+/drums/snare
 ```
 Arguments:
 ```
@@ -242,6 +315,63 @@ Arguments:
 </p></details></td>
 </tr>
 <tr style="vertical-align:top;">
+<td>Switch Instrument Autofilter Effect</td>
+<td>Adds/removes autofilter effect for specified instrument</td>
+<td><details><p>
+
+Path:
+```
+/effect/instrument/autofilter
+```
+Arguments:
+```
+[
+    { s,name },  // Expects the name of the instrument as string
+    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Instrument AutoWah Effect</td>
+<td>Adds/removes AutoWah effect for specified instrument</td>
+<td><details><p>
+
+Path:
+```
+/effect/instrument/autowah
+```
+Arguments:
+```
+[
+    { s,name },  // Expects the name of the instrument as string
+    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Instrument chorus Effect</td>
+<td>Adds/removes chorus effect for specified instrument</td>
+<td><details><p>
+
+Path:
+```
+/effect/instrument/chorus
+```
+Arguments:
+```
+[
+    { s,name },  // Expects the name of the instrument as string
+    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
 <td>Switch Instrument PingPongDeleay Effect</td>
 <td>Adds/removes pingpongdelay effect for specified instrument</td>
 <td><details><p>
@@ -286,6 +416,24 @@ Arguments:
 Path:
 ```
 /effect/master/pingpongdelay
+```
+Arguments:
+```
+[
+    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Master Chorus Effect</td>
+<td>Adds/removes chorus effect to/from master output</td>
+<td><details><p>
+
+Path:
+```
+/effect/master/chorus
 ```
 Arguments:
 ```
@@ -669,6 +817,24 @@ Arguments:
 ```
 [
     { i,state },  // Expects a boolean that expresses whether chords should be played or not
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Switch Sound</td>
+<td>Switch the sound of the mat instrument</td>
+<td><details><p>
+
+Path:
+```
+/mat/switch
+```
+Arguments:
+```
+[
+    { s,sound },  // Expects either "synth" or "sawtooth" as string argument
 ]
 ```
 

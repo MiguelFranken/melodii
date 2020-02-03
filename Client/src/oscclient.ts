@@ -1,10 +1,7 @@
 import osc from 'osc';
-import { IOSCArgs } from './osc/osc-types';
 import dns from 'dns';
+import { IOSCArgs } from './osc/osc-types';
 import { logger, loggerD } from './tools';
-
-
-// just a comment
 
 export class OSCClient {
     private udpClient: any;
@@ -27,12 +24,11 @@ export class OSCClient {
             this.portReady = true;
         });
         loggerD('udpClient initialized successfully');
-
         loggerD('udp port open()');
         this.udpClient = udp;
     }
 
-    public openUDP() {
+    public openUDP(): void {
         this.udpClient.open();
     }
 
@@ -46,7 +42,7 @@ export class OSCClient {
 
     public dnslookup(
         url: string, callback: (err: NodeJS.ErrnoException | null, address: string) => void,
-    ) {
+    ): void {
         let str = url;
         if (str.includes("http://")) {
             str = str.substring(7, str.length);
@@ -65,6 +61,11 @@ export class OSCClient {
         });
     }
 
+    /**
+     * sends the oscmessage if the udp client is ready to the osc server
+     * @param path String
+     * @param args IOSCArgs[]
+     */
     public async send(path: string, args: IOSCArgs[]) {
 
         let counter = 0;
@@ -91,22 +92,13 @@ export class OSCClient {
         return true;
     }
 
-    public sendLatencyTest() {
-        const str = Date.now().toString();
-        const arg: IOSCArgs = {
-            type: "s", value: str,
-        };
-        this.send('/latency', [arg]);
-    }
-
-    // E2 G2 B2
     public async playAmelie(): Promise<any> {
-        const arrNotes = [
-            "E2", "G2", "B2", "A4",
-            "E4", "A4", "G4", "A4",
-            "D3", "A4", "G4", "A4",
-            "D3", "A4", "G4", "A4",
-        ];
+        // const arrNotes = [
+        //     "E2", "G2", "B2", "A4",
+        //     "E4", "A4", "G4", "A4",
+        //     "D3", "A4", "G4", "A4",
+        //     "D3", "A4", "G4", "A4",
+        // ];
         const arrNotes2 = [
             "E4", "A4", "G4", "A4",
             "E4", "A4", "G4", "A4",
@@ -124,6 +116,52 @@ export class OSCClient {
         }
     }
 
+    public async playAmelieBox(): Promise<any> {
+        const arrNotes2 = [
+            "E4", "A4", "G4", "A4",
+            "E4", "A4", "G4", "A4",
+            "D3", "A4", "G4", "A4",
+            "D3", "A4", "G4", "A4",
+        ];
+        for (let i = 0; i < 4 * 4; i++) {
+            const args: IOSCArgs[] = [
+                {type: "s", value: arrNotes2[i].toString()},
+                // {type: "s", value: "8n"},
+                {type: "f", value: 1},
+            ];
+            const args2: IOSCArgs[] = [
+                {type: "s", value: arrNotes2[i].toString()},
+            ];
+            this.send("/box/trigger", args);
+            await this.sleep(150);
+            this.send("/box/release", args2);
+            await this.sleep(150);
+        }
+    }
+
+    public async playAmelieMat(): Promise<any> {
+        const arrNotes2 = [
+            1, 4, 3, 4,
+            1, 4, 3, 4,
+            0, 4, 3, 4,
+            0, 4, 3, 4,
+        ];
+        for (let i = 0; i < 4 * 4; i++) {
+            const args: IOSCArgs[] = [
+                {type: "i", value: arrNotes2[i]},
+                // {type: "s", value: "8n"},
+                {type: "f", value: 1},
+            ];
+            const args2: IOSCArgs[] = [
+                {type: "i", value: arrNotes2[i]},
+            ];
+            this.send("/mat/trigger", args);
+            await this.sleep(150);
+            this.send("/mat/release", args2);
+            await this.sleep(150);
+        }
+    }
+
     public startDrumLoop() {
         this.drumLoop = true;
         this.playDrumBeat().then().catch(); // nothing to do here because we want the drum beat playing while a boolean is set
@@ -134,6 +172,9 @@ export class OSCClient {
     }
 
     private async playDrumBeat() {
+        const kick = "/drums/kick";
+        const hihat = "/drums/hihat";
+        const snare = "/drums/snare";
         const arg1: IOSCArgs = {
             type: "s", value: "8n",
         };
@@ -143,26 +184,26 @@ export class OSCClient {
         const pause = 350;
         const args: IOSCArgs[] = [arg1, arg2];
         while (this.drumLoop) {
-            this.send('/drums/kick', args);
-            this.send('/drums/hihat', args);
+            this.send(kick, args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/hihat', args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/snare', args);
-            this.send('/drums/hihat', args);
+            this.send(snare, args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/hihat', args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/kick', args);
-            this.send('/drums/hihat', args);
+            this.send(kick, args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/kick', args);
-            this.send('/drums/hihat', args);
+            this.send(kick, args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/snare', args);
-            this.send('/drums/hihat', args);
+            this.send(snare, args);
+            this.send(hihat, args);
             await this.sleep(pause);
-            this.send('/drums/hihat', args);
+            this.send(hihat, args);
             await this.sleep(pause);
         }
     }

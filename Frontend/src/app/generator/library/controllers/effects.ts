@@ -51,6 +51,84 @@ export class EffectsController {
 
   /**
    * @apiGroup Effects
+   * @apiName Switch Instrument Autofilter Effect
+   * @apiDesc Adds/removes autofilter effect for specified instrument
+   * @apiPath /effect/instrument/autofilter
+   * @apiArgs s,name Expects the name of the instrument as string
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
+  @OnMessage('/instrument/autofilter')
+  public autofilterInstrument(@Message() message: IOSCMessage) {
+    try {
+      const instrument: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[1]);
+
+      if (!state) {
+        this.musicService.deleteEffect(instrument, 'autofilter');
+        this.logger.info(`Removed autofilter effect from effect chain of instrument ${instrument}`);
+      } else {
+        this.musicService.addEffect(instrument, 'autofilter');
+        this.logger.info(`Added autofilter effect to effect chain of instrument ${instrument}`);
+      }
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
+  /**
+   * @apiGroup Effects
+   * @apiName Switch Instrument AutoWah Effect
+   * @apiDesc Adds/removes AutoWah effect for specified instrument
+   * @apiPath /effect/instrument/autowah
+   * @apiArgs s,name Expects the name of the instrument as string
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
+  @OnMessage('/instrument/autowah')
+  public autowahInstrument(@Message() message: IOSCMessage) {
+    try {
+      const instrument: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[1]);
+
+      if (!state) {
+        this.musicService.deleteEffect(instrument, 'autowah');
+        this.logger.info(`Removed autowah effect from effect chain of instrument ${instrument}`);
+      } else {
+        this.musicService.addEffect(instrument, 'autowah');
+        this.logger.info(`Added autowah effect to effect chain of instrument ${instrument}`);
+      }
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
+  /**
+   * @apiGroup Effects
+   * @apiName Switch Instrument chorus Effect
+   * @apiDesc Adds/removes chorus effect for specified instrument
+   * @apiPath /effect/instrument/chorus
+   * @apiArgs s,name Expects the name of the instrument as string
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
+  @OnMessage('/instrument/chorus')
+  public chorusInstrument(@Message() message: IOSCMessage) {
+    try {
+      const instrument: InstrumentName = TypeChecker.ValidInstrumentNameArg(message.args[0]);
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[1]);
+
+      if (!state) {
+        this.musicService.deleteEffect(instrument, 'chorus');
+        this.logger.info(`Removed chorus effect from effect chain of instrument ${instrument}`);
+      } else {
+        this.musicService.addEffect(instrument, 'chorus');
+        this.logger.info(`Added chorus effect to effect chain of instrument ${instrument}`);
+      }
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
+  /**
+   * @apiGroup Effects
    * @apiName Switch Instrument PingPongDeleay Effect
    * @apiDesc Adds/removes pingpongdelay effect for specified instrument
    * @apiPath /effect/instrument/pingpongdelay
@@ -117,6 +195,30 @@ export class EffectsController {
       } else {
         this.musicService.addPingPongDelayToMasterEffectChain();
         this.logger.info('Added pingpongdelay effect from master effect chain');
+      }
+    } catch (e) {
+      this.printError(e);
+    }
+  }
+
+  /**
+   * @apiGroup Effects
+   * @apiName Switch Master Chorus Effect
+   * @apiDesc Adds/removes chorus effect to/from master output
+   * @apiPath /effect/master/chorus
+   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   */
+  @OnMessage('/master/chorus')
+  public chorusMaster(@Message() message: IOSCMessage) {
+    try {
+      const state: boolean = TypeChecker.ValidBoolArg(message.args[0]);
+
+      if (message.args[0].value === 0) {
+        this.musicService.deleteEffectFromMasterEffectChain('chorus');
+        this.logger.info('Removed chorus effect from master effect chain');
+      } else {
+        this.musicService.addChorusToMasterEffectChain();
+        this.logger.info('Added chorus effect from master effect chain');
       }
     } catch (e) {
       this.printError(e);

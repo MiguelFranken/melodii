@@ -9,7 +9,7 @@ import { GeneratorCommunicationService } from "../generator/library/generator-co
 })
 export class CelloComponent implements OnInit {
 
-  private logger: Logger = new Logger({ name: 'Arc Test' });
+  private logger: Logger = new Logger({ name: 'Cello Component' });
 
   @ViewChild('keyboard', {static: true})
   private keyboard: ElementRef<HTMLElement>;

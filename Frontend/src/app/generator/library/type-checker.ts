@@ -1,6 +1,6 @@
 import { IOSCArg } from './osc/osc-types';
 import { OSCError } from './error';
-import { InstrumentName } from './types';
+import { InstrumentName, Note } from './types';
 import { Octave, ScaleName } from './instruments/mat';
 import { Decibels } from "tone/build/esm/core/type/Units";
 
@@ -26,7 +26,7 @@ export class TypeChecker {
     } else if (!parsed.match(TypeChecker.Regex.Note)) {
       throw new OSCError("MCPx0001", "Note has invalid value");
     }
-    return parsed;
+    return parsed as Note;
   }
 
   public static ValidNoteWithoutOctaveArg(arg: IOSCArg) {

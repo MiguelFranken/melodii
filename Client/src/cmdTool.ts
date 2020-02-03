@@ -4,8 +4,8 @@ import { logger, loggerD } from './tools';
 import { ConfigHandler } from './configHandler';
 import text from './visual_strings';
 import questions from './questions';
-import { IOSCArgs } from "./osc/osc-types";
-import { OSCTypeTag } from "./osc/osc-types";
+import { IOSCArgs, OSCTypeTag } from "./osc/osc-types";
+import { ISettings } from './types';
 
 export default class CmdTool {
     private regex = {
@@ -17,7 +17,7 @@ export default class CmdTool {
         number: /^[0-9]+$/,
     };
     private args: IOSCArgs[] = [];
-    private readonly settings = {
+    private readonly settings: ISettings = {
         port: 57121,
         address: "",
         path: "",
@@ -41,10 +41,24 @@ export default class CmdTool {
         );
     }
 
+    /**
+     * validates a string with a regular expression
+     * purpose: for user input validation
+     * @param str String
+     * @param r Regular Expression
+     */
     private static validString(str: string, r: RegExp): boolean {
         return !!(str.match(r));
     }
 
+    /**
+     * first function which will be executed from the client
+     * checks if its the first time the client is used and if so
+     * it tries to lookup the online prototype from miguel franken
+     * SHOULD BE CHANGED IF NOT USED IN INITIAL PROJECT ENVIRONMENT
+     *
+     * also it asks the user for an OSC path and OSC args
+     */
     public init() {
         if (this.ft) {
             this.cli.dnslookup(this.settings.url, (err, address) => {
@@ -63,6 +77,11 @@ export default class CmdTool {
         }
     }
 
+    /**
+     * user input:
+     * changes the osc path in the settings object
+     * @param ft boolean (first time)
+     */
     private changePath(ft: boolean = false) {
         inquirer.prompt(questions[0])
             .then((answers: { oscPath: string; }) => {
@@ -76,6 +95,10 @@ export default class CmdTool {
             });
     }
 
+    /**
+     * user input:
+     * ask the user if he wants to add anothe osc argument or not
+     */
     private addAnotherArg() {
         inquirer.prompt(questions[7])
             .then((answers: { anotherArg: string; }) => {
@@ -88,6 +111,11 @@ export default class CmdTool {
             });
     }
 
+    /**
+     * user input:
+     * adds another osc argument to the settings object
+     * @param ft boolean (first time)
+     */
     private changeArgs(ft: boolean = false) {
         inquirer.prompt(questions[1])
             .then((answers: { oscArgs: string; }) => {
@@ -124,6 +152,13 @@ export default class CmdTool {
             });
     }
 
+    /**
+     * user input:
+     * changes the address of the settings object
+     *
+     * if an url is entered instead of an ip address the client
+     * performs a dns lookup
+     */
     private changeAddress() {
         inquirer.prompt(questions[2])
             .then((answers: { address: string; }) => {
@@ -131,7 +166,6 @@ export default class CmdTool {
                 let parsed = "";
                 if (!CmdTool.validString(address, this.regex.address)) {
                     logger(address);
-                    logger("ich bin hier");
                     if (CmdTool.validString(address, this.regex.url)) {
                         const url = address;
                         this.loading = true;
@@ -160,6 +194,10 @@ export default class CmdTool {
             });
     }
 
+    /**
+     * user input:
+     * changes the port of the settings object
+     */
     private changePort() {
         inquirer.prompt(questions[3])
             .then((answers: { port: string; }) => {
@@ -179,7 +217,10 @@ export default class CmdTool {
             });
     }
 
-    private send() {
+    /**
+     * tries to send an osc message over the cli object
+     */
+    private send(): void {
         const {path, args} = this.settings;
 
         const deli = this.cli.send(path, args);
@@ -188,15 +229,26 @@ export default class CmdTool {
             return this.menu();
         }
         logger('OSC msg send.');
-        return this.menu();
+        this.menu();
     }
 
-    private playSong() {
+
+    private playSong(): void {
         this.cli.playAmelie().then().catch();
         this.menu();
     }
 
-    private playRandomNote() {
+    private playSongBox(): void {
+        this.cli.playAmelieBox().then().catch();
+        this.menu();
+    }
+
+    private playSongMat(): void {
+        this.cli.playAmelieMat().then().catch();
+        this.menu();
+    }
+
+    private playRandomNote(): void {
         const arg1: IOSCArgs = {
             type: "s", value: "C4",
         };
@@ -211,7 +263,11 @@ export default class CmdTool {
         this.menu();
     }
 
-    public menu() {
+    /**
+     * user input:
+     * main function with a list of all possible commands and submenus
+     */
+    public menu(): void {
         logger(JSON.stringify(this.settings, undefined, 2));
         inquirer.prompt(questions[4])
             .then((answers: { askNext: string; }) => {
@@ -229,12 +285,21 @@ export default class CmdTool {
                         return this.exitConsole();
                     case text.PLAY_SONG:
                         return this.playSong();
+                    case text.PLAY_SONG_BOX:
+                        return this.playSongBox();
+                    case text.PLAY_SONG_MAT:
+                        return this.playSongMat();
                     default:
                         return this.menu();
                 }
             });
     }
 
+    /**
+     * user input:
+     * submenu:
+     * list of all possible settings commmands
+     */
     public settingsMenu() {
         logger(JSON.stringify(this.settings, undefined, 2));
         inquirer.prompt(questions[5])
@@ -256,6 +321,11 @@ export default class CmdTool {
             });
     }
 
+    /**
+     * user input:
+     * submenu:
+     * lists all possible commands for using the drums of the mix generator
+     */
     public drumMenu() {
         logger(JSON.stringify(this.settings, undefined, 2));
         inquirer.prompt(questions[6])
@@ -275,6 +345,12 @@ export default class CmdTool {
             });
     }
 
+    /**
+     * stores the current settings object in a json file IFF the user uses the
+     * exit command
+     *
+     * if he closes the client with ctrl-c then nothing will be stores
+     */
     private exitConsole() {
         this.configHandler.storeData(this.settings,
             () => {

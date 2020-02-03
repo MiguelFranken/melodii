@@ -25,6 +25,30 @@ export class DashboardEffectButtonsComponent implements OnInit {
     this.effectStateService.setIsUsedReverb(this.instrumentName, value);
   }
 
+  get useAutofilter(): boolean {
+    return this.effectStateService.isUsedAutofilter(this.instrumentName);
+  }
+
+  set useAutofilter(value: boolean) {
+    this.effectStateService.setIsUsedAutofilter(this.instrumentName, value);
+  }
+
+  get useAutowah(): boolean {
+    return this.effectStateService.isUsedAutowah(this.instrumentName);
+  }
+
+  set useAutowah(value: boolean) {
+    this.effectStateService.setIsUsedAutowah(this.instrumentName, value);
+  }
+
+  get useChorus(): boolean {
+    return this.effectStateService.isUsedChorus(this.instrumentName);
+  }
+
+  set useChorus(value: boolean) {
+    this.effectStateService.setIsUsedChorus(this.instrumentName, value);
+  }
+
   get usePingPongDelay(): boolean {
     return this.effectStateService.isUsedPingPongDelay(this.instrumentName);
   }
@@ -85,6 +109,57 @@ export class DashboardEffectButtonsComponent implements OnInit {
     this.communicationService.sendMessage(oscMessage);
 
     this.logger.debug('Switched reverb effect');
+  }
+
+  public switchAutofilter() {
+    this.useAutofilter = !this.useAutofilter;
+
+    const oscMessage: IOSCMessage = {
+      address: '/effect/instrument/autofilter',
+      args: [
+        { type: 's', value: this.instrumentName },
+        { type: 'i', value: this.useAutofilter ? 1 : 0 }
+      ],
+      info: null
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched autofilter effect');
+  }
+
+  public switchAutowah() {
+    this.useAutowah = !this.useAutowah;
+
+    const oscMessage: IOSCMessage = {
+      address: '/effect/instrument/autowah',
+      args: [
+        { type: 's', value: this.instrumentName },
+        { type: 'i', value: this.useAutowah ? 1 : 0 }
+      ],
+      info: null
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched autowah effect');
+  }
+
+  public switchChorus() {
+    this.useChorus = !this.useChorus;
+
+    const oscMessage: IOSCMessage = {
+      address: '/effect/instrument/chorus',
+      args: [
+        { type: 's', value: this.instrumentName },
+        { type: 'i', value: this.useChorus ? 1 : 0 }
+      ],
+      info: null
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched chorus effect');
   }
 
   public switchPingPongDelay() {

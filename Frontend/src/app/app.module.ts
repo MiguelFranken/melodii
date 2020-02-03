@@ -15,6 +15,8 @@ import { FormsModule } from "@angular/forms";
 import { ContextComponent } from './context/context.component';
 import { StartComponent } from './start/start.component';
 import { EffectsModule } from './effects/effects.module';
+import { ArcModule } from './arc/arc.module';
+import { BoxModule } from './box/box.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { EffectsModule } from './effects/effects.module';
     MixerModule,
     CelloModule,
     MatModule,
+    BoxModule,
+    ArcModule,
     ExperimentsModule,
     FormsModule
   ],

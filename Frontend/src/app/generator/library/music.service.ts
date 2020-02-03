@@ -1,7 +1,8 @@
 import { Logger } from '@upe/logger';
-import { Destination, EQ3, Gain, Meter, PingPongDelay, Reverb, Split, Volume } from 'tone';
+import { AutoFilter, AutoWah, Chorus, Destination, EQ3, Gain, Meter, PingPongDelay, Reverb, Split, Volume } from 'tone';
 import { Injectable } from '@angular/core';
 import { IMCPInstrument } from './mcp-instrument';
+import { Oscillator } from "tone";
 // Instruments
 import { DrumsHiHat, DrumsKick, DrumsSnare } from './instruments/drums';
 import { Piano } from './instruments/piano';
@@ -97,6 +98,12 @@ export class MusicService {
       return this.getReverbEffect();
     } else if (effectName === 'threebandeq') {
       return this.getThreeBandEQEffect();
+    } else if (effectName === 'autofilter') {
+      return this.getAutofilterEffect();
+    } else if (effectName === 'autowah') {
+      return this.getAutowahEffect();
+    } else if (effectName === 'chorus') {
+      return this.getChorusEffect();
     } else {
       return this.getPingPongDelayEffect();
     }
@@ -154,6 +161,58 @@ export class MusicService {
     };
   }
 
+  public getChorusEffect(): IMCPEffect {
+    const toneEffect = new Chorus({
+      "frequency": 4,
+      "delayTime": 16,
+      "type": "triangle",
+      "depth": 1,
+      "feedback": 0.1,
+      "spread": 80
+    });
+    toneEffect.wet.value = 0.5;
+    return {
+      id: 'chorus',
+      effect: toneEffect
+    };
+  }
+
+  public getAutowahEffect(): IMCPEffect {
+    const toneEffect = new AutoWah(50, 6, 0);
+    toneEffect.Q.value = 6;
+    return {
+      id: 'autowah',
+      effect: toneEffect
+    };
+  }
+
+  public getAutofilterEffect(): IMCPEffect {
+    const oscillator = new Oscillator({
+      "volume" : -Infinity,
+      "type" : "square6",
+      "frequency" : "E4"
+    });
+
+    const toneEffect = new AutoFilter({
+      "frequency": 1,
+      "depth": 0.7,
+      filter: {
+        type: "lowpass",
+        rolloff: -12,
+        Q: 0.5
+      }
+    });
+
+    toneEffect.wet.value = 0.7;
+    oscillator.connect(toneEffect).start();
+    toneEffect.start();
+
+    return {
+      id: 'autofilter',
+      effect: toneEffect
+    };
+  }
+
   public getPingPongDelayEffect(): IMCPEffect {
     const pingPongDelay: IMCPEffect = {
       id: 'pingpongdelay',
@@ -176,6 +235,10 @@ export class MusicService {
 
   public addPingPongDelayToMasterEffectChain() {
     this.masterEffectChain.pushEffect(this.getPingPongDelayEffect());
+  }
+
+  public addChorusToMasterEffectChain() {
+    this.masterEffectChain.pushEffect(this.getChorusEffect());
   }
 
   public addReverbEffectToMasterEffectChain() {

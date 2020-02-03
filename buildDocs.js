@@ -4,7 +4,6 @@ const readline = require('readline');
 const EventEmitter = require('events');
 const controller_path = "Frontend/src/app/generator/library/controllers";
 const path_arr = [controller_path];
-const test_path = "testfolder";
 const input_path = path.join(__dirname, controller_path);
 const output_path = __dirname + '/API.md';
 
@@ -53,6 +52,7 @@ var objarr = [];
 function main() {
     readDir();
 }
+
 
 async function readDir() {
     let files = fs.readdirSync(input_path);
@@ -112,6 +112,7 @@ async function filesHandler(file) {
                         obj.apiPath = rest;
                         break;
                     case 'apiDesc':
+                        rest = checkIfUrl(rest);
                         obj.apiDesc = rest;
                         break;
                     case 'apiArgs':
@@ -124,6 +125,29 @@ async function filesHandler(file) {
             }
         }
     }
+}
+
+function checkIfUrl(str) {
+    let result = str;    
+    let findAt = str.indexOf('@');
+    if (findAt !== -1) {
+        let key = str.substring(findAt+1, findAt+4);
+        console.log(str);
+        if (key === "url") {
+            let link = str.substring(findAt+5, str.length);
+            let index = str.indexOf(')');
+            let lindex = link.indexOf(')');
+            link = link.substring(0, lindex);
+            let cindex = link.indexOf(',');
+            let name = link.substring(0,cindex);
+            let url = link.substring(cindex+1, link.length);
+            result = str.substring(0,findAt);
+            console.log(result);
+            result += ' <a href="' + url + '">' + name + '</a> ';
+            result += str.substring(index+1, str.length);
+        }        
+    }
+    return result;
 }
 
 function splitString(str, splits) {
