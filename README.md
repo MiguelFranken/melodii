@@ -2,7 +2,19 @@
 <br/><br/>
 
 <a href="Documentation/gui/GUI.md">
-    <img src="Documentation/images/gui.png" alt="Logo" height="120px">
+    <img src="Documentation/images/gui.png" alt="Logo" height="150px">
+</a>
+<a href="Documentation/gui/GUI.md">
+    <img src="Documentation/images/gui.png" alt="Logo" height="150px">
+</a>
+<a href="Documentation/gui/GUI.md">
+    <img src="Documentation/images/gui.png" alt="Logo" height="150px">
+</a>
+<a href="Documentation/gui/GUI.md">
+    <img src="Documentation/images/gui.png" alt="Logo" height="150px">
+</a>
+<a href="Documentation/gui/GUI.md">
+    <img src="Documentation/images/gui.png" alt="Logo" height="150px">
 </a>
 
 [GUI](Documentation/gui/GUI.md) | [Effect Controller](Documentation/effectcontroller/EFFECTCONTROLLER.md) | [Deployed GUI](http://mcp.miguel-franken.com/) | [Development](Documentation/development/DEVELOPMENT.md)
