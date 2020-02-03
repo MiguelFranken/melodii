@@ -12,7 +12,7 @@ npm install
 ```
 
 Then you can start the server and the frontend with
-```
+```7
 npm run start
 ```
 Look at the console output to determine the URLs that you can connect to.
@@ -33,7 +33,10 @@ npm run watch
 [Angular]: https://angular.io/
 
 ### Architecture
-Tone.js runs in the browser. Unfortunately, the browser cannot listen for incoming UDP messages which we use to communicate with the instruments. Therefore, we need to have a server that listens for incoming UDP messages and forwards them to the GUI (or multiple connected GUIs). The GUI will connect to the server over WebRTC. **TODO: Is this true?**
+Tone.js runs in the browser. Unfortunately, the browser cannot listen for incoming UDP messages which we use to communicate with the instruments. Therefore, we need to have a server that listens for incoming UDP messages and forwards them to the GUI (or multiple connected GUIs).
+The GUI will connect to the server over WebRTC. This allows real-time communication between the server and the GUI. A peer-to-peer connection is established between the GUI and the server and messages can potentially be exchanged bidirectionally via UDP (over WebRTC).
+
+![Simplified Architecture](architecture.png "Simplified Architecture")
 
 ## Adding an instrument
 If you want to add an instrument, you first need to create a class that uses Tone.js to produce sounds. Then you can add a controller that can listen for messages and drive the instrument.
@@ -55,7 +58,7 @@ The API documentation can be found at [API.md](API.md). It is generated automati
 
 To add your controller to the documentation, simply add such comments to your controller. Use the existing controllers as a reference.
 
-You can generate an updated API.md by calling
+You can generate an updated [API.md](API.md) by calling
 ```
 node ./buildDocs.js
 ```
