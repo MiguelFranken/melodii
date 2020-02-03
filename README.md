@@ -145,13 +145,11 @@ In addition to the effects, the bottom right shows the volume meters for each in
 
 The mixer allows you to set the volume levels of the different instruments and the master channel. Dragging a bar lower will decrease the volume for that instrument.
 
-> Note that changing the volume is also subject to the behavior of [direct communication](#direct-communication). **TODO: Is this true?**
-
 ## Settings
 ![Settings](Documentation/settings.jpeg)
 
 - Direct Communication: Activates and deactivates [direct communication](#direct-communication).
-- Message indicator: Toggles whether the indicator bar at the top left flashes when a new message comes in. **TODO: Does this currently work?**
+- Message indicator: Toggles whether the indicator bar at the top left that flashes when a new message comes in is displayed or not. Hiding this element could slightly improve the audio synthesis performance.
 - Advanced settings: Takes you to the [advanced settings](#advaned-settings) page.
 - Experiments: Takes you to the [experiments](#experiments) page.
 
