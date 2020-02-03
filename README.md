@@ -1,6 +1,6 @@
-<p align="center">
+<center>
   <img src="Documentation/images/logo.png" alt="Logo" height="150px">
-</p>
+</center>
 <br/><br/>
 
 <a href="Documentation/gui/GUI.md">
