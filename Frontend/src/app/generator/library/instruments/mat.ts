@@ -33,12 +33,13 @@ export class Mat implements IMCPInstrument {
 
   public isInChordMode = false;
 
-  private voices = new DefaultMap<Note, PolySynth>(() => this.createVoice());
+  private voices: PolySynth<Synth>;
   private readonly output = new Gain();
 
   private readonly logger: Logger = new Logger({ name: 'Mat Instrument', flags: ['music'] });
 
   constructor(public readonly name: MCPInstrumentName = "Mat") {
+    this.setSynthVoices();
     this.setNotes();
     this.degrees = [
       "I",
@@ -54,17 +55,30 @@ export class Mat implements IMCPInstrument {
 
   public setSynthVoices() {
     const oldVoices = this.voices;
-    this.voices = new DefaultMap(() => this.createVoice());
-    oldVoices.forEach((voice, note) => {
-      voice.triggerRelease(note);
+    this.voices = new PolySynth().connect(this.output);
+    this.notes.forEach((note) => {
+      oldVoices.triggerRelease(note);
     });
   }
 
   public setSawToothVoices() {
     const oldVoices = this.voices;
-    this.voices = new DefaultMap(() => this.createSawToothVoice());
-    oldVoices.forEach((voice, note) => {
-      voice.triggerRelease(note);
+    this.voices = new PolySynth<Synth>(Synth, {
+      "oscillator": {
+        "type": "fatsawtooth",
+        "count": 3,
+        "spread": 30
+      },
+      "envelope": {
+        "attack": 0.01,
+        "decay": 0.1,
+        "sustain": 0.5,
+        "release": 0.4,
+        "attackCurve": "exponential"
+      }
+    }).connect(this.output);
+    this.notes.forEach((note) => {
+      oldVoices.triggerRelease(note);
     });
   }
 
@@ -75,8 +89,7 @@ export class Mat implements IMCPInstrument {
   public play(buttonIndex: ButtonIndex, velocity: Velocity) {
     const note = this.notes[buttonIndex];
     this.logger.info(`Trigger with note_index ${buttonIndex} (${note}) and velocity ${velocity}.`);
-    const voice = this.voices.get(note);
-    voice.triggerAttackRelease(note, "8n", undefined, velocity);
+    this.voices.triggerAttackRelease(note, "8n", undefined, velocity);
   }
 
   public trigger(buttonIndex: ButtonIndex, velocity: Velocity) {
@@ -84,13 +97,11 @@ export class Mat implements IMCPInstrument {
 
     if (this.isInChordMode) {
       const chordNotes: Note[] = this.getChord(buttonIndex);
-      const voice: PolySynth = this.voices.get(note);
-      voice.triggerAttack(chordNotes, undefined, velocity);
+      this.voices.triggerAttack(chordNotes, undefined, velocity);
       this.logger.info(`Trigger chord with root note ${note} and velocity ${velocity}. Playing chords: ${this.isInChordMode}`,
         { chord: chordNotes });
     } else {
-      const voice = this.voices.get(note);
-      voice.triggerAttack(note, undefined, velocity);
+      this.voices.triggerAttack(note, undefined, velocity);
       this.logger.info(`Trigger with note ${note} and velocity ${velocity}.`);
     }
   }
@@ -101,13 +112,9 @@ export class Mat implements IMCPInstrument {
 
     if (this.isInChordMode) {
       const chordNotes: Note[] = this.getChord(buttonIndex);
-      chordNotes.forEach((note) => {
-        const voice = this.voices.get(note);
-        voice.triggerRelease(chordNotes);
-      });
+      this.voices.triggerRelease(chordNotes);
     } else {
-      const voice = this.voices.get(note);
-      voice.triggerRelease(note);
+      this.voices.triggerRelease(note);
     }
   }
 
@@ -193,27 +200,6 @@ export class Mat implements IMCPInstrument {
   public changeRootNote(note: Note) {
     this.rootNote = note;
     this.setNotes();
-  }
-
-  private createVoice(): PolySynth {
-    return new PolySynth<Synth>().connect(this.output);
-  }
-
-  private createSawToothVoice() {
-    return new PolySynth<Synth>(Synth, {
-      "oscillator" : {
-        "type" : "fatsawtooth",
-        "count" : 3,
-        "spread" : 30
-      },
-      "envelope" : {
-        "attack" : 0.01,
-        "decay" : 0.1,
-        "sustain" : 0.5,
-        "release" : 0.4,
-        "attackCurve" : "exponential"
-      }
-    }).connect(this.output);
   }
 
   public getAudioNode() {
