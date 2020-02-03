@@ -1,4 +1,4 @@
-[README](../README.md) | [Back](gui.md)
+[README](../../README.md) | [Back](gui.md)
 
 # Overview
 At the top of the GUI is the navigation panel. It offers the following links:

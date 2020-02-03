@@ -1,4 +1,4 @@
-[Back](README.md)
+[Back](../README.md)
 
 ## Table of contents
 - [Overview](Documentation/gui/OVERVIEW.md)
