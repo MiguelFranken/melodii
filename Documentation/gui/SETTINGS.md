@@ -1,3 +1,5 @@
+[README](../README.md) | [Back](gui.md)
+
 # Settings
 ![Settings](images/settings.jpeg)
 

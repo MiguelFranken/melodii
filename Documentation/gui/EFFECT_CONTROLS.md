@@ -1,3 +1,5 @@
+[README](../README.md) | [Back](gui.md)
+
 # Effect controls
 ## Effects
 ![Effects](images/effects.png)
