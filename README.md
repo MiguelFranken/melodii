@@ -23,6 +23,11 @@ At the top of the GUI is the navigation panel. It offers the following links:
 - Mat, Arc, Box: Configuration controls for the FabBand instruments.
 - [Matrix](#matrix): A simple, looping instrument.
 
+## Local instruments
+The local instruments are built into the Mix and can be used from the GUI. They can be useful to get yourself familiarized with the GUI, since you do not need to connect an instrument to the Mix.
+
+> Be aware that to combat latency, by default the local instruments will use direct communication. I.e., they will not send messages to the server, but pass them directly to the Mix's sound generator. This means that when you connect to the Mix with another device, you will not hear those sounds, because it will not receive them from the server as they are not sent to the server at all. If you want to hear those sounds, you can ask the Mix to send all messages to server by disabling "Direct communication" in the [settings](#settings). Then, other Mix GUIs will receive these messages from the server they are connected to.
+
 ### Matrix
 The simplest place to try out the Mix is the Matrix. To get an interactive tutorial, use the "Help > Tutorial" menu in the top left.
 
@@ -37,3 +42,6 @@ The velocity basically determines the volume of an individual note. By showing t
 You can influence the playback speed by dragging the beats per minute (BPM) slider at the middle top of the menu. Higher values play faster, lower values more slowly.
 
 The right-most "menu"-style button will hide the Mix navigation and bring it back. Use this to immerse yourself in your Matrix of sounds.
+
+### Cello
+The cello offers an alternative, local instrument to the Matrix. Use it by hovering over or touching the bars, representing different notes. The higher parts of the bar play the sound more loudly, the lower parts more softly. You can play multiple sounds at the same time (though this is easier with touch than with a single mouse).
