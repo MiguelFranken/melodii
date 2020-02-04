@@ -75,5 +75,5 @@ To add your controller to the documentation, simply add such comments to your co
 
 You can generate an updated [API.md](Documentation/API.md) by calling
 ```
-node ./buildDocs.js
+node Documentation/buildDocs.js
 ```
