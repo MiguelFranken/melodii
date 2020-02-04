@@ -5,8 +5,8 @@
 
 - Direct Communication: Activates and deactivates [direct communication](#direct-communication).
 - Message indicator: Toggles whether the indicator bar at the top left that flashes when a new message comes in is displayed or not. Hiding this element could slightly improve the audio synthesis performance.
-- Advanced settings: Takes you to the [advanced settings](#advaned-settings) page.
-- Experiments: Takes you to the [experiments](#experiments) page.
+- Advanced settings: Takes you to the [advanced settings](#advanced-settings) page.
+- Experiments: Takes you to the [experiments](EXPERIMENTS.md) page.
 
 ## Direct communication
 Be aware that to combat latency *The Mix* will by default use direct communication, i.e., it will not send messages to the server, but pass the messages directly to the Mix's sound generator. This means that when you connect to the Mix with another device, you will not hear those sounds, because it will not receive them from the server as they are not sent to the server at all.
