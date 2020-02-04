@@ -72,16 +72,18 @@ The GUI will connect to the server over WebRTC. This allows real-time communicat
 If you want to add an instrument, you first need to create a class that uses Tone.js to produce sounds. Then you can add a controller that can listen for messages and drive the instrument.
 
 ### Creating an Instrument
-The instruments live in `Frontend/src/app/generator/library/instruments`. Simply create a new file with a class that implements `IMCPInstrument`. You can use the existing instruments as blueprints.
+The instruments classes can be found in the directory [Frontend/src/app/generator/library/instruments](../../Frontend/src/app/generator/library/instruments). Simply create a new file with a class that implements the [IMCPInstrument](../../Frontend/src/app/generator/library/mcp-instrument.ts) interface. You can use the existing instruments as blueprints.
 
 ### Creating a Controller
-The controllers are in `Frontend/src/app/generator/library/controllers`.
+![Controller](images/controller.png)
+
+The controllers are in [Frontend/src/app/generator/library/controllers](../../Frontend/src/app/generator/library/controllers).
 
 Use the decorators (`@Controller`, `@OnMessage`, `@Message`) to determine which path will be mapped to which method. Inside the method, you can extract the parameters from the OSC message and call the corresponding method on the instrument. The `@Controller` decorator sets the root route for the controller. Each `@OnMessage` defines a subroute which will call the method. The `@Message` decorator is used to simplify handling of OSC messages and is placed before the parameter.
 
-You can use other controllers as a blueprint. Note that the `MusicService` in the constructor will be passed in automatically via a [dependency injection](https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/) mechanism. It makes it easier to have a single music service for everything and access it conveniently.
+You can use other controllers as a blueprint. Note that the [MusicService](../../Frontend/src/app/generator/library/music.service.ts) class in the constructor will be passed in automatically via a [dependency injection](https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/) mechanism. It makes it easier to have a single music service for everything and access it conveniently.
 
-Do not forget to register your new controller in `Frontend/src/app/generator/library/controllers/index.ts`, or it will not be initialized!
+Do not forget to register your new controller in [Frontend/src/app/generator/library/controllers/index.ts](../../Frontend/src/app/generator/library/controllers/index.ts), or it will not be initialized!
 
 ## Documentation Generation
 The API documentation can be found at [API.md](Documentation/API.md). It is generated automatically from the doc comments with a custom annotation syntax.
@@ -90,5 +92,6 @@ To add your controller to the documentation, simply add such comments to your co
 
 You can generate an updated [API.md](Documentation/API.md) by calling
 ```
+# Execute this from the root directory of the project
 node Documentation/buildDocs.js
 ```
