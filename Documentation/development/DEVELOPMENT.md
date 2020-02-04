@@ -3,7 +3,7 @@
 </div>
 
 # Development
-The following introduces you to setting up the Mix in general and adding new instruments.
+The following introduces you to setting up *The Mix* in general and adding new instruments.
 
 If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Documentation/development/DEPLOYMENT.md).
 
@@ -19,7 +19,11 @@ Then you can start the server and the frontend with
 ```
 npm run start
 ```
-Look at the console output to determine the URLs that you can connect to.
+Look at the console output to determine the URLs that you can connect to:
+```
+[Server] [2020-02-04T13:11:29.215Z]: [UDP] Started listening for OSC messages at 192.168.0.59:57121
+```
+In the example, the instruments can send OSC messages via UDP to 192.168.0.59:57121.
 
 ## Developing
 In development, you might want to have everything running in the background and recompile automatically whenever you save a file. To achieve that, run
