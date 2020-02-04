@@ -2,24 +2,39 @@
   <img src="../images/development.png" alt="gui" height="250px">
 </div>
 
+[Back](../../README.md)
+
 # Development
-The following introduces you to setting up the Mix in general and adding new instruments.
+The following introduces you to setting up *The Mix* in general and adding new instruments.
 
-If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Documentation/DEPLOYMENT.md).
+If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Documentation/development/DEPLOYMENT.md).
 
-## Getting started
+## Table of Contents
+- [Getting Started](#getting-started)
+- [Developing](#developing)
+  * [Technologies](#technologies)
+  * [Architecture](#architecture)
+- [Adding an Instrument](#adding-an-instrument)
+  * [Creating an Instrument](#creating-an-instrument)
+  * [Creating a Controller](#creating-a-controller)
+- [Documentation Generation](#documentation-generation)
+
+## Getting Started
 You need [Node.js] (at least version 12.13.0).
 
-Install all the dependencies with
-```
+```shell script
+# Install all the dependencies with
 npm install
-```
 
-Then you can start the server and the frontend with
-```
+# Then you can start the server and the frontend with
 npm run start
 ```
-Look at the console output to determine the URLs that you can connect to.
+
+Look at the console output to determine the URLs that you can connect to:
+```
+[Server] [2020-02-04T13:11:29.215Z]: [UDP] Started listening for OSC messages at 192.168.0.59:57121
+```
+In the example, the instruments can send OSC messages via UDP to `192.168.0.59:57121`.
 
 ## Developing
 In development, you might want to have everything running in the background and recompile automatically whenever you save a file. To achieve that, run
@@ -53,13 +68,13 @@ The GUI will connect to the server over WebRTC. This allows real-time communicat
 
 ![Simplified Architecture](images/architecture.png "Simplified Architecture")
 
-## Adding an instrument
+## Adding an Instrument
 If you want to add an instrument, you first need to create a class that uses Tone.js to produce sounds. Then you can add a controller that can listen for messages and drive the instrument.
 
-### Creating an instrument
+### Creating an Instrument
 The instruments live in `Frontend/src/app/generator/library/instruments`. Simply create a new file with a class that implements `IMCPInstrument`. You can use the existing instruments as blueprints.
 
-### Creating a controller
+### Creating a Controller
 The controllers are in `Frontend/src/app/generator/library/controllers`.
 
 Use the decorators (`@Controller`, `@OnMessage`, `@Message`) to determine which path will be mapped to which method. Inside the method, you can extract the parameters from the OSC message and call the corresponding method on the instrument. The `@Controller` decorator sets the root route for the controller. Each `@OnMessage` defines a subroute which will call the method. The `@Message` decorator is used to simplify handling of OSC messages and is placed before the parameter.
@@ -68,7 +83,7 @@ You can use other controllers as a blueprint. Note that the `MusicService` in th
 
 Do not forget to register your new controller in `Frontend/src/app/generator/library/controllers/index.ts`, or it will not be initialized!
 
-## Documentation
+## Documentation Generation
 The API documentation can be found at [API.md](Documentation/API.md). It is generated automatically from the doc comments with a custom annotation syntax.
 
 To add your controller to the documentation, simply add such comments to your controller. Use the existing controllers as a reference.

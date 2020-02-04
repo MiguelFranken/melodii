@@ -2,10 +2,12 @@
   <img src="../images/effect-controller.png" alt="effect controller" height="250px">
 </div>
 
-# Effect controller
+[Back](../../README.md)
+
+# Effect Controller
 We attempted to create a hardware effect controller that could be given to the audience to influence the music through effects. Unfortunately, the original idea failed, so we only have a simple controller. This document describes how it is made.
 
-## Original idea
+## Original Idea
 We imagined the controller to combine a light and an ultrasound sensor in a way that would couple them together in an interesting way. Since ultrasound will bounce of off transparent object, but the light sensor will not detect them, the idea was to put the two sensors together under a transparent silicone dome.
 
 Participants could then lay they hands around the dome to block light and activate the light sensor, without influencing the ultrasound sensor. By pushing the dome down with a finger, virtually no light would be blocked, but the ultrasound sensor would pick up the depression of the dome. This would motivate coordination between multiple people to block light together and push the dome in a way that fits the music.
@@ -14,7 +16,7 @@ Unfortunately, the attempts to create such a dome failed. Using a cut-open plast
 
 Since using the ball as a mold for a silicone dome would have used a lot of time and silicone, we tried to reduce the waste by attempting to reinforce the ball with a layer of silicone. The first layer was much too thin and did not have any effect. The second attempt was to create "pipes" in an X shape that would be thicker and reinforce the ball from the inside. However, the mold leaked and created a flat puddle, negating any desired effect.
 
-## Current prototype
+## Current Prototype
 ![A sad-looking effect controller.](images/poor_effectcontroller.jpg)
 
 Due to time restrictions, the original idea of the dome was abandoned. The core idea of combining a light and an ultrasound sensor is present in the prototype, however.

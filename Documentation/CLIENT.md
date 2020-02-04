@@ -2,21 +2,33 @@
     <img src="images/client.png" alt="client" height="250px">
 </div>
 
+[Back](../README.md)
+
 # Terminal-Client
 In this project also an OSC client was developed with which one can send valid OSC messages to any server using a CLI.
 This is used in this project mainly when the sound generator has been extended with new OSC functionalities that could not yet be sent in the GUI.
 In these cases the correct Audio Synthesis can be tested with this OSC client.
 The OSC Client CLI was implemented with NodeJS.
 
-## Getting started
+## Table of Contents
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+  * [Standard Menu](#standard-menu)
+  * [Drum Menu](#drum-menu)
+  * [Settings Menu](#settings-menu)
+  * [Restarting the Client](#restarting-the-client)
+  
 
-Install all the dependencies with
+## Getting Started
+
 ```
+# Go to the correct folder
+cd Client
+
+# Install all the dependencies with
 npm install
-```
 
-Then you can start client with
-```
+# Start the OSC client
 npm run start
 ```
 
@@ -26,7 +38,7 @@ enter an osc path:
 ```
 ? Enter OSC-Path:  
 ```
-for example use: /play_note
+for example use: `/play_note`
 
 The next thing you should enter is a minimum of one argument:
 ```
@@ -133,7 +145,7 @@ Pressing Enter on:
 </th><th>goes back to the standard menu</th></tr>
 </table>
 
-### Settings menu
+### Settings Menu
 Pressing Enter on:
 <table style="width:100%;text-align:left;">
 <tr>
@@ -171,9 +183,9 @@ Pressing Enter on:
 
 
 ### Restarting the Client
-In the folder dist you find the file oscconfig.json.
+In the `dist` folder you find the file `oscconfig.json`.
 In this file the client saves the last connection object.
 If you delete this file the client handles his start as its the first time ever.
 The file gets loaded at the start of the client and saved if you press exit.
-While the client is open the file will not be updatet and if you close the programm
+While the client is open the file will not be updated and if you close the program
 not with the exit button the saving-process is not initiated.

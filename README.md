@@ -8,6 +8,7 @@ The Mix receives control messages wirelessly from the instruments and produces s
 
 ## Getting started
 Typically, the Mix will run on a [Raspberry Pi]. The [Pi] will create a WiFi hotspot to which instruments and devices can connect, and set its own IP so that it is easily reachable. Once inside the [Pi]'s network, you can open the GUI by connecting to its IP on a specific port.
+Details on the deployment of the project on the [Pi] can be found in the [DEPLOYMENT.md](Documentation/development/DEPLOYMENT.md).
 
 You can also run the Mix on your own machine. Be aware that you might need to modify the instruments such that they connect to your machine instead. Setup instructions can be found in [DEVELOPMENT.md](Documentation/development/DEVELOPMENT.md).
 
@@ -29,7 +30,7 @@ A final alternative is to use the version hosted at http://mcp.miguel-franken.co
 <a href="Documentation/effectcontroller/EFFECT_CONTROLLER.md">
     <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="250px">
 </a>
-<a href="Documentation/picase/picase.md">
+<a href="Documentation/picase/PICASE.md">
     <img src="Documentation/images/box.png" alt="raspberry pi case" height="250px">
 </a>
 
