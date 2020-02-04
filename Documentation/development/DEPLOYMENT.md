@@ -1,3 +1,5 @@
+[README](../README.md) | [Back](DEVELOPMENT.md)
+
 # Deployment
 The following describes how to deploy *The Mix* on a [Raspberry Pi].
 

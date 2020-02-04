@@ -5,7 +5,7 @@
 # Development
 The following introduces you to setting up the Mix in general and adding new instruments.
 
-If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Documentation/DEPLOYMENT.md).
+If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Documentation/development/DEPLOYMENT.md).
 
 ## Getting started
 You need [Node.js] (at least version 12.13.0).
