@@ -1,4 +1,6 @@
-<img src="../images/gui.png" alt="gui" height="250px">
+<div align="center">
+  <img src="../images/gui.png" alt="gui" height="250px">
+</div>
 
 [Back](../../README.md)
 

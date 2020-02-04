@@ -1,3 +1,7 @@
+<div align="center">
+    <img src="images/client.png" alt="client" height="250px">
+</div>
+
 # Terminal-Client
 
 This project contains an OSC-Client implemented with NodeJS and used on the 

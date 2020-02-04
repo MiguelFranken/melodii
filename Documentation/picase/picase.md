@@ -1,4 +1,6 @@
-<img src="../images/box.png" alt="gui" height="250px">
+<div align="center">
+    <img src="../images/box.png" alt="gui" height="250px">
+</div>
 
 # Building the case for the Raspberry Pi
 
