@@ -106,17 +106,29 @@ Pressing Enter on:
 ```
 > (c) play song
 ```
-</th><th>plays a hardcoded number of nodes with a 300ms delay between them</th></tr>
+</th><th>plays a hardcoded number of paino notes with a 300ms delay between them</th></tr>
 <tr><th>
 
 ```
-> (d) drums menu
+> (d) play song (box)
+```
+</th><th>plays a hardcoded number of box notes with a 300ms delay between them</th></tr>
+<tr><th>
+
+```
+> (e) play song (mat)
+```
+</th><th>plays a hardcoded number of mat notes with a 300ms delay between them</th></tr>
+<tr><th>
+
+```
+> (f) drums menu
 ```
 </th><th>opens the drum menu</th></tr>
 <tr><th>
 
 ```
-> (e) change settings
+> (g) change settings
 ```
 </th><th>opens the settings menu</th></tr>
 </table>
