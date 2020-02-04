@@ -239,15 +239,15 @@ Path:
 Arguments:
 ```
 [
-    { i,duration },  // Expects the duration of the snare note as string
-    { i,velocity },  // Expects the velocity of the snare note as float
+    { s,duration },  // Expects the duration of the snare note as string
+    { f,velocity },  // Expects the velocity of the snare note as float
 ]
 ```
 
 </p></details></td>
 </tr>
 <tr style="vertical-align:top;">
-<td>Play Snare</td>
+<td>Play Kick</td>
 <td>Plays the basedrum (kick) from the kick sampler</td>
 <td><details><p>
 
@@ -258,8 +258,8 @@ Path:
 Arguments:
 ```
 [
-    { i,duration },  // Expects the duration of the kick note as string
-    { i,velocity },  // Expects the velocity of the kick note as float
+    { s,duration },  // Expects the duration of the kick note as string
+    { f,velocity },  // Expects the velocity of the kick note as float
 ]
 ```
 
@@ -277,8 +277,8 @@ Path:
 Arguments:
 ```
 [
-    { i,duration },  // Expects the duration of the hihat note as string
-    { i,velocity },  // Expects the velocity of the hihat note as float
+    { s,duration },  // Expects the duration of the hihat note as string
+    { f,velocity },  // Expects the velocity of the hihat note as float
 ]
 ```
 
@@ -308,7 +308,7 @@ Arguments:
 ```
 [
     { s,name },  // Expects the name of the instrument as string
-    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+    { i,state },  // Expects 1 (on) or 0 (off) as integer (boolean)
 ]
 ```
 
@@ -327,7 +327,7 @@ Arguments:
 ```
 [
     { s,name },  // Expects the name of the instrument as string
-    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+    { i,state },  // Expects 1 (on) or 0 (off) as integer (boolean)
 ]
 ```
 
@@ -346,7 +346,7 @@ Arguments:
 ```
 [
     { s,name },  // Expects the name of the instrument as string
-    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+    { i,state },  // Expects 1 (on) or 0 (off) as integer (boolean)
 ]
 ```
 
@@ -365,7 +365,7 @@ Arguments:
 ```
 [
     { s,name },  // Expects the name of the instrument as string
-    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+    { i,state },  // Expects 1 (on) or 0 (off) as integer (boolean)
 ]
 ```
 
@@ -384,7 +384,7 @@ Arguments:
 ```
 [
     { s,name },  // Expects the name of the instrument as string
-    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+    { i,state },  // Expects 1 (on) or 0 (off) as integer (boolean)
 ]
 ```
 
@@ -402,7 +402,7 @@ Path:
 Arguments:
 ```
 [
-    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+    { i,state },  // Expects 1 (on) or 0 (off) as integer (boolean)
 ]
 ```
 
@@ -420,7 +420,7 @@ Path:
 Arguments:
 ```
 [
-    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+    { i,state },  // Expects 1 (on) or 0 (off) as integer (boolean)
 ]
 ```
 
@@ -438,7 +438,7 @@ Path:
 Arguments:
 ```
 [
-    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+    { i,state },  // Expects 1 (on) or 0 (off) as integer (boolean)
 ]
 ```
 
@@ -528,7 +528,7 @@ Path:
 Arguments:
 ```
 [
-    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+    { i,state },  // Expects 1 (on) or 0 (off) as integer (boolean)
 ]
 ```
 
@@ -546,7 +546,7 @@ Path:
 Arguments:
 ```
 [
-    { f,decibel },  // Expects an integer between [-20,10]
+    { i,decibel },  // Expects an integer between [-20,10]
 ]
 ```
 
@@ -564,7 +564,7 @@ Path:
 Arguments:
 ```
 [
-    { f,decibel },  // Expects an integer between [-20,10]
+    { i,decibel },  // Expects an integer between [-20,10]
 ]
 ```
 
@@ -582,7 +582,7 @@ Path:
 Arguments:
 ```
 [
-    { f,decibel },  // Expects an integer between [-20,10]
+    { i,decibel },  // Expects an integer between [-20,10]
 ]
 ```
 
@@ -601,7 +601,7 @@ Arguments:
 ```
 [
     { s,name },  // Expects the name of the instrument as string
-    { f,state },  // Expects 1 (on) or 0 (off) as float (boolean)
+    { i,state },  // Expects 1 (on) or 0 (off) as integer (boolean)
 ]
 ```
 
@@ -620,7 +620,7 @@ Arguments:
 ```
 [
     { s,name },  // Expects the name of the instrument as string
-    { f,decibel },  // Expects an integer between [-20,10]
+    { i,decibel },  // Expects an integer between [-20,10]
 ]
 ```
 
@@ -639,7 +639,7 @@ Arguments:
 ```
 [
     { s,name },  // Expects the name of the instrument as string
-    { f,decibel },  // Expects an integer between [-20,10]
+    { i,decibel },  // Expects an integer between [-20,10]
 ]
 ```
 
@@ -658,7 +658,7 @@ Arguments:
 ```
 [
     { s,name },  // Expects the name of the instrument as string
-    { f,decibel },  // Expects an integer between [-20,10]
+    { i,decibel },  // Expects an integer between [-20,10]
 ]
 ```
 
@@ -866,6 +866,92 @@ Arguments:
     { s,note },  // Expects a note as string
     { s,duration },  // Expects the duration of the note as string
     { f,velocity },  // Expects the velocity [0,1] of the note as float
+]
+```
+
+</p></details></td>
+</tr>
+</table>
+
+
+## PlayNoteSynth
+
+<table style="width:100%;text-align:left;">
+<tr style="vertical-align:top;">
+<td style="width:15%">Title</td>
+<td style="width:30%">Description</td>
+<td></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Plays a note</td>
+<td>Trigger and Release a note</td>
+<td><details><p>
+
+Path:
+```
+/play_note
+```
+Arguments:
+```
+[
+    { s,note },  // Expects a note as string
+    { s,duration },  // Expects the duration of the note as string
+    { f,velocity },  // Expects the velocity [0,1] of the note as float
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Start playing a note</td>
+<td>Triggers a note to start playing</td>
+<td><details><p>
+
+Path:
+```
+/play_note/trigger
+```
+Arguments:
+```
+[
+    { s,index },  // Expects a note as a string
+    { f,velocity },  // Expects the velocity [0,1] of the note as float
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Detune the PlayNoteSynth</td>
+<td>Shift the pitch of all notes</td>
+<td><details><p>
+
+Path:
+```
+/play_note/detune
+```
+Arguments:
+```
+[
+    { i,cents },  // Expects the pitch-shift in cents as integer
+]
+```
+
+</p></details></td>
+</tr>
+<tr style="vertical-align:top;">
+<td>Stop playing a note</td>
+<td>Release a note to stop playing it</td>
+<td><details><p>
+
+Path:
+```
+/play_note/release
+```
+Arguments:
+```
+[
+    { s,index },  // Expects a note as string
 ]
 ```
 

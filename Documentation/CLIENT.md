@@ -195,7 +195,7 @@ Pressing Enter on:
 
 
 ### Restarting the Client
-In the `dist` folder you find the file `oscconfig.json`.
+In the `Client/dist` folder you find the file `oscconfig.json`.
 In this file the client saves the last connection object.
 If you delete this file the client handles his start as its the first time ever.
 The file gets loaded at the start of the client and saved if you press exit.
