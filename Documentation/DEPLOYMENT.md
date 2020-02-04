@@ -19,13 +19,9 @@ Ensure that you have speakers connected to the Pi *before* you run any scripts.
     ```
     npm run build:local
     ```
-3. To start the Mix automatically when the Pi starts up, add the following line to `/etc/rc.local`: **TODO: Is this really for auto-startup?**
-    ```
-    bash /home/pi/Projects/media-computing-project/startall.sh
-    ``` 
 
 ## Starting
-If you've not set the Mix to autostart when booting up, you can run the `startall.sh` script manually.
+Run the script `/home/pi/Project/media-computing-project/startall.sh`.
 
 The Pi will output sounds to indicate different stages of the starting process. What you want to hear is the Windows 7 boot-up sound, which indicates that everything has started correctly. If you do not hear it after a few minutes, you have to connect to the Pi and debug...
 
