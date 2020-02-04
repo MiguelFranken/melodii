@@ -1,7 +1,7 @@
 # Deployment
 The following describes how to deploy the Mix on a Raspberry Pi.
 
-We used a Raspberry Pi 4 with 4GB of RAM running Raspian Buster. We placed our project files in `~/Project/media-computing-project`, which serves as the base directory for all scripts.
+We used a Raspberry Pi 4 with 4GB of RAM running Raspian Buster. We placed our project files in `/home/pi/Project/media-computing-project`, which serves as the base directory for all scripts.
 
 ## Setup
 The following programs are required to be installed on the Pi:
