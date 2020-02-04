@@ -1,3 +1,5 @@
+<img src="../images/box.png" alt="gui" height="250px">
+
 # Building the case for the Raspberry Pi
 
 If you want to build the case for the raspberry pi like we did it the only thing you need is a lasecutter and a bit of wood.

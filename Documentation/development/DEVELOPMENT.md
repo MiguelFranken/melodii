@@ -1,3 +1,5 @@
+<img src="../images/development.png" alt="gui" height="250px">
+
 # Development
 The following introduces you to setting up the Mix in general and adding new instruments.
 
