@@ -2,7 +2,7 @@
   <img src="../images/effect-controller.png" alt="effect controller" height="250px">
 </div>
 
-# Effectcontroller
+# Effect controller
 We attempted to create a hardware effect controller that could be given to the audience to influence the music through effects. Unfortunately, the original idea failed, so we only have a simple controller. This document describes how it is made.
 
 ## Original idea

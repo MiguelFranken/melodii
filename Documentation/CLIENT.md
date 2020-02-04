@@ -3,9 +3,10 @@
 </div>
 
 # Terminal-Client
-
-This project contains an OSC-Client implemented with NodeJS and used on the 
-terminal
+In this project also an OSC client was developed with which one can send valid OSC messages to any server using a CLI.
+This is used in this project mainly when the sound generator has been extended with new OSC functionalities that could not yet be sent in the GUI.
+In these cases the correct Audio Synthesis can be tested with this OSC client.
+The OSC Client CLI was implemented with NodeJS.
 
 ## Getting started
 
