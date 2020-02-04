@@ -2,6 +2,8 @@
     <img src="images/client.png" alt="client" height="250px">
 </div>
 
+[Back](../README.md)
+
 # Terminal-Client
 In this project also an OSC client was developed with which one can send valid OSC messages to any server using a CLI.
 This is used in this project mainly when the sound generator has been extended with new OSC functionalities that could not yet be sent in the GUI.
