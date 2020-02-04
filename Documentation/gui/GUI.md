@@ -7,8 +7,8 @@
 ## Table of contents
 - [Overview](Documentation/gui/OVERVIEW.md)
 - [Local instruments](Documentation/gui/LOCAL_INSTRUMENTS.md)
-  * [Matrix](Documentation/gui/LOCAL_INSTRUMENTS.md#matrix)
-  * [Cello](Documentation/gui/LOCAL_INSTRUMENTS.md#cello)
+  * [Matrix](Documentation/gui/MATRIX.md)
+  * [Cello](Documentation/gui/CELLO.md)
 - [Instrument configurations](Documentation/gui/INSTRUMENT_CONFIGURATIONS.md)
   * [Mat](Documentation/gui/MAT.md)
   * [Arc](Documentation/gui/ARC.md)
