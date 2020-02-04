@@ -26,14 +26,13 @@ export class DrumsController {
    * @apiName Play Snare
    * @apiDesc Plays the snare from the snare sampler
    * @apiPath /drums/snare
-   * @apiArgs i,duration Expects the duration of the snare note as string
-   * @apiArgs i,velocity Expects the velocity of the snare note as float
+   * @apiArgs s,duration Expects the duration of the snare note as string
+   * @apiArgs f,velocity Expects the velocity of the snare note as float
    */
   @OnMessage('/snare')
   public receivedMsgSnare(@Message() msg: IOSCMessage) {
     try {
       const duration = TypeChecker.ValidDurationArg(msg.args[0]);
-      //TODO add postion to decorators
       const velocity = TypeChecker.ValidNormalRangeArg(msg.args[1]);
 
       this.snareInstrument.play(duration, velocity);
@@ -47,17 +46,16 @@ export class DrumsController {
 
   /**
    * @apiGroup Drums
-   * @apiName Play Snare
+   * @apiName Play Kick
    * @apiDesc Plays the basedrum (kick) from the kick sampler
    * @apiPath /drums/kick
-   * @apiArgs i,duration Expects the duration of the kick note as string
-   * @apiArgs i,velocity Expects the velocity of the kick note as float
+   * @apiArgs s,duration Expects the duration of the kick note as string
+   * @apiArgs f,velocity Expects the velocity of the kick note as float
    */
   @OnMessage('/kick')
   public receivedMsgKick(@Message() msg: IOSCMessage) {
     try {
       const duration = TypeChecker.ValidDurationArg(msg.args[0]);
-      // TODO add position to decorators
       const velocity = TypeChecker.ValidNormalRangeArg(msg.args[1]);
 
       this.kickInstrument.play(duration, velocity);
@@ -75,14 +73,13 @@ export class DrumsController {
    * @apiName Play HiHat
    * @apiDesc Plays the HiHat from the hihat synth
    * @apiPath /drums/hihat
-   * @apiArgs i,duration Expects the duration of the hihat note as string
-   * @apiArgs i,velocity Expects the velocity of the hihat note as float
+   * @apiArgs s,duration Expects the duration of the hihat note as string
+   * @apiArgs f,velocity Expects the velocity of the hihat note as float
    */
   @OnMessage('/hihat')
   public receivedMsgHiHat(@Message() msg: IOSCMessage) {
     try {
       const duration = TypeChecker.ValidDurationArg(msg.args[0]);
-      // TODO add position to decorators
       const velocity = TypeChecker.ValidNormalRangeArg(msg.args[1]);
 
       this.hihatInstrument.play(duration, velocity);

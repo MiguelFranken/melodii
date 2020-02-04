@@ -17,11 +17,19 @@ export class PlayNoteController {
     this.synth = music.getInstrument('playnote-synth') as PlayNoteSynth;
   }
 
+  /**
+   * @apiGroup PlayNoteSynth
+   * @apiName Plays a note
+   * @apiDesc Trigger and Release a note
+   * @apiPath /play_note
+   * @apiArgs s,note Expects a note as string
+   * @apiArgs s,duration Expects the duration of the note as string
+   * @apiArgs f,velocity Expects the velocity [0,1] of the note as float
+   */
   @OnMessage()
   public receivedMessage(@Message() msg: IOSCMessage) {
     try {
       const note = TypeChecker.ValidNoteArg(msg.args[0]);
-      //TODO add to decorator
       const duration = TypeChecker.ValidDurationArg(msg.args[1]);
       const velocity = TypeChecker.ValidNormalRangeArg(msg.args[2]);
 
@@ -34,6 +42,14 @@ export class PlayNoteController {
     }
   }
 
+  /**
+   * @apiGroup PlayNoteSynth
+   * @apiName Start playing a note
+   * @apiDesc Triggers a note to start playing
+   * @apiPath /play_note/trigger
+   * @apiArgs s,index Expects a note as a string
+   * @apiArgs f,velocity Expects the velocity [0,1] of the note as float
+   */
   @OnMessage('/trigger')
   public receivedMessageStart(@Message() msg: IOSCMessage) {
     try {
@@ -49,6 +65,13 @@ export class PlayNoteController {
     }
   }
 
+  /**
+   * @apiGroup PlayNoteSynth
+   * @apiName Detune the PlayNoteSynth
+   * @apiDesc Shift the pitch of all notes
+   * @apiPath /play_note/detune
+   * @apiArgs i,cents Expects the pitch-shift in cents as integer
+   */
   @OnMessage('/detune')
   public detune(@Message() msg: IOSCMessage) {
     try {
@@ -64,7 +87,14 @@ export class PlayNoteController {
     }
   }
 
-  @OnMessage('/stop')
+  /**
+   * @apiGroup PlayNoteSynth
+   * @apiName Stop playing a note
+   * @apiDesc Release a note to stop playing it
+   * @apiPath /play_note/release
+   * @apiArgs s,index Expects a note as string
+   */
+  @OnMessage('/release')
   public receivedMessageStop(@Message() msg: IOSCMessage) {
     try {
       const note = TypeChecker.ValidNoteArg(msg.args[0]);

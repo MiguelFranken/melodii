@@ -29,7 +29,7 @@ export class EffectsController {
    * @apiDesc Adds/removes reverb effect for specified instrument
    * @apiPath /effect/instrument/reverb
    * @apiArgs s,name Expects the name of the instrument as string
-   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   * @apiArgs i,state Expects 1 (on) or 0 (off) as integer (boolean)
    */
   @OnMessage('/instrument/reverb')
   public reverbInstrument(@Message() message: IOSCMessage) {
@@ -55,7 +55,7 @@ export class EffectsController {
    * @apiDesc Adds/removes autofilter effect for specified instrument
    * @apiPath /effect/instrument/autofilter
    * @apiArgs s,name Expects the name of the instrument as string
-   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   * @apiArgs i,state Expects 1 (on) or 0 (off) as integer (boolean)
    */
   @OnMessage('/instrument/autofilter')
   public autofilterInstrument(@Message() message: IOSCMessage) {
@@ -81,7 +81,7 @@ export class EffectsController {
    * @apiDesc Adds/removes AutoWah effect for specified instrument
    * @apiPath /effect/instrument/autowah
    * @apiArgs s,name Expects the name of the instrument as string
-   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   * @apiArgs i,state Expects 1 (on) or 0 (off) as integer (boolean)
    */
   @OnMessage('/instrument/autowah')
   public autowahInstrument(@Message() message: IOSCMessage) {
@@ -107,7 +107,7 @@ export class EffectsController {
    * @apiDesc Adds/removes chorus effect for specified instrument
    * @apiPath /effect/instrument/chorus
    * @apiArgs s,name Expects the name of the instrument as string
-   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   * @apiArgs i,state Expects 1 (on) or 0 (off) as integer (boolean)
    */
   @OnMessage('/instrument/chorus')
   public chorusInstrument(@Message() message: IOSCMessage) {
@@ -133,7 +133,7 @@ export class EffectsController {
    * @apiDesc Adds/removes pingpongdelay effect for specified instrument
    * @apiPath /effect/instrument/pingpongdelay
    * @apiArgs s,name Expects the name of the instrument as string
-   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   * @apiArgs i,state Expects 1 (on) or 0 (off) as integer (boolean)
    */
   @OnMessage('/instrument/pingpongdelay')
   public pingpongdelayInstrument(@Message() message: IOSCMessage) {
@@ -158,7 +158,7 @@ export class EffectsController {
    * @apiName Switch Master Reverb Effect
    * @apiDesc Adds/removes reverb effect to/from master output
    * @apiPath /effect/master/reverb
-   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   * @apiArgs i,state Expects 1 (on) or 0 (off) as integer (boolean)
    */
   @OnMessage('/master/reverb')
   public reverbMaster(@Message() message: IOSCMessage) {
@@ -182,7 +182,7 @@ export class EffectsController {
    * @apiName Switch Master PingPongDeleay Effect
    * @apiDesc Adds/removes pingpongdelay effect to/from master output
    * @apiPath /effect/master/pingpongdelay
-   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   * @apiArgs i,state Expects 1 (on) or 0 (off) as integer (boolean)
    */
   @OnMessage('/master/pingpongdelay')
   public pingPongDelayMaster(@Message() message: IOSCMessage) {
@@ -206,7 +206,7 @@ export class EffectsController {
    * @apiName Switch Master Chorus Effect
    * @apiDesc Adds/removes chorus effect to/from master output
    * @apiPath /effect/master/chorus
-   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   * @apiArgs i,state Expects 1 (on) or 0 (off) as integer (boolean)
    */
   @OnMessage('/master/chorus')
   public chorusMaster(@Message() message: IOSCMessage) {
@@ -320,7 +320,7 @@ export class EffectsController {
    * @apiName Switch Master EQ Effect
    * @apiDesc Adds/removes EQ effect to/from master output
    * @apiPath /effect/master/eq
-   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   * @apiArgs i,state Expects 1 (on) or 0 (off) as integer (boolean)
    */
   @OnMessage('/master/eq')
   public equalizerMaster(@Message() message: IOSCMessage) {
@@ -343,7 +343,7 @@ export class EffectsController {
    * @apiName Change High Gain Master
    * @apiDesc Changes the gain applied to the high of the master output
    * @apiPath /effect/master/eq/high
-   * @apiArgs f,decibel Expects an integer between [-20,10]
+   * @apiArgs i,decibel Expects an integer between [-20,10]
    */
   @OnMessage('/master/eq/high')
   public changeHighLevelOfEqualizer(@Message() message: IOSCMessage) {
@@ -365,7 +365,7 @@ export class EffectsController {
    * @apiName Change Mid Gain Master
    * @apiDesc Changes the gain applied to the mid of the master output
    * @apiPath /effect/master/eq/mid
-   * @apiArgs f,decibel Expects an integer between [-20,10]
+   * @apiArgs i,decibel Expects an integer between [-20,10]
    */
   @OnMessage('/master/eq/mid')
   public changeMidLevelOfEqualizer(@Message() message: IOSCMessage) {
@@ -387,7 +387,7 @@ export class EffectsController {
    * @apiName Change Low Gain Master
    * @apiDesc Changes the gain applied to the low of the master output
    * @apiPath /effect/master/eq/low
-   * @apiArgs f,decibel Expects an integer between [-20,10]
+   * @apiArgs i,decibel Expects an integer between [-20,10]
    */
   @OnMessage('/master/eq/low')
   public changeLowLevelOfEqualizer(@Message() message: IOSCMessage) {
@@ -410,7 +410,7 @@ export class EffectsController {
    * @apiDesc Adds/removes EQ effect for specified instrument
    * @apiPath /effect/instrument/eq
    * @apiArgs s,name Expects the name of the instrument as string
-   * @apiArgs f,state Expects 1 (on) or 0 (off) as float (boolean)
+   * @apiArgs i,state Expects 1 (on) or 0 (off) as integer (boolean)
    */
   @OnMessage('/instrument/eq')
   public eqInstrument(@Message() message: IOSCMessage) {
@@ -440,7 +440,7 @@ export class EffectsController {
    * @apiDesc Changes the gain applied to the high of the output of the specified instrument
    * @apiPath /effect/instrument/eq/high
    * @apiArgs s,name Expects the name of the instrument as string
-   * @apiArgs f,decibel Expects an integer between [-20,10]
+   * @apiArgs i,decibel Expects an integer between [-20,10]
    */
   @OnMessage('/instrument/eq/high')
   public changeHighLevelOfEqualizerInstrument(@Message() message: IOSCMessage) {
@@ -464,7 +464,7 @@ export class EffectsController {
    * @apiDesc Changes the gain applied to the mid of the output of the specified instrument
    * @apiPath /effect/instrument/eq/mid
    * @apiArgs s,name Expects the name of the instrument as string
-   * @apiArgs f,decibel Expects an integer between [-20,10]
+   * @apiArgs i,decibel Expects an integer between [-20,10]
    */
   @OnMessage('/instrument/eq/mid')
   public changeMidLevelOfEqualizerInstrument(@Message() message: IOSCMessage) {
@@ -488,7 +488,7 @@ export class EffectsController {
    * @apiDesc Changes the gain applied to the low of the output of the specified instrument
    * @apiPath /effect/instrument/eq/low
    * @apiArgs s,name Expects the name of the instrument as string
-   * @apiArgs f,decibel Expects an integer between [-20,10]
+   * @apiArgs i,decibel Expects an integer between [-20,10]
    */
   @OnMessage('/instrument/eq/low')
   public changeLowLevelOfEqualizerInstrument(@Message() message: IOSCMessage) {
