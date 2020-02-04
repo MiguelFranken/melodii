@@ -1,14 +1,16 @@
 [README](../../../README.md) | [Back](Documentation/gui/GUI.md)
 
 # Overview
-At the top of the GUI is the navigation panel. It offers the following links:
+![Overview](images/overview.jpeg)
 
-- *Logo*: Link to logo page (default page when first opened). It offers no interactive features.
-- *Cog wheel*: [Settings](#settings).
+At the top of the GUI is the navigation panel. It offers the following elements (from left to right):
+
 - *Message bubble*: Incoming [message log](#message-log).
-- [Effects](#effects): Effect settings and volume meters for each instruments and the master output.
-- [Mixer](#mixer): Volume settings for each instrument and master.
-- [Cello](#cello): A simple instrument.
-- [Mat](#mat), [Arc](#arc), [Box](#box): Configuration controls for the FabBand instruments.
-- [Matrix](#matrix): A simple, looping instrument.
+- *Logo*: Link to logo page (default page when first opened). It offers no interactive features.
+- *Cog wheel*: [Settings](OVERVIEW.md).
+- [Effects](EFFECT_CONTROLS.md): Effect settings and volume meters for each instruments and the master output.
+- [Mixer](EFFECT_CONTROLS.md): Volume settings for each instrument and master.
+- [Cello](CELLO.md): A simple instrument.
+- [Mat](MAT.md), [Arc](ARC.md), [Box](BOX.md): Configuration controls for the FabBand instruments.
+- [Matrix](MATRIX.md): A simple, looping instrument.
 
