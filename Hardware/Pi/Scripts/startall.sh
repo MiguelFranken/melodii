@@ -1,6 +1,6 @@
 # delete all logfiles and create new one
 path_project="/home/pi/Projects/media-computing-project"
-path_sounds="$path_project/sounds"
+path_sounds="$path_project/Hardware/Pi/Scripts/sounds"
 path_frontend="$path_project/Frontend"
 path_frontend_log="$path_frontend/log"
 path_server="$path_project/Server"

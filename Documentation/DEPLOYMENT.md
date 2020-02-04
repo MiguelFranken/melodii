@@ -4,7 +4,7 @@ The following describes how to deploy the Mix on a Raspberry Pi.
 We used a Raspberry Pi 4 with 4GB of RAM running Raspian Buster. We placed our project files in `~/Project/media-computing-project`, which serves as the base directory for all scripts.
 
 ## Setup
-The following programs are reqiured to be installed on the Pi:
+The following programs are required to be installed on the Pi:
 
 - [Node.js](https://github.com/nodesource/distributions/blob/master/README.md#debinstall) (we used v12.13.1) with npm (we used v6.13.6)
 - [chromium-browser](https://itsfoss.com/install-chromium-ubuntu/)
@@ -21,7 +21,7 @@ Ensure that you have speakers connected to the Pi *before* you run any scripts.
     ```
 
 ## Starting
-Run the script `/home/pi/Project/media-computing-project/startall.sh`.
+Run the script `/home/pi/Project/media-computing-project/Hardware/Pi/Scripts/startall.sh`.
 
 The Pi will output sounds to indicate different stages of the starting process. What you want to hear is the Windows 7 boot-up sound, which indicates that everything has started correctly. If you do not hear it after a few minutes, you have to connect to the Pi and debug...
 
