@@ -6,11 +6,11 @@ We used a Raspberry Pi 4 with 4GB of RAM running Raspian Buster. We placed our p
 ## Setup
 The following programs are reqiured to be installed on the Pi:
 
-- Node.js (we used v12.13.1) with npm (we used v6.13.6)
-- chromium-browser
-- http-server (npm i -g http-server)
-- pm2 (we used v4.2.1), a process manager
-- sox (we used v14.4.2), a music player
+- [Node.js](https://github.com/nodesource/distributions/blob/master/README.md#debinstall) (we used v12.13.1) with npm (we used v6.13.6)
+- [chromium-browser](https://itsfoss.com/install-chromium-ubuntu/)
+- [http-server](https://github.com/http-party/http-server#readme) (npm i -g http-server) 
+- [pm2](https://pm2.keymetrics.io/docs/usage/quick-start/) (we used v4.2.1), a process manager
+- [sox](https://wiki.ubuntuusers.de/SoX/) (we used v14.4.2), a music player
 
 Ensure that you have speakers connected to the Pi *before* you run any scripts.
 
