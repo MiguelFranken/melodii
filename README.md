@@ -11,7 +11,7 @@ Typically, the Mix will run on a [Raspberry Pi]. The [Pi] will create a WiFi hot
 
 You can also run the Mix on your own machine. Be aware that you might need to modify the instruments such that they connect to your machine instead. Setup instructions can be found in [DEVELOPMENT.md](Documentation/development/DEVELOPMENT.md).
 
-A final alternative is to use the version hosted at http://mcp.miguel-franken.com/. Again, you would need to ensure that instruments connect to this instance. But it might be the easiest option to simply try out the [local instruments](#local-instruments).
+A final alternative is to use the version hosted at http://mcp.miguel-franken.com/. Again, you would need to ensure that instruments connect to this instance. But it might be the easiest option to simply try out the [local instruments](Documentation/gui/LOCAL_INSTRUMENTS.md).
 
 ## Documentation
 <a href="Documentation/gui/GUI.md">
@@ -26,7 +26,7 @@ A final alternative is to use the version hosted at http://mcp.miguel-franken.co
 <a href="Documentation/development/DEVELOPMENT.md">
     <img src="Documentation/images/development.png" alt="development details" height="250px">
 </a>
-<a href="Documentation/gui/GUI.md">
+<a href="Documentation/gui/GUI.md"> 
     <img src="Documentation/images/process.png" alt="development process" height="250px">
 </a>
 <a href="Documentation/API.md">
