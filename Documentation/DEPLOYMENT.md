@@ -5,7 +5,6 @@ The following describes how to deploy *The Mix* on a [Raspberry Pi].
 We used a [Raspberry Pi] 4 with 4GB of RAM running Raspian Buster.
 
 The following programs are required to be installed on the [Pi]:
-
 - [Node.js](https://github.com/nodesource/distributions/blob/master/README.md#debinstall) (we used v12.13.1) with npm (we used v6.13.6)
 - [chromium-browser](https://itsfoss.com/install-chromium-ubuntu/)
 - [http-server](https://github.com/http-party/http-server#readme) (npm i -g http-server) 
