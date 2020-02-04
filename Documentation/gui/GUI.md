@@ -4,7 +4,7 @@
 
 [Back](../../README.md)
 
-## Table of contents
+## Table of Contents
 - [Overview](Documentation/gui/OVERVIEW.md)
 - [Local instruments](Documentation/gui/LOCAL_INSTRUMENTS.md)
   * [Matrix](Documentation/gui/MATRIX.md)

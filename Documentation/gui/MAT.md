@@ -5,7 +5,7 @@ The Mat configuration allows you to test the Matrix by pressing on the different
 
 ![Mat](images/mat.jpeg)
 
-## Table of contents
+## Table of Contents
 - [Chord Mode](#chord-mode)
 - [Sound Selection](#sound-selection)
 - [Configuration Options](#configuration-options)
