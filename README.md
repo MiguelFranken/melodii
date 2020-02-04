@@ -1,20 +1,38 @@
-<img src="./logo.png" alt="Logo" height="100px">
+<div align="center">
 
-# Mixer for Media Computing Project
+  <img src="Documentation/images/logo.png" alt="Logo" height="150px">
+</div>
 
-# Playing around
-You can try out the basic system at http://mcp.miguel-franken.com/. On the top right you find the Matrix with which you can quickly create some test sounds. If you send messages from your instrument, you can either look at the message log interface, which is available from the message icon, or you can open the browser's console.
+# The Mix
+The Mix receives control messages wirelessly from the instruments and produces sound output. It runs on a separate device that can be connected to quality loudspeakers. Using your phone or tablet, you can connect to the device and open a GUI to control the Mix.
 
-# Instruments
-OSC is a special format, consisting of the address, the type information, and the parameters. For example, `/method/path ,fs 1.23 E5` would send a message to the address `/method/path`. The type information is the part after the comma, where each character represents a type. In the example, there are two parameters, the first has type float (the `f` in `,fs`) and the second has type string (the `s` in `,fs`). Those two parameters are then given, the float is `1.23` and the string is `E5`.
+## Getting Started
+Typically, the Mix will run on a [Raspberry Pi]. The [Pi] will create a WiFi hotspot to which instruments and devices can connect, and set its own IP so that it is easily reachable. Once inside the [Pi]'s network, you can open the GUI by connecting to its IP on a specific port.
+Details on the deployment of the project on the [Pi] can be found in the [DEPLOYMENT.md](Documentation/development/DEPLOYMENT.md).
 
-You can send these messages over WiFi using the UDP protocol. Send a UDP message to port `57121`. The message have the OSC format described above, e. g. `/address ,sf D3 0.03`.
+You can also run the Mix on your own machine. Be aware that you might need to modify the instruments such that they connect to your machine instead. Setup instructions can be found in [DEVELOPMENT.md](Documentation/development/DEVELOPMENT.md).
 
+A final alternative is to use the version hosted at http://mcp.miguel-franken.com/. Again, you would need to ensure that instruments connect to this instance. But it might be the easiest option to simply try out the [local instruments](Documentation/gui/LOCAL_INSTRUMENTS.md).
 
-The messages for your instruments are documented in the [`API.md`](./API.md).
+## Documentation
+<a href="Documentation/gui/GUI.md">
+    <img src="Documentation/images/gui.png" alt="gui" height="250px">
+</a>
+<a href="Documentation/development/DEVELOPMENT.md">
+    <img src="Documentation/images/development.png" alt="development details" height="250px">
+</a>
+<a href="Documentation/API.md">
+    <img src="Documentation/images/api.png" alt="API documentation" height="250px">
+</a>
+<a href="Documentation/CLIENT.md">
+    <img src="Documentation/images/client.png" alt="Client documentation" height="250px">
+</a>
+<a href="Documentation/effectcontroller/EFFECT_CONTROLLER.md">
+    <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="250px">
+</a>
+<a href="Documentation/picase/PICASE.md">
+    <img src="Documentation/images/box.png" alt="raspberry pi case" height="250px">
+</a>
 
-# Development
-If you are interested in having a closer look at our code, or run the services on your machine, refer to the [DEVELOPMENT.md](./DEVELOPMENT.md).
-
-[tone generator]: http://mcp.miguel-franken.com/generator
-[Socket.io]: https://socket.io/
+[Raspberry Pi]: https://www.raspberrypi.org/
+[Pi]: https://www.raspberrypi.org/
