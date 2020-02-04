@@ -17,12 +17,6 @@ A final alternative is to use the version hosted at http://mcp.miguel-franken.co
 <a href="Documentation/gui/GUI.md">
     <img src="Documentation/images/gui.png" alt="gui" height="250px">
 </a>
-<a href="Documentation/effectcontroller/EFFECT_CONTROLLER.md">
-    <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="250px">
-</a>
-<a href="Documentation/picase/picase.md">
-    <img src="Documentation/images/box.png" alt="raspberry pi case" height="250px">
-</a>
 <a href="Documentation/development/DEVELOPMENT.md">
     <img src="Documentation/images/development.png" alt="development details" height="250px">
 </a>
@@ -31,6 +25,12 @@ A final alternative is to use the version hosted at http://mcp.miguel-franken.co
 </a>
 <a href="Documentation/CLIENT.md">
     <img src="Documentation/images/client.png" alt="Client documentation" height="250px">
+</a>
+<a href="Documentation/effectcontroller/EFFECT_CONTROLLER.md">
+    <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="250px">
+</a>
+<a href="Documentation/picase/picase.md">
+    <img src="Documentation/images/box.png" alt="raspberry pi case" height="250px">
 </a>
 
 [Raspberry Pi]: https://www.raspberrypi.org/
