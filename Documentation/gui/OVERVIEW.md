@@ -5,9 +5,9 @@
 
 At the top of the GUI is the navigation panel. It offers the following elements (from left to right):
 
-- *Message bubble*: Incoming [message log](#message-log).
+- *Message bubble*: Flashes when incoming OSC messages are detected.
 - *Logo*: Link to logo page (default page when first opened). It offers no interactive features.
-- *Cog wheel*: [Settings](OVERVIEW.md).
+- *Cog wheel*: Opens the [settings](OVERVIEW.md) menu.
 - [Effects](EFFECT_CONTROLS.md): Effect settings and volume meters for each instruments and the master output.
 - [Mixer](EFFECT_CONTROLS.md): Volume settings for each instrument and master.
 - [Cello](CELLO.md): A simple instrument.
