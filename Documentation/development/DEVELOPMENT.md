@@ -10,11 +10,10 @@ The following introduces you to setting up *The Mix* in general and adding new i
 If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Documentation/development/DEPLOYMENT.md).
 
 ## Table of Contents
-- [Getting Started](#switch-instrument)
-- [Developing](#velocity)
+- [Getting Started](#getting-started)
+- [Developing](#developing)
   * [Technologies](#technologies)
   * [Architecture](#architecture)
-- [Shrinking & Folding](#shrinking-folding)
 - [Adding an Instrument](#adding-an-instrument)
   * [Creating an Instrument](#creating-an-instrument)
   * [Creating a Controller](#creating-a-controller)
