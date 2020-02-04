@@ -26,9 +26,6 @@ A final alternative is to use the version hosted at http://mcp.miguel-franken.co
 <a href="Documentation/development/DEVELOPMENT.md">
     <img src="Documentation/images/development.png" alt="development details" height="250px">
 </a>
-<a href="Documentation/gui/GUI.md"> 
-    <img src="Documentation/images/process.png" alt="development process" height="250px">
-</a>
 <a href="Documentation/API.md">
     <img src="Documentation/images/api.png" alt="API documentation" height="250px">
 </a>
