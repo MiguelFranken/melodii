@@ -30,7 +30,7 @@ A final alternative is to use the version hosted at http://mcp.miguel-franken.co
 <a href="Documentation/effectcontroller/EFFECT_CONTROLLER.md">
     <img src="Documentation/images/effect-controller.png" alt="effect-controller" height="250px">
 </a>
-<a href="Documentation/picase/picase.md">
+<a href="Documentation/picase/PICASE.md">
     <img src="Documentation/images/box.png" alt="raspberry pi case" height="250px">
 </a>
 
