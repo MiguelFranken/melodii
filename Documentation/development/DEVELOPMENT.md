@@ -2,14 +2,25 @@
   <img src="../images/development.png" alt="gui" height="250px">
 </div>
 
-[README](../../README.md)
+[Back](../../README.md)
 
 # Development
 The following introduces you to setting up *The Mix* in general and adding new instruments.
 
 If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Documentation/development/DEPLOYMENT.md).
 
-## Getting started
+## Table of Contents
+- [Getting Started](#switch-instrument)
+- [Developing](#velocity)
+  * [Technologies](#technologies)
+  * [Architecture](#architecture)
+- [Shrinking & Folding](#shrinking-folding)
+- [Adding an Instrument](#adding-an-instrument)
+  * [Creating an Instrument](#creating-an-instrument)
+  * [Creating a Controller](#creating-a-controller)
+- [Documentation Generation](#documentation-generation)
+
+## Getting Started
 You need [Node.js] (at least version 12.13.0).
 
 ```shell script
@@ -58,13 +69,13 @@ The GUI will connect to the server over WebRTC. This allows real-time communicat
 
 ![Simplified Architecture](images/architecture.png "Simplified Architecture")
 
-## Adding an instrument
+## Adding an Instrument
 If you want to add an instrument, you first need to create a class that uses Tone.js to produce sounds. Then you can add a controller that can listen for messages and drive the instrument.
 
-### Creating an instrument
+### Creating an Instrument
 The instruments live in `Frontend/src/app/generator/library/instruments`. Simply create a new file with a class that implements `IMCPInstrument`. You can use the existing instruments as blueprints.
 
-### Creating a controller
+### Creating a Controller
 The controllers are in `Frontend/src/app/generator/library/controllers`.
 
 Use the decorators (`@Controller`, `@OnMessage`, `@Message`) to determine which path will be mapped to which method. Inside the method, you can extract the parameters from the OSC message and call the corresponding method on the instrument. The `@Controller` decorator sets the root route for the controller. Each `@OnMessage` defines a subroute which will call the method. The `@Message` decorator is used to simplify handling of OSC messages and is placed before the parameter.

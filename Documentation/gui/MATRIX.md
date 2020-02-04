@@ -14,9 +14,9 @@ You can influence the playback speed by dragging the beats per minute (BPM) slid
 The right-most "menu"-style button will hide *The Mix* navigation and bring it back. Use this to immerse yourself in your Matrix of sounds.
 
 ## Table of contents
-* [Switch Instrument](#switch-instrument)
-* [Velocity](#velocity)
-* [Shrinking & Folding](#shrinking-folding)
+- [Switch Instrument](#switch-instrument)
+- [Velocity](#velocity)
+- [Shrinking & Folding](#shrinking-folding)
 
 ## Switch Instrument
 ![Switch](images/switch.jpeg)
