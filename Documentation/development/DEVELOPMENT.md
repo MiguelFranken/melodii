@@ -10,20 +10,19 @@ If you want to deploy the project on a [Raspberry Pi], read [DEPLOYMENT.md](Docu
 ## Getting started
 You need [Node.js] (at least version 12.13.0).
 
-Install all the dependencies with
-```
+```shell script
+# Install all the dependencies with
 npm install
-```
 
-Then you can start the server and the frontend with
-```
+# Then you can start the server and the frontend with
 npm run start
 ```
+
 Look at the console output to determine the URLs that you can connect to:
 ```
 [Server] [2020-02-04T13:11:29.215Z]: [UDP] Started listening for OSC messages at 192.168.0.59:57121
 ```
-In the example, the instruments can send OSC messages via UDP to 192.168.0.59:57121.
+In the example, the instruments can send OSC messages via UDP to `192.168.0.59:57121`.
 
 ## Developing
 In development, you might want to have everything running in the background and recompile automatically whenever you save a file. To achieve that, run
