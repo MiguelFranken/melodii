@@ -1,3 +1,7 @@
+/**
+ * in this file are all strings stored which will be shown to the user
+ */
+
 export default {
     // messages
     msg_path: 'Enter OSC-Path:',
