@@ -3,7 +3,7 @@
 # Matrix
 ![Matrix](images/matrix.png)
 
-The simplest place to try out the Mix is the Matrix.
+The simplest place to try out *The Mix* is the Matrix.
 
 The basic idea is that you can place notes on the Matrix by clicking on its cells. Active cells turn a different color. From left to right, notes will be played after each other. Each row represents a different tone. By default, drums are selected and each row represents one piece of a drum kit. Once you have placed some notes, click the play button in the top left.
 
@@ -11,7 +11,7 @@ To the right of these arrows is a button to clear the currently set notes, a but
 
 You can influence the playback speed by dragging the beats per minute (BPM) slider at the middle top of the menu. Higher values play faster, lower values more slowly.
 
-The right-most "menu"-style button will hide the Mix navigation and bring it back. Use this to immerse yourself in your Matrix of sounds.
+The right-most "menu"-style button will hide *The Mix* navigation and bring it back. Use this to immerse yourself in your Matrix of sounds.
 
 ## Switch instrument
 ![Switch](images/switch.jpeg)
