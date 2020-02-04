@@ -6,7 +6,15 @@
 
 The Mat configuration allows you to test the Matrix by pressing on the different buttons.
 
-To influence the sound of the Mat, you can activate the "Chords" mode. Instead of one note per button, it will play an entire chord when a button is pressed. The chord will match the root note and scale settings. You can also choose between different synthesizers with the "Sound" option.
+### Chord
+![Chord Mode](images/chordmode.jpeg)
+
+To influence the sound of the Mat, you can activate the "Chords" mode. Instead of one note per button, it will play an entire chord when a button is pressed. The chord will match the root note and scale settings.
+
+### Select the synthesizer
+![Sound](images/sound.jpeg)
+
+You can also choose between different synthesizers with the "Sound" option.
 
 ### Configuration options
 ![Octave](images/octave.png)
