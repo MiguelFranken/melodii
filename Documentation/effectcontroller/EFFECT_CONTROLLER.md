@@ -21,7 +21,7 @@ Since using the ball as a mold for a silicone dome would have used a lot of time
 
 Due to time restrictions, the original idea of the dome was abandoned. The core idea of combining a light and an ultrasound sensor is present in the prototype, however.
 
-The files needed to construct the prototype are located at `Hardware/EffectController/`. Both sensors are connected to the Arduino as specified in the Fritzing schematic named `effectcontroller-schematic.fzz`. The code to load onto the Arduino is `effectcontroller-code.ino`. The vector file for the laser-cut box is `effectcontroller-box.svg`.
+The files needed to construct the prototype are located at [Hardware/EffectController](../../Hardware/EffectController). Both sensors are connected to the Arduino as specified in the Fritzing schematic named [effectcontroller-schematic.fzz](../../Hardware/EffectController/effectcontroller-schematic.fzz). The code to load onto the Arduino is [effectcontroller-code.ino](../../Hardware/EffectController/effectcontroller-code.ino). The vector file for the laser-cut box is [effectcontroller-box.svg](../../Hardware/EffectController/effectcontroller-box.svg).
 
 ![Overflowing innards of a broken-apart effect controller.](images/innards.jpg)
 
