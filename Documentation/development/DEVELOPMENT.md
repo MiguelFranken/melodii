@@ -85,6 +85,10 @@ You can use other controllers as a blueprint. Note that the [MusicService](../..
 
 Do not forget to register your new controller in [Frontend/src/app/generator/library/controllers/index.ts](../../Frontend/src/app/generator/library/controllers/index.ts), or it will not be initialized!
 
+## Testing with the Client
+For testing we have the terminal-based [OSC-Client](Documentation/CLIENT.md). The client is based on the udp-protocoll and can send any osc-message to any osc-server. The user can change the osc-path or osc-arguments aswell as the communication properties. There are also preconfigurations for sending a note, a whole bunch of notes as a little song or starting a drum-loop. 
+The proper documentation is found in the Documentation/[CLIENT.md](Documentation/CLIENT.md)-file.
+
 ## Documentation Generation
 The API documentation can be found at [API.md](Documentation/API.md). It is generated automatically from the doc comments with a custom annotation syntax.
 
