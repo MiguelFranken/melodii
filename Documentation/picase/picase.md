@@ -2,13 +2,6 @@
     <img src="../images/box.png" alt="gui" height="250px">
 </div>
 
-# Building the case for the Raspberry Pi
-
-If you want to build the case for the raspberry pi like we did it the only thing you need is a lasecutter and a bit of wood.
-
-Import the svg files into the laser cutter programm and after cutting you 
-just need a steady hand to connect the pieces.
-
-Sometimes you have to emery the endings a bit so it fits better.
-
+# Picase
+The files for building the case for the Raspberry Pi are located at `Hardware/Pi/Case/`. Use these to cut wood in a laser cutter. You might need to emery the endings to ensure a good fit.
 
