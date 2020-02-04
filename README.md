@@ -6,7 +6,7 @@
 # The Mix
 The Mix receives control messages wirelessly from the instruments and produces sound output. It runs on a separate device that can be connected to quality loudspeakers. Using your phone or tablet, you can connect to the device and open a GUI to control the Mix.
 
-## Getting started
+## Getting Started
 Typically, the Mix will run on a [Raspberry Pi]. The [Pi] will create a WiFi hotspot to which instruments and devices can connect, and set its own IP so that it is easily reachable. Once inside the [Pi]'s network, you can open the GUI by connecting to its IP on a specific port.
 Details on the deployment of the project on the [Pi] can be found in the [DEPLOYMENT.md](Documentation/development/DEPLOYMENT.md).
 
