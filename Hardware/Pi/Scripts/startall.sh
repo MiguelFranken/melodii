@@ -1,6 +1,7 @@
 # delete all logfiles and create new one
 path_project="/home/pi/Projects/media-computing-project"
-path_sounds="$path_project/Hardware/Pi/Scripts/sounds"
+path_scripts="$path_project/Hardware/Pi/Scripts"
+path_sounds="$path_scripts/sounds"
 path_frontend="$path_project/Frontend"
 path_frontend_log="$path_frontend/log"
 path_server="$path_project/Server"
@@ -127,7 +128,7 @@ do
 done
 
 # start chrome to open mixer
-cd $path_project && pm2 --log $chr_logfile --interpreter=bash start chromium-headless.sh 
+cd $path_scripts && pm2 --log $chrome_logfile --interpreter=bash start chromium-headless.sh 
 
 # wait till chrome is up
 cd /home/pi/Projects/media-computing-project/Server/log
