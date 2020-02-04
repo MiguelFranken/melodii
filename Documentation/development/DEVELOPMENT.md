@@ -2,6 +2,8 @@
   <img src="../images/development.png" alt="gui" height="250px">
 </div>
 
+[README](../../README.md)
+
 # Development
 The following introduces you to setting up *The Mix* in general and adding new instruments.
 
@@ -71,7 +73,7 @@ You can use other controllers as a blueprint. Note that the `MusicService` in th
 
 Do not forget to register your new controller in `Frontend/src/app/generator/library/controllers/index.ts`, or it will not be initialized!
 
-## Documentation
+## Documentation Generation
 The API documentation can be found at [API.md](Documentation/API.md). It is generated automatically from the doc comments with a custom annotation syntax.
 
 To add your controller to the documentation, simply add such comments to your controller. Use the existing controllers as a reference.
