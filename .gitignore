@@ -6,3 +6,5 @@ parent.iml
 .settings
 *.iml
 node_modules
+log/
+chrpm2output.log

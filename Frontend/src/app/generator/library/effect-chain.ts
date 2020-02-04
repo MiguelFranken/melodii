@@ -74,6 +74,19 @@ export class EffectChain {
     this.effects = this.effects.filter((_, arrayIndex: number) => arrayIndex !== index);
     this.createConnections();
   }
+
+  public getEffectByID(effectID: MCPEffectIdentifier): IMCPEffect | null {
+    this.logger.debug(`Getting effect with id '${effectID}'...`);
+    const index = this.effects.findIndex((effect: IMCPEffect) => effect.id === effectID);
+    if (index === -1) {
+      this.logger.warn(`Cannot get effect with id '${effectID}' as the chain doesn't contain such effect`);
+      return null;
+    } else {
+      const effect = this.effects[index];
+      this.logger.debug(`Found effect with id '${effectID}' (effect position ${index})`, effect);
+      return effect;
+    }
+  }
   //endregion
 
   //region Private Methods

@@ -1,1 +1,6 @@
-box component
+<div fxLayout="column" fxLayoutAlign="stretch" class="box-container">
+  <div fxFlex class="keyboard" fxLayout fxLayoutGap="10px">
+    <div [class.active]="useSynth" (click)="activateSynth()" fxFlex class="key" fxLayout fxLayoutAlign="center center">Synth</div>
+    <div [class.active]="useKalimba" (click)="activateKalimba()" fxFlex class="key" fxLayout fxLayoutAlign="center center">Kalimba</div>
+  </div>
+</div>

@@ -1,14 +1,88 @@
-<div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
-  <mat-slider
-          class="example-margin"
-          max="0"
-          min="-45"
-          step="1"
-          thumbLabel="dB"
-          [(value)]="masterVolume"
-          (input)="input($event)"
-          vertical="true">
-  </mat-slider>
-  <span class="name">Master</span>
+<div class="mixer" style="height: 100%; width: 100%; overflow: auto; padding-left: 320px;" fxLayout fxLayoutAlign="center stretch" fxLayoutGap="10px" [ngClass]="{'disableAnimation':isSliderAnimationDisabled}">
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <div fxFlex class="velocity-slider">
+      <mat-slider
+              class="example-margin"
+              max="10"
+              min="-40"
+              step="1"
+              [(value)]="masterVolume"
+              (input)="inputMaster($event)"
+              vertical="true">
+      </mat-slider>
+    </div>
+    <span class="name">Master</span>
+  </div>
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <div fxFlex class="velocity-slider">
+      <mat-slider
+              class="example-margin"
+              max="10"
+              min="-40"
+              step="1"
+              [(value)]="boxVolume"
+              (input)="inputBox($event)"
+              vertical="true">
+      </mat-slider>
+    </div>
+    <span class="name">The Box</span>
+  </div>
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <div fxFlex class="velocity-slider">
+      <mat-slider
+              class="example-margin"
+              max="10"
+              min="-40"
+              step="1"
+              [(value)]="arcVolume"
+              (input)="inputArc($event)"
+              vertical="true">
+      </mat-slider>
+    </div>
+    <span class="name">The Arc</span>
+  </div>
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <div fxFlex class="velocity-slider">
+      <mat-slider
+              class="example-margin"
+              max="10"
+              min="-40"
+              step="1"
+              [(value)]="matVolume"
+              (input)="inputMat($event)"
+              vertical="true">
+      </mat-slider>
+    </div>
+    <span class="name">The Mat</span>
+  </div>
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <div fxFlex class="velocity-slider">
+      <mat-slider
+              class="example-margin"
+              max="10"
+              min="-40"
+              step="1"
+              [(value)]="drumsVolume"
+              (input)="inputDrums($event)"
+              vertical="true">
+      </mat-slider>
+    </div>
+    <span class="name" style="padding-left: 6px;">Drums</span>
+  </div>
+  <div class="container" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <div fxFlex class="velocity-slider">
+      <mat-slider
+              class="example-margin"
+              max="10"
+              min="-40"
+              step="1"
+              [(value)]="celloVolume"
+              (input)="inputCello($event)"
+              vertical="true">
+      </mat-slider>
+    </div>
+    <span class="name" style="padding-left: 10px;">Cello</span>
+  </div>
 </div>
+
 

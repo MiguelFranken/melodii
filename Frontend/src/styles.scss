@@ -1,7 +1,9 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: gray}
+html, body { height: 100%; height: 100%;
+  width: 100%;
+  overflow: auto; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: gray;}
 * {
   letter-spacing: 1px;
 
@@ -10,4 +12,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+input {
+  -webkit-user-select: initial !important;
+  -khtml-user-select: initial !important;
+  -moz-user-select: initial !important;
+  -ms-user-select: initial !important;
+  user-select: initial !important;
 }

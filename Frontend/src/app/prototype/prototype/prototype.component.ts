@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, interval, Observable, Subject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -33,45 +33,48 @@ const NOTES_MAJOR_C = [
 const DEFAULT_BPM = 80;
 
 const NUMBER_OF_COLUMNS = 8;
-const NUMBER_OF_ROWS = 30;
+const NUMBER_OF_ROWS_PIANO_INSTRUMENT = 30;
+
+let useReverbOnMaster = false;
+let usePingPongDelayOnMaster = false;
+let useEQOnMaster = false;
+let useEQLowOnMaster = false;
+let useEQMidOnMaster = false;
+let useEQHighOnMaster = false;
+let isPlaying = false;
+const useReverbMap: Map<InstrumentName, boolean> = new Map();
+const usePingPongDelayMap: Map<InstrumentName, boolean> = new Map();
+const matrixCollection: Matrix[] = [];
+let matrixCollectionIndex = 0;
+let matrix: Matrix;
+let showVelocity = false;
+let _bpm: number = DEFAULT_BPM;
+let msPerBeat: number = 1000 * 0.5 * (60 / DEFAULT_BPM); // TODO MF: different default
+let currentPlayedColumnIndex = 0;
+let isInExpandedMode = true;
+let isInFoldMode = false;
+const subject = new Subject();
+let _interval;
+let playSubscription: Subscription;
 
 @Component({
   selector: 'app-prototype',
   templateUrl: './prototype.component.html',
   styleUrls: ['./prototype.component.scss']
 })
-export class PrototypeComponent implements OnInit, OnDestroy {
+export class PrototypeComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  public isAnimationDisabled = true;
+
+  public showRowNames = true;
+
+  get velocity() {
+    return showVelocity;
+  }
 
   private logger: Logger = new Logger({ name: 'PrototypeComponent', flags: ['component'] });
 
-  public useReverbOnMaster = false;
-  public usePingPongDelayOnMaster = false;
-  public useReverbOnSnare = false;
-  public usePingPongDelayOnSnare = false;
-
-  private useReverbMap: Map<InstrumentName, boolean> = new Map();
-  private usePingPongDelayMap: Map<InstrumentName, boolean> = new Map();
-
   public height = '100%';
-
-  private matrixCollection: Matrix[] = [];
-  private matrixCollectionIndex = 0;
-  public matrix: Matrix;
-
-  public showVelocity = false;
-
-  private _bpm: number = DEFAULT_BPM;
-
-  private subject = new Subject();
-  private interval;
-
-  private msPerBeat: number = 1000 * 0.5 * (60 / DEFAULT_BPM); // TODO MF: different default
-
-  public currentPlayedColumnIndex = 0;
-
-  private playSubscription: Subscription;
-
-  public showRowNames = true;
 
   public isClosedNavigation: Observable<boolean>;
 
@@ -137,10 +140,6 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   //endregion
   //endregion
 
-  public isInExpandedMode = true;
-
-  private isInFoldMode = false;
-
   //region Context Menu Attributes
   @ViewChild('contextMenuTrigger', {static: false})
   contextMenu: MatMenuTrigger;
@@ -160,17 +159,57 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     private toppy: Toppy,
     private helpOverlayService: HelpOverlayService,
     private notYetImplementedService: NotYetImplementedService) {
-    this.useReverbMap.set('hihat', false);
-    this.useReverbMap.set('kick', false);
-    this.useReverbMap.set('snare', false);
-    this.usePingPongDelayMap.set('hihat', false);
-    this.usePingPongDelayMap.set('kick', false);
-    this.usePingPongDelayMap.set('snare', false);
+    useReverbMap.set('hihat', false);
+    useReverbMap.set('kick', false);
+    useReverbMap.set('snare', false);
+    usePingPongDelayMap.set('hihat', false);
+    usePingPongDelayMap.set('kick', false);
+    usePingPongDelayMap.set('snare', false);
+  }
+
+  public getMatrixCollection() {
+    return matrixCollection;
+  }
+
+  public getIsInExpandedMode() {
+    return isInExpandedMode;
+  }
+
+  public useReverbOnMaster() {
+    return useReverbOnMaster;
+  }
+
+  public usePingPongDelayOnMaster() {
+    return usePingPongDelayOnMaster;
+  }
+
+  public useEQOnMaster() {
+    return useEQOnMaster;
+  }
+
+  public useEQLowOnMaster() {
+    return useEQLowOnMaster;
+  }
+
+  public useEQMidOnMaster() {
+    return useEQMidOnMaster;
+  }
+
+  public useEQHighOnMaster() {
+    return useEQHighOnMaster;
+  }
+
+  public getShowVelocity() {
+    return showVelocity;
+  }
+
+  public getMatrix() {
+    return matrix;
   }
 
   //region Velocity
   public switchVelocity() {
-    this.showVelocity = !this.showVelocity;
+    showVelocity = !showVelocity;
   }
 
   setVelocity(event, button: RowButton) {
@@ -201,10 +240,11 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   public switchAllExpanded() {
-    this.isInExpandedMode = !this.isInExpandedMode;
-    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-      this.matrix.rows[i].isExpanded = this.isInExpandedMode;
-    }
+    isInExpandedMode = !isInExpandedMode;
+
+    matrix.rows.forEach((row) => {
+      row.isExpanded = isInExpandedMode;
+    });
   }
   //endregion
 
@@ -214,16 +254,16 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   public set bpm(bpm: number) {
-    this._bpm = bpm;
-    this.msPerBeat = 1000 * 0.5 * (60 / bpm);
+    _bpm = bpm;
+    msPerBeat = 1000 * 0.5 * (60 / bpm);
   }
 
   public get bpm(): number {
-    return this._bpm;
+    return _bpm;
   }
 
   public updateMatrix() {
-    this.subject.next(this.msPerBeat);
+    subject.next(msPerBeat);
   }
   //endregion
 
@@ -244,7 +284,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   public showTutorial() {
-    console.log('Show tutorial');
+    this.logger.info('Show tutorial');
     this.helpOverlayService.triggerChain('tutorial');
   }
 
@@ -332,9 +372,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.instrumentSelectionOverlay.open();
   }
 
-  public switchMatrix(matrix: Matrix, index: number) {
-    this.matrix = matrix;
-    this.matrixCollectionIndex = index;
+  public switchMatrix(matrixHTML: Matrix, index: number) {
+    matrix = matrixHTML;
+    matrixCollectionIndex = index;
   }
   //endregion
 
@@ -409,7 +449,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
         },
         {
           overlayID: "showVelocityButtonOverlay",
-          preCondition: () => !this.showVelocity,
+          preCondition: () => !showVelocity,
           text: "Open the velocity sliders",
           event: "click"
         },
@@ -440,30 +480,33 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.interval = this.subject.pipe(switchMap((period: number) => interval(period)));
+    _interval = subject.pipe(switchMap((period: number) => interval(period)));
+    this.logger.debug("_interval", { interval: _interval });
 
     // create matrices
-    this.createMatrixDrums();
-    this.createMatrixPiano();
+    if (matrixCollection.length === 0) {
+      this.createMatrixDrums();
+      this.createMatrixPiano();
+    }
 
-    this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+    matrix = matrixCollection[matrixCollectionIndex];
   }
 
   /**
    * Removes all entries of the currently displayed matrix
    */
   public clearMatrix() {
-    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-      for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-        this.matrix.rows[i].buttons[y].isActive = false;
-      }
-    }
+    matrix.rows.forEach((row) => {
+      row.buttons.forEach((button) => {
+        button.isActive = false;
+      });
+    });
   }
 
   public hasActivatedButton(): boolean {
     for (let i = 0; i < 3; i++) {
       for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-        if (this.matrix.rows[i].buttons[y].isActive) {
+        if (matrix.rows[i].buttons[y].isActive) {
           this.logger.debug('Has activated button');
           return true;
         }
@@ -477,55 +520,80 @@ export class PrototypeComponent implements OnInit, OnDestroy {
    * Selects the next available matrix from the matrix collection as the current matrix.
    */
   public nextMatrix() {
-    this.matrixCollectionIndex = (this.matrixCollectionIndex + 1) % this.matrixCollection.length;
-    this.matrix = this.matrixCollection[this.matrixCollectionIndex];
+    matrixCollectionIndex = (matrixCollectionIndex + 1) % matrixCollection.length;
+    matrix = matrixCollection[matrixCollectionIndex];
 
-    for (const row of this.matrix.rows) {
-    //   row.buttons[this.currentPlayedColumnIndex].isPlayed = true;
-      row.buttons.forEach((button: RowButton, columnIndex: number) => {
-        button.isPlayed = columnIndex === this.currentPlayedColumnIndex;
-      });
+    if (isPlaying) {
+      for (const row of matrix.rows) {
+        row.buttons.forEach((button: RowButton, columnIndex: number) => {
+          button.isPlayed = columnIndex === currentPlayedColumnIndex;
+        });
+      }
+    } else {
+      for (const row of matrix.rows) {
+        row.buttons.forEach((button: RowButton, columnIndex: number) => {
+          button.isPlayed = false;
+          // button.isActive = false;
+        });
+      }
     }
 
-    this.logger.info('Switched to next matrix', this.matrix);
+    this.logger.info('Switched to next matrix', matrix);
   }
 
   /**
    * Selects the previous available matrix from the matrix collection as the current matrix.
    */
   public previousMatrix() {
-    if (this.matrixCollectionIndex === 0) {
-      this.matrixCollectionIndex = this.matrixCollection.length - 1;
+    if (matrixCollectionIndex === 0) {
+      matrixCollectionIndex = matrixCollection.length - 1;
     } else {
-      this.matrixCollectionIndex = (this.matrixCollectionIndex - 1) % this.matrixCollection.length;
+      matrixCollectionIndex = (matrixCollectionIndex - 1) % matrixCollection.length;
     }
-    this.matrix = this.matrixCollection[this.matrixCollectionIndex];
-    this.logger.info('Switched to previous matrix', this.matrix);
+    matrix = matrixCollection[matrixCollectionIndex];
+
+    if (isPlaying) {
+      for (const row of matrix.rows) {
+        row.buttons.forEach((button: RowButton, columnIndex: number) => {
+          button.isPlayed = columnIndex === currentPlayedColumnIndex;
+        });
+      }
+    } else {
+      for (const row of matrix.rows) {
+        row.buttons.forEach((button: RowButton, columnIndex: number) => {
+          button.isPlayed = false;
+          // button.isActive = false;
+        });
+      }
+    }
+
+    this.logger.info('Switched to previous matrix', matrix);
   }
 
   //region Folding
   getNonFoldedRows() {
-    return this.matrix.rows.filter((row: Row) => {
+    return matrix.rows.filter((row: Row) => {
       return !row.isFolded;
     });
   }
 
   switchFold() {
-    if (this.isInFoldMode) {
-      for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-        this.matrix.rows[i].isFolded = false;
-      }
-      this.isInFoldMode = false;
+    if (isInFoldMode) {
+      matrix.rows.forEach((row) => {
+        row.isFolded = false;
+      });
+      isInFoldMode = false;
     } else {
-      for (let i = 0; i < NUMBER_OF_ROWS; i++) {
-        this.matrix.rows[i].isFolded = true;
-        for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
-          if (this.matrix.rows[i].buttons[y].isActive) {
-            this.matrix.rows[i].isFolded = false;
+      matrix.rows.forEach((row) => {
+        row.isFolded = true;
+
+        row.buttons.forEach((button) => {
+          if (button.isActive) {
+            row.isFolded = false;
           }
-        }
-      }
-      this.isInFoldMode = true;
+        });
+      });
+      isInFoldMode = true;
     }
   }
   //endregion
@@ -568,7 +636,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     for (let y = 0; y < NUMBER_OF_COLUMNS; y++) {
       const snareButton = new RowButton();
       snareButton.setOSCMessage({
-        address: '/drums/snare/play',
+        address: '/drums/snare',
         args: [
           {
             'type': "s",
@@ -629,7 +697,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     matrix.rows.push(this.createHihatRow());
     matrix.rows.push(this.createSnareRow());
     matrix.name = 'Drums';
-    this.matrixCollection.push(matrix);
+    matrixCollection.push(matrix);
     this.logger.info("Created matrix for instrument: 'Drums'", matrix);
   }
   //endregion
@@ -637,7 +705,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   //region Piano Matrix
   private createMatrixPiano() {
     const matrix: Matrix = new Matrix();
-    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+    for (let i = 0; i < NUMBER_OF_ROWS_PIANO_INSTRUMENT; i++) {
       const rowArray: RowButton[] = [];
 
       const randomNote = NOTES_MAJOR_C[i % 7];
@@ -677,7 +745,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       matrix.rows.push(row);
     }
     matrix.name = 'Piano';
-    this.matrixCollection.push(matrix);
+    matrixCollection.push(matrix);
     this.logger.info("Created matrix for instrument: 'Piano'", matrix);
   }
   //endregion
@@ -687,15 +755,17 @@ export class PrototypeComponent implements OnInit, OnDestroy {
    * Stops to play the notes on the matrix
    */
   public stop() {
-    if (this.playSubscription) {
-      this.playSubscription.unsubscribe();
+    isPlaying = false;
 
-      for (const rows of this.matrix.rows) {
-        const oldButton: RowButton = rows.buttons[this.currentPlayedColumnIndex];
+    if (playSubscription) {
+      playSubscription.unsubscribe();
+
+      for (const rows of matrix.rows) {
+        const oldButton: RowButton = rows.buttons[currentPlayedColumnIndex];
         oldButton.isPlayed = false;
       }
 
-      this.currentPlayedColumnIndex = 0;
+      currentPlayedColumnIndex = 0;
     }
   }
 
@@ -706,7 +776,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   public start() {
     this.stop();
 
-    for (const rows of this.matrix.rows) {
+    isPlaying = true;
+
+    for (const rows of matrix.rows) {
       const oldButton: RowButton = rows.buttons[0];
       oldButton.isPlayed = true;
 
@@ -715,20 +787,20 @@ export class PrototypeComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.playSubscription = this.interval.subscribe(_ => {
-      const nextPlayedColumnIndex = (this.currentPlayedColumnIndex + 1) % NUMBER_OF_COLUMNS;
+    playSubscription = _interval.subscribe(_ => {
+      const nextPlayedColumnIndex = (currentPlayedColumnIndex + 1) % NUMBER_OF_COLUMNS;
 
       this.showLights();
       this.play(nextPlayedColumnIndex);
 
-      this.currentPlayedColumnIndex = nextPlayedColumnIndex;
+      currentPlayedColumnIndex = nextPlayedColumnIndex;
     });
 
-    this.subject.next(this.msPerBeat);
+    subject.next(msPerBeat);
   }
 
   private play(columnIndex: number) {
-    for (const matrix of this.matrixCollection) {
+    for (const matrix of matrixCollection) {
       for (const rows of matrix.rows) {
         const newButton: RowButton = rows.buttons[columnIndex];
         newButton.isPlayed = true;
@@ -741,8 +813,8 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   private showLights() {
-    for (const rows of this.matrix.rows) {
-      const oldButton: RowButton = rows.buttons[this.currentPlayedColumnIndex];
+    for (const rows of matrix.rows) {
+      const oldButton: RowButton = rows.buttons[currentPlayedColumnIndex];
       oldButton.isPlayed = false;
     }
   }
@@ -832,11 +904,11 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   //region Sound Effects
   public isReverbUsed(instrument: InstrumentName) {
-    return this.useReverbMap.get(instrument);
+    return useReverbMap.get(instrument);
   }
 
   public isPingPongDelayUsed(instrument: InstrumentName) {
-    return this.usePingPongDelayMap.get(instrument);
+    return usePingPongDelayMap.get(instrument);
   }
 
   public addReverb(event, instrument: InstrumentName) {
@@ -858,7 +930,7 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
     this.communicationService.sendMessage(oscMessage);
 
-    this.useReverbMap.set(instrument, !this.isReverbUsed(instrument));
+    useReverbMap.set(instrument, !this.isReverbUsed(instrument));
     this.logger.debug(`Switched reverb effect on instrument '${instrument}'`);
   }
 
@@ -881,17 +953,17 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
     this.communicationService.sendMessage(oscMessage);
 
-    this.usePingPongDelayMap.set(instrument, !this.isPingPongDelayUsed(instrument));
+    usePingPongDelayMap.set(instrument, !this.isPingPongDelayUsed(instrument));
     this.logger.debug(`Switched pingpongdelay effect on instrument '${instrument}'`);
   }
 
   public switchReverbOnMaster() {
-    this.useReverbOnMaster = !this.useReverbOnMaster;
+    useReverbOnMaster = !useReverbOnMaster;
 
     const oscMessage: IOSCMessage = {
       address: '/effect/master/reverb',
       args: [
-        { type: 'i', value: this.useReverbOnMaster ? 1 : 0 }
+        { type: 'i', value: useReverbOnMaster ? 1 : 0 }
       ],
       info: {
         address: '/play_note',
@@ -907,12 +979,12 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   public switchPingPongDelayOnMaster() {
-    this.usePingPongDelayOnMaster = !this.usePingPongDelayOnMaster;
+    usePingPongDelayOnMaster = !usePingPongDelayOnMaster;
 
     const oscMessage: IOSCMessage = {
       address: '/effect/master/pingpongdelay',
       args: [
-        { type: 'i', value: this.usePingPongDelayOnMaster ? 1 : 0 }
+        { type: 'i', value: usePingPongDelayOnMaster ? 1 : 0 }
       ],
       info: {
         address: '/play_note',
@@ -925,6 +997,142 @@ export class PrototypeComponent implements OnInit, OnDestroy {
     this.communicationService.sendMessage(oscMessage);
 
     this.logger.debug('Switched PingPongDelay on master');
+  }
+
+  public switchEQOnMaster() {
+    useEQOnMaster = !useEQOnMaster;
+
+    if (!useEQOnMaster) {
+      useEQLowOnMaster = false;
+      useEQMidOnMaster = false;
+      useEQHighOnMaster = false;
+    } else if (!useEQLowOnMaster && !useEQMidOnMaster && !useEQHighOnMaster) {
+      useEQLowOnMaster = true;
+      useEQMidOnMaster = true;
+      useEQHighOnMaster = true;
+    }
+
+    const oscMessage: IOSCMessage = {
+      address: '/effect/master/eq',
+      args: [
+        { type: 'i', value: useEQOnMaster ? 1 : 0 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+
+    this.logger.debug('Switched EQ on master');
+  }
+
+  public switchEQLowOnMaster() {
+    useEQLowOnMaster = !useEQLowOnMaster;
+
+    if (!useEQOnMaster) {
+      this.switchEQOnMaster();
+    }
+
+    this.sendEQLow();
+    this.sendEQMid();
+    this.sendEQHigh();
+
+    this.checkIfEQIsStillActive();
+
+    this.logger.debug('Switched low gain of master');
+  }
+
+  public checkIfEQIsStillActive() {
+    if (!useEQLowOnMaster && !useEQMidOnMaster && !useEQHighOnMaster) {
+      this.switchEQOnMaster();
+    }
+  }
+
+  public sendEQLow() {
+    const oscMessage: IOSCMessage = {
+      address: '/effect/master/eq/low',
+      args: [
+        { type: 'i', value: useEQLowOnMaster ? 0 : -10 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+  }
+
+  public sendEQMid() {
+    const oscMessage: IOSCMessage = {
+      address: '/effect/master/eq/mid',
+      args: [
+        { type: 'i', value: useEQMidOnMaster ? 0 : -10 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+  }
+
+  public sendEQHigh() {
+    const oscMessage: IOSCMessage = {
+      address: '/effect/master/eq/high',
+      args: [
+        { type: 'i', value: useEQHighOnMaster ? 0 : -10 }
+      ],
+      info: {
+        address: '/play_note',
+        family: 'IPv4',
+        port: 80,
+        size: 1,
+      }
+    };
+
+    this.communicationService.sendMessage(oscMessage);
+  }
+
+  public switchEQMidOnMaster() {
+    useEQMidOnMaster = !useEQMidOnMaster;
+
+    if (!useEQOnMaster) {
+      this.switchEQOnMaster();
+    }
+
+    this.sendEQLow();
+    this.sendEQMid();
+    this.sendEQHigh();
+
+    this.checkIfEQIsStillActive();
+
+    this.logger.debug('Switched mid gain of master');
+  }
+
+  public switchEQHighOnMaster() {
+    useEQHighOnMaster = !useEQHighOnMaster;
+
+    if (!useEQOnMaster) {
+      this.switchEQOnMaster();
+    }
+
+    this.sendEQLow();
+    this.sendEQMid();
+    this.sendEQHigh();
+
+    this.checkIfEQIsStillActive();
+
+    this.logger.debug('Switched high gain of master');
   }
   //endregion
 
@@ -941,9 +1149,9 @@ export class PrototypeComponent implements OnInit, OnDestroy {
   }
 
   private setNote(note: string, columnIndex: number) {
-    const rowIndex = this.matrixCollection[1].rows.findIndex((row: Row) => row.name === note);
+    const rowIndex = matrixCollection[1].rows.findIndex((row: Row) => row.name === note);
     if (rowIndex >= 0) {
-      this.matrixCollection[1].rows[rowIndex].buttons[columnIndex].isActive = true;
+      matrixCollection[1].rows[rowIndex].buttons[columnIndex].isActive = true;
     } else {
       this.logger.error('Note not found in matrix');
     }
@@ -973,16 +1181,16 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   public setDrumBeat() {
     // kick
-    this.matrixCollection[0].rows[0].buttons[0].isActive = true;
-    this.matrixCollection[0].rows[0].buttons[4].isActive = true;
+    matrixCollection[0].rows[0].buttons[0].isActive = true;
+    matrixCollection[0].rows[0].buttons[4].isActive = true;
 
     // snare
-    this.matrixCollection[0].rows[2].buttons[2].isActive = true;
-    this.matrixCollection[0].rows[2].buttons[6].isActive = true;
+    matrixCollection[0].rows[2].buttons[2].isActive = true;
+    matrixCollection[0].rows[2].buttons[6].isActive = true;
 
     // hihat
     for (let columnIndex = 0; columnIndex < NUMBER_OF_COLUMNS; columnIndex++) {
-      this.matrixCollection[0].rows[1].buttons[columnIndex].isActive = true;
+      matrixCollection[0].rows[1].buttons[columnIndex].isActive = true;
     }
   }
   //endregion
@@ -994,6 +1202,12 @@ export class PrototypeComponent implements OnInit, OnDestroy {
 
   public notYetImplemented() {
     this.notYetImplementedService.openSnackbar();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.isAnimationDisabled = false;
+    });
   }
 
 }

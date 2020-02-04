@@ -4,7 +4,6 @@ import { Observable, timer } from 'rxjs';
 import { OutsidePlacement, RelativePosition, Toppy } from 'toppy';
 import { Logger } from '@upe/logger';
 import { GeneratorCommunicationService } from '../../../generator/library/generator-communication.service';
-import { SocketServer } from '../../../generator/library/socket/socket-server';
 import { LogService } from '../../../generator/log/log.service';
 import { NotYetImplementedService } from '../../../not-yet-implemented.service';
 
@@ -27,7 +26,6 @@ export class NavigationComponent implements OnInit {
 
   private soundMenuOverlay;
 
-  public useGenerator = true;
   public useDirectCommunication = true;
   public hasSound = true;
   public hasReceivedMessage = false;
@@ -35,7 +33,6 @@ export class NavigationComponent implements OnInit {
 
   constructor(
     private navigationService: NavigationService,
-    private socketServer: SocketServer,
     private toppy: Toppy,
     private generatorCommunicationService: GeneratorCommunicationService,
     private logService: LogService,
@@ -62,16 +59,6 @@ export class NavigationComponent implements OnInit {
 
   public switchMessageIndicator() {
     this.showMessageIndicator = !this.showMessageIndicator;
-  }
-
-  public switchGenerator() {
-    this.useGenerator = !this.useGenerator;
-
-    if (this.useGenerator) {
-      this.socketServer.reconnect();
-    } else {
-      this.socketServer.disconnect();
-    }
   }
 
   public switchDirectCommunication() {

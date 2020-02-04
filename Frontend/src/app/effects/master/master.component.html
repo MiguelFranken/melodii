@@ -1,0 +1,77 @@
+<div style="height: 100%" fxLayout="column" fxLayoutAlign="space-between">
+  <h2 fxFlex fxLayout fxLayoutAlign="center center" class="title">
+    <div>Master</div>
+  </h2>
+  <div fxLayout fxLayoutAlign="center end">
+    <div fxFlex class="container" fxLayout="column" fxLayoutGap="8px">
+      <div fxLayout fxLayoutGap="8px">
+        <button
+                mat-button
+                class="dashboard-button"
+                fxFlex
+                (click)="switchReverb()"
+                [class.dashboard-on]="useReverb"
+        >
+          Reverb
+        </button>
+        <button
+                mat-button
+                class="dashboard-button"
+                fxFlex
+                (click)="switchChorus()"
+                [class.dashboard-on]="useChorus"
+        >
+          Chorus
+        </button>
+      </div>
+      <button
+              mat-button
+              class="dashboard-button"
+              fxFlex
+              (click)="switchPingPongDelay()"
+              [class.dashboard-on]="usePingPongDelay"
+      >
+        PingPongDelay
+      </button>
+      <button
+              mat-button
+              class="dashboard-button"
+              fxFlex
+              (click)="switchEQ()"
+              [class.dashboard-on]="useEQ"
+      >
+        EQ
+      </button>
+      <div fxLayout fxLayoutGap="8px">
+        <button
+                mat-button
+                class="dashboard-button"
+                fxFlex
+                (click)="switchEQLow()"
+                [class.dashboard-on]="useEQLow"
+        >
+          L
+        </button>
+        <button
+                mat-button
+                class="dashboard-button"
+                fxFlex
+                (click)="switchEQMid()"
+                [class.dashboard-on]="useEQMid"
+        >
+          M
+        </button>
+        <button
+                mat-button
+                class="dashboard-button"
+                fxFlex
+                (click)="switchEQHigh()"
+                [class.dashboard-on]="useEQHigh"
+        >
+          H
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

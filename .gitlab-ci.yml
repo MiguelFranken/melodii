@@ -128,6 +128,7 @@ lint:client:
 package:master:web:
   stage: package
   script:
+    - cd Frontend
     - docker build --build-arg branch="master" -t $DOCKER_USERNAME/mcp-master .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/mcp-master
@@ -135,6 +136,17 @@ package:master:web:
     - docker
   only:
     - master
+
+#package:pi:web:
+#  stage: package
+#  script:
+#    - docker build --build-arg branch="local" -t $DOCKER_USERNAME/mcp-pi .
+#    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+#    - docker push $DOCKER_USERNAME/mcp-pi
+#  tags:
+#    - docker
+#  only:
+#    - dev
 
 package:master:server:
   stage: package
@@ -147,6 +159,18 @@ package:master:server:
     - docker
   only:
     - master
+
+#package:pi:server:
+#  stage: package
+#  script:
+#    - cd Server
+#    - docker build -t $DOCKER_USERNAME/mcp-server-pi .
+#    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+#    - docker push $DOCKER_USERNAME/mcp-server-pi
+#  tags:
+#    - docker
+#  only:
+#    - dev
 
 deploy:master:
   image: node:12.13
@@ -167,6 +191,7 @@ deploy:master:
 package:dev:web:
   stage: package
   script:
+    - cd Frontend
     - docker build --build-arg branch="dev" -t $DOCKER_USERNAME/mcp-dev .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push $DOCKER_USERNAME/mcp-dev
@@ -185,7 +210,7 @@ package:dev:server:
   tags:
     - docker
   only:
-    - master
+    - dev
 
 deploy:dev:
   image: node:12.13

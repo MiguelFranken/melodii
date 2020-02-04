@@ -176,7 +176,7 @@ $overlay-margin-top: 12px;
 }
 
 .overlay:after, .overlay:before {
-  bottom: 99%;
+  bottom: 100%;
   left: 10%;
   border: solid transparent;
   content: " ";
@@ -184,6 +184,12 @@ $overlay-margin-top: 12px;
   width: 0;
   position: absolute;
   pointer-events: none;
+}
+
+.spacer-menu {
+  padding: 10px;
+  background-color: $mcp-black-2;
+  border-radius: 0;
 }
 
 .overlay:after {
@@ -197,3 +203,10 @@ $overlay-margin-top: 12px;
   color: $mcp-white-2 !important;
 }
 
+.on {
+  background-color: $mcp-green-2 !important;
+}
+
+::ng-deep .disableAnimation *{
+  transition: none !important;
+}

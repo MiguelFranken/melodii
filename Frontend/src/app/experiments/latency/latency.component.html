@@ -1,0 +1,19 @@
+<div fxLayout style="padding: 20px" fxLayoutGap="20px">
+  <button mat-raised-button (click)="single()">Single Message Test</button>
+  <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+    <div>Flow 200ms</div>
+    <button mat-raised-button (click)="startFlow200()">Start Flow Message Test</button>
+    <button mat-raised-button (click)="stopFlow200()">Stop Flow Message Test</button>
+  </div>
+  <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+    <div>Flow 50ms</div>
+    <button mat-raised-button (click)="startFlow50()">Start Flow Message Test</button>
+    <button mat-raised-button (click)="stopFlow50()">Stop Flow Message Test</button>
+  </div>
+  <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+    <div>Flow 10ms</div>
+    <button mat-raised-button (click)="startFlow10()">Start Flow Message Test</button>
+    <button mat-raised-button (click)="stopFlow10()">Stop Flow Message Test</button>
+  </div>
+  <button mat-raised-button (click)="log()">Log Latencies</button>
+</div>

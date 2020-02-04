@@ -46,12 +46,16 @@ $overlay-margin-top: 12px;
   color: $mcp-white-2
 }
 
+.on {
+  background-color: $mcp-green-2 !important;
+}
+
 .overlay {
   margin-top: $overlay-margin-top;
   background-color: $mcp-black-1;
   padding: 2px;
   position: relative;
-  min-width: 50vw;
+  min-width: 30vw;
   color: $mcp-white-1;
 
   .overlay-button {
@@ -63,7 +67,7 @@ $overlay-margin-top: 12px;
 }
 
 .overlay:after, .overlay:before {
-  bottom: 99%;
+  bottom: 100%;
   left: 5.3%;
   border: solid transparent;
   content: " ";

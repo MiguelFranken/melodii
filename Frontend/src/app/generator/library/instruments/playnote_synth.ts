@@ -2,11 +2,10 @@ import { Note, Velocity, Duration, Cents } from '../types';
 import { Synth, Frequency, Merge } from 'tone';
 import { Logger } from '@upe/logger';
 import { IMCPInstrument, MCPInstrumentName } from '../mcp-instrument';
-import { InstrumentName } from '../types';
 import { DefaultMap } from '../defaultMap';
 
 export class PlayNoteSynth implements IMCPInstrument {
-  private readonly voices = new DefaultMap(this.createVoice);
+  private readonly voices = new DefaultMap(() => this.createVoice());
   private readonly output = new Merge();
 
   private logger: Logger = new Logger({ name: 'PlayNoteSynth Instrument', flags: ['music'] });
@@ -15,7 +14,7 @@ export class PlayNoteSynth implements IMCPInstrument {
   }
 
   public trigger(note: Note, velocity: Velocity) {
-    console.log(`Trigger with note${note} and velocity ${velocity}.`);
+    this.logger.info(`Trigger with note${note} and velocity ${velocity}.`);
     const voice = this.voices.get(note);
     voice.triggerAttack(note, undefined, velocity);
   }
@@ -37,7 +36,7 @@ export class PlayNoteSynth implements IMCPInstrument {
   }
 
   public release(note: Note) {
-    console.log(`Release with note ${note}.`);
+    this.logger.info(`Release with note ${note}.`);
     const voice = this.voices.get(note);
     voice.triggerRelease();
   }

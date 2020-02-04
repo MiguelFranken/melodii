@@ -1,5 +1,10 @@
 import text from './visual_strings';
 
+/**
+ * in this file you can find all questions which are asked from inquirer to
+ * the user on the console interface
+ */
+
 export default [
     { // 0
         type: 'input',
@@ -29,6 +34,8 @@ export default [
             text.SEND,
             text.PLAY_NOTE,
             text.PLAY_SONG,
+            text.PLAY_SONG_BOX,
+            text.PLAY_SONG_MAT,
             text.DRUMS_MENU,
             text.SETTINGS_MENU,
             text.EXIT,
@@ -43,7 +50,6 @@ export default [
             text.CHANGE_ARGS,
             text.CHANGE_ADDRESS,
             text.CHANGE_PORT,
-            text.SEND_LATENCY_TEST,
             text.BACK,
         ],
     },

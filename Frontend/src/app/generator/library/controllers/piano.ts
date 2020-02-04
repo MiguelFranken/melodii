@@ -32,13 +32,14 @@ export class PianoController {
       // TODO add position to decorators
       const note = TypeChecker.ValidNoteArg(message.args[0]);
       const duration = TypeChecker.ValidDurationArg(message.args[1]);
-      const velocity = TypeChecker.ValidVelocityArg(message.args[2]);
+      const velocity = TypeChecker.ValidNormalRangeArg(message.args[2]);
 
       this.piano.play(note, duration, velocity);
       this.logger.info('play_note', { note, duration, velocity });
     } catch (e) {
       if (e instanceof OSCError) {
         e.print(this.logger);
+        e.printFrontend(this.music.getLogService());
       }
     }
   }

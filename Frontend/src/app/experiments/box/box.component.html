@@ -1,0 +1,18 @@
+<div fxLayout="column" fxLayoutAlign="stretch" class="container">
+  <mat-slider class="example-margin" min="0" max="100" step="1" thumbLabel="Volume" [value]="volume"
+    (input)="volumeChanged($event)">
+  </mat-slider>
+  <mat-slider class="example-margin" min="-150" max="150" step="1" thumbLabel="Cents" [value]="pitchShift"
+    (input)="pitchChanged($event)">
+  </mat-slider>
+  <div fxFlex fxLayout fxLayoutGap="10px">
+    <div fxFlex fxLayout fxLayoutAlign="center" id="c4" class="key">C4</div>
+    <div fxFlex fxLayout fxLayoutAlign="center" id="d4" class="key">D4</div>
+    <div fxFlex fxLayout fxLayoutAlign="center" id="e4" class="key">E4</div>
+    <div fxFlex fxLayout fxLayoutAlign="center" id="f4" class="key">F4</div>
+    <div fxFlex fxLayout fxLayoutAlign="center" id="g4" class="key">G4</div>
+    <div fxFlex fxLayout fxLayoutAlign="center" id="a4" class="key">A4</div>
+    <div fxFlex fxLayout fxLayoutAlign="center" id="b4" class="key">B4</div>
+    <div fxFlex fxLayout fxLayoutAlign="center" id="c5" class="key">C5</div>
+  </div>
+</div>
