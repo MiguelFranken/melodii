@@ -10,7 +10,7 @@ We imagined the controller to combine a light and an ultrasound sensor in a way 
 
 Participants could then lay they hands around the dome to block light and activate the light sensor, without influencing the ultrasound sensor. By pushing the dome down with a finger, virtually no light would be blocked, but the ultrasound sensor would pick up the depression of the dome. This would motivate coordination between multiple people to block light together and push the dome in a way that fits the music.
 
-Unforunately, the attempts to create such a dome failed. Using a cut-open plastic football almost worked. It was white, but enough light came through to have the desired effect. When pressed, though, it would stay deflated and not bounce back, rendering it unusable.
+Unfortunately, the attempts to create such a dome failed. Using a cut-open plastic football almost worked. It was white, but enough light came through to have the desired effect. When pressed, though, it would stay deflated and not bounce back, rendering it unusable.
 
 Since using the ball as a mold for a silicone dome would have used a lot of time and silicone, we tried to reduce the waste by attempting to reinforce the ball with a layer of silicone. The first layer was much too thin and did not have any effect. The second attempt was to create "pipes" in an X shape that would be thicker and reinforce the ball from the inside. However, the mold leaked and created a flat puddle, negating any desired effect.
 
@@ -19,7 +19,7 @@ Since using the ball as a mold for a silicone dome would have used a lot of time
 
 Due to time restrictions, the original idea of the dome was abandoned. The core idea of combining a light and an ultrasound sensor is present in the prototype, however.
 
-Both sensors are connected to the Arduino as specified in the Fritzing schematic located at `./effectcontroller-schematic.fzz`. The code to load onto the Arduino is `./effectcontroller-code.ino`. The vector file for the laser-cut box is `./effectcontroller-box.svg`.
+The files needed to construct the prototype are located at `Hardware/EffectController/`. Both sensors are connected to the Arduino as specified in the Fritzing schematic named `effectcontroller-schematic.fzz`. The code to load onto the Arduino is `effectcontroller-code.ino`. The vector file for the laser-cut box is `effectcontroller-box.svg`.
 
 ![Overflowing innards of a broken-apart effect controller.](images/innards.jpg)
 
